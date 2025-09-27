@@ -40,7 +40,7 @@ export abstract class BaseRepository<TDomain, TDocument extends Document>
     return doc ? this.toDomain(doc) : null;
   }
 
-  async deleteById(id: string): Promise<void> {
-    await this.model.findByIdAndDelete(id);
+  async deleteById(id: string): Promise< TDomain |null> {
+    return await this.model.findByIdAndDelete(id);
   }
 }

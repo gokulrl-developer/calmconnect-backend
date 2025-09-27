@@ -17,7 +17,7 @@ import ForgotPasswordUserUseCase from "../../application/use-cases/user/ForgotPa
 import ResetPasswordUserUseCase from "../../application/use-cases/user/ResetPasswordUserUseCase";
 
 const userRepository=new UserRepository()
-const otpRepository=new RedisOtpRepository
+const otpRepository=new RedisOtpRepository()
 
 const registerUserUseCase=new RegisterUserUseCase(userRepository,otpRepository)
 const signUpUseCase=new SignUpUserUseCase(userRepository,otpRepository)

@@ -1,6 +1,5 @@
 import { Types } from "mongoose";
-import { toApplicationDomain } from "../../../application/mappers/ApplicationMapper";
-import { Application, ApplicationRawDatabase } from "../../../domain/entities/application.entity";
+import { Application } from "../../../domain/entities/application.entity";
 import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
 import { IApplicationDocument, ApplicationModel } from "../models/ApplicationModel";
 import { BaseRepository } from "./BaseRepository";
@@ -14,13 +13,34 @@ export default class ApplicationRepository
   }
 
   protected toDomain(doc: IApplicationDocument): Application {
-    const { _id, psychologist, ...appWithoutIds } = doc.toObject();
-    const raw: ApplicationRawDatabase = {
-      ...appWithoutIds,
-      psychologist: psychologist.toString(),
-      id: _id.toString(),
-    };
-    return toApplicationDomain(raw);
+    const application = doc.toObject();
+    return new Application(
+    application.psychologist.toString(),
+    application.firstName,
+    application.lastName,
+    application.email,
+    application.isVerified,
+    application.submittedAt, 
+    application.phone, 
+    application.gender,
+    application.dob,
+    application.profilePicture,
+    application.address,
+    application.walletBalance,
+    application.languages,
+    application.specializations,
+    application.bio,
+    application.licenseUrl,
+    application.resume,
+    application.qualifications,
+    application.status, 
+    application.rejectionReason??undefined,   
+    application.password,
+    application.hourlyFees??undefined,
+    application._id.toString(),
+    application.avgRating??undefined,
+    application.createdAt??undefined   
+        );
   }
 
   protected toPersistence(entity: Partial<Application>): Partial<IApplicationDocument> {

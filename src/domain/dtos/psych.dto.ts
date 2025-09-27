@@ -57,3 +57,50 @@ export interface PsychApplicationStatusDTO{
        psychId:string
 }
 
+export interface CreateAvaialabilityRuleDTO{
+   psychId:string,
+   startTime:string,
+   endTime:string,
+   startDate:string,
+   endDate:string,
+   durationInMins:number,
+   bufferTimeInMins:number,
+   quickSlots:string[],
+   specialDays:{
+    weekDay:number,
+    availableSlots:string[]
+   }[],
+   slotsOpenTime:string,
+   quickSlotsReleaseWindowMins?:number
+}
+
+export interface DeleteAvailabilityRuleDTO{
+  availabilityRuleId:string,
+  psychId:string
+}
+
+export interface MarkHolidayDTO{
+   psychId:string,
+   date:string,
+   availableSlots:string[]
+}
+
+export interface AvailabilityRuleDetailsDTO{
+    availabilityRuleId:string,
+    psychId:string
+}
+
+export interface ListAvailabilityRulesDTO{
+  psychId:string
+}
+
+export interface DailyAvailabilityDTO{
+    psychId:string,
+    date:string
+}
+
+export interface DeleteHolidayDTO{
+    psychId:string,
+    date:string
+}
+

@@ -36,3 +36,4 @@ export interface UserResetPasswordDTO{
 export interface UserCheckStatusDTO{
     id:string,
 }
+

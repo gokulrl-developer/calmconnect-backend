@@ -1,4 +1,3 @@
-import { toPsychDomain } from "../../../application/mappers/PsychMapper";
 import { ListPsychDTO } from "../../../domain/dtos/admin.dto";
 import Psychologist from "../../../domain/entities/psychologist.entity";
 import IPsychologistRepository from "../../../domain/interfaces/IPsychRepository";
@@ -14,7 +13,33 @@ export default class PsychRepository
   }
 
   protected toDomain(doc: IPsychDocument): Psychologist {
-    return toPsychDomain(this.toRawDatabase(doc));
+    const psych=doc.toObject();
+    return new Psychologist(
+        psych.firstName,
+        psych.lastName,
+        psych.email,
+        psych.isVerified,
+        psych.isBlocked,
+        psych.walletBalance,
+        psych._id.toString(),
+        psych.password,
+        psych.gender ??undefined,
+        psych.dob ??undefined,
+        psych.profilePicture ??undefined,
+        psych.address ??undefined,
+        psych.languages,
+        psych.specializations,
+        psych.bio ??undefined,
+        psych.avgRating ??undefined,
+        psych.hourlyFees ??undefined,
+        psych.applications,
+        psych.licenseUrl ??undefined,
+        psych.qualifications,
+        psych.createdAt ??undefined,
+        psych.isGooglePsych,
+        psych.googleId ??undefined
+        
+      )
   }
 
   protected toPersistence(entity: Partial<Psychologist>): Partial<IPsychDocument> {
@@ -44,14 +69,6 @@ export default class PsychRepository
   };
 }
 
-
-  private toRawDatabase(psych: IPsychDocument) {
-    const { _id, ...rest } = psych.toObject();
-    return {
-      ...rest,
-      id: _id.toString(),
-    };
-  }
 
   async findByEmail(email: string): Promise<Psychologist | null> {
     const psych = await this.model.findOne({ email });

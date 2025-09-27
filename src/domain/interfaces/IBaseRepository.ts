@@ -4,5 +4,5 @@ export default interface IBaseRepository<T>{
   findById(id:string):Promise<T|null>,
   findAll(filter?:Partial<T>):Promise<T[]|null>,
   findOne(filter?:Partial<T>):Promise<T|null>,
-  deleteById(id:string):Promise<void>,
+  deleteById(id:string):Promise<T|null>,
 }

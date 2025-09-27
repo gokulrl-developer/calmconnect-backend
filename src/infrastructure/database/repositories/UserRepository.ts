@@ -1,6 +1,5 @@
-import { toUserDomain } from "../../../application/mappers/UserMapper";
 import { ListUsersDTO } from "../../../domain/dtos/admin.dto";
-import User, { UserRawDatabase } from "../../../domain/entities/user.entity";
+import User from "../../../domain/entities/user.entity";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import { IUserDocument, UserModel } from "../models/UserModel";
 import { BaseRepository } from "./BaseRepository";
@@ -14,12 +13,23 @@ export default class UserRepository
   }
 
   protected toDomain(doc: IUserDocument): User {
-    const { _id, ...userWithoutId } = doc.toObject();
-    const raw: UserRawDatabase = {
-      ...userWithoutId,
-      id: _id.toString(),
-    };
-    return toUserDomain(raw);
+    const user = doc.toObject();
+    return new User(
+       user.firstName,
+     user.lastName,
+     user.email,
+     user.isBlocked,
+     user.walletBalance,
+     user.password?? undefined,
+     user._id.toString(), 
+     user.createdAt??undefined,
+     user.gender??undefined,
+     user.dob??undefined,
+     user.profilePicture??undefined,
+     user.address??undefined,
+     user.isGoogleUser,
+     user.googleId??undefined
+    );
   }
 
   protected toPersistence(entity: Partial<User>): Partial<IUserDocument> {
