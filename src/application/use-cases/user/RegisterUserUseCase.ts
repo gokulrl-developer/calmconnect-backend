@@ -13,7 +13,7 @@ import { toUserDomainRegister } from "../../mappers/UserMapper";
 export default class RegisterUserUseCase implements IRegisterUserUseCase {
     constructor(
         private _userRepository: IUserRepository,
-        private _otpRepository: IOtpRepository
+        private _otpRepository: IOtpRepository,
     ){}
    async execute(dto: UserRegisterDTO
    ){       
@@ -21,7 +21,6 @@ export default class RegisterUserUseCase implements IRegisterUserUseCase {
      if (!tempUser) {
        throw new AppError(ERROR_MESSAGES.INVALID_OTP,AppErrorCodes.INVALID_OTP);
       }
-
       const{otp,...user}=tempUser;
       const userEntity = toUserDomainRegister(user); 
 

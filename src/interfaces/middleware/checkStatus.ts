@@ -26,7 +26,6 @@ export class CheckStatusPsych {
 
   handle = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      
       const result=await this._checkStatusPsychUseCase.execute({ id: req.account!.id! });
       req.account!.isVerified=result.isVerified;
       next();

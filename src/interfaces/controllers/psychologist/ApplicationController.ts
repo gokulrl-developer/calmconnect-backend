@@ -140,7 +140,6 @@ export default class ApplicationController {
 
       res.status(StatusCodes.OK).json({ ...status, psych: req.account });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

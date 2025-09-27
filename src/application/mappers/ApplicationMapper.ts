@@ -1,5 +1,5 @@
 import { PsychApplicationDTO } from "../../domain/dtos/psych.dto"
-import { Application, ApplicationRawDatabase } from "../../domain/entities/application.entity"
+import { Application} from "../../domain/entities/application.entity"
 import Psychologist from "../../domain/entities/psychologist.entity"
 
 export interface FileStorageReturn{
@@ -37,35 +37,6 @@ export const toApplicationDomainSubmit=(application:PsychApplicationDTO,psycholo
     );
 }
 
-export const toApplicationDomain=(application:ApplicationRawDatabase)=>{
-        return new Application(
-    application.psychologist,
-    application.firstName,
-    application.lastName,
-    application.email,
-    application.isVerified,
-    application.submittedAt, 
-    application.phone, 
-    application.gender,
-    application.dob,
-    application.profilePicture,
-    application.address,
-    application.walletBalance,
-    application.languages,
-    application.specializations,
-    application.bio,
-    application.licenseUrl,
-    application.resume,
-    application.qualifications,
-    application.status, 
-    application.rejectionReason??undefined,   
-    application.password,
-    application.hourlyFees??undefined,
-    application.id??undefined,
-    application.avgRating??undefined,
-    application.createdAt??undefined   
-        );
-}
 
 export const toApplicationStatusResponse=(application:Application|null)=>{
     if(!application ||!application.status){

@@ -20,20 +20,4 @@ export default class User {
 
 }
 
-export interface UserRawDatabase{
-    firstName:string,
-    lastName:string,
-    email:string,
-    id:string,
-    password?:string,
-    isBlocked:boolean,
-    walletBalance:number,
-    createdAt?:Date,
-    gender?:"male"|"female"|"others",
-    dob?:Date,
-    profilePicture?:string,
-    address?:string,
-    isGoogleUser?:boolean,
-    googleId?:string
-}
 

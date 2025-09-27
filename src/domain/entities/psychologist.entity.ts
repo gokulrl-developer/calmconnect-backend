@@ -28,28 +28,3 @@ export default class Psychologist {
 
 }
 
-export interface PsychRawDatabase{
-    firstName:string,
-    lastName:string,
-    email:string,
-    isVerified:boolean,
-    id:string,
-    password?:string,
-    isBlocked:boolean,
-    gender?:"male"|"female"|"others",
-    dob?:Date,
-    profilePicture?:string,
-    address?:string,
-    walletBalance:number,
-    languages?:string[],
-    specializations?:string[],
-    bio?:string,
-    avgRating?:number,
-    hourlyFees?:number,
-    applications?:string[],
-    licenseUrl?:string,
-    qualifications?:string[],
-    createdAt?:Date,
-    isGooglePsych?:boolean,
-    googleId?:string
-}

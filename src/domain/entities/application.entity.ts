@@ -30,30 +30,3 @@ export class Application {
 
 }
 
-export interface ApplicationRawDatabase{
-    psychologist:string,
-    firstName:string,
-    lastName:string,
-    email:string,
-    password:string,
-    isVerified:boolean,
-    submittedAt:Date, 
-    phone:string, 
-    gender:"male"|"female"|"others",
-    dob:Date,
-    profilePicture:string,
-    address:string,
-    walletBalance:number,
-    languages:string,
-    specializations:string[],
-    bio:string,
-    licenseUrl:string,
-    resume:string,
-    qualifications:string,
-    hourlyFees?:number,
-    status:"pending"|"accepted"|"rejected",
-    rejectionReason?:string,
-    id?:string,
-    avgRating?:number,
-    createdAt?:Date
-}

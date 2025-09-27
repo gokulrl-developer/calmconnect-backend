@@ -1,5 +1,5 @@
 import { PsychSignUpDTO } from "../../domain/dtos/psych.dto"
-import Psychologist,{PsychRawDatabase} from "../../domain/entities/psychologist.entity"
+import Psychologist from "../../domain/entities/psychologist.entity"
 
 export const toPsychDomainRegister=(psych:PsychSignUpDTO ):Psychologist=>{
   
@@ -63,36 +63,6 @@ export const toPsychDomainSocialAuth=(psych:FromGoogleAuthService ):Psychologist
     undefined,
     true,
     psych.googleId    
-  )
-}
-
-export const toPsychDomain=(psych:PsychRawDatabase ):Psychologist=>{
-  
-  return new Psychologist(
-    psych.firstName,
-    psych.lastName,
-    psych.email,
-    psych.isVerified,
-    psych.isBlocked,
-    psych.walletBalance,
-    psych.id,
-    psych.password,
-    psych.gender ??undefined,
-    psych.dob ??undefined,
-    psych.profilePicture ??undefined,
-    psych.address ??undefined,
-    psych.languages,
-    psych.specializations,
-    psych.bio ??undefined,
-    psych.avgRating ??undefined,
-    psych.hourlyFees ??undefined,
-    psych.applications,
-    psych.licenseUrl ??undefined,
-    psych.qualifications,
-    psych.createdAt ??undefined,
-    psych.isGooglePsych,
-    psych.googleId ??undefined
-    
   )
 }
 

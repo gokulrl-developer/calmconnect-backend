@@ -13,5 +13,9 @@ export const SUCCESS_MESSAGES = {
     GOOGLE_AUTH_SUCCESSFUL:"Google authentication successfull",
     OTP_RESENT:"Otp resent successfully",
     LOGOUT_SUCCESSFUL:"Logout successful",
-    TOKEN_REFRESHED:"Token refreshed successfully"
+    TOKEN_REFRESHED:"Token refreshed successfully",
+    AVAILABILITY_RULE_CREATED:"Availability rule created successfully",
+    AVAILABILITY_RULE_DELETED:"Availability rule deleted successfully",
+    HOLIDAY_MARKED:"Holiday marked successfully",
+    HOLIDAY_UNMARKED:"Holiday marked as normal day successfully"
 } as const;
