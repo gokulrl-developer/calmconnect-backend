@@ -9,13 +9,13 @@ export default class AvailabilityRule{
    public bufferTimeInMins:number,
    public quickSlots:string[],
    public slotsOpenTime:Date,
-   public specialDays:specialDay[],
+   public specialDays:SpecialDay[],
    public quickSlotsReleaseWindowMins?:number,
    public id?:string
     ){}
 }
 
-interface specialDay{
+export interface SpecialDay{
     weekDay:number,
     availableSlots:string[]
 }

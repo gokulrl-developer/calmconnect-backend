@@ -55,5 +55,7 @@ export const ERROR_MESSAGES = {
   AVAILABILITY_RULE_ID_REQUIRED:"Invalid request.The request lacks identifier",
   UNAUTHORISED_ACTION:"You are unauthorised to do this action",
   AVAILABLE_SLOTS_INVALID:"The available slots provided are in invalid format",
-  HOLIDAY_NOT_FOUND:"Unable to find the searched holiday"
+  HOLIDAY_NOT_FOUND:"Unable to find the searched holiday",
+  SORT_INVALID_FORMAT:"The sort type is invalid",
+  DATA_INSUFFICIANT:"Data provided is insufficient"
 } as const

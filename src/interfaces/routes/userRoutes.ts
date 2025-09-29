@@ -15,9 +15,20 @@ import ResendOtpSignUpUserUseCase from "../../application/use-cases/user/ResendO
 import ResendOtpResetUserUseCase from "../../application/use-cases/user/ResendOtpResetUserUseCase";
 import ForgotPasswordUserUseCase from "../../application/use-cases/user/ForgotPasswordUserUseCase";
 import ResetPasswordUserUseCase from "../../application/use-cases/user/ResetPasswordUserUseCase";
+import PsychDetailsByUserUseCase from "../../application/use-cases/user/PsychDetailsByUserUseCase";
+import ListPsychByUserUseCase from "../../application/use-cases/user/ListPsychByUserUseCase";
+import PsychRepository from "../../infrastructure/database/repositories/PsychRepository";
+import AvailabilityRuleRepository from "../../infrastructure/database/repositories/AvailabilityRuleRepository";
+import HolidayRepository from "../../infrastructure/database/repositories/HolidayRepository";
+import SessionRepository from "../../infrastructure/database/repositories/SessionRepository";
+import AppointmentController from "../controllers/user/AppointmentController";
 
 const userRepository=new UserRepository()
 const otpRepository=new RedisOtpRepository()
+const psychRepository=new PsychRepository()
+const availabilityRuleRepository=new AvailabilityRuleRepository()
+const holidayRepository=new HolidayRepository()
+const sessionRespository=new SessionRepository()
 
 const registerUserUseCase=new RegisterUserUseCase(userRepository,otpRepository)
 const signUpUseCase=new SignUpUserUseCase(userRepository,otpRepository)
@@ -27,11 +38,14 @@ const resendOtpSignUpUseCase=new ResendOtpSignUpUserUseCase(otpRepository);
 const resendOtpResetUseCase=new ResendOtpResetUserUseCase(otpRepository);
 const checkStatusUserUseCase=new CheckStatusUserUseCase(userRepository)
 const forgotPasswordUserUseCase=new ForgotPasswordUserUseCase(otpRepository,userRepository);
-const resetPasswordUserUseCase=new ResetPasswordUserUseCase(userRepository,otpRepository)
+const resetPasswordUserUseCase=new ResetPasswordUserUseCase(userRepository,otpRepository);
+const listPsychByUserUseCase=new ListPsychByUserUseCase(psychRepository);
+const psychDetailsByUserUseCase=new PsychDetailsByUserUseCase(psychRepository,availabilityRuleRepository,holidayRepository,sessionRespository)
 
 const authController=new AuthController(registerUserUseCase,signUpUseCase,loginUseCase,googleAuthUseCase,resendOtpSignUpUseCase,
     resendOtpResetUseCase,forgotPasswordUserUseCase,resetPasswordUserUseCase
-)
+);
+const appointmentController=new AppointmentController(listPsychByUserUseCase,psychDetailsByUserUseCase)
 
 const userController=new UserController()
 const checkStatusUser=new CheckStatusUser(checkStatusUserUseCase)
@@ -49,6 +63,14 @@ router.post('/user/login',(req:Request,res:Response,next:NextFunction)=>authCont
 router.get('/user/dashboard',verifyTokenMiddleware,
                              authorizeRoles("user"),
                              checkStatusUser.handle.bind(checkStatusUser),
-                             (req:Request,res:Response,next:NextFunction)=>userController.getDashboard(req,res,next))
+                             (req:Request,res:Response,next:NextFunction)=>userController.getDashboard(req,res,next));
+router.get('/user/psychologists',verifyTokenMiddleware,
+                             authorizeRoles("user"),
+                             checkStatusUser.handle.bind(checkStatusUser),
+                             (req:Request,res:Response,next:NextFunction)=>appointmentController.listPsychologists(req,res,next))
+router.get('/user/psychologist-details',verifyTokenMiddleware,
+                             authorizeRoles("user"),
+                             checkStatusUser.handle.bind(checkStatusUser),
+                             (req:Request,res:Response,next:NextFunction)=>appointmentController.psychDetails(req,res,next))
 
 export default router;
