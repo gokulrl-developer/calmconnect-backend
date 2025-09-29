@@ -104,3 +104,18 @@ export interface DeleteHolidayDTO{
     date:string
 }
 
+export interface ListPsychByUserDTO{
+specialization?:string,
+gender?:string,
+language?:string,
+date?:string,
+sort?:string,  /* a-z,z-a,rating,price */
+search?:string /* name,specializations,languages fields */
+skip:number,
+limit:number
+}
+
+export interface PsychDetailsByUserDTO{
+    date?:string,
+    psychId:string
+}

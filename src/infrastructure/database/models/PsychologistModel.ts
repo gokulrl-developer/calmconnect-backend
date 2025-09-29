@@ -1,7 +1,7 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import { Schema, model, Document, Types } from "mongoose";
 
 export interface IPsychDocument extends Document {
-  _id:Types.ObjectId
+  _id: Types.ObjectId;
   firstName: string;
   lastName: string;
   email: string;
@@ -9,18 +9,19 @@ export interface IPsychDocument extends Document {
   isVerified: boolean;
   isBlocked: boolean;
   dob?: Date;
-  gender?: 'male' | 'female' | 'others';
+  gender?: "male" | "female" | "others";
   profilePicture?: string;
   address?: string;
   walletBalance: number;
-  languages?: string[];
+  languages?: string;
   specializations?: string[];
   bio?: string;
   avgRating?: number;
   hourlyFees?: number;
+  quickSlotHourlyFees?: number;
   applications?: string[];
   licenseUrl?: string;
-  qualifications?: string[];
+  qualifications?: string;
   createdAt?: Date;
   updatedAt?: Date;
   googleId?: string;
@@ -36,24 +37,28 @@ const PsychologistSchema = new Schema<IPsychDocument>(
     isVerified: { type: Boolean, default: false },
     isBlocked: { type: Boolean, default: false },
     dob: { type: Date },
-    gender: { type: String, enum: ['male', 'female', 'others'] },
+    gender: { type: String, enum: ["male", "female", "others"] },
     profilePicture: { type: String },
     address: { type: String },
     walletBalance: { type: Number, default: 0 },
-    languages: [{ type: String }],
+    languages: { type: String },
     specializations: [{ type: String }],
     bio: { type: String },
     avgRating: { type: Number },
     hourlyFees: { type: Number },
+    quickSlotHourlyFees: { type: Number },
     applications: [{ type: String }],
     licenseUrl: { type: String },
-    qualifications: [{ type: String }],
+    qualifications: { type: String },
     googleId: { type: String },
     isGooglePsych: { type: Boolean, default: false },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 
-export const PsychModel = model<IPsychDocument>('Psychologist', PsychologistSchema);
+export const PsychModel = model<IPsychDocument>(
+  "Psychologist",
+  PsychologistSchema
+);
