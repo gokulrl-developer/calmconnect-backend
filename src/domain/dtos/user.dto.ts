@@ -37,3 +37,12 @@ export interface UserCheckStatusDTO{
     id:string,
 }
 
+export interface FetchUserProfileDTO{
+    userId:string
+}
+
+export interface UpdateUserProfileDTO{
+    userId:string,
+    profilePicture?:string | Buffer,
+    address?:string,
+}

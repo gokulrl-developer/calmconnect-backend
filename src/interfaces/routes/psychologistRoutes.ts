@@ -31,6 +31,8 @@ import MarkHolidayUseCase from "../../application/use-cases/psychologist/MarkHol
 import HolidayRepository from "../../infrastructure/database/repositories/HolidayRepository";
 import FetchDailyAvailabilityUseCase from "../../application/use-cases/psychologist/FetchDailyAvailabilityUseCase";
 import DeleteHolidayUseCase from "../../application/use-cases/psychologist/DeleteHolidayUseCase";
+import FetchPsychProfileUseCase from "../../application/use-cases/psychologist/FetchPsychProfileUseCase";
+import UpdatePsychProfileUseCase from "../../application/use-cases/psychologist/UpdatePsychProfileUseCase";
 
 const psychRepository = new PsychRepository();
 const otpRepository = new RedisOtpRepository();
@@ -66,6 +68,8 @@ const listAvailabilityRuleUseCase=new ListAvailabilityRuleUseCase(availabilityRu
 const markHolidayUseCase=new MarkHolidayUseCase(holidayRepository,availabilityRuleRepository);
 const fetchDailyAvailabilityUseCase=new FetchDailyAvailabilityUseCase(availabilityRuleRepository,holidayRepository);
 const deleteHolidayUseCase=new DeleteHolidayUseCase(holidayRepository)
+const fetchPsychProfileUseCase=new FetchPsychProfileUseCase(psychRepository);
+const updatePsychProfileUseCase=new UpdatePsychProfileUseCase(psychRepository,cloudinaryService)
 
 const authController = new AuthController(
   registerPsychUseCase,
@@ -77,7 +81,7 @@ const authController = new AuthController(
 forgotPasswordUserUseCase,
 resetPasswordUserUseCase
 );
-const psychController = new PsychController();
+const psychController = new PsychController(fetchPsychProfileUseCase,updatePsychProfileUseCase);
 const applicationController = new ApplicationController(
   createApplicationUseCase,
   applicationStatusUseCase
@@ -213,5 +217,19 @@ router.delete(`/psychologist/holiday`,
   checkStatusPsych.handle.bind(checkStatusPsych),
   (req:Request,res:Response,next:NextFunction) =>
     availabilityController.deleteHoliday(req,res,next)
+)
+router.get(`/psychologist/profile`,
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  (req:Request,res:Response,next:NextFunction) =>
+    psychController.fetchProfile(req,res,next)
+)
+router.patch(`/psychologist/profile`,
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  (req:Request,res:Response,next:NextFunction) =>
+    psychController.updateProfile(req,res,next)
 )
 export default router;

@@ -1,9 +1,11 @@
 import {
   ListPsychByUserDTO,
   PsychSignUpDTO,
+  UpdatePsychProfileDTO,
 } from "../../domain/dtos/psych.dto";
 import { Application } from "../../domain/entities/application.entity";
 import Psychologist from "../../domain/entities/psychologist.entity";
+import { PsychProfile } from "../interfaces/IFetchPsychProfileUseCase";
 import { Slot } from "../interfaces/IPsychDetailsByUserUseCase";
 
 export const toPsychDomainRegister = (psych: PsychSignUpDTO): Psychologist => {
@@ -187,3 +189,50 @@ export const toPsychDetailsByUserResponse=(psych:Psychologist,slots:Slot[]) =>{
 }
 }
 
+export const toFetchPsychProfileResponse = (psych: Psychologist): PsychProfile => ({
+    firstName: psych.firstName,
+    lastName: psych.lastName,
+    email: psych.email,
+    gender: psych.gender ?? "",
+    dob: psych.dob!.toISOString(), 
+    profilePicture: psych.profilePicture ?? "",
+    address: psych.address ?? "",
+    languages: psych.languages ?? "",
+    specializations: psych.specializations?? [],
+    bio: psych.bio ?? "",
+    qualifications: psych.qualifications ?? "",
+    hourlyFees: psych.hourlyFees ?? null,
+    quickSlotHourlyFees: psych.quickSlotHourlyFees ?? null,
+});
+
+export const toPsychDomainFromUpdateDTO = (
+    existingPsych: Psychologist,
+    dto: UpdatePsychProfileDTO & { profilePictureUrl?: string }
+): Psychologist => {
+    return new Psychologist(
+        existingPsych.firstName,
+        existingPsych.lastName,
+        existingPsych.email,
+        existingPsych.isVerified,
+        existingPsych.isBlocked,
+        existingPsych.walletBalance,
+        existingPsych.id,
+        existingPsych.password,
+        existingPsych.gender,
+        existingPsych.dob,
+        dto.profilePictureUrl ?? existingPsych.profilePicture,
+        dto.address ?? existingPsych.address,
+        dto.languages ?? existingPsych.languages,
+        dto.specializations ?? existingPsych.specializations,
+        dto.bio ?? existingPsych.bio,
+        existingPsych.avgRating,
+        dto.hourlyFees ?? existingPsych.hourlyFees,
+        dto.quickSlotHourlyFees ?? existingPsych.quickSlotHourlyFees,
+        existingPsych.applications,
+        existingPsych.licenseUrl,
+        dto.qualifications ?? existingPsych.qualifications,
+        existingPsych.createdAt,
+        existingPsych.isGooglePsych,
+        existingPsych.googleId
+    );
+};

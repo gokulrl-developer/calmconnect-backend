@@ -119,3 +119,18 @@ export interface PsychDetailsByUserDTO{
     date?:string,
     psychId:string
 }
+
+export interface FetchPsychProfileDTO{
+    psychId:string
+}
+
+export interface UpdatePsychProfileDTO{
+    profilePicture?:string | Buffer,
+    address?:string,
+    languages?:string,
+    specializations?:string[],
+    bio?:string,
+    hourlyFees?:number,
+    quickSlotHourlyFees?:number,
+    qualifications?:string
+}

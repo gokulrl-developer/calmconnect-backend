@@ -1,5 +1,6 @@
-import { UserSignUpDTO } from "../../domain/dtos/user.dto"
+import { UpdateUserProfileDTO, UserSignUpDTO } from "../../domain/dtos/user.dto"
 import User from "../../domain/entities/user.entity"
+import { UserProfile } from "../interfaces/IFetchUserProfileUseCase"
 
 
 export const toUserDomainRegister=(user:UserSignUpDTO):User=>{
@@ -73,6 +74,39 @@ export const toAdminUserListResponse=(user:User)=>{
   }
 
 }
+
+export const toFetchUserProfileResponse = (user: User): UserProfile => ({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    gender: user.gender ?? "",
+    dob: user.dob!, 
+    profilePicture: user.profilePicture ?? "",
+    address: user.address ?? "",
+});
+
+export const toUserDomainFromUpdateDTO = (
+  existingUser: User,
+  dto: Omit<UpdateUserProfileDTO, "userId"> & { profilePictureUrl?: string }
+): User => {
+  return new User(
+    existingUser.firstName,
+    existingUser.lastName,
+    existingUser.email,
+    existingUser.isBlocked,
+    existingUser.walletBalance,
+    existingUser.password,
+    existingUser.id,
+    existingUser.createdAt,
+    existingUser.gender,
+    existingUser.dob,
+    dto.profilePictureUrl ?? existingUser.profilePicture,
+    dto.address ?? existingUser.address,
+    existingUser.isGoogleUser,
+    existingUser.googleId
+  );
+};
+
 
 
 

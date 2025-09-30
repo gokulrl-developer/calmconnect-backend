@@ -17,5 +17,6 @@ export const SUCCESS_MESSAGES = {
     AVAILABILITY_RULE_CREATED:"Availability rule created successfully",
     AVAILABILITY_RULE_DELETED:"Availability rule deleted successfully",
     HOLIDAY_MARKED:"Holiday marked successfully",
-    HOLIDAY_UNMARKED:"Holiday marked as normal day successfully"
+    HOLIDAY_UNMARKED:"Holiday marked as normal day successfully",
+    PROFILE_UPDATED:"Profile updated successfully",
 } as const;
