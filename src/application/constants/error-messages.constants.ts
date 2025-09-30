@@ -57,5 +57,8 @@ export const ERROR_MESSAGES = {
   AVAILABLE_SLOTS_INVALID:"The available slots provided are in invalid format",
   HOLIDAY_NOT_FOUND:"Unable to find the searched holiday",
   SORT_INVALID_FORMAT:"The sort type is invalid",
-  DATA_INSUFFICIANT:"Data provided is insufficient"
+  DATA_INSUFFICIANT:"Data provided is insufficient",
+  UPDATE_FAILED_SERVER_ERROR:"Update failed due to internal server error",
+  INVALID_HOURLY_FEES:"Invalid slots fees",
+  INVALID_QUICK_SLOT_FEES:"Invalid quick slot fees",
 } as const
