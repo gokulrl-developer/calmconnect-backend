@@ -7,8 +7,6 @@ import adminRoutes from './interfaces/routes/adminRoutes';
 import refreshRoute from './interfaces/routes/tokenRoute'
 import corsOptions from './infrastructure/config/cors';
 import { errorHandler } from './utils/errorHandler';
-import { Request, Response, NextFunction } from "express";
-import { CookieOptions } from "express";
 import morgan from "morgan";
 
 const app= express();

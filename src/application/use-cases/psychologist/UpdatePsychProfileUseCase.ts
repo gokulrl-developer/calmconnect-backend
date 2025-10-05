@@ -33,8 +33,7 @@ export default class UpdatePsychProfileUseCase implements IUpdatePsychProfileUse
         if (!existingPsych) {
             throw new AppError(ERROR_MESSAGES.PSYCHOLOGIST_NOT_FOUND, AppErrorCodes.NOT_FOUND);
         }
-
-        const updatedPsych = toPsychDomainFromUpdateDTO(existingPsych, { ...dto, profilePictureUrl });;
+        const updatedPsych = toPsychDomainFromUpdateDTO(existingPsych, { ...dto, profilePicture:profilePictureUrl });
         
         const result = await this._psychRepository.update(psychId, updatedPsych);
 

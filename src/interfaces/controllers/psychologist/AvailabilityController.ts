@@ -211,7 +211,7 @@ export default class AvailabilityController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const psychId = req?.account?.psychId;
+      const psychId = req?.account?.id;
       const date=req.query.date;
       if (
        !date ||
@@ -227,7 +227,7 @@ export default class AvailabilityController {
 
       const result = await this._fetchDailyAvailabilityUseCase.execute({
         date,
-        psychId,
+        psychId:psychId!,
       });
 
       res.status(StatusCodes.OK).json({ ...result });
@@ -260,7 +260,7 @@ export default class AvailabilityController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const psychId = req?.account?.psychId;
+      const psychId = req?.account?.id;
       if (
         !req.body.date ||
       typeof req.body.date !=="string" ||
@@ -282,7 +282,7 @@ export default class AvailabilityController {
           AppErrorCodes.VALIDATION_ERROR
         );
       }
-      await this._markHolidayUseCase.execute(req.body);
+      await this._markHolidayUseCase.execute({...req.body,psychId});
       res
         .status(StatusCodes.OK)
         .json({ message: SUCCESS_MESSAGES.HOLIDAY_MARKED });
@@ -297,7 +297,7 @@ export default class AvailabilityController {
     next:NextFunction
   ){
     try{
-    const psychId=req?.account?.psychId;
+    const psychId=req?.account?.id;
     const date=req.query.date;
     if(!date ||
       typeof date !=="string" ||
@@ -309,7 +309,7 @@ export default class AvailabilityController {
       )
     }
   
-    await this._deleteHolidayUseCase.execute({date,psychId});
+    await this._deleteHolidayUseCase.execute({date,psychId:psychId!});
     res.status(StatusCodes.OK).json({message:SUCCESS_MESSAGES.HOLIDAY_UNMARKED})
   }catch(error){
     next(error)

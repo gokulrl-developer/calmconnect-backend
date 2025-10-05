@@ -57,8 +57,14 @@ export const ERROR_MESSAGES = {
   AVAILABLE_SLOTS_INVALID:"The available slots provided are in invalid format",
   HOLIDAY_NOT_FOUND:"Unable to find the searched holiday",
   SORT_INVALID_FORMAT:"The sort type is invalid",
-  DATA_INSUFFICIANT:"Data provided is insufficient",
+  DATA_INSUFFICIANT:"Some required information is missing. Please try again.",
   UPDATE_FAILED_SERVER_ERROR:"Update failed due to internal server error",
   INVALID_HOURLY_FEES:"Invalid slots fees",
   INVALID_QUICK_SLOT_FEES:"Invalid quick slot fees",
+  SLOT_UNAVAILABLE:"Slot is unavailable for booking",
+  SESSION_UNAVAILABLE:"Session is unavailable for booking",
+  FIRST_NAME_REQUIRED:"First name is empty or is in invalid format",
+  LAST_NAME_REQUIRED:"Last name is empty or is in invalid format",
+ FEES_NOT_SET:"Fees are not set.Set Fees before setting availability",
+ QUICK_SLOT_UNRELEASED:"The quick slot is not released yet for booking.Try after some time."
 } as const

@@ -90,16 +90,16 @@ export const toUserDomainFromUpdateDTO = (
   dto: Omit<UpdateUserProfileDTO, "userId"> & { profilePictureUrl?: string }
 ): User => {
   return new User(
-    existingUser.firstName,
-    existingUser.lastName,
+    dto.firstName??existingUser.firstName,
+    dto.lastName??existingUser.lastName,
     existingUser.email,
     existingUser.isBlocked,
     existingUser.walletBalance,
     existingUser.password,
     existingUser.id,
     existingUser.createdAt,
-    existingUser.gender,
-    existingUser.dob,
+    dto.gender??existingUser.gender,
+    dto.dob??existingUser.dob,
     dto.profilePictureUrl ?? existingUser.profilePicture,
     dto.address ?? existingUser.address,
     existingUser.isGoogleUser,

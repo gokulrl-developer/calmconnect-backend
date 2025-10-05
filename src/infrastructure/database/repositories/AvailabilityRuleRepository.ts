@@ -57,20 +57,23 @@ export default class AvailabilityRuleRepository
     return availabilityRules.map((rule) => this.toDomain(rule));
   }
 
-  async findByTimePeriod(
+  async findByPsychTimePeriod(
     fromDate: Date,
-    toDate: Date
+    toDate: Date,
+    psychId:string
   ): Promise<AvailabilityRule[]> {
     const availabilityRules = await this.model.find({
       $or: [
         {
           $and: [
+            {psychologist:psychId},
             { startDate: { $gte: fromDate } },
             { startDate: { $lte: toDate } },
           ],
         },
         {
           $and: [
+              {psychologist:psychId},
             { endDate: { $gte: fromDate } },
             { endDate: { $lte: toDate } },
           ],
@@ -80,9 +83,9 @@ export default class AvailabilityRuleRepository
     return availabilityRules.map((rule) => this.toDomain(rule));
   }
 
-  async findByDate(date: Date): Promise<AvailabilityRule | null> {
+  async findByDatePsych(date: Date,psychId:string): Promise<AvailabilityRule | null> {
     const availabilityRule = await this.model.findOne({
-      $and: [{ startDate: { $lte: date } }, { endDate: { $gte: date } }],
+      $and: [{psychologist:new Types.ObjectId(psychId)},{ startDate: { $lte: date } }, { endDate: { $gte: date } }],
     });
     if (!availabilityRule) {
       return null;

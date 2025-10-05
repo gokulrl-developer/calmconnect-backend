@@ -15,7 +15,8 @@ export default class MarkHolidayUseCase implements IMarkHolidayUseCase{
 
     async execute(dto:MarkHolidayDTO){
         const holidayEntity=toHolidayDomainMapper(dto);
-        const availabilityRule=await this._availabilityRuleRepository.findByDate(new Date(dto.date));
+        console.log(dto)
+        const availabilityRule=await this._availabilityRuleRepository.findByDatePsych(new Date(dto.date),dto.psychId);
         if(!availabilityRule){
           throw new AppError(ERROR_MESSAGES.AVAILABILITY_NOT_SET,AppErrorCodes.NOT_FOUND)
         }

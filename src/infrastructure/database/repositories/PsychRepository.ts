@@ -100,187 +100,186 @@ export default class PsychRepository
     return psychs.map((p) => this.toDomain(p));
   }
 
-  async listPsychByUser(
-    query: ListPsychQueryByUser
-  ): Promise<{ psychologists: Psychologist[]; totalItems: number }> {
-    const {
-      specialization,
-      gender,
-      language,
-      date,
-      sort,
-      search,
-      skip = 0,
-      limit = 10,
-    } = query;
+ async listPsychByUser(
+  query: ListPsychQueryByUser
+): Promise<{ psychologists: Psychologist[]; totalItems: number }> {
+  const {
+    specialization,
+    gender,
+    language,
+    date,
+    sort,
+    search,
+    skip = 0,
+    limit = 10,
+  } = query;
 
-    const match: any = { isVerified: true };
-    if (gender) match.gender = gender;
-    if (specialization) match.specializations = specialization;
-    if (language) match.languages = language;
+  const match: any = { isVerified: true };
+  if (gender) match.gender = gender;
+  if (specialization) match.specializations = specialization;
+  if (language) match.languages = language;
 
-    if (search) {
-      const regex = new RegExp(search, "i");
-      match.$or = [
-        { firstName: regex },
-        { lastName: regex },
-        { email: regex },
-        { specializations: regex },
-        { languages: regex },
-      ];
-    }
+  if (search) {
+    const regex = new RegExp(search, "i");
+    match.$or = [
+      { firstName: regex },
+      { lastName: regex },
+      { email: regex },
+      { specializations: regex },
+      { languages: regex },
+    ];
+  }
 
-    const basePipeline: any[] = [{ $match: match }];
+  const basePipeline: any[] = [{ $match: match }];
 
-    if (date) {
-      const targetDate = new Date(date);
-      const startOfDay = new Date(targetDate);
-      startOfDay.setHours(0, 0, 0, 0);
-      const endOfDay = new Date(targetDate);
-      endOfDay.setHours(23, 59, 59, 999);
+  if (date) {
+    const targetDate = new Date(date);
+    const startOfDay = new Date(targetDate);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(targetDate);
+    endOfDay.setHours(23, 59, 59, 999);
 
-      basePipeline.push(
-        {
-          $lookup: {
-            from: "sessions",
-            let: { psychId: "$_id" },
-            pipeline: [
-              {
-                $match: {
-                  $expr: {
-                    $and: [
-                      { $eq: ["$psychologist", "$$psychId"] },
-                      { $gte: ["$startTime", startOfDay] },
-                      { $lte: ["$startTime", endOfDay] },
-                      { $eq: ["$status", "scheduled"] },
-                    ],
-                  },
-                },
-              },
-            ],
-            as: "sessions",
-          },
-        },
-        {
-          $lookup: {
-            from: "availabilityrules",
-            let: { psychId: "$_id" },
-            pipeline: [
-              {
-                $match: {
-                  $expr: {
-                    $and: [
-                      { $eq: ["$psychologist", "$$psychId"] },
-                      { $lte: ["$startDate", targetDate] },
-                      { $gte: ["$endDate", targetDate] },
-                    ],
-                  },
-                },
-              },
-              { $limit: 1 },
-            ],
-            as: "availabilityRule",
-          },
-        },
-        {
-          $lookup: {
-            from: "holidays",
-            let: { psychId: "$_id" },
-            pipeline: [
-              {
-                $match: {
-                  $expr: {
-                    $and: [
-                      { $eq: ["$psychologist", "$$psychId"] },
-                      { $gte: ["$date", startOfDay] },
-                      { $lte: ["$date", endOfDay] },
-                    ],
-                  },
-                },
-              },
-            ],
-            as: "holidays",
-          },
-        },
-        {
-          $addFields: {
-            numberOfAvailableSlots: {
-              $cond: [
-                { $gt: [{ $size: "$holidays" }, 0] },
-                0,
-                {
-                  $let: {
-                    vars: { rule: { $arrayElemAt: ["$availabilityRule", 0] } },
-                    in: {
-                      $floor: {
-                        $divide: [
-                          { $subtract: ["$$rule.endTime", "$$rule.startTime"] },
-                          {
-                            $add: [
-                              "$$rule.durationInMins",
-                              "$$rule.bufferTimeInMins",
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  },
-                },
-              ],
-            },
-          },
-        },
-        {
-          $addFields: {
-            numberOfAvailableSlots: {
-              $max: [
-                0,
-                {
-                  $subtract: [
-                    "$numberOfAvailableSlots",
-                    { $size: "$sessions" },
+    basePipeline.push(
+      {
+        $lookup: {
+          from: "sessions",
+          let: { psychId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$psychologist", "$$psychId"] },
+                    { $gte: ["$startTime", startOfDay] },
+                    { $lte: ["$startTime", endOfDay] },
+                    { $eq: ["$status", "scheduled"] },
                   ],
                 },
-              ],
+              },
             },
+          ],
+          as: "sessions",
+        },
+      },
+      {
+        $lookup: {
+          from: "availabilityrules",
+          let: { psychId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$psychologist", "$$psychId"] },
+                    { $lte: ["$startDate", targetDate] },
+                    { $gte: ["$endDate", targetDate] },
+                  ],
+                },
+              },
+            },
+            { $limit: 1 },
+          ],
+          as: "availabilityRule",
+        },
+      },
+      {
+        $lookup: {
+          from: "holidays",
+          let: { psychId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$psychologist", "$$psychId"] },
+                    { $gte: ["$date", startOfDay] },
+                    { $lte: ["$date", endOfDay] },
+                  ],
+                },
+              },
+            },
+          ],
+          as: "holidays",
+        },
+      },
+    {
+  $addFields: {
+    numberOfAvailableSlots: {
+      $cond: [
+        { $gt: [{ $size: "$holidays" }, 0] },
+        0,
+        {
+          $let: {
+            vars: { rule: { $arrayElemAt: ["$availabilityRule", 0] } },
+            in: {
+              $floor: {
+                $divide: [
+                  {
+                    $subtract: [
+                      {
+                        $add: [
+                          { $multiply: [60, { $toInt: { $arrayElemAt: [{ $split: ["$$rule.endTime", ":"] }, 0] } }] },
+                          { $toInt: { $arrayElemAt: [{ $split: ["$$rule.endTime", ":"] }, 1] } }
+                        ]
+                      },
+                      {
+                        $add: [
+                          { $multiply: [60, { $toInt: { $arrayElemAt: [{ $split: ["$$rule.startTime", ":"] }, 0] } }] },
+                          { $toInt: { $arrayElemAt: [{ $split: ["$$rule.startTime", ":"] }, 1] } }
+                        ]
+                      }
+                    ]
+                  },
+                  { $add: ["$$rule.durationInMins", "$$rule.bufferTimeInMins"] }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+},
+      {
+        $addFields: {
+          numberOfAvailableSlots: {
+            $max: [0, { $subtract: ["$numberOfAvailableSlots", { $size: "$sessions" }] }],
           },
         },
-        { $match: { numberOfAvailableSlots: { $gt: 0 } } }
-      );
-    }
-
-    if (sort) {
-      const sortMap: Record<string, any> = {
-        "a-z": { firstName: 1 },
-        "z-a": { firstName: -1 },
-        rating: { avgRating: -1 },
-        price: { hourlyFees: 1 },
-      };
-      basePipeline.push({ $sort: sortMap[sort] });
-    }
-
-    // Use $facet to get both paginated data and total count
-    const pipeline = [
-      {
-        $facet: {
-          data: [...basePipeline, { $skip: skip }, { $limit: limit }],
-          totalCount: [...basePipeline, { $count: "count" }],
-        },
       },
-      {
-        $unwind: { path: "$totalCount", preserveNullAndEmptyArrays: true },
-      },
-      {
-        $addFields: { totalCount: { $ifNull: ["$totalCount.count", 0] } },
-      },
-    ];
-
-    const result = await this.model.aggregate(pipeline).exec();
-
-    const psychologists = (result[0]?.data || []).map((doc: IPsychDocument) =>
-      this.toDomain(doc)
+      { $match: { numberOfAvailableSlots: { $gt: 0 } } }
     );
-    const totalItems = result[0]?.totalCount || 0;
-    return { psychologists, totalItems };
   }
+
+  if (sort) {
+    const sortMap: Record<string, any> = {
+      "a-z": { firstName: 1 },
+      "z-a": { firstName: -1 },
+      rating: { avgRating: -1 },
+      price: { hourlyFees: 1 },
+    };
+    basePipeline.push({ $sort: sortMap[sort] });
+  }
+
+  const pipeline = [
+    {
+      $facet: {
+        data: [...basePipeline, { $skip: skip }, { $limit: limit }],
+        totalCount: [...basePipeline, { $count: "count" }],
+      },
+    },
+    { $unwind: { path: "$totalCount", preserveNullAndEmptyArrays: true } },
+    { $addFields: { totalCount: { $ifNull: ["$totalCount.count", 0] } } },
+  ];
+
+  const result = await this.model.aggregate(pipeline).exec();
+
+  const psychologists = (result[0]?.data || []).map((doc: IPsychDocument) =>
+    this.toDomain(doc)
+  );
+  const totalItems = result[0]?.totalCount || 0;
+  console.log(psychologists,totalItems)
+  return { psychologists, totalItems };
+}
+
 }

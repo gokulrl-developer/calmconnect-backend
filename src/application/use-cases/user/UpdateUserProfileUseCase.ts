@@ -26,7 +26,7 @@ export default class UpdateUserProfileUseCase implements IUpdateUserProfileUseCa
             throw new AppError(ERROR_MESSAGES.USER_NOT_FOUND, AppErrorCodes.NOT_FOUND);
         }
 
-        const updatedUser = toUserDomainFromUpdateDTO(existingUser, { address, profilePictureUrl });
+        const updatedUser = toUserDomainFromUpdateDTO(existingUser, {...dto, profilePictureUrl });
 
         const result = await this._userRepository.update(userId, updatedUser);
         if (!result) {

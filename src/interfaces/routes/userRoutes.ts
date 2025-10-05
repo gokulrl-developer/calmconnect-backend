@@ -26,14 +26,26 @@ import { paginationMiddleware } from "../middleware/paginationMiddleware";
 import FetchUserProfileUseCase from "../../application/use-cases/user/FetchUserProfileUseCase";
 import UpdateUserProfileUseCase from "../../application/use-cases/user/UpdateUserProfileUseCase";
 import CloudinaryService from "../../infrastructure/external/CloudinaryService";
+import FetchCheckoutDataUseCase from "../../application/use-cases/user/FetchCheckoutDataUseCase";
+import CreateOrderUseCase from "../../application/use-cases/user/CreateOrderUseCase";
+import RazorpayPaymentProvider from "../../infrastructure/external/RazorpayPaymentProvider";
+import VerifyPaymentUseCase from "../../application/use-cases/user/VerifyPaymentUseCase";
+import WalletRepository from "../../infrastructure/database/repositories/WalletRepository";
+import TransactionRepository from "../../infrastructure/database/repositories/TransactionRepository";
+import { upload } from "../../infrastructure/config/multerConfig";
+import SessionController from "../controllers/user/SessionController";
+import SessionListingUserUseCase from "../../application/use-cases/user/SessionListingUserUseCase";
 
 const userRepository=new UserRepository()
 const otpRepository=new RedisOtpRepository()
 const psychRepository=new PsychRepository()
 const availabilityRuleRepository=new AvailabilityRuleRepository()
 const holidayRepository=new HolidayRepository()
-const sessionRespository=new SessionRepository()
+const sessionRepository=new SessionRepository()
 const cloudinaryService=new CloudinaryService()
+const paymentProvider=new RazorpayPaymentProvider()
+const walletRepository=new WalletRepository()
+const transactionRepository=new TransactionRepository()
 
 const registerUserUseCase=new RegisterUserUseCase(userRepository,otpRepository)
 const signUpUseCase=new SignUpUserUseCase(userRepository,otpRepository)
@@ -45,15 +57,19 @@ const checkStatusUserUseCase=new CheckStatusUserUseCase(userRepository)
 const forgotPasswordUserUseCase=new ForgotPasswordUserUseCase(otpRepository,userRepository);
 const resetPasswordUserUseCase=new ResetPasswordUserUseCase(userRepository,otpRepository);
 const listPsychByUserUseCase=new ListPsychByUserUseCase(psychRepository);
-const psychDetailsByUserUseCase=new PsychDetailsByUserUseCase(psychRepository,availabilityRuleRepository,holidayRepository,sessionRespository)
+const psychDetailsByUserUseCase=new PsychDetailsByUserUseCase(psychRepository,availabilityRuleRepository,holidayRepository,sessionRepository)
 const fetchProfileUseCase=new FetchUserProfileUseCase(userRepository);
 const updateProfileUseCase=new UpdateUserProfileUseCase(userRepository,cloudinaryService)
+const fetchCheckoutDataUseCase=new FetchCheckoutDataUseCase(psychRepository,availabilityRuleRepository,holidayRepository,sessionRepository)
+const createOrderUseCase=new CreateOrderUseCase(psychRepository,availabilityRuleRepository,holidayRepository,sessionRepository,paymentProvider)
+const verifyPaymentUseCase=new VerifyPaymentUseCase(paymentProvider,sessionRepository,transactionRepository,walletRepository)
+const listSessionsByUserUseCase=new SessionListingUserUseCase(sessionRepository,psychRepository)
 
 const authController=new AuthController(registerUserUseCase,signUpUseCase,loginUseCase,googleAuthUseCase,resendOtpSignUpUseCase,
     resendOtpResetUseCase,forgotPasswordUserUseCase,resetPasswordUserUseCase
 );
-const appointmentController=new AppointmentController(listPsychByUserUseCase,psychDetailsByUserUseCase)
-
+const appointmentController=new AppointmentController(listPsychByUserUseCase,psychDetailsByUserUseCase,fetchCheckoutDataUseCase,createOrderUseCase,verifyPaymentUseCase)
+const sessionController=new SessionController(listSessionsByUserUseCase)
 const userController=new UserController(fetchProfileUseCase,updateProfileUseCase)
 const checkStatusUser=new CheckStatusUser(checkStatusUserUseCase)
 
@@ -80,13 +96,32 @@ router.get('/user/psychologist-details',verifyTokenMiddleware,
                              authorizeRoles("user"),
                              checkStatusUser.handle.bind(checkStatusUser),
                              (req:Request,res:Response,next:NextFunction)=>appointmentController.psychDetails(req,res,next))
+router.get('/user/checkout',verifyTokenMiddleware,
+                             authorizeRoles("user"),
+                             checkStatusUser.handle.bind(checkStatusUser),
+                             (req:Request,res:Response,next:NextFunction)=>appointmentController.fetchCheckoutData(req,res,next))
+router.post('/user/create-order',verifyTokenMiddleware,
+                             authorizeRoles("user"),
+                             checkStatusUser.handle.bind(checkStatusUser),
+                             (req:Request,res:Response,next:NextFunction)=>appointmentController.createOrder(req,res,next))
+router.post('/user/verify-payment',verifyTokenMiddleware,
+                             authorizeRoles("user"),
+                             checkStatusUser.handle.bind(checkStatusUser),
+                             (req:Request,res:Response,next:NextFunction)=>appointmentController.verifyPayment(req,res,next))
 router.get('/user/profile',verifyTokenMiddleware,
                              authorizeRoles("user"),
                              checkStatusUser.handle.bind(checkStatusUser),
                              (req:Request,res:Response,next:NextFunction)=>userController.fetchProfile(req,res,next))
+router.get('/user/sessions',verifyTokenMiddleware,
+                             authorizeRoles("user"),
+                             checkStatusUser.handle.bind(checkStatusUser),
+                             (req:Request,res:Response,next:NextFunction)=>sessionController.listSessions(req,res,next))
 router.patch('/user/profile',verifyTokenMiddleware,
                              authorizeRoles("user"),
                              checkStatusUser.handle.bind(checkStatusUser),
+                             upload.fields([
+                                 { name: "profilePicture", maxCount: 1 },
+                               ]),
                              (req:Request,res:Response,next:NextFunction)=>userController.updateProfile(req,res,next))
 
 export default router;

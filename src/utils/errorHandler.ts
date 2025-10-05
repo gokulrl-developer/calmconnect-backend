@@ -51,6 +51,8 @@ const errorToHttpStatus = (code: string): number => {
     case AppErrorCodes.INVALID_OTP:
       return StatusCodes.UNAUTHORIZED;
     case AppErrorCodes.VALIDATION_ERROR:
+      return StatusCodes.BAD_REQUEST;   
+    case AppErrorCodes.INVALID_INPUT:
       return StatusCodes.BAD_REQUEST;
     
     default:

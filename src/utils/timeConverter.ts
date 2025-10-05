@@ -22,3 +22,10 @@ export function isoToHHMM(isoString: string): string {
   return `${hh}:${mm}`;
 }
 
+export function HHMMToIso(hhmm: string, date: Date): string {
+  const [hours, minutes] = hhmm.split(":").map(Number);
+
+  const isoDate = new Date(date);
+  isoDate.setHours(hours, minutes, 0, 0); 
+  return isoDate.toISOString();
+}

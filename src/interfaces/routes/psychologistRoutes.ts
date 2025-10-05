@@ -33,6 +33,10 @@ import FetchDailyAvailabilityUseCase from "../../application/use-cases/psycholog
 import DeleteHolidayUseCase from "../../application/use-cases/psychologist/DeleteHolidayUseCase";
 import FetchPsychProfileUseCase from "../../application/use-cases/psychologist/FetchPsychProfileUseCase";
 import UpdatePsychProfileUseCase from "../../application/use-cases/psychologist/UpdatePsychProfileUseCase";
+import SessionController from "../controllers/psychologist/SessionController";
+import SessionListingPsychUseCase from "../../application/use-cases/psychologist/SessionListingPsychUseCase";
+import SessionRepository from "../../infrastructure/database/repositories/SessionRepository";
+import UserRepository from "../../infrastructure/database/repositories/UserRepository";
 
 const psychRepository = new PsychRepository();
 const otpRepository = new RedisOtpRepository();
@@ -40,6 +44,8 @@ const applicationRepository = new ApplicationRepository();
 const cloudinaryService = new CloudinaryService();
 const availabilityRuleRepository=new AvailabilityRuleRepository(); 
 const holidayRepository=new HolidayRepository();
+const sessionRepository=new SessionRepository();
+const userRepository=new UserRepository();
 
 const registerPsychUseCase = new RegisterPsychUseCase(
   psychRepository,
@@ -61,7 +67,7 @@ const resendOtpSignUpUseCase=new ResendOtpSignUpPsychUseCase(otpRepository);
 const resendOtpResetUseCase=new ResendOtpResetPsychUseCase(otpRepository);
 const forgotPasswordUserUseCase=new ForgotPasswordPsychUseCase(otpRepository,psychRepository);
 const resetPasswordUserUseCase=new ResetPasswordPsychUseCase(psychRepository,otpRepository);
-const createAvailabilityRuleUseCase=new CreateAvailabilityRuleUseCase(availabilityRuleRepository)
+const createAvailabilityRuleUseCase=new CreateAvailabilityRuleUseCase(availabilityRuleRepository,psychRepository)
 const deleteAvailabilityRuleUseCase=new DeleteAvailabilityRuleUseCase(availabilityRuleRepository);
 const fetchAvailabilityRuleUseCase=new FetchAvailabilityRuleUseCase(availabilityRuleRepository);
 const listAvailabilityRuleUseCase=new ListAvailabilityRuleUseCase(availabilityRuleRepository);
@@ -70,6 +76,7 @@ const fetchDailyAvailabilityUseCase=new FetchDailyAvailabilityUseCase(availabili
 const deleteHolidayUseCase=new DeleteHolidayUseCase(holidayRepository)
 const fetchPsychProfileUseCase=new FetchPsychProfileUseCase(psychRepository);
 const updatePsychProfileUseCase=new UpdatePsychProfileUseCase(psychRepository,cloudinaryService)
+const listSessionByPsychUseCase=new SessionListingPsychUseCase(sessionRepository,userRepository)
 
 const authController = new AuthController(
   registerPsychUseCase,
@@ -95,6 +102,7 @@ const availabilityController=new AvailabilityController(
   markHolidayUseCase,
   deleteHolidayUseCase
 )
+const sessionController=new SessionController(listSessionByPsychUseCase)
 
 const checkStatusPsych = new CheckStatusPsych(checkStatusPsychUseCase);
 
@@ -225,10 +233,20 @@ router.get(`/psychologist/profile`,
   (req:Request,res:Response,next:NextFunction) =>
     psychController.fetchProfile(req,res,next)
 )
+router.get(`/psychologist/sessions`,
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  (req:Request,res:Response,next:NextFunction) =>
+    sessionController.listSessions(req,res,next)
+)
 router.patch(`/psychologist/profile`,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
+  upload.fields([
+    { name: "profilePicture", maxCount: 1 },
+  ]),
   (req:Request,res:Response,next:NextFunction) =>
     psychController.updateProfile(req,res,next)
 )

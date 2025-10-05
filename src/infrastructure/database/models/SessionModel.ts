@@ -6,8 +6,8 @@ export interface ISessionDocument extends Document {
   startTime: Date;
   durationInMins: number;
   transactionIds: Types.ObjectId[];
-  status: "scheduled" | "completed" | "cancelled";
-  fees: number; // in rupees
+  status: "scheduled" | "completed" | "cancelled" |"available" | "pending";
+  fees: number; 
   videoRoomId?: string;
   progressNotesId?: string;
 }
@@ -18,7 +18,7 @@ const SessionSchema = new Schema<ISessionDocument>({
   startTime: { type: Date, required: true },
   durationInMins: { type: Number, required: true },
   transactionIds: [{ type: String, required: true }],
-  status: { type: String, enum: ["scheduled", "completed", "cancelled"], required: true },
+  status: { type: String, enum: ["scheduled", "completed", "cancelled","available","pending"], required: true },
   fees: { type: Number, required: true },
   videoRoomId: { type: String },
   progressNotesId: { type: String },

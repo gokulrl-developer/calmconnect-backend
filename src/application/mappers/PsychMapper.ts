@@ -207,7 +207,7 @@ export const toFetchPsychProfileResponse = (psych: Psychologist): PsychProfile =
 
 export const toPsychDomainFromUpdateDTO = (
     existingPsych: Psychologist,
-    dto: UpdatePsychProfileDTO & { profilePictureUrl?: string }
+    dto: UpdatePsychProfileDTO & { profilePicture?: string }
 ): Psychologist => {
     return new Psychologist(
         existingPsych.firstName,
@@ -220,7 +220,7 @@ export const toPsychDomainFromUpdateDTO = (
         existingPsych.password,
         existingPsych.gender,
         existingPsych.dob,
-        dto.profilePictureUrl ?? existingPsych.profilePicture,
+        dto.profilePicture ?? existingPsych.profilePicture,
         dto.address ?? existingPsych.address,
         dto.languages ?? existingPsych.languages,
         dto.specializations ?? existingPsych.specializations,

@@ -15,13 +15,14 @@ export default class FetchDailyAvailabilityUseCase implements IFetchDailyAvailab
     ){}
 
     async execute(dto:DailyAvailabilityDTO){
-      const holidayEntity=await this._holidayRepository.findByDate(new Date(dto.date));
-        const availabilityRule= await this._availabilityRuleRepository.findByDate(new Date(dto.date));
-
+      console.log(dto)
+      const holidayEntity=await this._holidayRepository.findByDatePsych(new Date(dto.date),dto.psychId);
+        const availabilityRule= await this._availabilityRuleRepository.findByDatePsych(new Date(dto.date),dto.psychId);
         if(!availabilityRule){
             throw new AppError(ERROR_MESSAGES.AVAILABILITY_NOT_SET,AppErrorCodes.NOT_FOUND)
         }
-        const weekDay=new Date(dto.date).getDate();
+        const weekDay=new Date(dto.date).getDay();
+        console.log(weekDay)
         const startTime=timeStringToMinutes(availabilityRule.startTime);
         const endTime=timeStringToMinutes(availabilityRule.endTime);
         const {bufferTimeInMins,durationInMins}=availabilityRule;
