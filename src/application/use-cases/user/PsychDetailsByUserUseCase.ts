@@ -36,13 +36,12 @@ export default class PsychDetailsByUserUseCase
         dto.date=new Date().toISOString()
     }
      let availableSlots=[];
-    const availabilityRule=await this._availabilityRuleRepository.findByDate(new Date(dto.date));
-    const holiday=await this._holidayRepository.findByDate(new Date(dto.date));
-    console.log("rule and holiday",availabilityRule,holiday)
+    const availabilityRule=await this._availabilityRuleRepository.findByDatePsych(new Date(dto.date),dto.psychId);
+    const holiday=await this._holidayRepository.findByDatePsych(new Date(dto.date),dto.psychId);
     availableSlots=generateSlots(availabilityRule,holiday,new Date(dto.date));
-    const scheduledSessions= await this._sessionRepository.findBookedSessions(new Date(dto.date),dto.psychId)
+    const scheduledSessions= await this._sessionRepository.findBookedSessions(new Date(dto.date),dto.psychId);
     const bookedSlots=scheduledSessions.map((session:Session)=>isoToHHMM(session.startTime));
-     availableSlots.filter((slot:Slot)=>bookedSlots.includes(slot.startTime)===false)
+     availableSlots=availableSlots.filter((slot:Slot)=>bookedSlots.includes(slot.startTime)===false)
 
     return toPsychDetailsByUserResponse(psychologist,availableSlots);
   }

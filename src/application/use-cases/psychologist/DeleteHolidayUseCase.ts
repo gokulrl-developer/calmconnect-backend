@@ -11,7 +11,7 @@ export default class DeleteHolidayUseCase implements IDeleteHolidayUseCase{
     ){}
 
     async execute(dto:DeleteHolidayDTO){
-      const holidayEntity=await this._holidayRepository.findByDate(new Date(dto.date));
+      const holidayEntity=await this._holidayRepository.findByDatePsych(new Date(dto.date),dto.psychId);
        if(!holidayEntity){
         throw new AppError(ERROR_MESSAGES.HOLIDAY_NOT_FOUND,AppErrorCodes.NOT_FOUND);
        }

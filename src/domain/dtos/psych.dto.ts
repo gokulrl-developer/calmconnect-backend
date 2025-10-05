@@ -134,3 +134,7 @@ export interface UpdatePsychProfileDTO{
     quickSlotHourlyFees?:number,
     qualifications?:string
 }
+
+export interface SessionListingDTO{
+  psychId:string,
+}

@@ -39,3 +39,6 @@ export interface ApplicationDetailsDTO{
     applicationId:string
 }
 
+export interface SessionListingDTO{
+  status:string
+}

@@ -31,14 +31,14 @@ implements IHolidayRepository{
     }
 
     async updateDailySlots(holiday: Holiday): Promise<Holiday> {
-        const updatedHoliday=await this.model.findOneAndUpdate({date:holiday.date},
+        const updatedHoliday=await this.model.findOneAndUpdate({date:holiday.date,psychologist:holiday.psychologist},
                                             {$set:{...this.toPersistence(holiday)}},
                                             {new:true,upsert:true});
         return this.toDomain(updatedHoliday)
     }
 
-    async findByDate(date:Date):Promise<Holiday | null>{
-        const holiday=await this.model.findOne({date:date});
+    async findByDatePsych(date:Date,psychId:string):Promise<Holiday | null>{
+        const holiday=await this.model.findOne({psychologist:new Types.ObjectId(psychId),date:date});
         if(holiday===null){
             return null
         }
