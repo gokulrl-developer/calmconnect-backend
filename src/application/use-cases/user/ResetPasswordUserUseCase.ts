@@ -1,4 +1,4 @@
-import { UserResetPasswordDTO } from "../../../domain/dtos/user.dto";
+import { UserResetPasswordDTO } from "../../dtos/user.dto";
 import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import { hashPassword } from "../../../utils/passwordEncryption";

@@ -1,4 +1,4 @@
-import { PsychLoginDTO } from "../../domain/dtos/psych.dto";
+import { PsychLoginDTO } from "../dtos/psych.dto";
 
 export interface LoginResponse {
   psych: {

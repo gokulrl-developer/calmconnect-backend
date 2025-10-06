@@ -1,4 +1,4 @@
-import { DeleteHolidayDTO } from "../../../domain/dtos/psych.dto";
+import { DeleteHolidayDTO } from "../../dtos/psych.dto";
 import IHolidayRepository from "../../../domain/interfaces/IHolidayRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";

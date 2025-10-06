@@ -1,4 +1,4 @@
-import { ListUsersDTO } from "../../../domain/dtos/admin.dto";
+import { ListUsersDTO } from "../../../application/dtos/admin.dto";
 import User from "../../../domain/entities/user.entity";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import { IUserDocument, UserModel } from "../models/UserModel";

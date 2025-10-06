@@ -3,7 +3,7 @@ import IFetchPsychProfileUseCase, { PsychProfile } from "../../interfaces/IFetch
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";
 import AppError from "../../error/AppError";
-import { FetchPsychProfileDTO } from "../../../domain/dtos/psych.dto";
+import { FetchPsychProfileDTO } from "../../dtos/psych.dto";
 import { toFetchPsychProfileResponse } from "../../mappers/PsychMapper";
 
 export default class FetchPsychProfileUseCase implements IFetchPsychProfileUseCase {

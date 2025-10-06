@@ -1,4 +1,4 @@
-import { ListAvailabilityRulesDTO } from "../../domain/dtos/psych.dto";
+import { ListAvailabilityRulesDTO } from "../dtos/psych.dto";
 
 export interface AvailabilityRuleSummary{
     availabilityRuleId:string,

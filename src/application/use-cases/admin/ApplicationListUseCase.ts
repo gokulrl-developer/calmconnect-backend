@@ -1,4 +1,4 @@
-import { ListApplicationsDTO } from "../../../domain/dtos/admin.dto";
+import { ListApplicationsDTO } from "../../dtos/admin.dto";
 import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
 import IApplicationListUseCase, { ApplicationListResponse } from "../../interfaces/IApplicationListUseCase";
 import { toAdminApplicationListResponse } from "../../mappers/ApplicationMapper";

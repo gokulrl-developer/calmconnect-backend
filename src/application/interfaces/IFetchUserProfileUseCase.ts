@@ -1,4 +1,4 @@
-import { FetchUserProfileDTO } from "../../domain/dtos/user.dto";
+import { FetchUserProfileDTO } from "../dtos/user.dto";
 
 export interface UserProfile{
     firstName:string,

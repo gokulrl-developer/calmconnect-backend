@@ -1,4 +1,4 @@
-import { PsychGoogleAuthDTO } from "../../domain/dtos/psych.dto";
+import { PsychGoogleAuthDTO } from "../dtos/psych.dto";
 import { LoginResponse } from "./ILoginPsychUseCase";
 
 export interface IGoogleAuthPsychUseCase {

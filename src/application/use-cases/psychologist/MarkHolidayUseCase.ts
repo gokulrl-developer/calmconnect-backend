@@ -1,4 +1,4 @@
-import { MarkHolidayDTO } from "../../../domain/dtos/psych.dto";
+import { MarkHolidayDTO } from "../../dtos/psych.dto";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
 import IHolidayRepository from "../../../domain/interfaces/IHolidayRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";

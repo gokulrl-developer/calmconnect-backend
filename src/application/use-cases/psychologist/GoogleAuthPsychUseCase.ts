@@ -1,4 +1,4 @@
-import { PsychGoogleAuthDTO } from "../../../domain/dtos/psych.dto";
+import { PsychGoogleAuthDTO } from "../../dtos/psych.dto";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import { AppErrorCodes } from "../../error/app-error-codes";
 import AppError from "../../error/AppError";

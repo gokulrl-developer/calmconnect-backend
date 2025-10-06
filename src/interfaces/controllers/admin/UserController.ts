@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "../../../utils/http-statuscodes";
 import IUserListUseCase from "../../../application/interfaces/IUserListUseCase";
 import IUpdateUserStatusUseCase from "../../../application/interfaces/IUpdateUserStatusUseCase";
-import { ListUsersDTO, UpdateUserStatusDTO } from "../../../domain/dtos/admin.dto";
+import { ListUsersDTO, UpdateUserStatusDTO } from "../../../application/dtos/admin.dto";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
 
 export default class UserController {

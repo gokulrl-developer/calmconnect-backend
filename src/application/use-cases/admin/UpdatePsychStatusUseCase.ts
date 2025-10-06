@@ -1,4 +1,4 @@
-import { UpdatePsychStatusDTO } from "../../../domain/dtos/admin.dto";
+import { UpdatePsychStatusDTO } from "../../dtos/admin.dto";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";

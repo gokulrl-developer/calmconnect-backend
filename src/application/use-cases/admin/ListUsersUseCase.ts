@@ -1,4 +1,4 @@
-import { ListUsersDTO } from "../../../domain/dtos/admin.dto";
+import { ListUsersDTO } from "../../dtos/admin.dto";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import IUserListUseCase from "../../interfaces/IUserListUseCase";
 import { toAdminUserListResponse } from "../../mappers/UserMapper";

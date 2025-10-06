@@ -1,4 +1,4 @@
-import { SessionListingDTO } from "../../domain/dtos/admin.dto";
+import { SessionListingDTO } from "../dtos/admin.dto";
 
 export interface SessionListingAdminItem {
   user: string;

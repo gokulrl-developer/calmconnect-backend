@@ -1,4 +1,4 @@
-import { PsychApplicationStatusDTO } from "../../../domain/dtos/psych.dto";
+import { PsychApplicationStatusDTO } from "../../dtos/psych.dto";
 import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
 import IApplicationStatusUseCase from "../../interfaces/IApplicationStatusUseCase";
 import { toApplicationStatusResponse } from "../../mappers/ApplicationMapper";

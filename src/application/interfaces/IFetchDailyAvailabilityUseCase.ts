@@ -1,4 +1,4 @@
-import { DailyAvailabilityDTO} from "../../domain/dtos/psych.dto";
+import { DailyAvailabilityDTO} from "../dtos/psych.dto";
 
 export interface AvailabilityInDay{
     availableSlots:{

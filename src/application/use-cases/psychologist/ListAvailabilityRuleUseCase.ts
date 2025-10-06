@@ -1,4 +1,4 @@
-import { ListAvailabilityRulesDTO } from "../../../domain/dtos/psych.dto";
+import { ListAvailabilityRulesDTO } from "../../dtos/psych.dto";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
 import IListAvailabilityRuleUseCase from "../../interfaces/IListAvailabilityRuleUseCase";
 import { toAvailabilityRuleListResponse } from "../../mappers/AvailabilityRuleMapper";

@@ -1,4 +1,4 @@
-import { UserLoginDTO } from "../../../domain/dtos/user.dto";
+import { UserLoginDTO } from "../../dtos/user.dto";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import { comparePasswords } from "../../../utils/passwordEncryption";
 import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler";

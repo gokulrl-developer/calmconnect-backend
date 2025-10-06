@@ -1,4 +1,4 @@
-import { ListApplicationsDTO } from "../../domain/dtos/admin.dto";
+import { ListApplicationsDTO } from "../dtos/admin.dto";
 
 export interface ApplicationListResponse{
      firstName:string,

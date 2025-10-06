@@ -1,4 +1,4 @@
-import { UpdateUserProfileDTO } from "../../../domain/dtos/user.dto";
+import { UpdateUserProfileDTO } from "../../dtos/user.dto";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import { IFileStorageService } from "../../../domain/interfaces/IFileStorageService";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";

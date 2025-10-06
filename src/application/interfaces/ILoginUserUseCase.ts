@@ -1,4 +1,4 @@
-import { UserLoginDTO } from "../../domain/dtos/user.dto";
+import { UserLoginDTO } from "../dtos/user.dto";
 
 export interface LoginResponse {
   user: {

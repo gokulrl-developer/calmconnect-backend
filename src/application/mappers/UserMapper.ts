@@ -1,4 +1,4 @@
-import { UpdateUserProfileDTO, UserSignUpDTO } from "../../domain/dtos/user.dto"
+import { UpdateUserProfileDTO, UserSignUpDTO } from "../dtos/user.dto"
 import User from "../../domain/entities/user.entity"
 import { UserProfile } from "../interfaces/IFetchUserProfileUseCase"
 
