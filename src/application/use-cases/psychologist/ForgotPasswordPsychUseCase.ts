@@ -1,4 +1,4 @@
-import { PsychForgotPasswordDTO } from "../../../domain/dtos/psych.dto";
+import { PsychForgotPasswordDTO } from "../../dtos/psych.dto";
 import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import { sendMail } from "../../../utils/nodemailHelper";

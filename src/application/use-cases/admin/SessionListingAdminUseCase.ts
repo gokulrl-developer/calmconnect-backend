@@ -1,4 +1,4 @@
-import { SessionListingDTO } from "../../../domain/dtos/admin.dto";
+import { SessionListingDTO } from "../../dtos/admin.dto";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";

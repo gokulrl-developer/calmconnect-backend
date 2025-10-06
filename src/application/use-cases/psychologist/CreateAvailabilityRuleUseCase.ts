@@ -1,4 +1,4 @@
-import { CreateAvaialabilityRuleDTO } from "../../../domain/dtos/psych.dto";
+import { CreateAvaialabilityRuleDTO } from "../../dtos/psych.dto";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";

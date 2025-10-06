@@ -1,4 +1,4 @@
-import { ListPsychByUserDTO } from "../../domain/dtos/psych.dto";
+import { ListPsychByUserDTO } from "../dtos/psych.dto";
 import PaginationData from "../utils/calculatePagination";
 
 export interface PsychSummaryByUser{

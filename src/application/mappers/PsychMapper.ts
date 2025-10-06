@@ -2,7 +2,7 @@ import {
   ListPsychByUserDTO,
   PsychSignUpDTO,
   UpdatePsychProfileDTO,
-} from "../../domain/dtos/psych.dto";
+} from "../dtos/psych.dto";
 import { Application } from "../../domain/entities/application.entity";
 import Psychologist from "../../domain/entities/psychologist.entity";
 import { PsychProfile } from "../interfaces/IFetchPsychProfileUseCase";

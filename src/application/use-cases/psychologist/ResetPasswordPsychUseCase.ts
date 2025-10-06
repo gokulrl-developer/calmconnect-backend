@@ -1,4 +1,4 @@
-import { PsychResetPasswordDTO } from "../../../domain/dtos/psych.dto";
+import { PsychResetPasswordDTO } from "../../dtos/psych.dto";
 import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import { hashPassword } from "../../../utils/passwordEncryption";

@@ -7,7 +7,7 @@ import IPsychDetailsByUserUseCase, {
 import AppError from "../../../application/error/AppError";
 import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
 import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import {VerifyPaymentDTO, CreateOrderDTO, FetchCheckoutDataDTO } from "../../../domain/dtos/user.dto";
+import {VerifyPaymentDTO, CreateOrderDTO, FetchCheckoutDataDTO } from "../../../application/dtos/user.dto";
 import IFetchCheckoutDataUseCase from "../../../application/interfaces/IFetchCheckoutDataUseCase";
 import ICreateOrderUseCase from "../../../application/interfaces/ICreateOrderUseCase";
 import IVerifyPaymentUseCase from "../../../application/interfaces/IVerifyPaymentUseCase";

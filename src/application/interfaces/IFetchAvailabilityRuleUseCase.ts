@@ -1,4 +1,4 @@
-import { AvailabilityRuleDetailsDTO } from "../../domain/dtos/psych.dto";
+import { AvailabilityRuleDetailsDTO } from "../dtos/psych.dto";
 import AvailabilityRule from "../../domain/entities/availability-rule.entity";
 
 export default interface IFetchAvailabilityRuleUseCase{

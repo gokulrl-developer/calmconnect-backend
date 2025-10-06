@@ -1,4 +1,4 @@
-import { FetchUserProfileDTO } from "../../../domain/dtos/user.dto";
+import { FetchUserProfileDTO } from "../../dtos/user.dto";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";

@@ -1,4 +1,4 @@
-import { ListUsersDTO } from "../dtos/admin.dto";
+import { ListUsersDTO } from "../../application/dtos/admin.dto";
 import User from "../entities/user.entity";
 import IBaseRepository from "./IBaseRepository";
 

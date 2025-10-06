@@ -1,4 +1,4 @@
-import { PsychDetailsByUserDTO } from "../../../domain/dtos/psych.dto";
+import { PsychDetailsByUserDTO } from "../../dtos/psych.dto";
 import Psychologist from "../../../domain/entities/psychologist.entity";
 import Session from "../../../domain/entities/session.entity";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";

@@ -1,4 +1,4 @@
-import VerifyPaymentDTO from "../../domain/dtos/user.dto";
+import { VerifyPaymentDTO } from "../dtos/user.dto";
 
 export interface VerifyPaymentResponse {
   success: boolean;

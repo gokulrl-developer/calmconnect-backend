@@ -11,7 +11,7 @@ import {
   PsychLoginDTO,
   PsychResendOtpDTO,
   PsychSignUpDTO,
-} from "../../../domain/dtos/psych.dto";
+} from "../../../application/dtos/psych.dto";
 import { StatusCodes } from "../../../utils/http-statuscodes";
 import { IResendOtpResetPsychUseCase } from "../../../application/interfaces/IResendOtpResetPsychUseCase";
 import IForgotPasswordPsychUseCase from "../../../application/interfaces/IForgotPasswordPsychUseCase";

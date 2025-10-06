@@ -1,4 +1,4 @@
-import { DeleteAvailabilityRuleDTO } from "../../../domain/dtos/psych.dto";
+import { DeleteAvailabilityRuleDTO } from "../../dtos/psych.dto";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";

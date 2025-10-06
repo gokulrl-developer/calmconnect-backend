@@ -1,4 +1,4 @@
-import { AvailabilityRuleDetailsDTO } from "../../../domain/dtos/psych.dto";
+import { AvailabilityRuleDetailsDTO } from "../../dtos/psych.dto";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";

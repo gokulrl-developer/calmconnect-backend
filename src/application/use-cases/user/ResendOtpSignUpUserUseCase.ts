@@ -1,4 +1,4 @@
-import { UserResendOtpDTO } from "../../../domain/dtos/user.dto";
+import { UserResendOtpDTO } from "../../dtos/user.dto";
 import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
 import { sendMail } from "../../../utils/nodemailHelper";
 import generateOtp from "../../../utils/OtpGenerator";

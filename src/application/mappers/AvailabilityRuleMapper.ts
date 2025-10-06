@@ -1,4 +1,4 @@
-import { CreateAvaialabilityRuleDTO } from "../../domain/dtos/psych.dto";
+import { CreateAvaialabilityRuleDTO } from "../dtos/psych.dto";
 import AvailabilityRule from "../../domain/entities/availability-rule.entity";
 
 export const toAvailabilityRuleDomain=(dto:CreateAvaialabilityRuleDTO)=>{

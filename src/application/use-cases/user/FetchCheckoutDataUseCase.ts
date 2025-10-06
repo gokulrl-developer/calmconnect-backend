@@ -1,4 +1,4 @@
-import { FetchCheckoutDataDTO } from "../../../domain/dtos/user.dto";
+import { FetchCheckoutDataDTO } from "../../dtos/user.dto";
 import Psychologist from "../../../domain/entities/psychologist.entity";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
 import IHolidayRepository from "../../../domain/interfaces/IHolidayRepository";

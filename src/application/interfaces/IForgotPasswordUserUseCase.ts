@@ -1,4 +1,4 @@
-import { UserForgotPasswordDTO } from "../../domain/dtos/user.dto";
+import { UserForgotPasswordDTO } from "../dtos/user.dto";
 
 export default interface IForgotPasswordUserUseCase{
     execute(dto:UserForgotPasswordDTO):Promise<void>

@@ -11,7 +11,7 @@ import {
   UserLoginDTO,
   UserResendOtpDTO,
   UserSignUpDTO,
-} from "../../../domain/dtos/user.dto";
+} from "../../../application/dtos/user.dto";
 import { StatusCodes } from "../../../utils/http-statuscodes";
 import { IResendOtpResetUserUseCase } from "../../../application/interfaces/IResendOtpResetUserUseCase";
 import IForgotPasswordUserUseCase from "../../../application/interfaces/IForgotPasswordUserUseCase";

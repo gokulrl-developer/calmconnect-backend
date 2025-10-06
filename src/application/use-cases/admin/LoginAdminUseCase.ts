@@ -1,4 +1,4 @@
-import { AdminLoginDTO } from "../../../domain/dtos/admin.dto";
+import { AdminLoginDTO } from "../../dtos/admin.dto";
 import { adminConfig } from "../../../utils/adminConfig";
 import { comparePasswords } from "../../../utils/passwordEncryption";
 import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler";

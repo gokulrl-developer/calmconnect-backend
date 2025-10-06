@@ -1,4 +1,4 @@
-import { ListPsychByUserDTO } from "../../../domain/dtos/psych.dto";
+import { ListPsychByUserDTO } from "../../dtos/psych.dto";
 import Psychologist from "../../../domain/entities/psychologist.entity";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";

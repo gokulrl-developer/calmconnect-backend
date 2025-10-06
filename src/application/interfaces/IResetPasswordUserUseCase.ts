@@ -1,4 +1,4 @@
-import { UserResetPasswordDTO } from "../../domain/dtos/user.dto";
+import { UserResetPasswordDTO } from "../dtos/user.dto";
 
 
 export default interface IResetPasswordUserUseCase{

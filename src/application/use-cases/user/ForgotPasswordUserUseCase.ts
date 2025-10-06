@@ -1,4 +1,4 @@
-import { UserForgotPasswordDTO } from "../../../domain/dtos/user.dto";
+import { UserForgotPasswordDTO } from "../../dtos/user.dto";
 import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import { sendMail } from "../../../utils/nodemailHelper";

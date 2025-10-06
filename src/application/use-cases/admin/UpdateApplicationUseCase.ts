@@ -1,4 +1,4 @@
-import { UpdateApplicationStatusDTO } from "../../../domain/dtos/admin.dto";
+import { UpdateApplicationStatusDTO } from "../../dtos/admin.dto";
 import Psychologist from "../../../domain/entities/psychologist.entity";
 import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";

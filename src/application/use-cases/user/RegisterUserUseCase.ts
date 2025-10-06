@@ -1,4 +1,4 @@
-import { UserRegisterDTO } from "../../../domain/dtos/user.dto";
+import { UserRegisterDTO } from "../../dtos/user.dto";
 import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";

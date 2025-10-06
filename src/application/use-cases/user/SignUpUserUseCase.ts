@@ -1,4 +1,4 @@
-import { UserSignUpDTO } from "../../../domain/dtos/user.dto";
+import { UserSignUpDTO } from "../../dtos/user.dto";
 import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import generateOtp from "../../../utils/OtpGenerator";

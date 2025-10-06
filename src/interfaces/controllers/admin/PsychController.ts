@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "../../../utils/http-statuscodes";
 import IPsychListUseCase from "../../../application/interfaces/IPsychListUseCase";
 import IUpdatePsychStatusUseCase from "../../../application/interfaces/IUpdatePsychStatusUseCase";
-import { ListPsychDTO, UpdatePsychStatusDTO } from "../../../domain/dtos/admin.dto";
+import { ListPsychDTO, UpdatePsychStatusDTO } from "../../../application/dtos/admin.dto";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
 
 export default class PsychController {

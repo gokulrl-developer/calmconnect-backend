@@ -1,4 +1,4 @@
-import { PsychDetailsByUserDTO } from "../../domain/dtos/psych.dto";
+import { PsychDetailsByUserDTO } from "../dtos/psych.dto";
 
 export interface Slot {
   startTime: string;

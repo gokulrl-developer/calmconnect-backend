@@ -10,7 +10,7 @@ import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";
 import AppError from "../../error/AppError";
 import generateSlots from "../../utils/generateSlots";
-import { CreateOrderDTO } from "../../../domain/dtos/user.dto";
+import { CreateOrderDTO } from "../../dtos/user.dto";
 import IPaymentProvider from "../../../domain/interfaces/IPaymentProvider";
 
 export default class CreateOrderUseCase implements ICreateOrderUseCase {

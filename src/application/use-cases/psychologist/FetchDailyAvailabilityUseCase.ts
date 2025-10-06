@@ -1,5 +1,5 @@
 import { time } from "console";
-import { DailyAvailabilityDTO } from "../../../domain/dtos/psych.dto";
+import { DailyAvailabilityDTO } from "../../dtos/psych.dto";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
 import IHolidayRepository from "../../../domain/interfaces/IHolidayRepository";
 import { minutesToTimeString, timeStringToMinutes } from "../../../utils/timeConverter";

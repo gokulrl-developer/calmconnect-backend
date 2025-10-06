@@ -1,4 +1,4 @@
-import { UserGoogleAuthDTO } from "../../../domain/dtos/user.dto";
+import { UserGoogleAuthDTO } from "../../dtos/user.dto";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import { AppErrorCodes } from "../../error/app-error-codes";
 import AppError from "../../error/AppError";
