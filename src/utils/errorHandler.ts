@@ -9,6 +9,7 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(err)
   if (err.code) {
     const statusCode = errorToHttpStatus(err.code);
     console.log(statusCode,err.code,err.message)
@@ -54,6 +55,8 @@ const errorToHttpStatus = (code: string): number => {
       return StatusCodes.BAD_REQUEST;   
     case AppErrorCodes.INVALID_INPUT:
       return StatusCodes.BAD_REQUEST;
+    case AppErrorCodes.CONFLICT:
+      return StatusCodes.CONFLICT
     
     default:
       return StatusCodes.INTERNAL_SERVER_ERROR;

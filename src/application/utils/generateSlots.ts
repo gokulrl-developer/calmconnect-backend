@@ -1,7 +1,7 @@
 import AvailabilityRule, {
   SpecialDay,
 } from "../../domain/entities/availability-rule.entity";
-import Holiday from "../../domain/entities/holiday.entity";
+import Holiday from "../../domain/entities/special-day.entity";
 import { minutesToTimeString, timeStringToMinutes } from "../../utils/timeConverter";
 
 export default function generateSlots(
