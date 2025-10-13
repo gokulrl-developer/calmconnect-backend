@@ -2,7 +2,7 @@ import { PsychDetailsByUserDTO } from "../../dtos/psych.dto";
 import Psychologist from "../../../domain/entities/psychologist.entity";
 import Session from "../../../domain/entities/session.entity";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import IHolidayRepository from "../../../domain/interfaces/IHolidayRepository";
+import IHolidayRepository from "../../../domain/interfaces/ISpecialDayRepository";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
 import { isoToHHMM } from "../../../utils/timeConverter";

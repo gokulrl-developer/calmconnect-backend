@@ -4,7 +4,7 @@ import ICreateOrderUseCase, { CreateOrderResponse } from "../../interfaces/ICrea
 import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import IHolidayRepository from "../../../domain/interfaces/IHolidayRepository";
+import IHolidayRepository from "../../../domain/interfaces/ISpecialDayRepository";
 import { HHMMToIso, isoToHHMM } from "../../../utils/timeConverter";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";

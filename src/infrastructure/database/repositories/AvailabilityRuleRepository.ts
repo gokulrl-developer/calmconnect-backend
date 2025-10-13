@@ -1,10 +1,7 @@
 import { Types } from "mongoose";
 import AvailabilityRule from "../../../domain/entities/availability-rule.entity";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import {
-  AvailabilityRuleModel,
-  IAvailabilityRuleDocument,
-} from "../models/AvailabilityRuleModel";
+import { AvailabilityRuleModel, IAvailabilityRuleDocument } from "../models/AvailabilityRuleModel";
 import { BaseRepository } from "./BaseRepository";
 
 export default class AvailabilityRuleRepository
@@ -18,78 +15,41 @@ export default class AvailabilityRuleRepository
   protected toDomain(doc: IAvailabilityRuleDocument): AvailabilityRule {
     const availabilityRule = doc.toObject();
     return new AvailabilityRule(
-      availabilityRule.psychologist,
+      availabilityRule.psychologist.toString(),
+      availabilityRule.weekDay,
       availabilityRule.startTime,
       availabilityRule.endTime,
-      availabilityRule.startDate,
-      availabilityRule.endDate,
       availabilityRule.durationInMins,
-      availabilityRule.bufferTimeInMins,
-      availabilityRule.quickSlots,
-      availabilityRule.slotsOpenTime,
-      availabilityRule.specialDays,
-      availabilityRule?.quickSlotsReleaseWindowMins,
+      availabilityRule.bufferTimeInMins ?? 0,
+      availabilityRule.status,
       availabilityRule._id.toString()
     );
   }
 
-  protected toPersistence(
-    entity: Partial<AvailabilityRule>
-  ): Partial<IAvailabilityRuleDocument> {
-    return {
-      psychologist: new Types.ObjectId(entity.psychologist),
-      startTime: entity.startTime,
-      endTime: entity.endTime,
-      startDate: entity.startDate,
-      endDate: entity.endDate,
-      durationInMins: entity.durationInMins,
-      bufferTimeInMins: entity.bufferTimeInMins,
-      quickSlots: entity.quickSlots,
-      slotsOpenTime: entity.slotsOpenTime,
-      specialDays: entity.specialDays,
-      quickSlotsReleaseWindowMins: entity.quickSlotsReleaseWindowMins,
-      _id: entity.id ? new Types.ObjectId(entity.id) : undefined,
-    };
+  
+  protected toPersistence(entity: Partial<AvailabilityRule>): Partial<IAvailabilityRuleDocument> {
+    const persistenceObj: Partial<IAvailabilityRuleDocument> = {};
+    if (entity.psychologist) persistenceObj.psychologist = new Types.ObjectId(entity.psychologist);
+    if (entity.weekDay !== undefined) persistenceObj.weekDay = entity.weekDay;
+    if (entity.startTime !== undefined) persistenceObj.startTime = entity.startTime;
+    if (entity.endTime !== undefined) persistenceObj.endTime = entity.endTime;
+    if (entity.durationInMins !== undefined) persistenceObj.durationInMins = entity.durationInMins;
+    if (entity.bufferTimeInMins !== undefined) persistenceObj.bufferTimeInMins = entity.bufferTimeInMins;
+    if (entity.status !== undefined) persistenceObj.status = entity.status;
+    if (entity.id) persistenceObj._id = new Types.ObjectId(entity.id);
+    return persistenceObj;
   }
 
-  async findAllByPsychId(psychId: string): Promise<AvailabilityRule[]> {
-    const availabilityRules = await this.model.find({ psychologist: psychId });
-    return availabilityRules.map((rule) => this.toDomain(rule));
+  async findAllActiveByPsychId(psychId: string): Promise<AvailabilityRule[]> {
+    const rules = await this.model.find({ psychologist: psychId,status:"active" });
+    return rules.map((rule) => this.toDomain(rule));
   }
 
-  async findByPsychTimePeriod(
-    fromDate: Date,
-    toDate: Date,
-    psychId:string
-  ): Promise<AvailabilityRule[]> {
-    const availabilityRules = await this.model.find({
-      $or: [
-        {
-          $and: [
-            {psychologist:psychId},
-            { startDate: { $gte: fromDate } },
-            { startDate: { $lte: toDate } },
-          ],
-        },
-        {
-          $and: [
-              {psychologist:psychId},
-            { endDate: { $gte: fromDate } },
-            { endDate: { $lte: toDate } },
-          ],
-        },
-      ],
-    });
-    return availabilityRules.map((rule) => this.toDomain(rule));
-  }
-
-  async findByDatePsych(date: Date,psychId:string): Promise<AvailabilityRule | null> {
-    const availabilityRule = await this.model.findOne({
-      $and: [{psychologist:new Types.ObjectId(psychId)},{ startDate: { $lte: date } }, { endDate: { $gte: date } }],
-    });
-    if (!availabilityRule) {
+  async findActiveByWeekDayPsych(weekDay: number, psychId: string): Promise<AvailabilityRule|null> {
+    const rule = await this.model.findOne({ psychologist: psychId, weekDay,status:"active" });
+    if (!rule) {
       return null;
     }
-    return this.toDomain(availabilityRule);
+    return this.toDomain(rule);
   }
 }

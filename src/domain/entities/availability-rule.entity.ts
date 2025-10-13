@@ -1,21 +1,12 @@
-export default class AvailabilityRule{
-    constructor(
-   public psychologist:string,
-   public startTime:string,
-   public endTime:string,
-   public startDate:Date,
-   public endDate:Date,
-   public durationInMins:number,
-   public bufferTimeInMins:number,
-   public quickSlots:string[],
-   public slotsOpenTime:Date,
-   public specialDays:SpecialDay[],
-   public quickSlotsReleaseWindowMins?:number,
-   public id?:string
-    ){}
-}
-
-export interface SpecialDay{
-    weekDay:number,
-    availableSlots:string[]
+export default class AvailabilityRule {
+  constructor(
+    public psychologist: string,
+    public weekDay: number,          // 0-6 0 = Sunday, 1 = Monday, ...
+    public startTime: string,        // "09:00" (time-only)
+    public endTime: string,          // "17:00"
+    public durationInMins: number,   // slot duration
+    public bufferTimeInMins: number = 0, // optional buffer
+    public status:"active"|"inactive"="active",
+    public id?: string
+  ) {}
 }

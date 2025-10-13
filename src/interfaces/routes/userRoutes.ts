@@ -19,7 +19,6 @@ import PsychDetailsByUserUseCase from "../../application/use-cases/user/PsychDet
 import ListPsychByUserUseCase from "../../application/use-cases/user/ListPsychByUserUseCase";
 import PsychRepository from "../../infrastructure/database/repositories/PsychRepository";
 import AvailabilityRuleRepository from "../../infrastructure/database/repositories/AvailabilityRuleRepository";
-import HolidayRepository from "../../infrastructure/database/repositories/HolidayRepository";
 import SessionRepository from "../../infrastructure/database/repositories/SessionRepository";
 import AppointmentController from "../controllers/user/AppointmentController";
 import { paginationMiddleware } from "../middleware/paginationMiddleware";
@@ -40,7 +39,6 @@ const userRepository=new UserRepository()
 const otpRepository=new RedisOtpRepository()
 const psychRepository=new PsychRepository()
 const availabilityRuleRepository=new AvailabilityRuleRepository()
-const holidayRepository=new HolidayRepository()
 const sessionRepository=new SessionRepository()
 const cloudinaryService=new CloudinaryService()
 const paymentProvider=new RazorpayPaymentProvider()
@@ -57,18 +55,18 @@ const checkStatusUserUseCase=new CheckStatusUserUseCase(userRepository)
 const forgotPasswordUserUseCase=new ForgotPasswordUserUseCase(otpRepository,userRepository);
 const resetPasswordUserUseCase=new ResetPasswordUserUseCase(userRepository,otpRepository);
 const listPsychByUserUseCase=new ListPsychByUserUseCase(psychRepository);
-const psychDetailsByUserUseCase=new PsychDetailsByUserUseCase(psychRepository,availabilityRuleRepository,holidayRepository,sessionRepository)
+//const psychDetailsByUserUseCase=new PsychDetailsByUserUseCase(psychRepository,availabilityRuleRepository,sessionRepository)
 const fetchProfileUseCase=new FetchUserProfileUseCase(userRepository);
 const updateProfileUseCase=new UpdateUserProfileUseCase(userRepository,cloudinaryService)
-const fetchCheckoutDataUseCase=new FetchCheckoutDataUseCase(psychRepository,availabilityRuleRepository,holidayRepository,sessionRepository)
-const createOrderUseCase=new CreateOrderUseCase(psychRepository,availabilityRuleRepository,holidayRepository,sessionRepository,paymentProvider)
+//const fetchCheckoutDataUseCase=new FetchCheckoutDataUseCase(psychRepository,availabilityRuleRepository,sessionRepository)
+//const createOrderUseCase=new CreateOrderUseCase(psychRepository,availabilityRuleRepository,sessionRepository,paymentProvider)
 const verifyPaymentUseCase=new VerifyPaymentUseCase(paymentProvider,sessionRepository,transactionRepository,walletRepository)
 const listSessionsByUserUseCase=new SessionListingUserUseCase(sessionRepository,psychRepository)
 
 const authController=new AuthController(registerUserUseCase,signUpUseCase,loginUseCase,googleAuthUseCase,resendOtpSignUpUseCase,
     resendOtpResetUseCase,forgotPasswordUserUseCase,resetPasswordUserUseCase
 );
-const appointmentController=new AppointmentController(listPsychByUserUseCase,psychDetailsByUserUseCase,fetchCheckoutDataUseCase,createOrderUseCase,verifyPaymentUseCase)
+//const appointmentController=new AppointmentController(listPsychByUserUseCase,psychDetailsByUserUseCase,fetchCheckoutDataUseCase,createOrderUseCase,verifyPaymentUseCase)
 const sessionController=new SessionController(listSessionsByUserUseCase)
 const userController=new UserController(fetchProfileUseCase,updateProfileUseCase)
 const checkStatusUser=new CheckStatusUser(checkStatusUserUseCase)
@@ -87,27 +85,27 @@ router.get('/user/dashboard',verifyTokenMiddleware,
                              authorizeRoles("user"),
                              checkStatusUser.handle.bind(checkStatusUser),
                              (req:Request,res:Response,next:NextFunction)=>userController.getDashboard(req,res,next));
-router.get('/user/psychologists',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             paginationMiddleware,
-                             (req:Request,res:Response,next:NextFunction)=>appointmentController.listPsychologists(req,res,next))
-router.get('/user/psychologist-details',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             (req:Request,res:Response,next:NextFunction)=>appointmentController.psychDetails(req,res,next))
-router.get('/user/checkout',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             (req:Request,res:Response,next:NextFunction)=>appointmentController.fetchCheckoutData(req,res,next))
-router.post('/user/create-order',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             (req:Request,res:Response,next:NextFunction)=>appointmentController.createOrder(req,res,next))
-router.post('/user/verify-payment',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             (req:Request,res:Response,next:NextFunction)=>appointmentController.verifyPayment(req,res,next))
+// router.get('/user/psychologists',verifyTokenMiddleware,
+//                              authorizeRoles("user"),
+//                              checkStatusUser.handle.bind(checkStatusUser),
+//                              paginationMiddleware,
+//                              (req:Request,res:Response,next:NextFunction)=>appointmentController.listPsychologists(req,res,next))
+// router.get('/user/psychologist-details',verifyTokenMiddleware,
+//                              authorizeRoles("user"),
+//                              checkStatusUser.handle.bind(checkStatusUser),
+//                              (req:Request,res:Response,next:NextFunction)=>appointmentController.psychDetails(req,res,next))
+// router.get('/user/checkout',verifyTokenMiddleware,
+//                              authorizeRoles("user"),
+//                              checkStatusUser.handle.bind(checkStatusUser),
+//                              (req:Request,res:Response,next:NextFunction)=>appointmentController.fetchCheckoutData(req,res,next))
+// router.post('/user/create-order',verifyTokenMiddleware,
+//                              authorizeRoles("user"),
+//                              checkStatusUser.handle.bind(checkStatusUser),
+//                              (req:Request,res:Response,next:NextFunction)=>appointmentController.createOrder(req,res,next))
+// router.post('/user/verify-payment',verifyTokenMiddleware,
+//                              authorizeRoles("user"),
+//                              checkStatusUser.handle.bind(checkStatusUser),
+//                              (req:Request,res:Response,next:NextFunction)=>appointmentController.verifyPayment(req,res,next))
 router.get('/user/profile',verifyTokenMiddleware,
                              authorizeRoles("user"),
                              checkStatusUser.handle.bind(checkStatusUser),

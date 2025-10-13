@@ -1,11 +1,10 @@
 import { ListAvailabilityRulesDTO } from "../dtos/psych.dto";
 
 export interface AvailabilityRuleSummary{
-    availabilityRuleId:string,
-    startDate:string,
-    endDate:string
+ weekDay:number,   // 0-6 0-sunday,6-saturday
+ availabilityRuleId:string
 }
 
-export default interface IListAvailabilityRuleUseCase{
+export default interface IListAvailabilityRulesUseCase{
     execute(dto:ListAvailabilityRulesDTO):Promise<AvailabilityRuleSummary[]>
 }
