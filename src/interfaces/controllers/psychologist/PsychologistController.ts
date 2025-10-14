@@ -134,20 +134,11 @@ export default class PsychController {
       );
     }
     let profilePicture:  string|Buffer|undefined =undefined;
-    if (req.body.profilePicture !== undefined) {
-      if (
-        typeof req.body.profilePicture !== "string" ||
-        req.body.profilePicture.trim() === ""
-      ) {
-        throw new AppError(
-          ERROR_MESSAGES.PROFILE_PICTURE_REQUIRED,
-          AppErrorCodes.VALIDATION_ERROR
-        );
-      }
-      profilePicture = req.body.profilePicture.trim();
-    } else if (files?.profilePicture?.[0]?.buffer instanceof Buffer) {
+    if (files?.profilePicture?.[0]?.buffer instanceof Buffer) {
+      console.log("file")
       profilePicture = files.profilePicture[0].buffer;
     } else {
+      console.log(profilePicture)
       throw new AppError(
         ERROR_MESSAGES.PROFILE_PICTURE_REQUIRED,
         AppErrorCodes.VALIDATION_ERROR

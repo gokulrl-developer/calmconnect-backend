@@ -20,6 +20,8 @@ import ApplicationDetailsUseCase from "../../application/use-cases/admin/Applica
 import SessionListingAdminUseCase from "../../application/use-cases/admin/SessionListingAdminUseCase";
 import SessionRepository from "../../infrastructure/database/repositories/SessionRepository";
 import SessionController from "../controllers/admin/SessionController";
+import { FetchPsychDetailsByAdminUseCase } from "../../application/use-cases/admin/FetchPsychDetailsByAdminUseCase";
+import { FetchUserDetailsByAdminUseCase } from "../../application/use-cases/admin/FetchUserDetailsByAdminUseCase";
 
 const applicationRepository=new ApplicationRepository()
 const psychRepository=new PsychRepository()
@@ -35,12 +37,14 @@ const updateUserUseCase=new UpdateUserStatusUseCase(userRepository);
 const updatePsychUseCase=new UpdatePsychUseCase(psychRepository);
 const applicationDetailsUseCase=new ApplicationDetailsUseCase(applicationRepository)
 const listSessionsUseCase=new SessionListingAdminUseCase(sessionRepository,userRepository,psychRepository)
+const fetchPsychDetailsUseCase=new FetchPsychDetailsByAdminUseCase(psychRepository);
+const fetchUserDetailsUseCase=new FetchUserDetailsByAdminUseCase(userRepository)
 
 const authController=new AuthController(loginAdminUseCase);
 const applicationController=new ApplicationController(listUseCase,updateApplicationUseCase,applicationDetailsUseCase)
-const userController=new UserController(listUserUseCase,updateUserUseCase);
-const psychController=new PsychController(listPsychUseCase,updatePsychUseCase);
-const sessionController=new SessionController(listSessionsUseCase);
+const userController=new UserController(listUserUseCase,updateUserUseCase,fetchUserDetailsUseCase);
+const psychController=new PsychController(listPsychUseCase,updatePsychUseCase,fetchPsychDetailsUseCase);
+//const sessionController=new SessionController(listSessionsUseCase);
 
 const router =express.Router();
 
@@ -68,7 +72,13 @@ router.get("/admin/psychologists",verifyTokenMiddleware,
 router.patch("/admin/psychologist/:id",verifyTokenMiddleware,
                              authorizeRoles("admin"),
                              (req:Request,res:Response,next:NextFunction)=>psychController.updatePsychologistStatus(req,res,next))
-router.get("/admin/sessions",verifyTokenMiddleware,
+router.get("/admin/psychologist-details/:psychId",verifyTokenMiddleware,
                              authorizeRoles("admin"),
-                             (req:Request,res:Response,next:NextFunction)=>sessionController.listSessions(req,res,next))
+                             (req:Request,res:Response,next:NextFunction)=>psychController.fetchPsychDetails(req,res,next));
+router.get("/admin/user-details/:userId",verifyTokenMiddleware,
+                             authorizeRoles("admin"),
+                             (req:Request,res:Response,next:NextFunction)=>userController.fetchUserDetails(req,res,next))
+// router.get("/admin/sessions",verifyTokenMiddleware,
+//                              authorizeRoles("admin"),
+//                              (req:Request,res:Response,next:NextFunction)=>sessionController.listSessions(req,res,next))
 export default router;

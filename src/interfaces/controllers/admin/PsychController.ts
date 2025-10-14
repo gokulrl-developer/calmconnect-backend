@@ -4,11 +4,13 @@ import IPsychListUseCase from "../../../application/interfaces/IPsychListUseCase
 import IUpdatePsychStatusUseCase from "../../../application/interfaces/IUpdatePsychStatusUseCase";
 import { ListPsychDTO, UpdatePsychStatusDTO } from "../../../application/dtos/admin.dto";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
+import IFetchpsychDetailsByAdminUseCase from "../../../application/interfaces/IFetchPsychDetailsByAdminUseCase";
 
 export default class PsychController {
   constructor(
     private _listUseCase: IPsychListUseCase,
-    private _updateUseCase: IUpdatePsychStatusUseCase
+    private _updateUseCase: IUpdatePsychStatusUseCase,
+    private _fetchDetailsUseCase:IFetchpsychDetailsByAdminUseCase
   ) {}
 
   async listPsychologists(
@@ -43,6 +45,19 @@ export default class PsychController {
       res
         .status(StatusCodes.OK)
         .json({ success: true, message: SUCCESS_MESSAGES.STATUS_UPDATED});
+    } catch (error) {
+      next(error);
+    }
+  }
+  async fetchPsychDetails(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const psychId = req.params.psychId;
+      const psychDetails = await this._fetchDetailsUseCase.execute({ psychId });
+      res.status(StatusCodes.OK).json({ data: psychDetails });
     } catch (error) {
       next(error);
     }

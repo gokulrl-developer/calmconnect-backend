@@ -69,7 +69,7 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
     }
 
     const weekDay = startTime.getDay();
-    const availabilityRule =await this._availabilityRuleRepo.findByWeekDayPsych(weekDay, dto.psychId);
+    const availabilityRule =await this._availabilityRuleRepo.findActiveByWeekDayPsych(weekDay, dto.psychId);
   const specialDay=await this._specialDayRepo.findActiveByDatePsych(existingQuickSlot.date,existingQuickSlot.psychologist)
   
     if (availabilityRule) {

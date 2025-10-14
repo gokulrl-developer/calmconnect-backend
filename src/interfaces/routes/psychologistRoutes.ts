@@ -121,7 +121,7 @@ const availabilityController = new AvailabilityController(
   listAvailabilityRuleUseCase
 );
 
-const sessionController=new SessionController(listSessionByPsychUseCase)
+//const sessionController=new SessionController(listSessionByPsychUseCase)
 
 const checkStatusPsych = new CheckStatusPsych(checkStatusPsychUseCase);
 
@@ -204,13 +204,13 @@ router.get(`/psychologist/profile`,
   (req:Request,res:Response,next:NextFunction) =>
     psychController.fetchProfile(req,res,next)
 )
-router.get(`/psychologist/sessions`,
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
-  checkStatusPsych.handle.bind(checkStatusPsych),
-  (req:Request,res:Response,next:NextFunction) =>
-    sessionController.listSessions(req,res,next)
-)
+// router.get(`/psychologist/sessions`,
+//   verifyTokenMiddleware,
+//   authorizeRoles("psychologist"),
+//   checkStatusPsych.handle.bind(checkStatusPsych),
+//   (req:Request,res:Response,next:NextFunction) =>
+//     sessionController.listSessions(req,res,next)
+// )
 router.patch(`/psychologist/profile`,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),

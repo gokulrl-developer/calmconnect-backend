@@ -75,3 +75,20 @@ export interface VerifyPaymentDTO {
 export interface SessionListingDTO{
   userId:string,
 }
+
+export interface ListPsychByUserDTO {
+  specialization?: string;
+  gender?: string;
+  date?: string;
+  sort?: string /* a-z,z-a,rating,price */;
+  search?: string /* name,specializations,languages fields */;
+  skip: number;
+  limit: number;
+}
+
+export interface PsychDetailsByUserDTO {
+  date?: string;
+  psychId: string;
+}
+
+

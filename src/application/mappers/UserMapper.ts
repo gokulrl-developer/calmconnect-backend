@@ -107,6 +107,24 @@ export const toUserDomainFromUpdateDTO = (
   );
 };
 
+export const mapDomainToDetailsResponseByAdmin=(user:User)=>{
+  return {
+    firstName:user.firstName,
+    lastName:user.lastName,
+    email:user.email,
+    isBlocked:user.isBlocked,
+    userId:user.id!,
+    gender:user.gender,
+    dob:user.dob,
+    profilePicture:user.profilePicture,
+    address:user.address
+    }
+}
+
+
+
+
+
 
 
 

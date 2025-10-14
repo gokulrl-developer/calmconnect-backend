@@ -18,7 +18,6 @@ export default class Psychologist {
     public bio?:string,
     public avgRating?:number,
     public hourlyFees?:number,
-    public quickSlotHourlyFees?:number,
     public applications?:string[],
     public licenseUrl?:string,
     public qualifications?:string,
