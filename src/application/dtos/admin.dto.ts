@@ -42,3 +42,11 @@ export interface ApplicationDetailsDTO{
 export interface SessionListingDTO{
   status:string
 }
+
+export interface PsychDetailsByAdminDTO{
+  psychId:string;
+}
+
+export interface UserDetailsByAdminDTO{
+    userId:string
+}

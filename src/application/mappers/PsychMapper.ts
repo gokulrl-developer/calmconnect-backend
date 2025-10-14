@@ -240,3 +240,24 @@ export const toPsychDomainFromUpdateDTO = (
     existingPsych.googleId
   );
 };
+
+export const mapDomainToDetailsResponseByAdmin=(psych:Psychologist)=>{
+  return {
+   firstName:psych.firstName,
+   lastName:psych.lastName,
+   email:psych.email,
+   isBlocked:psych.isBlocked,
+   psychId:psych.id!,
+   gender:psych.gender,
+   dob:psych.dob,
+   profilePicture:psych.profilePicture,
+   address:psych.address,
+   languages:psych.languages,
+   specializations:psych.specializations,
+   bio:psych.bio,
+   rating:psych.avgRating,
+   license:psych.licenseUrl,
+   qualifications:psych.qualifications,
+   createdAt:psych.createdAt
+  }
+}
