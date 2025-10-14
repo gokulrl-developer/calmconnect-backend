@@ -1,4 +1,4 @@
-import { PsychApplicationDTO } from "../../domain/dtos/psych.dto"
+import { PsychApplicationDTO } from "../dtos/psych.dto"
 import { Application} from "../../domain/entities/application.entity"
 import Psychologist from "../../domain/entities/psychologist.entity"
 

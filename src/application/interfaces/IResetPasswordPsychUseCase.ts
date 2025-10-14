@@ -1,4 +1,4 @@
-import { PsychResetPasswordDTO } from "../../domain/dtos/psych.dto";
+import { PsychResetPasswordDTO } from "../dtos/psych.dto";
 
 
 export default interface IResetPasswordPsychUseCase{

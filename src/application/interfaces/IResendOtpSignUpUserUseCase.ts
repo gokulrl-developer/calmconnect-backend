@@ -1,4 +1,4 @@
-import { UserResendOtpDTO } from "../../domain/dtos/user.dto";
+import { UserResendOtpDTO } from "../dtos/user.dto";
 
 export interface IResendOtpSignUpUserUseCase {
   execute(dto: UserResendOtpDTO): Promise<void>;

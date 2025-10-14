@@ -1,4 +1,4 @@
-import {VerifyPaymentDTO} from "../../../domain/dtos/user.dto";
+import {VerifyPaymentDTO} from "../../dtos/user.dto";
 import Transaction from "../../../domain/entities/transaction.entity";
 import Wallet from "../../../domain/entities/wallet.entity";
 import IPaymentProvider from "../../../domain/interfaces/IPaymentProvider";
@@ -27,7 +27,6 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
 
   async execute(dto: VerifyPaymentDTO): Promise<VerifyPaymentResponse> {
     const { sessionId, userId, ...verifyPaymentInput } = dto;
-    console.log("reached use case",sessionId)
     const verificationResult = await this._paymentProvider.verifyPayment(
       verifyPaymentInput
     );
@@ -74,7 +73,6 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     const creditTransaction=await this._transactionRepository.create(transactionCredit);
     const debitTransaction=await this._transactionRepository.create(transactionDebit);
     const transactionIds=[creditTransaction.id,debitTransaction.id]
-    console.log("before updating session");
     session.status="scheduled";
     session.transactionIds=transactionIds as string[]
     await this._sessionRepository.update(session.id!, session);

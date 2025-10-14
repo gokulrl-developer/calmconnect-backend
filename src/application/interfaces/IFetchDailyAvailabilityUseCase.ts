@@ -1,13 +1,37 @@
-import { DailyAvailabilityDTO} from "../../domain/dtos/psych.dto";
+import { FetchDailyAvailabilityDTO } from "../dtos/psych.dto";
 
-export interface AvailabilityInDay{
-    availableSlots:{
-        startTime:string,
-        quick:boolean,
-        endTime:string
-    }[]
+export interface DailyAvailabilityRule {
+  startTime: string; //ISO string
+  endTime: string; //ISO string
+  durationInMins: number;
+  bufferTimeInMins: number;
+  status: "active" | "inactive";
+  availabilityRuleId: string;
 }
 
-export default interface IFetchDailyAvailabilityUseCase{
-    execute(dto:DailyAvailabilityDTO):Promise<AvailabilityInDay>
+export interface DailySpecialDay {
+  type: "override" | "absent";
+  startTime?: string; // ISO string
+  endTime?: string; // ISO string
+  durationInMins?: number;
+  bufferTimeInMins?: number;
+  status: "active" | "inactive";
+  specialDayId: string;
+}
+
+export interface DailyQuickSlot {
+  startTime: string;  // ISO string
+  endTime: string;      //ISO string
+  durationInMins: number; // slot duration
+  bufferTimeInMins: number; 
+  status: "active" | "inactive";
+  quickSlotId: string;
+}
+export interface DailyAvailability {
+  availabilityRule?: DailyAvailabilityRule;
+  specialDay?: DailySpecialDay;
+  quickSlots: DailyQuickSlot[];
+}
+export default interface IFetchDailyAvailabilityUseCase {
+  execute(dto: FetchDailyAvailabilityDTO): Promise<DailyAvailability>;
 }

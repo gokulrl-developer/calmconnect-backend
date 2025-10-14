@@ -1,4 +1,4 @@
-import { UserCheckStatusDTO } from "../../domain/dtos/user.dto";
+import { UserCheckStatusDTO } from "../dtos/user.dto";
 
 
 export default interface ICheckStatusUserUseCase{

@@ -1,4 +1,4 @@
-import { AdminLoginDTO } from "../../domain/dtos/admin.dto";
+import { AdminLoginDTO } from "../dtos/admin.dto";
 import { AdminLoginResponse } from "../use-cases/admin/LoginAdminUseCase";
 
 export interface ILoginAdminUseCase {

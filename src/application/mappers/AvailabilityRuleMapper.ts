@@ -1,27 +1,80 @@
-import { CreateAvaialabilityRuleDTO } from "../../domain/dtos/psych.dto";
+import {
+  CreateAvaialabilityRuleDTO,
+  EditAvaialabilityRuleDTO,
+} from "../dtos/psych.dto";
 import AvailabilityRule from "../../domain/entities/availability-rule.entity";
+import { HHMMToIso } from "../../utils/timeConverter";
+import { AvailabilityRuleSummary } from "../interfaces/IListAvailabilityRulesUseCase";
 
-export const toAvailabilityRuleDomain=(dto:CreateAvaialabilityRuleDTO)=>{
-    return new AvailabilityRule(
-   dto.psychId,
-   dto.startTime,
-   dto.endTime,
-   new Date(dto.startDate),
-   new Date(dto.endDate),
-   dto.durationInMins??0,
-   dto.bufferTimeInMins,
-   dto.quickSlots,
-   new Date(dto.slotsOpenTime),
-   dto.specialDays,
-   dto.quickSlotsReleaseWindowMins,
-   undefined
-    )
+export const mapCreateAvailabilityRuleDTOToDomain = (
+  dto: CreateAvaialabilityRuleDTO
+) => {
+  return new AvailabilityRule(
+    dto.psychId,
+    dto.weekDay,
+    dto.startTime,
+    dto.endTime,
+    dto.durationInMins,
+    dto.bufferTimeInMins ?? 0,
+    "active",
+    undefined
+  );
+};
+
+export const mapEditAvailabilityRuleDTOToDomain = (
+  dto: EditAvaialabilityRuleDTO,
+  rule: AvailabilityRule
+) => {
+  return new AvailabilityRule(
+    dto.psychId,
+    rule.weekDay,
+    dto.startTime ?? rule.startTime,
+    dto.endTime ?? rule.endTime,
+    dto.durationInMins ?? rule.durationInMins,
+    dto.bufferTimeInMins ?? rule.bufferTimeInMins,
+    dto.status ?? rule.status,
+    rule.id
+  );
+};
+
+
+export const mapAvailabilityRulesToSummaries = (
+  rules: AvailabilityRule[]
+): AvailabilityRuleSummary[] => {
+  return rules.map(rule => ({
+    weekDay: rule.weekDay,
+    availabilityRuleId: rule.id!
+  }));
+};
+
+export const mapDomainToRuleDetailsResponse = (
+  rule: AvailabilityRule
+) => {
+  return {
+    weekDay: rule.weekDay,
+    startTime: rule.startTime,
+    endTime: rule.endTime,
+    durationInMins: rule.durationInMins,
+    bufferTimeInMins: rule.bufferTimeInMins,
+    status: rule.status,
+    availabilityRuleId: rule.id!,
+  };
+};
+
+export const mapDomainToDailyAvailabilityRule=(rule:AvailabilityRule,date:Date)=>{
+    return {
+        startTime:HHMMToIso(rule.startTime,date),
+        endTime:HHMMToIso(rule.endTime,date),
+        durationInMins:rule.durationInMins,
+        bufferTimeInMins:rule.bufferTimeInMins,
+        status:rule.status,
+        availabilityRuleId:rule.id!
+    }
 }
-
-export const toAvailabilityRuleListResponse=(dto:AvailabilityRule)=>{
+/* export const toAvailabilityRuleListResponse=(dto:AvailabilityRule)=>{
     return {
         availabilityRuleId:dto.id!,
         startDate:dto.startDate.toISOString(),
         endDate:dto.endDate.toISOString()
     }
-}
+} */

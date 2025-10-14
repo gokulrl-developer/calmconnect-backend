@@ -1,4 +1,4 @@
-import { ApplicationDetailsDTO } from "../../../domain/dtos/admin.dto";
+import { ApplicationDetailsDTO } from "../../dtos/admin.dto";
 import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";

@@ -1,4 +1,4 @@
-import { PsychLoginDTO } from "../../../domain/dtos/psych.dto";
+import { PsychLoginDTO } from "../../dtos/psych.dto";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import { comparePasswords } from "../../../utils/passwordEncryption";
 import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler";

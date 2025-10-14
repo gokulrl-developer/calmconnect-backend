@@ -1,4 +1,4 @@
-import { UserSignUpDTO } from "../../../domain/dtos/user.dto";
+import { UserSignUpDTO } from "../../dtos/user.dto";
 import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import generateOtp from "../../../utils/OtpGenerator";
@@ -24,8 +24,7 @@ export default class SignUpUserUseCase implements ISignUpUserUseCase {
         const userAlreadyExists = await this._userRepository.findByEmail(email);
         if (userAlreadyExists) {
          throw new AppError(ERROR_MESSAGES.EMAIL_ALREADY_USED,AppErrorCodes.EMAIL_ALREADY_USED);
-        }
-        
+        }        
         const otp = generateOtp();
         dto.password= await hashPassword(dto.password)
         await this._otpRepostitory.storeTempAccount(email,{...dto,otp})

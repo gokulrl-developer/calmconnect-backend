@@ -1,9 +1,8 @@
-import { PsychDetailsByUserDTO } from "../../domain/dtos/psych.dto";
+import { PsychDetailsByUserDTO } from "../dtos/user.dto";
 
 export interface Slot {
   startTime: string;
   endTime: string;
-  quick: boolean;
 }
 export interface PsychDetails {
   availableSlots: Slot[];
@@ -15,7 +14,6 @@ export interface PsychDetails {
   qualifications: string;
   profilePicture: string;
   hourlyFees: number;
-  quickSlotFees: number;
 }
 export default interface IPsychDetailsByUserUseCase {
   execute(dto: PsychDetailsByUserDTO): Promise<PsychDetails>;

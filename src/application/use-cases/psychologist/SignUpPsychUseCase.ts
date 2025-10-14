@@ -1,4 +1,4 @@
-import { PsychSignUpDTO } from "../../../domain/dtos/psych.dto";
+import { PsychSignUpDTO } from "../../dtos/psych.dto";
 import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import generateOtp from "../../../utils/OtpGenerator";

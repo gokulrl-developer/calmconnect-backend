@@ -1,6 +1,14 @@
-import { AvailabilityRuleDetailsDTO } from "../../domain/dtos/psych.dto";
-import AvailabilityRule from "../../domain/entities/availability-rule.entity";
+import { FetchAvailabilityRule } from "../dtos/psych.dto";
 
+export interface AvailabilityRuleDetails{
+    weekDay:number,
+    startTime:string,
+    endTime:string,
+    durationInMins:number,
+    bufferTimeInMins:number,
+    status:"active"|"inactive",
+    availabilityRuleId:string
+}
 export default interface IFetchAvailabilityRuleUseCase{
-    execute(dto:AvailabilityRuleDetailsDTO):Promise<AvailabilityRule>
+    execute(dto:FetchAvailabilityRule):Promise<AvailabilityRuleDetails>
 }

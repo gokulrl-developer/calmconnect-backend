@@ -1,4 +1,4 @@
-import { PsychResendOtpDTO } from "../../../domain/dtos/psych.dto";
+import { PsychResendOtpDTO } from "../../dtos/psych.dto";
 import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
 import { sendMail } from "../../../utils/nodemailHelper";
 import generateOtp from "../../../utils/OtpGenerator";

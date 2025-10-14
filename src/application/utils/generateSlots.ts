@@ -1,71 +1,56 @@
-import AvailabilityRule, {
-  SpecialDay,
-} from "../../domain/entities/availability-rule.entity";
-import Holiday from "../../domain/entities/holiday.entity";
-import { minutesToTimeString, timeStringToMinutes } from "../../utils/timeConverter";
 
-export default function generateSlots(
-  availabilityRule: AvailabilityRule | null,
-  holiday: Holiday | null,
-  date: Date
-) {
-  if (!availabilityRule) {
-    return []
-  }
-  const weekDay = date.getDay();
-  const startTime = timeStringToMinutes(availabilityRule.startTime);
-  const endTime = timeStringToMinutes(availabilityRule.endTime);
-  const { bufferTimeInMins, durationInMins } = availabilityRule;
-  let availableSlots = []; // available Slots for a non-special day in availability rule
-  let currTime = startTime;
-
-  while (currTime < endTime) {
-    let currStartTime = currTime;
-    currTime += durationInMins;
-    if (currTime < endTime) {
-      const slot = {
-        startTime: minutesToTimeString(currStartTime),
-        quick: availabilityRule.quickSlots.includes(
-          minutesToTimeString(currStartTime)
-        )
-          ? true
-          : false,
-        endTime: minutesToTimeString(currTime),
-      };
-      availableSlots.push(slot);
-      currTime += bufferTimeInMins;
-    }
-  }
-
-  const isSpecialDay = availabilityRule.specialDays.some(
-    (day) => day.weekDay === weekDay
-  );
-  if (isSpecialDay === true) {
-    const slotStartTimes = availabilityRule.specialDays.filter(
-      (day) => day.weekDay === weekDay
-    )[0].availableSlots;
-    availableSlots = slotStartTimes.map((start: string) => {
-      return {
-        startTime: start,
-        quick: availabilityRule.quickSlots.includes(start) ? true : false,
-        endTime: minutesToTimeString(
-          timeStringToMinutes(start) + durationInMins
-        ),
-      };
-    });
-  }
-  if (holiday) {
-    const slotStartTimes = holiday.availableSlots;
-    availableSlots = slotStartTimes.map((start: string) => {
-      return {
-        startTime: start,
-        quick: availabilityRule.quickSlots.includes(start) ? true : false,
-        endTime: minutesToTimeString(
-          timeStringToMinutes(start) + durationInMins
-        ),
-      };
-    });
-  }
-
-  return availableSlots ;
+export interface Availability{
+  startTime:string,
+  endTime:string,
+  durationInMins:number,
+  bufferTimeInMins:number
 }
+
+export interface Slot{
+  startTime:string,
+  endTime:string
+}
+
+export const generateSlots = (availability: Availability | null): Slot[] => {
+  if (!availability) return [];
+
+  
+  const { startTime, endTime, durationInMins} = availability;
+  let bufferTimeInMins;
+  bufferTimeInMins=availability.bufferTimeInMins;
+  if(!bufferTimeInMins){
+    bufferTimeInMins=0;
+  }
+
+  const parseTime = (timeStr: string): Date => {
+    const isISO = timeStr.includes("T");
+    if (isISO) return new Date(timeStr);
+
+    const [hours, minutes] = timeStr.split(":").map(Number);
+    const d = new Date();
+    d.setHours(hours, minutes, 0, 0);
+    return d;
+  };
+
+  const formatTime = (d: Date): string => d.toTimeString().slice(0, 5);
+
+  const start = parseTime(startTime);
+  const end = parseTime(endTime);
+
+  const result: Slot[] = [];
+  let current = new Date(start);
+
+  while (current.getTime() + durationInMins * 60000 <= end.getTime()) {
+    const slotStart = new Date(current);
+    const slotEnd = new Date(current.getTime() + durationInMins * 60000);
+
+    result.push({
+      startTime: formatTime(slotStart),
+      endTime: formatTime(slotEnd),
+    });
+
+    current = new Date(current.getTime() + (durationInMins + bufferTimeInMins) * 60000);
+  }
+
+  return result;
+};

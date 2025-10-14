@@ -1,4 +1,4 @@
-import { UpdateUserStatusDTO } from "../../../domain/dtos/admin.dto";
+import { UpdateUserStatusDTO } from "../../dtos/admin.dto";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";

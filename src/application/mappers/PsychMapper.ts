@@ -1,12 +1,10 @@
-import {
-  ListPsychByUserDTO,
-  PsychSignUpDTO,
-  UpdatePsychProfileDTO,
-} from "../../domain/dtos/psych.dto";
+import { PsychSignUpDTO, UpdatePsychProfileDTO } from "../dtos/psych.dto";
 import { Application } from "../../domain/entities/application.entity";
 import Psychologist from "../../domain/entities/psychologist.entity";
 import { PsychProfile } from "../interfaces/IFetchPsychProfileUseCase";
-import { Slot } from "../interfaces/IPsychDetailsByUserUseCase";
+import { ListPsychByUserDTO } from "../dtos/user.dto";
+import { ListPsychQueryByUser } from "../../domain/interfaces/IPsychRepository";
+import { Slot } from "../utils/generateSlots";
 
 export const toPsychDomainRegister = (psych: PsychSignUpDTO): Psychologist => {
   return new Psychologist(
@@ -31,40 +29,41 @@ export const toPsychDomainRegister = (psych: PsychSignUpDTO): Psychologist => {
     undefined,
     undefined,
     undefined,
-    undefined,
     false,
     undefined
   );
 };
 
-export const toPsychologistFromApplication=(app: Application, overrides?: Partial<Psychologist>): Psychologist=> {
-    return new Psychologist(
-      app.firstName,
-      app.lastName,
-      app.email,
-      overrides?.isVerified ?? false,   
-      overrides?.isBlocked ?? false,    
-      app.walletBalance ?? 0,
-      undefined, 
-      app.password, 
-      app.gender,
-      app.dob,
-      app.profilePicture,
-      app.address,
-      app.languages,
-      app.specializations,
-      app.bio,
-      app.avgRating ?? 0,
-      app.hourlyFees,
-      undefined, 
-      overrides?.applications,
-      app.licenseUrl,
-      app.qualifications,
-      app.createdAt,
-      overrides?.isGooglePsych,
-      overrides?.googleId
-    );
-  }
+export const toPsychologistFromApplication = (
+  app: Application,
+  overrides?: Partial<Psychologist>
+): Psychologist => {
+  return new Psychologist(
+    app.firstName,
+    app.lastName,
+    app.email,
+    overrides?.isVerified ?? false,
+    overrides?.isBlocked ?? false,
+    app.walletBalance ?? 0,
+    undefined,
+    app.password,
+    app.gender,
+    app.dob,
+    app.profilePicture,
+    app.address,
+    app.languages,
+    app.specializations,
+    app.bio,
+    app.avgRating ?? 0,
+    app.hourlyFees,
+    overrides?.applications,
+    app.licenseUrl,
+    app.qualifications,
+    app.createdAt,
+    overrides?.isGooglePsych,
+    overrides?.googleId
+  );
+};
 export interface FromGoogleAuthService {
   firstName: string;
   lastName: string;
@@ -82,7 +81,6 @@ export const toPsychDomainSocialAuth = (
     false,
     false,
     0,
-    undefined,
     undefined,
     undefined,
     undefined,
@@ -148,91 +146,97 @@ export const toAdminPsychListResponse = (psych: Psychologist) => {
   };
 };
 
-export const toPsychListByUserPersistence = (dto: ListPsychByUserDTO) => {
+export const toPsychListByUserPersistence = (dto: ListPsychByUserDTO): ListPsychQueryByUser => {
   return {
     specialization: dto.specialization ?? null,
-    gender: dto.gender??null,
-    language: dto.language??null,
-    date: dto.date??null,
-    sort: dto.sort as undefined |"a-z"|"z-a" | "price" | "rating"??"a-z", /* a-z,z-a,rating,price */
-    search: dto.search??null, /* name,specializations,languages fields */
+    gender: dto.gender ?? null,
+    date: dto.date ?? null,
+    sort:
+      (dto.sort as undefined | "a-z" | "z-a" | "price" | "rating") ??
+      "a-z", /* a-z,z-a,rating,price */
+    search: dto.search ?? null /* name,specializations,languages fields */,
     skip: dto.skip,
     limit: dto.limit,
   };
 };
 
-export const toPsychListByUserResponse=(psych:Psychologist) =>{
+export const toPsychListByUserResponse = (
+  psych: Psychologist
+) => {
   return {
-    psychId:psych.id!,
-    name:psych.firstName+" "+psych.lastName,
-rating:psych.avgRating??null,
-specializations:psych.specializations?.join(" ")?? null,
-hourlyFees:psych.hourlyFees??null,
-profilePicture:psych.profilePicture??null,
-bio:psych.bio?? null,
-qualifications:psych.qualifications?? null
-  }
-}
+    psychId: psych.id!,
+    name: psych.firstName + " " + psych.lastName,
+    rating: psych.avgRating ?? null,
+    specializations: psych.specializations?.join(" ") ?? null,
+    hourlyFees: psych.hourlyFees ?? null,
+    profilePicture: psych.profilePicture ?? null,
+    bio: psych.bio ?? null,
+    qualifications: psych.qualifications ?? null,
+  };
+};
 
-export const toPsychDetailsByUserResponse=(psych:Psychologist,slots:Slot[]) =>{
+export const toPsychDetailsByUserResponse = (
+  psych: Psychologist,
+  slots: Slot[]
+) => {
   return {
-  availableSlots: slots,
-  psychId: psych.id as string,
-  name: psych.firstName+" "+psych.lastName,
-  rating: psych.avgRating?? 0,
-  specializations: psych.specializations?? [],
-  bio: psych.bio??"",
-  qualifications: psych.qualifications??"",
-  profilePicture: psych.profilePicture??"",
-  hourlyFees: psych.hourlyFees??0,
-  quickSlotFees: psych.quickSlotHourlyFees??0  
-}
-}
-
-export const toFetchPsychProfileResponse = (psych: Psychologist): PsychProfile => ({
-    firstName: psych.firstName,
-    lastName: psych.lastName,
-    email: psych.email,
-    gender: psych.gender ?? "",
-    dob: psych.dob!.toISOString(), 
-    profilePicture: psych.profilePicture ?? "",
-    address: psych.address ?? "",
-    languages: psych.languages ?? "",
-    specializations: psych.specializations?? [],
+    availableSlots: slots,
+    psychId: psych.id as string,
+    name: psych.firstName + " " + psych.lastName,
+    rating: psych.avgRating ?? 0,
+    specializations: psych.specializations ?? [],
     bio: psych.bio ?? "",
     qualifications: psych.qualifications ?? "",
-    hourlyFees: psych.hourlyFees ?? null,
-    quickSlotHourlyFees: psych.quickSlotHourlyFees ?? null,
+    profilePicture: psych.profilePicture ?? "",
+    hourlyFees: psych.hourlyFees ?? 0,
+  };
+};
+
+export const toFetchPsychProfileResponse = (
+  psych: Psychologist
+): PsychProfile => ({
+  firstName: psych.firstName,
+  lastName: psych.lastName,
+  email: psych.email,
+  gender: psych.gender ?? "",
+  dob: psych.dob!.toISOString(),
+  profilePicture: psych.profilePicture ?? "",
+  address: psych.address ?? "",
+  languages: psych.languages ?? "",
+  specializations: psych.specializations ?? [],
+  bio: psych.bio ?? "",
+  qualifications: psych.qualifications ?? "",
+  hourlyFees: psych.hourlyFees ?? null,
+  quickSlotHourlyFees:null
 });
 
 export const toPsychDomainFromUpdateDTO = (
-    existingPsych: Psychologist,
-    dto: UpdatePsychProfileDTO & { profilePicture?: string }
+  existingPsych: Psychologist,
+  dto: UpdatePsychProfileDTO & { profilePicture?: string }
 ): Psychologist => {
-    return new Psychologist(
-        existingPsych.firstName,
-        existingPsych.lastName,
-        existingPsych.email,
-        existingPsych.isVerified,
-        existingPsych.isBlocked,
-        existingPsych.walletBalance,
-        existingPsych.id,
-        existingPsych.password,
-        existingPsych.gender,
-        existingPsych.dob,
-        dto.profilePicture ?? existingPsych.profilePicture,
-        dto.address ?? existingPsych.address,
-        dto.languages ?? existingPsych.languages,
-        dto.specializations ?? existingPsych.specializations,
-        dto.bio ?? existingPsych.bio,
-        existingPsych.avgRating,
-        dto.hourlyFees ?? existingPsych.hourlyFees,
-        dto.quickSlotHourlyFees ?? existingPsych.quickSlotHourlyFees,
-        existingPsych.applications,
-        existingPsych.licenseUrl,
-        dto.qualifications ?? existingPsych.qualifications,
-        existingPsych.createdAt,
-        existingPsych.isGooglePsych,
-        existingPsych.googleId
-    );
+  return new Psychologist(
+    existingPsych.firstName,
+    existingPsych.lastName,
+    existingPsych.email,
+    existingPsych.isVerified,
+    existingPsych.isBlocked,
+    existingPsych.walletBalance,
+    existingPsych.id,
+    existingPsych.password,
+    existingPsych.gender,
+    existingPsych.dob,
+    dto.profilePicture ?? existingPsych.profilePicture,
+    dto.address ?? existingPsych.address,
+    dto.languages ?? existingPsych.languages,
+    dto.specializations ?? existingPsych.specializations,
+    dto.bio ?? existingPsych.bio,
+    existingPsych.avgRating,
+    dto.hourlyFees ?? existingPsych.hourlyFees,
+    existingPsych.applications,
+    existingPsych.licenseUrl,
+    dto.qualifications ?? existingPsych.qualifications,
+    existingPsych.createdAt,
+    existingPsych.isGooglePsych,
+    existingPsych.googleId
+  );
 };

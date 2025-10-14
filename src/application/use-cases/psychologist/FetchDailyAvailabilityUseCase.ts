@@ -1,72 +1,48 @@
-import { time } from "console";
-import { DailyAvailabilityDTO } from "../../../domain/dtos/psych.dto";
+import IFetchDailyAvailabilityUseCase, { DailyAvailability } from "../../interfaces/IFetchDailyAvailabilityUseCase";
+import { FetchDailyAvailabilityDTO } from "../../dtos/psych.dto";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import IHolidayRepository from "../../../domain/interfaces/IHolidayRepository";
-import { minutesToTimeString, timeStringToMinutes } from "../../../utils/timeConverter";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";
 import AppError from "../../error/AppError";
-import IFetchDailyAvailabilityUseCase from "../../interfaces/IFetchDailyAvailabilityUseCase";
+import { mapDomainToDailyAvailabilityRule } from "../../mappers/AvailabilityRuleMapper";
+import AvailabilityRule from "../../../domain/entities/availability-rule.entity";
+import SpecialDay from "../../../domain/entities/special-day.entity";
+import QuickSlot from "../../../domain/entities/quick-slot.entity";
+import { mapDomainToDailySpecialDay } from "../../mappers/SpecialDayMapper";
+import { mapDomainToDailyQuickSlot } from "../../mappers/QuickSlotMapper";
 
-export default class FetchDailyAvailabilityUseCase implements IFetchDailyAvailabilityUseCase{
-    constructor(
-     private readonly _availabilityRuleRepository:IAvailabilityRuleRepository,
-     private readonly _holidayRepository:IHolidayRepository
-    ){}
+export default class FetchDailyAvailabilityUseCase implements IFetchDailyAvailabilityUseCase {
+  constructor(
+    private readonly _availabilityRuleRepository: IAvailabilityRuleRepository,
+    private readonly _specialDayRepository: ISpecialDayRepository,
+    private readonly _quickSlotRepository: IQuickSlotRepository
+  ) {}
 
-    async execute(dto:DailyAvailabilityDTO){
-      console.log(dto)
-      const holidayEntity=await this._holidayRepository.findByDatePsych(new Date(dto.date),dto.psychId);
-        const availabilityRule= await this._availabilityRuleRepository.findByDatePsych(new Date(dto.date),dto.psychId);
-        if(!availabilityRule){
-            throw new AppError(ERROR_MESSAGES.AVAILABILITY_NOT_SET,AppErrorCodes.NOT_FOUND)
-        }
-        const weekDay=new Date(dto.date).getDay();
-        console.log(weekDay)
-        const startTime=timeStringToMinutes(availabilityRule.startTime);
-        const endTime=timeStringToMinutes(availabilityRule.endTime);
-        const {bufferTimeInMins,durationInMins}=availabilityRule;
-        let availableSlots=[];               // available Slots for a non-special day in availability rule 
-         let currTime=startTime;
+  async execute(dto: FetchDailyAvailabilityDTO): Promise<DailyAvailability> {
+    const { psychId, date } = dto;
+    const weekDay = new Date(date).getDay();       // 0-6
 
-        while(currTime<endTime){
-            let currStartTime=currTime;
-            currTime+=durationInMins;
-          if(currTime<endTime){
-            const slot={
-                startTime:minutesToTimeString(currStartTime),
-                quick:availabilityRule.quickSlots.includes(minutesToTimeString(currStartTime))?true:false,
-                endTime:minutesToTimeString(currTime)
-            }
-             availableSlots.push(slot);
-            currTime+=bufferTimeInMins;
-          }
-        }
-
-        const isSpecialDay=availabilityRule.specialDays.some((day)=>day.weekDay===weekDay);
-        if(isSpecialDay===true){
-            const slotStartTimes=availabilityRule.specialDays.filter((day)=>day.weekDay===weekDay)[0].availableSlots;
-            availableSlots=slotStartTimes.map((start:string)=>{
-
-                return {
-                  startTime:start,
-                quick:availabilityRule.quickSlots.includes(start)?true:false,
-                 endTime:minutesToTimeString(timeStringToMinutes(start)+durationInMins)
-                }
-            })
-        }
-        if(holidayEntity){            
-            const slotStartTimes=holidayEntity.availableSlots;
-             availableSlots=slotStartTimes.map((start:string)=>{
-
-                return {
-                  startTime:start,
-                quick:availabilityRule.quickSlots.includes(start)?true:false,
-                 endTime:minutesToTimeString(timeStringToMinutes(start)+durationInMins)
-                }
-            });
-        }
-
-        return {availableSlots}
+    const availabilityRule: AvailabilityRule | null = await this._availabilityRuleRepository.findActiveByWeekDayPsych(weekDay, psychId);
+    if (!availabilityRule) {
+      throw new AppError(ERROR_MESSAGES.AVAILABILITY_RULE_NOT_FOUND, AppErrorCodes.NOT_FOUND);
     }
+
+    const specialDay: SpecialDay | null = await this._specialDayRepository.findActiveByDatePsych(new Date(date), psychId);
+
+    const quickSlots: QuickSlot[] = await this._quickSlotRepository.findActiveByDatePsych(new Date(date), psychId);
+
+    const dailyAvailabilityRule = specialDay
+      ? mapDomainToDailySpecialDay(specialDay)
+      : mapDomainToDailyAvailabilityRule(availabilityRule, new Date(date));
+
+    const dailyQuickSlots = quickSlots.map(mapDomainToDailyQuickSlot);
+
+    return {
+      availabilityRule: !specialDay? mapDomainToDailyAvailabilityRule(availabilityRule, new Date(date)):undefined, 
+      specialDay: specialDay ? mapDomainToDailySpecialDay(specialDay) : undefined,
+      quickSlots: dailyQuickSlots
+    };
+  }
 }

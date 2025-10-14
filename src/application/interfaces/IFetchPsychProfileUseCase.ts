@@ -1,4 +1,4 @@
-import { FetchPsychProfileDTO } from "../../domain/dtos/psych.dto";
+import { FetchPsychProfileDTO } from "../dtos/psych.dto";
 
 export interface PsychProfile{
     firstName: string;

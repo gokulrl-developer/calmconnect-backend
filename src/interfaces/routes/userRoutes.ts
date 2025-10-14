@@ -19,7 +19,6 @@ import PsychDetailsByUserUseCase from "../../application/use-cases/user/PsychDet
 import ListPsychByUserUseCase from "../../application/use-cases/user/ListPsychByUserUseCase";
 import PsychRepository from "../../infrastructure/database/repositories/PsychRepository";
 import AvailabilityRuleRepository from "../../infrastructure/database/repositories/AvailabilityRuleRepository";
-import HolidayRepository from "../../infrastructure/database/repositories/HolidayRepository";
 import SessionRepository from "../../infrastructure/database/repositories/SessionRepository";
 import AppointmentController from "../controllers/user/AppointmentController";
 import { paginationMiddleware } from "../middleware/paginationMiddleware";
@@ -35,12 +34,15 @@ import TransactionRepository from "../../infrastructure/database/repositories/Tr
 import { upload } from "../../infrastructure/config/multerConfig";
 import SessionController from "../controllers/user/SessionController";
 import SessionListingUserUseCase from "../../application/use-cases/user/SessionListingUserUseCase";
+import SpecialDayRepository from "../../infrastructure/database/repositories/SpecialDayRepository";
+import QuickSlotRepository from "../../infrastructure/database/repositories/QuickSlotRepository";
 
 const userRepository=new UserRepository()
 const otpRepository=new RedisOtpRepository()
 const psychRepository=new PsychRepository()
 const availabilityRuleRepository=new AvailabilityRuleRepository()
-const holidayRepository=new HolidayRepository()
+const specialDayRepository=new SpecialDayRepository()
+const quickSlotRepository=new QuickSlotRepository()
 const sessionRepository=new SessionRepository()
 const cloudinaryService=new CloudinaryService()
 const paymentProvider=new RazorpayPaymentProvider()
@@ -56,12 +58,12 @@ const resendOtpResetUseCase=new ResendOtpResetUserUseCase(otpRepository);
 const checkStatusUserUseCase=new CheckStatusUserUseCase(userRepository)
 const forgotPasswordUserUseCase=new ForgotPasswordUserUseCase(otpRepository,userRepository);
 const resetPasswordUserUseCase=new ResetPasswordUserUseCase(userRepository,otpRepository);
-const listPsychByUserUseCase=new ListPsychByUserUseCase(psychRepository);
-const psychDetailsByUserUseCase=new PsychDetailsByUserUseCase(psychRepository,availabilityRuleRepository,holidayRepository,sessionRepository)
+const listPsychByUserUseCase=new ListPsychByUserUseCase(psychRepository,availabilityRuleRepository,specialDayRepository,quickSlotRepository,sessionRepository);
+const psychDetailsByUserUseCase=new PsychDetailsByUserUseCase(psychRepository,availabilityRuleRepository,specialDayRepository,quickSlotRepository,sessionRepository)
 const fetchProfileUseCase=new FetchUserProfileUseCase(userRepository);
 const updateProfileUseCase=new UpdateUserProfileUseCase(userRepository,cloudinaryService)
-const fetchCheckoutDataUseCase=new FetchCheckoutDataUseCase(psychRepository,availabilityRuleRepository,holidayRepository,sessionRepository)
-const createOrderUseCase=new CreateOrderUseCase(psychRepository,availabilityRuleRepository,holidayRepository,sessionRepository,paymentProvider)
+const fetchCheckoutDataUseCase=new FetchCheckoutDataUseCase(psychRepository,availabilityRuleRepository,specialDayRepository,quickSlotRepository,sessionRepository)
+const createOrderUseCase=new CreateOrderUseCase(psychRepository,availabilityRuleRepository,specialDayRepository,quickSlotRepository,sessionRepository,paymentProvider)
 const verifyPaymentUseCase=new VerifyPaymentUseCase(paymentProvider,sessionRepository,transactionRepository,walletRepository)
 const listSessionsByUserUseCase=new SessionListingUserUseCase(sessionRepository,psychRepository)
 
@@ -69,7 +71,7 @@ const authController=new AuthController(registerUserUseCase,signUpUseCase,loginU
     resendOtpResetUseCase,forgotPasswordUserUseCase,resetPasswordUserUseCase
 );
 const appointmentController=new AppointmentController(listPsychByUserUseCase,psychDetailsByUserUseCase,fetchCheckoutDataUseCase,createOrderUseCase,verifyPaymentUseCase)
-const sessionController=new SessionController(listSessionsByUserUseCase)
+//const sessionController=new SessionController(listSessionsByUserUseCase)
 const userController=new UserController(fetchProfileUseCase,updateProfileUseCase)
 const checkStatusUser=new CheckStatusUser(checkStatusUserUseCase)
 
@@ -112,10 +114,10 @@ router.get('/user/profile',verifyTokenMiddleware,
                              authorizeRoles("user"),
                              checkStatusUser.handle.bind(checkStatusUser),
                              (req:Request,res:Response,next:NextFunction)=>userController.fetchProfile(req,res,next))
-router.get('/user/sessions',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             (req:Request,res:Response,next:NextFunction)=>sessionController.listSessions(req,res,next))
+// router.get('/user/sessions',verifyTokenMiddleware,
+//                              authorizeRoles("user"),
+//                              checkStatusUser.handle.bind(checkStatusUser),
+//                              (req:Request,res:Response,next:NextFunction)=>sessionController.listSessions(req,res,next))
 router.patch('/user/profile',verifyTokenMiddleware,
                              authorizeRoles("user"),
                              checkStatusUser.handle.bind(checkStatusUser),

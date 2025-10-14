@@ -1,4 +1,4 @@
-import { ListPsychDTO } from "../../../domain/dtos/admin.dto";
+import { ListPsychDTO } from "../../dtos/admin.dto";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import IPsychListUseCase from "../../interfaces/IPsychListUseCase";
 import { toAdminPsychListResponse } from "../../mappers/PsychMapper";

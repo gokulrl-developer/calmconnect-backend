@@ -1,4 +1,4 @@
-import { PsychRegisterDTO } from "../../../domain/dtos/psych.dto";
+import { PsychRegisterDTO } from "../../dtos/psych.dto";
 import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";

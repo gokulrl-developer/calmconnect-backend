@@ -1,4 +1,4 @@
-import { PsychCheckStatusDTO } from "../../../domain/dtos/psych.dto";
+import { PsychCheckStatusDTO } from "../../dtos/psych.dto";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";

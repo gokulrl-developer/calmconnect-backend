@@ -25,25 +25,32 @@ import AvailabilityController from "../controllers/psychologist/AvailabilityCont
 import AvailabilityRuleRepository from "../../infrastructure/database/repositories/AvailabilityRuleRepository";
 import CreateAvailabilityRuleUseCase from "../../application/use-cases/psychologist/CreateAvailabilityRuleUseCase";
 import DeleteAvailabilityRuleUseCase from "../../application/use-cases/psychologist/DeleteAvailabilityRuleUseCase";
-import FetchAvailabilityRuleUseCase from "../../application/use-cases/psychologist/FetchAvailabilityRuleUseCase";
-import ListAvailabilityRuleUseCase from "../../application/use-cases/psychologist/ListAvailabilityRuleUseCase";
-import MarkHolidayUseCase from "../../application/use-cases/psychologist/MarkHolidayUseCase";
-import HolidayRepository from "../../infrastructure/database/repositories/HolidayRepository";
-import FetchDailyAvailabilityUseCase from "../../application/use-cases/psychologist/FetchDailyAvailabilityUseCase";
-import DeleteHolidayUseCase from "../../application/use-cases/psychologist/DeleteHolidayUseCase";
 import FetchPsychProfileUseCase from "../../application/use-cases/psychologist/FetchPsychProfileUseCase";
 import UpdatePsychProfileUseCase from "../../application/use-cases/psychologist/UpdatePsychProfileUseCase";
 import SessionController from "../controllers/psychologist/SessionController";
 import SessionListingPsychUseCase from "../../application/use-cases/psychologist/SessionListingPsychUseCase";
 import SessionRepository from "../../infrastructure/database/repositories/SessionRepository";
 import UserRepository from "../../infrastructure/database/repositories/UserRepository";
+import EditAvailabilityRuleUseCase from "../../application/use-cases/psychologist/EditAvailabilityRuleUseCase";
+import ListAvailabilityRulesUseCase from "../../application/use-cases/psychologist/ListAvailabilityRulesUseCase";
+import CreateSpecialDayUseCase from "../../application/use-cases/psychologist/CreateSpecialDayUseCase";
+import EditSpecialDayUseCase from "../../application/use-cases/psychologist/EditSpecialDayUseCase";
+import DeleteSpecialDayUseCase from "../../application/use-cases/psychologist/DeleteSpecialDayUseCase";
+import CreateQuickSlotUseCase from "../../application/use-cases/psychologist/CreateQuickSlotUseCase";
+import DeleteQuickSlotUseCase from "../../application/use-cases/psychologist/DeleteQuickSlotUseCase";
+import SpecialDayRepository from "../../infrastructure/database/repositories/SpecialDayRepository";
+import QuickSlotRepository from "../../infrastructure/database/repositories/QuickSlotRepository";
+import EditQuickSlotUseCase from "../../application/use-cases/psychologist/EditQuickSlotUseCase";
+import FetchAvailabilityRuleUseCase from "../../application/use-cases/psychologist/FetchAvailabilityRuleUseCase";
+import FetchDailyAvailabilityUseCase from "../../application/use-cases/psychologist/FetchDailyAvailabilityUseCase";
 
 const psychRepository = new PsychRepository();
 const otpRepository = new RedisOtpRepository();
 const applicationRepository = new ApplicationRepository();
 const cloudinaryService = new CloudinaryService();
-const availabilityRuleRepository=new AvailabilityRuleRepository(); 
-const holidayRepository=new HolidayRepository();
+const availabilityRuleRepository=new AvailabilityRuleRepository();
+const specialDayRepository=new SpecialDayRepository();
+const quickSlotRepository=new QuickSlotRepository(); 
 const sessionRepository=new SessionRepository();
 const userRepository=new UserRepository();
 
@@ -67,16 +74,22 @@ const resendOtpSignUpUseCase=new ResendOtpSignUpPsychUseCase(otpRepository);
 const resendOtpResetUseCase=new ResendOtpResetPsychUseCase(otpRepository);
 const forgotPasswordUserUseCase=new ForgotPasswordPsychUseCase(otpRepository,psychRepository);
 const resetPasswordUserUseCase=new ResetPasswordPsychUseCase(psychRepository,otpRepository);
-const createAvailabilityRuleUseCase=new CreateAvailabilityRuleUseCase(availabilityRuleRepository,psychRepository)
-const deleteAvailabilityRuleUseCase=new DeleteAvailabilityRuleUseCase(availabilityRuleRepository);
-const fetchAvailabilityRuleUseCase=new FetchAvailabilityRuleUseCase(availabilityRuleRepository);
-const listAvailabilityRuleUseCase=new ListAvailabilityRuleUseCase(availabilityRuleRepository);
-const markHolidayUseCase=new MarkHolidayUseCase(holidayRepository,availabilityRuleRepository);
-const fetchDailyAvailabilityUseCase=new FetchDailyAvailabilityUseCase(availabilityRuleRepository,holidayRepository);
-const deleteHolidayUseCase=new DeleteHolidayUseCase(holidayRepository)
 const fetchPsychProfileUseCase=new FetchPsychProfileUseCase(psychRepository);
 const updatePsychProfileUseCase=new UpdatePsychProfileUseCase(psychRepository,cloudinaryService)
 const listSessionByPsychUseCase=new SessionListingPsychUseCase(sessionRepository,userRepository)
+const createAvailabilityRuleUseCase = new CreateAvailabilityRuleUseCase(availabilityRuleRepository);
+const editAvailabilityRuleUseCase = new EditAvailabilityRuleUseCase(availabilityRuleRepository,quickSlotRepository);
+const deleteAvailabilityRuleUseCase = new DeleteAvailabilityRuleUseCase(availabilityRuleRepository);
+const fetchAvailabilityRuleUseCase = new FetchAvailabilityRuleUseCase(availabilityRuleRepository);
+const listAvailabilityRuleUseCase = new ListAvailabilityRulesUseCase(availabilityRuleRepository);
+const createSpecialDayUseCase = new CreateSpecialDayUseCase(specialDayRepository,quickSlotRepository);
+const editSpecialDayUseCase = new EditSpecialDayUseCase(specialDayRepository,quickSlotRepository);
+const deleteSpecialDayUseCase = new DeleteSpecialDayUseCase(specialDayRepository,psychRepository);
+const createQuickSlotUseCase = new CreateQuickSlotUseCase(quickSlotRepository,specialDayRepository,availabilityRuleRepository);
+const editQuickSlotUseCase = new EditQuickSlotUseCase(quickSlotRepository,specialDayRepository,availabilityRuleRepository);
+const deleteQuickSlotUseCase = new DeleteQuickSlotUseCase(quickSlotRepository,psychRepository);
+const fetchDailyAvailabilityUseCase = new FetchDailyAvailabilityUseCase(availabilityRuleRepository, specialDayRepository, quickSlotRepository);
+
 
 const authController = new AuthController(
   registerPsychUseCase,
@@ -93,15 +106,21 @@ const applicationController = new ApplicationController(
   createApplicationUseCase,
   applicationStatusUseCase
 );
-const availabilityController=new AvailabilityController(
+const availabilityController = new AvailabilityController(
   createAvailabilityRuleUseCase,
+  editAvailabilityRuleUseCase,
   deleteAvailabilityRuleUseCase,
+  createSpecialDayUseCase,
+  editSpecialDayUseCase,
+  deleteSpecialDayUseCase,
+  createQuickSlotUseCase,
+  editQuickSlotUseCase,
+  deleteQuickSlotUseCase,
   fetchAvailabilityRuleUseCase,
   fetchDailyAvailabilityUseCase,
-  listAvailabilityRuleUseCase,
-  markHolidayUseCase,
-  deleteHolidayUseCase
-)
+  listAvailabilityRuleUseCase
+);
+
 const sessionController=new SessionController(listSessionByPsychUseCase)
 
 const checkStatusPsych = new CheckStatusPsych(checkStatusPsychUseCase);
@@ -177,55 +196,7 @@ router.post(
   (req: Request, res: Response, next: NextFunction) =>
     applicationController.createApplication(req, res, next)
 );
-router.post("/psychologist/availabilityRule",
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
-  checkStatusPsych.handle.bind(checkStatusPsych),
-  (req:Request,res:Response,next:NextFunction) =>
-    availabilityController.createAvailabilityRule(req,res,next)
-)
-router.delete("/psychologist/availabilityRule/:availabilityRuleId",
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
-  checkStatusPsych.handle.bind(checkStatusPsych),
-  (req:Request,res:Response,next:NextFunction) =>
-    availabilityController.deleteAvailabilityRule(req,res,next)
-)
-router.get("/psychologist/availabilityRule/:availabilityRuleId",
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
-  checkStatusPsych.handle.bind(checkStatusPsych),
-  (req:Request,res:Response,next:NextFunction) =>
-    availabilityController.fetchAvailabilityRule(req,res,next)
-)
-router.get("/psychologist/daily-availability",
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
-  checkStatusPsych.handle.bind(checkStatusPsych),
-  (req:Request,res:Response,next:NextFunction) =>
-    availabilityController.fetchDailyAvailability(req,res,next)
-)
-router.get("/psychologist/availabilityRules",
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
-  checkStatusPsych.handle.bind(checkStatusPsych),
-  (req:Request,res:Response,next:NextFunction) =>
-    availabilityController.listAvailabilityRule(req,res,next)
-);
-router.post("/psychologist/holiday",
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
-  checkStatusPsych.handle.bind(checkStatusPsych),
-  (req:Request,res:Response,next:NextFunction) =>
-    availabilityController.markHoliday(req,res,next)
-);
-router.delete(`/psychologist/holiday`,
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
-  checkStatusPsych.handle.bind(checkStatusPsych),
-  (req:Request,res:Response,next:NextFunction) =>
-    availabilityController.deleteHoliday(req,res,next)
-)
+
 router.get(`/psychologist/profile`,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
@@ -250,4 +221,105 @@ router.patch(`/psychologist/profile`,
   (req:Request,res:Response,next:NextFunction) =>
     psychController.updateProfile(req,res,next)
 )
+
+// ------------------ Availability Routes ------------------
+
+router.post(
+  "/psychologist/availability-rule",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  availabilityController.createAvailabilityRule.bind(availabilityController)
+);
+
+router.patch(
+  "/psychologist/availability-rule/:availabilityRuleId",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  availabilityController.editAvailabilityRule.bind(availabilityController)
+);
+
+router.delete(
+  "/psychologist/availability-rule/:availabilityRuleId",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  availabilityController.deleteAvailabilityRule.bind(availabilityController)
+);
+
+router.get(
+  "/psychologist/availability-rule",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  availabilityController.fetchAvailabilityRule.bind(availabilityController)
+);
+
+router.get(
+  "/psychologist/availability-rules",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  availabilityController.listAvailabilityRules.bind(availabilityController)
+);
+
+// ---------- Special Day ----------
+router.post(
+  "/psychologist/special-day",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  availabilityController.createSpecialDay.bind(availabilityController)
+);
+
+router.patch(
+  "/psychologist/special-day/:specialDayId",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  availabilityController.editSpecialDay.bind(availabilityController)
+);
+
+router.delete(
+  "/psychologist/special-day/:specialDayId",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  availabilityController.deleteSpecialDay.bind(availabilityController)
+);
+
+router.post(
+  "/psychologist/quick-slot",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  availabilityController.createQuickSlot.bind(availabilityController)
+);
+
+router.patch(
+  "/psychologist/quick-slot/:quickSlotId",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  availabilityController.editQuickSlot.bind(availabilityController)
+);
+
+router.delete(
+  "/psychologist/quick-slot/:quickSlotId",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  availabilityController.deleteQuickSlot.bind(availabilityController)
+);
+
+router.get(
+  "/psychologist/daily-availability",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  availabilityController.fetchDailyAvailability.bind(availabilityController)
+);
+
+
 export default router;

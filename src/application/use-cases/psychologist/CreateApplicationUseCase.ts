@@ -1,4 +1,4 @@
-import { PsychApplicationDTO } from "../../../domain/dtos/psych.dto";
+import { PsychApplicationDTO } from "../../dtos/psych.dto";
 import Psychologist from "../../../domain/entities/psychologist.entity";
 import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
 import { IFileStorageService } from "../../../domain/interfaces/IFileStorageService";

@@ -18,7 +18,6 @@ export interface IPsychDocument extends Document {
   bio?: string;
   avgRating?: number;
   hourlyFees?: number;
-  quickSlotHourlyFees?: number;
   applications?: string[];
   licenseUrl?: string;
   qualifications?: string;
@@ -46,7 +45,6 @@ const PsychologistSchema = new Schema<IPsychDocument>(
     bio: { type: String },
     avgRating: { type: Number },
     hourlyFees: { type: Number },
-    quickSlotHourlyFees: { type: Number },
     applications: [{ type: String }],
     licenseUrl: { type: String },
     qualifications: { type: String },

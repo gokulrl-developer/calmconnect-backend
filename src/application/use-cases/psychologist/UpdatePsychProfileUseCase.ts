@@ -1,4 +1,4 @@
-import { UpdatePsychProfileDTO } from "../../../domain/dtos/psych.dto";
+import { UpdatePsychProfileDTO } from "../../dtos/psych.dto";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import { IFileStorageService } from "../../../domain/interfaces/IFileStorageService";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
