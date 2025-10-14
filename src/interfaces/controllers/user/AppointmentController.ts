@@ -26,6 +26,18 @@ export default class AppointmentController {
     next: NextFunction
   ): Promise<void> {
     try {
+      if (
+            req.query.sort &&
+            req.query.sort !== "a-z" &&
+            req.query.sort !== "z-a" &&
+            req.query.sort !== "rating" &&
+            req.query.sort !== "price"
+          ) {
+            throw new AppError(
+              ERROR_MESSAGES.SORT_INVALID_FORMAT,
+              AppErrorCodes.INVALID_INPUT
+            );
+          }
       const result = await this._listPsychByUserUseCase.execute({
         ...req.query,
         skip: req.pagination?.skip!,

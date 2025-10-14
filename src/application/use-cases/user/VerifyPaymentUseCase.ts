@@ -27,7 +27,6 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
 
   async execute(dto: VerifyPaymentDTO): Promise<VerifyPaymentResponse> {
     const { sessionId, userId, ...verifyPaymentInput } = dto;
-    console.log("reached use case",sessionId)
     const verificationResult = await this._paymentProvider.verifyPayment(
       verifyPaymentInput
     );
@@ -74,7 +73,6 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     const creditTransaction=await this._transactionRepository.create(transactionCredit);
     const debitTransaction=await this._transactionRepository.create(transactionDebit);
     const transactionIds=[creditTransaction.id,debitTransaction.id]
-    console.log("before updating session");
     session.status="scheduled";
     session.transactionIds=transactionIds as string[]
     await this._sessionRepository.update(session.id!, session);

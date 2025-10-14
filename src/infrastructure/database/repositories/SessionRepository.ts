@@ -17,7 +17,8 @@ export default class SessionRepository
     return new Session(
       session.psychologist.toString(),
       session.user.toString(),
-      session.startTime.toISOString(),
+      session.startTime,
+      session.endTime,
       session.durationInMins,
       session.transactionIds,
       session.status,
@@ -32,7 +33,8 @@ export default class SessionRepository
     return {
       psychologist: new Types.ObjectId(entity.psychologist),
       user: new Types.ObjectId(entity.user),
-      startTime: new Date(entity.startTime!),
+      startTime: entity.startTime!,
+      endTime: entity.endTime!,
       durationInMins: entity.durationInMins,
       transactionIds: entity.transactionIds?.map(
         (transactionId: string) => new Types.ObjectId(transactionId)

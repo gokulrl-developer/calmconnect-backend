@@ -1,34 +1,91 @@
-import { ListPsychByUserDTO } from "../../dtos/psych.dto";
 import Psychologist from "../../../domain/entities/psychologist.entity";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
+import { ListPsychByUserDTO } from "../../dtos/user.dto";
 import IListPsychByUserUseCase from "../../interfaces/IListPsychByUserUseCase";
-import { toPsychListByUserPersistence, toPsychListByUserResponse } from "../../mappers/PsychMapper";
+import {
+  toPsychListByUserPersistence,
+  toPsychListByUserResponse,
+} from "../../mappers/PsychMapper";
 import { calculatePagination } from "../../utils/calculatePagination";
+import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych";
 
-export default class ListPsychByUserUseCase implements IListPsychByUserUseCase {
-  constructor(private readonly _psychRepository: IPsychRepository) {}
+export default class ListPsychByUserUseCase
+  implements IListPsychByUserUseCase
+{
+  constructor(
+    private readonly _psychRepository: IPsychRepository,
+    private readonly _availabilityRuleRepository: IAvailabilityRuleRepository,
+    private readonly _specialDayRepository: ISpecialDayRepository,
+    private readonly _quickSlotsRepository: IQuickSlotRepository,
+    private readonly _sessionRepository: ISessionRepository
+  ) {}
 
   async execute(dto: ListPsychByUserDTO) {
-    if (
-      dto.sort &&
-      dto.sort !== "a-z" &&
-      dto.sort !== "z-a" &&
-      dto.sort !== "rating" &&
-      dto.sort !== "price"
-    ) {
-      throw new AppError(
-        ERROR_MESSAGES.SORT_INVALID_FORMAT,
-        AppErrorCodes.INVALID_INPUT
-      );
-    }
-    let psychologistList = await this._psychRepository.listPsychByUser(
+    const filteredData = await this._psychRepository.listPsychByUser(
       toPsychListByUserPersistence(dto)
     );
-    let psychologists=psychologistList.psychologists.map((psych:Psychologist)=>toPsychListByUserResponse(psych))
-    let paginationData=calculatePagination(psychologistList.totalItems,dto.skip,dto.limit)
-    return {psychologists,paginationData}
+
+    let psychologistsBeforeDateFilter = filteredData.psychologists;
+    let psychologistsAfterDateFilter: Psychologist[] = [];
+
+    if (dto.date) {
+      const weekDay = new Date(dto.date).getDay();
+      const selectedDate = new Date(dto.date);
+
+      const availabilityChecks = await Promise.all(
+        psychologistsBeforeDateFilter.map(async (psych) => {
+          const [availabilityRule, specialDay, quickSlots, sessions] =
+            await Promise.all([
+              this._availabilityRuleRepository.findActiveByWeekDayPsych(
+                weekDay,
+                psych.id!
+              ),
+              this._specialDayRepository.findActiveByDatePsych(
+                selectedDate,
+                psych.id!
+              ),
+              this._quickSlotsRepository.findActiveByDatePsych(
+                selectedDate,
+                psych.id!
+              ),
+              this._sessionRepository.findBookedSessions(
+                selectedDate,
+                psych.id!
+              ),
+            ]);
+
+          const slotsCreated = getAvailableSlotsForDatePsych(
+            specialDay,
+            availabilityRule,
+            quickSlots,
+            sessions
+          );
+
+          return slotsCreated.length > 0 ? psych : null;
+        })
+      );
+
+      psychologistsAfterDateFilter = availabilityChecks.filter(
+        (p): p is Psychologist => p !== null
+      );
+    } else {
+      psychologistsAfterDateFilter = psychologistsBeforeDateFilter;
+    }
+
+    const psychologists = psychologistsAfterDateFilter.map((psych) =>
+      toPsychListByUserResponse(psych)
+    );
+
+    const paginationData = calculatePagination(
+      filteredData.totalItems,
+      dto.skip,
+      dto.limit
+    );
+
+    return { psychologists, paginationData };
   }
 }

@@ -1,7 +1,6 @@
 import { ListPsychDTO } from "../../../application/dtos/admin.dto";
 import Psychologist from "../../../domain/entities/psychologist.entity";
-import IPsychologistRepository from "../../../domain/interfaces/IPsychRepository";
-import { ListPsychQueryByUser } from "../../../domain/interfaces/repository-types/psychologistTypes";
+import IPsychologistRepository, { ListPsychQueryByUser } from "../../../domain/interfaces/IPsychRepository";
 import { IPsychDocument, PsychModel } from "../models/PsychologistModel";
 import { BaseRepository } from "./BaseRepository";
 
@@ -33,7 +32,6 @@ export default class PsychRepository
       psych.bio ?? undefined,
       psych.avgRating ?? undefined,
       psych.hourlyFees ?? undefined,
-      psych.quickSlotHourlyFees ?? undefined,
       psych.applications,
       psych.licenseUrl ?? undefined,
       psych.qualifications,
@@ -63,7 +61,6 @@ export default class PsychRepository
       bio: entity.bio,
       avgRating: entity.avgRating,
       hourlyFees: entity.hourlyFees,
-      quickSlotHourlyFees: entity.quickSlotHourlyFees,
       applications: entity.applications,
       licenseUrl: entity.licenseUrl,
       qualifications: entity.qualifications,
@@ -106,8 +103,6 @@ export default class PsychRepository
   const {
     specialization,
     gender,
-    language,
-    date,
     sort,
     search,
     skip = 0,
@@ -115,16 +110,15 @@ export default class PsychRepository
   } = query;
 
   const match: any = { isVerified: true };
+
   if (gender) match.gender = gender;
   if (specialization) match.specializations = specialization;
-  if (language) match.languages = language;
 
   if (search) {
     const regex = new RegExp(search, "i");
     match.$or = [
       { firstName: regex },
       { lastName: regex },
-      { email: regex },
       { specializations: regex },
       { languages: regex },
     ];
@@ -132,153 +126,31 @@ export default class PsychRepository
 
   const basePipeline: any[] = [{ $match: match }];
 
-  if (date) {
-    const targetDate = new Date(date);
-    const startOfDay = new Date(targetDate);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(targetDate);
-    endOfDay.setHours(23, 59, 59, 999);
-
-    basePipeline.push(
-      {
-        $lookup: {
-          from: "sessions",
-          let: { psychId: "$_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $and: [
-                    { $eq: ["$psychologist", "$$psychId"] },
-                    { $gte: ["$startTime", startOfDay] },
-                    { $lte: ["$startTime", endOfDay] },
-                    { $eq: ["$status", "scheduled"] },
-                  ],
-                },
-              },
-            },
-          ],
-          as: "sessions",
-        },
-      },
-      {
-        $lookup: {
-          from: "availabilityrules",
-          let: { psychId: "$_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $and: [
-                    { $eq: ["$psychologist", "$$psychId"] },
-                    { $lte: ["$startDate", targetDate] },
-                    { $gte: ["$endDate", targetDate] },
-                  ],
-                },
-              },
-            },
-            { $limit: 1 },
-          ],
-          as: "availabilityRule",
-        },
-      },
-      {
-        $lookup: {
-          from: "holidays",
-          let: { psychId: "$_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $and: [
-                    { $eq: ["$psychologist", "$$psychId"] },
-                    { $gte: ["$date", startOfDay] },
-                    { $lte: ["$date", endOfDay] },
-                  ],
-                },
-              },
-            },
-          ],
-          as: "holidays",
-        },
-      },
-    {
-  $addFields: {
-    numberOfAvailableSlots: {
-      $cond: [
-        { $gt: [{ $size: "$holidays" }, 0] },
-        0,
-        {
-          $let: {
-            vars: { rule: { $arrayElemAt: ["$availabilityRule", 0] } },
-            in: {
-              $floor: {
-                $divide: [
-                  {
-                    $subtract: [
-                      {
-                        $add: [
-                          { $multiply: [60, { $toInt: { $arrayElemAt: [{ $split: ["$$rule.endTime", ":"] }, 0] } }] },
-                          { $toInt: { $arrayElemAt: [{ $split: ["$$rule.endTime", ":"] }, 1] } }
-                        ]
-                      },
-                      {
-                        $add: [
-                          { $multiply: [60, { $toInt: { $arrayElemAt: [{ $split: ["$$rule.startTime", ":"] }, 0] } }] },
-                          { $toInt: { $arrayElemAt: [{ $split: ["$$rule.startTime", ":"] }, 1] } }
-                        ]
-                      }
-                    ]
-                  },
-                  { $add: ["$$rule.durationInMins", "$$rule.bufferTimeInMins"] }
-                ]
-              }
-            }
-          }
-        }
-      ]
-    }
-  }
-},
-      {
-        $addFields: {
-          numberOfAvailableSlots: {
-            $max: [0, { $subtract: ["$numberOfAvailableSlots", { $size: "$sessions" }] }],
-          },
-        },
-      },
-      { $match: { numberOfAvailableSlots: { $gt: 0 } } }
-    );
-  }
-
   if (sort) {
     const sortMap: Record<string, any> = {
       "a-z": { firstName: 1 },
       "z-a": { firstName: -1 },
       rating: { avgRating: -1 },
-      price: { hourlyFees: 1 },
+      price: { hourlyFees: 1 }, 
     };
+
     basePipeline.push({ $sort: sortMap[sort] });
   }
 
-  const pipeline = [
-    {
-      $facet: {
-        data: [...basePipeline, { $skip: skip }, { $limit: limit }],
-        totalCount: [...basePipeline, { $count: "count" }],
-      },
-    },
-    { $unwind: { path: "$totalCount", preserveNullAndEmptyArrays: true } },
-    { $addFields: { totalCount: { $ifNull: ["$totalCount.count", 0] } } },
-  ];
+  basePipeline.push({ $skip: skip }, { $limit: limit });
 
-  const result = await this.model.aggregate(pipeline).exec();
+  const countPipeline = [{ $match: match }, { $count: "count" }];
 
-  const psychologists = (result[0]?.data || []).map((doc: IPsychDocument) =>
+  const [data, countResult] = await Promise.all([
+    this.model.aggregate(basePipeline).exec(),
+    this.model.aggregate(countPipeline).exec(),
+  ]);
+
+  const psychologists = data.map((doc: IPsychDocument) =>
     this.toDomain(doc)
   );
-  const totalItems = result[0]?.totalCount || 0;
-  console.log(psychologists,totalItems)
+  const totalItems = countResult[0]?.count || 0;
+
   return { psychologists, totalItems };
 }
 

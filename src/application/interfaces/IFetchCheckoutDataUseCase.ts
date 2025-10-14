@@ -4,7 +4,6 @@ export interface CheckoutData{
   startTime:string,
   endTime:string,
   durationInMins:number, //mins
-  quickSlot:boolean,
   fees:number //paise
 }
 
