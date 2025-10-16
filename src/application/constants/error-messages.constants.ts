@@ -81,4 +81,5 @@ export const ERROR_MESSAGES = {
     "There is a quickSlot overlapping with the provided time range ",
   SPECIAL_DAY_NOT_FOUND: "The special day is not found",
   QUICK_SLOT_NOT_FOUND: "The quick slot is not found",
+  SESSION_NOT_FOUND:"The session is not found",
 } as const;

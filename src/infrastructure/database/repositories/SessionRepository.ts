@@ -37,7 +37,7 @@ export default class SessionRepository
       endTime: entity.endTime!,
       durationInMins: entity.durationInMins,
       transactionIds: entity.transactionIds?.map(
-        (transactionId: string) => new Types.ObjectId(transactionId)
+        (id: string) => new Types.ObjectId(id)
       ),
       status: entity.status,
       fees: entity.fees,
@@ -46,53 +46,105 @@ export default class SessionRepository
       _id: entity.id ? new Types.ObjectId(entity.id) : undefined,
     };
   }
+
   async findBookedSessions(date: Date, psychId: string): Promise<Session[]> {
     const startOfDay = new Date(date);
     startOfDay.setHours(0, 0, 0, 0);
 
     const endOfDay = new Date(date);
     endOfDay.setHours(23, 59, 59, 999);
+
     const sessions = await this.model.find({
       startTime: { $gte: startOfDay, $lte: endOfDay },
       status: "scheduled",
       psychologist: new Types.ObjectId(psychId),
     });
-    return sessions.map((doc: ISessionDocument) => this.toDomain(doc));
+
+    return sessions.map((doc) => this.toDomain(doc));
   }
+
   async findSessionByPsychStartTime(
     startTime: Date,
     psychId: string
   ): Promise<Session | null> {
     const session = await this.model.findOne({
-      startTime: startTime,
+      startTime,
       psychologist: new Types.ObjectId(psychId),
     });
-    if (!session) {
-      return null;
-    }
-    return this.toDomain(session);
+    return session ? this.toDomain(session) : null;
   }
 
-  async listSessionsByUser(userId: string): Promise<Session[]> {
-    const sessions = await this.model
-      .find({ user: new Types.ObjectId(userId) })
-      .sort({ startTime: -1 }); 
-    return sessions.map((doc: ISessionDocument) => this.toDomain(doc));
-  }
-
-  async listSessionsByPsych(psychId: string): Promise<Session[]> {
-    const sessions = await this.model
-      .find({ psychologist: new Types.ObjectId(psychId) })
-      .sort({ startTime: -1 }); 
-    return sessions.map((doc: ISessionDocument) => this.toDomain(doc));
-  }
-
-  async listSessionsByAdmin(status: string): Promise<Session[]> {
-    const filter: any = {};
-    if (status) {
+  async listSessionsByUser(
+    userId: string,
+    status:string,
+    skip: number,
+    limit: number
+  ): Promise<{ sessions: Session[]; totalItems: number }> {
+    const filter: any = { user: new Types.ObjectId(userId) };
+    if (status){
       filter.status = status;
     }
-    const sessions = await this.model.find(filter).sort({ startTime: -1 });
-    return sessions.map((doc: ISessionDocument) => this.toDomain(doc));
+    const [sessions, totalItems] = await Promise.all([
+      this.model
+        .find(filter)
+        .sort({ startTime: -1 })
+        .skip(skip)
+        .limit(limit),
+      this.model.countDocuments({ user: new Types.ObjectId(userId) }),
+    ]);
+
+    return {
+      sessions: sessions.map((doc) => this.toDomain(doc)),
+      totalItems,
+    };
+  }
+
+  async listSessionsByPsych(
+    psychId: string,
+    status:string,
+    skip: number,
+    limit: number
+  ): Promise<{ sessions: Session[]; totalItems: number }> {
+    const filter: any = { psychologist: new Types.ObjectId(psychId) };
+    if (status){
+      filter.status = status;
+    }
+    const [sessions, totalItems] = await Promise.all([
+      this.model
+        .find(filter)
+        .sort({ startTime: -1 })
+        .skip(skip)
+        .limit(limit),
+      this.model.countDocuments({ psychologist: new Types.ObjectId(psychId) }),
+    ]);
+
+    return {
+      sessions: sessions.map((doc) => this.toDomain(doc)),
+      totalItems,
+    };
+  }
+
+  async listSessionsByAdmin(
+    status: string,
+    skip: number,
+    limit: number
+  ): Promise<{ sessions: Session[]; totalItems: number }> {
+    const filter: any = {};
+    if (status){
+      filter.status = status;
+    }
+    const [sessions, totalItems] = await Promise.all([
+      this.model
+        .find(filter)
+        .sort({ startTime: -1 })
+        .skip(skip)
+        .limit(limit),
+      this.model.countDocuments(filter),
+    ]);
+     console.log("sessions",sessions)
+    return {
+      sessions: sessions.map((doc) => this.toDomain(doc)),
+      totalItems,
+    };
   }
 }

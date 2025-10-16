@@ -24,4 +24,5 @@ AVAILABILITY_RULE_DELETED: "Availability rule deleted successfully",
 SPECIAL_DAY_CREATED: "Special day created successfully",
 SPECIAL_DAY_EDITED: "Special day edited successfully",
 SPECIAL_DAY_DELETED: "Special day deleted successfully",
+SESSION_CANCELLED:"Session cancelled successfully"
 } as const;

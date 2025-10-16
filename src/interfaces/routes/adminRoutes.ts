@@ -22,6 +22,7 @@ import SessionRepository from "../../infrastructure/database/repositories/Sessio
 import SessionController from "../controllers/admin/SessionController";
 import { FetchPsychDetailsByAdminUseCase } from "../../application/use-cases/admin/FetchPsychDetailsByAdminUseCase";
 import { FetchUserDetailsByAdminUseCase } from "../../application/use-cases/admin/FetchUserDetailsByAdminUseCase";
+import { paginationMiddleware } from "../middleware/paginationMiddleware";
 
 const applicationRepository=new ApplicationRepository()
 const psychRepository=new PsychRepository()
@@ -44,7 +45,7 @@ const authController=new AuthController(loginAdminUseCase);
 const applicationController=new ApplicationController(listUseCase,updateApplicationUseCase,applicationDetailsUseCase)
 const userController=new UserController(listUserUseCase,updateUserUseCase,fetchUserDetailsUseCase);
 const psychController=new PsychController(listPsychUseCase,updatePsychUseCase,fetchPsychDetailsUseCase);
-//const sessionController=new SessionController(listSessionsUseCase);
+const sessionController=new SessionController(listSessionsUseCase);
 
 const router =express.Router();
 
@@ -78,7 +79,8 @@ router.get("/admin/psychologist-details/:psychId",verifyTokenMiddleware,
 router.get("/admin/user-details/:userId",verifyTokenMiddleware,
                              authorizeRoles("admin"),
                              (req:Request,res:Response,next:NextFunction)=>userController.fetchUserDetails(req,res,next))
-// router.get("/admin/sessions",verifyTokenMiddleware,
-//                              authorizeRoles("admin"),
-//                              (req:Request,res:Response,next:NextFunction)=>sessionController.listSessions(req,res,next))
+router.get("/admin/sessions",verifyTokenMiddleware,
+                             authorizeRoles("admin"),
+                             paginationMiddleware,
+                             (req:Request,res:Response,next:NextFunction)=>sessionController.listSessions(req,res,next))
 export default router;

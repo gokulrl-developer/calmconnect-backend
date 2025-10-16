@@ -1,10 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "../../../utils/http-statuscodes";
 import ISessionListingUserUseCase from "../../../application/interfaces/ISessionListingUserUseCase";
+import AppError from "../../../application/error/AppError";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
+import { AppErrorCodes } from "../../../application/error/app-error-codes";
+import ICancelSessionUserUseCase from "../../../application/interfaces/ICancelSessionUserUseCase";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
 
 export default class SessionController {
   constructor(
-    private readonly _listSessionsByUserUseCase: ISessionListingUserUseCase
+    private readonly _listSessionsByUserUseCase: ISessionListingUserUseCase,
+    private readonly _cancelSessionUserUseCase:ICancelSessionUserUseCase
   ) {}
 
   async listSessions(
@@ -16,9 +22,35 @@ export default class SessionController {
       const userId = req.account?.id;
       const result = await this._listSessionsByUserUseCase.execute({
         userId: userId!,
+        status:req.query.status as "scheduled" | "completed" | "cancelled" | "available" | "pending",
+        skip: req.pagination?.skip!,
+        limit: req.pagination?.limit!,
       });
 
       res.status(StatusCodes.OK).json({ ...result });
+    } catch (err) {
+      next(err);
+    }
+  }
+   async cancelSession(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const userId = req.account?.id;
+      const { sessionId } = req.params;
+
+      if (!sessionId) {
+        throw new AppError(ERROR_MESSAGES.DATA_INSUFFICIANT,AppErrorCodes.INVALID_INPUT)
+      }
+
+      await this._cancelSessionUserUseCase.execute({
+        sessionId,
+        userId: userId!,
+      });
+
+      res.status(StatusCodes.OK).json({ message: SUCCESS_MESSAGES.SESSION_CANCELLED });
     } catch (err) {
       next(err);
     }

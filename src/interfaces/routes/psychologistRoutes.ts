@@ -43,6 +43,11 @@ import QuickSlotRepository from "../../infrastructure/database/repositories/Quic
 import EditQuickSlotUseCase from "../../application/use-cases/psychologist/EditQuickSlotUseCase";
 import FetchAvailabilityRuleUseCase from "../../application/use-cases/psychologist/FetchAvailabilityRuleUseCase";
 import FetchDailyAvailabilityUseCase from "../../application/use-cases/psychologist/FetchDailyAvailabilityUseCase";
+import { paginationMiddleware } from "../middleware/paginationMiddleware";
+import CancelSessionPsychUseCase from "../../application/use-cases/psychologist/CancelSessionPsychUseCase";
+import TransactionRepository from "../../infrastructure/database/repositories/TransactionRepository";
+import WalletRepository from "../../infrastructure/database/repositories/WalletRepository";
+import FetchLatestApplicationByPsychUseCase from "../../application/use-cases/psychologist/FetchLatestApplicationByPsychUseCase";
 
 const psychRepository = new PsychRepository();
 const otpRepository = new RedisOtpRepository();
@@ -53,6 +58,8 @@ const specialDayRepository=new SpecialDayRepository();
 const quickSlotRepository=new QuickSlotRepository(); 
 const sessionRepository=new SessionRepository();
 const userRepository=new UserRepository();
+const transactionRepository=new TransactionRepository();
+const walletRepository=new WalletRepository()
 
 const registerPsychUseCase = new RegisterPsychUseCase(
   psychRepository,
@@ -89,7 +96,8 @@ const createQuickSlotUseCase = new CreateQuickSlotUseCase(quickSlotRepository,sp
 const editQuickSlotUseCase = new EditQuickSlotUseCase(quickSlotRepository,specialDayRepository,availabilityRuleRepository);
 const deleteQuickSlotUseCase = new DeleteQuickSlotUseCase(quickSlotRepository,psychRepository);
 const fetchDailyAvailabilityUseCase = new FetchDailyAvailabilityUseCase(availabilityRuleRepository, specialDayRepository, quickSlotRepository);
-
+const cancelSessionUseCase=new CancelSessionPsychUseCase(sessionRepository,transactionRepository,walletRepository)
+const findLatestApplicationUseCase=new FetchLatestApplicationByPsychUseCase(applicationRepository)
 
 const authController = new AuthController(
   registerPsychUseCase,
@@ -104,7 +112,8 @@ resetPasswordUserUseCase
 const psychController = new PsychController(fetchPsychProfileUseCase,updatePsychProfileUseCase);
 const applicationController = new ApplicationController(
   createApplicationUseCase,
-  applicationStatusUseCase
+  applicationStatusUseCase,
+  findLatestApplicationUseCase
 );
 const availabilityController = new AvailabilityController(
   createAvailabilityRuleUseCase,
@@ -121,7 +130,7 @@ const availabilityController = new AvailabilityController(
   listAvailabilityRuleUseCase
 );
 
-//const sessionController=new SessionController(listSessionByPsychUseCase)
+const sessionController=new SessionController(listSessionByPsychUseCase,cancelSessionUseCase)
 
 const checkStatusPsych = new CheckStatusPsych(checkStatusPsychUseCase);
 
@@ -204,13 +213,14 @@ router.get(`/psychologist/profile`,
   (req:Request,res:Response,next:NextFunction) =>
     psychController.fetchProfile(req,res,next)
 )
-// router.get(`/psychologist/sessions`,
-//   verifyTokenMiddleware,
-//   authorizeRoles("psychologist"),
-//   checkStatusPsych.handle.bind(checkStatusPsych),
-//   (req:Request,res:Response,next:NextFunction) =>
-//     sessionController.listSessions(req,res,next)
-// )
+router.get(`/psychologist/sessions`,
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  paginationMiddleware,
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  (req:Request,res:Response,next:NextFunction) =>
+    sessionController.listSessions(req,res,next)
+)
 router.patch(`/psychologist/profile`,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
@@ -319,6 +329,21 @@ router.get(
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
   availabilityController.fetchDailyAvailability.bind(availabilityController)
+);
+router.get(
+  "/psychologist/application",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  applicationController.getLatestApplication.bind(applicationController)
+);
+
+router.patch(
+  "/psychologist/sessions/:sessionId",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  sessionController.cancelSession.bind(sessionController)
 );
 
 

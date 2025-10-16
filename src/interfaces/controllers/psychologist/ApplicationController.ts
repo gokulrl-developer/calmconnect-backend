@@ -6,11 +6,13 @@ import AppError from "../../../application/error/AppError";
 import { AppErrorCodes } from "../../../application/error/app-error-codes";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
 import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
+import IFetchLatestApplicationByPsychUseCase from "../../../application/interfaces/IFetchLatestApplicationByPsychUseCase";
 
 export default class ApplicationController {
   constructor(
     private readonly _createApplicationUseCase: ICreateApplicationUseCase,
-    private readonly _applicationStatusUseCase: IApplicationStatusUseCase
+    private readonly _applicationStatusUseCase: IApplicationStatusUseCase,
+    private readonly _findLatestApplicationUseCase:IFetchLatestApplicationByPsychUseCase
   ) {}
 
   async createApplication(
@@ -139,6 +141,23 @@ export default class ApplicationController {
       });
 
       res.status(StatusCodes.OK).json({ ...status, psych: req.account });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getLatestApplication(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const psychId = req?.account?.id;
+
+      const application = await this._findLatestApplicationUseCase.execute({
+        psychId: psychId!,
+      });
+
+      res.status(StatusCodes.OK).json({application});
     } catch (error) {
       next(error);
     }

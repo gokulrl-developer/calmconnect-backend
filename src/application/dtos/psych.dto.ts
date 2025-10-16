@@ -72,8 +72,16 @@ export interface UpdatePsychProfileDTO {
   qualifications?: string;
 }
 
-export interface SessionListingDTO {
-  psychId: string;
+export interface SessionListingDTO{
+  psychId:string,
+  status:"scheduled"|"completed"|"cancelled"|"available"|"pending",
+  skip:number,
+  limit:number
+}
+
+export interface CancelSessionDTO{
+  psychId:string,
+  sessionId:string
 }
 
 export interface CreateAvaialabilityRuleDTO {
@@ -168,4 +176,8 @@ export interface ListAvailabilityRulesDTO {
 export interface FetchDailyAvailabilityDTO {
   psychId: string;
   date: string;
+}
+
+export interface FetchLatestApplicationDTO{
+  psychId:string
 }
