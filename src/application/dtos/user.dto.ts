@@ -74,6 +74,14 @@ export interface VerifyPaymentDTO {
 
 export interface SessionListingDTO{
   userId:string,
+  status:"scheduled"|"completed"|"cancelled"|"available"|"pending",
+  skip:number,
+  limit:number
+}
+
+export interface CancelSessionDTO{
+  userId:string,
+  sessionId:string
 }
 
 export interface ListPsychByUserDTO {

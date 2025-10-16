@@ -14,7 +14,9 @@ export default class SessionController {
   ): Promise<void> {
     try {
       const result = await this._listSessionsUseCase.execute({
-        status:req.query.status as string
+        status:req.query.status as "scheduled" | "completed" | "cancelled" | "available" | "pending",
+        skip: req.pagination?.skip!,
+        limit: req.pagination?.limit!,
       });
 
       res.status(StatusCodes.OK).json({ ...result });

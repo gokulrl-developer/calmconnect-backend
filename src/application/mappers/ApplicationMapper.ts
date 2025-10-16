@@ -1,6 +1,7 @@
 import { PsychApplicationDTO } from "../dtos/psych.dto"
 import { Application} from "../../domain/entities/application.entity"
 import Psychologist from "../../domain/entities/psychologist.entity"
+import { PsychApplication } from "../interfaces/IFetchLatestApplicationByPsychUseCase"
 
 export interface FileStorageReturn{
     profilePicture:string,
@@ -79,3 +80,25 @@ export const toApplicationDetails=(application:Application)=>{
     status:application.status,
     }
 }
+
+
+export const toPsychApplicationResponse = (app: Application | null): PsychApplication|null => {
+    if(app===null){
+        return null;
+    }
+  return {
+    submittedAt: app.submittedAt!,
+    phone: app.phone ?? "",
+    gender: app.gender as "male" | "female" | "others",
+    dob: app.dob!,
+    profilePicture: app.profilePicture ?? "",
+    address: app.address ?? "",
+    languages: app.languages ?? "",
+    specializations: app.specializations ?? [],
+    bio: app.bio ?? "",
+    license: app.licenseUrl ?? "",
+    resume: app.resume ?? "",
+    qualifications: app.qualifications ?? "",
+    reason:app.rejectionReason!
+  };
+};
