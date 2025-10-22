@@ -44,7 +44,7 @@ export default class LoginPsychUseCase implements ILoginPsychUseCase{
     
     const refreshToken = generateRefreshToken({ id: psychEntity.id!,role:"psychologist"});
     const accessToken = generateAccessToken({ id: psychEntity.id!,role:"psychologist" });
-
+    
     return toLoginResponse(psychEntity,accessToken,refreshToken);
   }
 }

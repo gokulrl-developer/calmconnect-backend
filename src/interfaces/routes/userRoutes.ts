@@ -37,6 +37,7 @@ import SessionListingUserUseCase from "../../application/use-cases/user/SessionL
 import SpecialDayRepository from "../../infrastructure/database/repositories/SpecialDayRepository";
 import QuickSlotRepository from "../../infrastructure/database/repositories/QuickSlotRepository";
 import CancelSessionUserUseCase from "../../application/use-cases/user/CancelSessionUserUseCase";
+import CheckSessionAccessUseCase from "../../application/use-cases/CheckSessionAccessUseCase";
 
 const userRepository=new UserRepository()
 const otpRepository=new RedisOtpRepository()
@@ -68,12 +69,13 @@ const createOrderUseCase=new CreateOrderUseCase(psychRepository,availabilityRule
 const verifyPaymentUseCase=new VerifyPaymentUseCase(paymentProvider,sessionRepository,transactionRepository,walletRepository)
 const listSessionsByUserUseCase=new SessionListingUserUseCase(sessionRepository,psychRepository)
 const cancelSessionUseCase=new CancelSessionUserUseCase(sessionRepository,transactionRepository,walletRepository);
+const checkSessionAccessUseCase=new CheckSessionAccessUseCase(sessionRepository)
 
 const authController=new AuthController(registerUserUseCase,signUpUseCase,loginUseCase,googleAuthUseCase,resendOtpSignUpUseCase,
     resendOtpResetUseCase,forgotPasswordUserUseCase,resetPasswordUserUseCase
 );
 const appointmentController=new AppointmentController(listPsychByUserUseCase,psychDetailsByUserUseCase,fetchCheckoutDataUseCase,createOrderUseCase,verifyPaymentUseCase)
-const sessionController=new SessionController(listSessionsByUserUseCase,cancelSessionUseCase)
+const sessionController=new SessionController(listSessionsByUserUseCase,cancelSessionUseCase,checkSessionAccessUseCase)
 const userController=new UserController(fetchProfileUseCase,updateProfileUseCase)
 const checkStatusUser=new CheckStatusUser(checkStatusUserUseCase)
 
@@ -126,6 +128,10 @@ router.patch('/user/sessions/:sessionId',verifyTokenMiddleware,
                              checkStatusUser.handle.bind(checkStatusUser),
                              paginationMiddleware,
                              (req:Request,res:Response,next:NextFunction)=>sessionController.cancelSession(req,res,next))
+router.get('/user/sessions/:sessionId/access',verifyTokenMiddleware,
+                             authorizeRoles("user"),
+                             checkStatusUser.handle.bind(checkStatusUser),
+                             (req:Request,res:Response,next:NextFunction)=>sessionController.checkSessionAccess(req,res,next))
 router.patch('/user/profile',verifyTokenMiddleware,
                              authorizeRoles("user"),
                              checkStatusUser.handle.bind(checkStatusUser),

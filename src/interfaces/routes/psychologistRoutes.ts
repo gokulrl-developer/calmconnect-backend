@@ -48,6 +48,7 @@ import CancelSessionPsychUseCase from "../../application/use-cases/psychologist/
 import TransactionRepository from "../../infrastructure/database/repositories/TransactionRepository";
 import WalletRepository from "../../infrastructure/database/repositories/WalletRepository";
 import FetchLatestApplicationByPsychUseCase from "../../application/use-cases/psychologist/FetchLatestApplicationByPsychUseCase";
+import CheckSessionAccessUseCase from "../../application/use-cases/CheckSessionAccessUseCase";
 
 const psychRepository = new PsychRepository();
 const otpRepository = new RedisOtpRepository();
@@ -98,6 +99,7 @@ const deleteQuickSlotUseCase = new DeleteQuickSlotUseCase(quickSlotRepository,ps
 const fetchDailyAvailabilityUseCase = new FetchDailyAvailabilityUseCase(availabilityRuleRepository, specialDayRepository, quickSlotRepository);
 const cancelSessionUseCase=new CancelSessionPsychUseCase(sessionRepository,transactionRepository,walletRepository)
 const findLatestApplicationUseCase=new FetchLatestApplicationByPsychUseCase(applicationRepository)
+const checkSessionAccessUseCase=new CheckSessionAccessUseCase(sessionRepository)
 
 const authController = new AuthController(
   registerPsychUseCase,
@@ -130,7 +132,7 @@ const availabilityController = new AvailabilityController(
   listAvailabilityRuleUseCase
 );
 
-const sessionController=new SessionController(listSessionByPsychUseCase,cancelSessionUseCase)
+const sessionController=new SessionController(listSessionByPsychUseCase,cancelSessionUseCase,checkSessionAccessUseCase)
 
 const checkStatusPsych = new CheckStatusPsych(checkStatusPsychUseCase);
 
@@ -344,6 +346,13 @@ router.patch(
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
   sessionController.cancelSession.bind(sessionController)
+);
+router.get(
+  "/psychologist/sessions/:sessionId/access",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  sessionController.checkSessionAccess.bind(sessionController)
 );
 
 

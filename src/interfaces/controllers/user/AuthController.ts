@@ -209,11 +209,10 @@ export default class AuthController {
         path: "/",
       });
 
-      const { refreshToken, accessToken, ...user } = result;
 
       res
         .status(StatusCodes.OK)
-        .json({ user, message: SUCCESS_MESSAGES.GOOGLE_AUTH_SUCCESSFUL });
+        .json({ user:result.user, message: SUCCESS_MESSAGES.GOOGLE_AUTH_SUCCESSFUL });
     } catch (error) {
       next(error);
     }

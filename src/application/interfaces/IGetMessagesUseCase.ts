@@ -1,0 +1,14 @@
+import { ChatMessage } from "../../domain/entities/chat-message.entity";
+import { GetMessagesDTO } from "../dtos/shared.dto";
+
+export interface GetMessageResponse {
+  sessionId: string;
+  senderId: string;
+  senderName: string;
+  text: string;
+  createdAt: Date;
+  id: string;
+}
+export default interface IGetMessagesUseCase{
+    execute(dto:GetMessagesDTO):Promise<GetMessageResponse[]>
+}
