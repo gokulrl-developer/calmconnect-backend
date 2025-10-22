@@ -1,4 +1,5 @@
 import Session from "../../domain/entities/session.entity";
+import { SessionDetailsInVideoCall } from "../interfaces/ICheckSessionAccessUseCase";
 
 export const toSessionListingUserResponse = (
   session: Session,
@@ -49,6 +50,17 @@ export const toSessionListingAdminResponse = (
     durationInMins: session.durationInMins,
     status: session.status,
     fees: session.fees,
+    sessionId: session.id!,
+  };
+};
+
+export const toSessionDetailsInVideoCall = (session: Session): SessionDetailsInVideoCall => {
+  return {
+    psychologist: session.psychologist,
+    user: session.user,
+    startTime: session.startTime,
+    endTime: session.endTime,
+    durationInMins: session.durationInMins,
     sessionId: session.id!,
   };
 };

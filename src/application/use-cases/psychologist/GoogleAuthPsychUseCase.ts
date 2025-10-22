@@ -29,7 +29,6 @@ export default class GoogleAuthPsychUseCase implements IGoogleAuthPsychUseCase {
       const res = await this._psychologistRepository.create(psychEntity);
       psych=res;
     }
-    
     const accessToken = generateAccessToken({id:psych.id!,role:"psychologist"});
     const refreshToken =generateRefreshToken({id:psych.id!,role:"psychologist"});  
     const result =toGoogleAuthResponse(psych,accessToken,refreshToken)

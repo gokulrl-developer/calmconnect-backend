@@ -6,11 +6,14 @@ import { ERROR_MESSAGES } from "../../../application/constants/error-messages.co
 import { AppErrorCodes } from "../../../application/error/app-error-codes";
 import ICancelSessionUserUseCase from "../../../application/interfaces/ICancelSessionUserUseCase";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
+import ICheckSessionAccessUseCase from "../../../application/interfaces/ICheckSessionAccessUseCase";
+import { CheckSessionAccessDTO } from "../../../application/dtos/shared.dto";
 
 export default class SessionController {
   constructor(
     private readonly _listSessionsByUserUseCase: ISessionListingUserUseCase,
-    private readonly _cancelSessionUserUseCase:ICancelSessionUserUseCase
+    private readonly _cancelSessionUserUseCase: ICancelSessionUserUseCase,
+    private readonly _checkSessionAccessUseCase: ICheckSessionAccessUseCase
   ) {}
 
   async listSessions(
@@ -22,7 +25,12 @@ export default class SessionController {
       const userId = req.account?.id;
       const result = await this._listSessionsByUserUseCase.execute({
         userId: userId!,
-        status:req.query.status as "scheduled" | "completed" | "cancelled" | "available" | "pending",
+        status: req.query.status as
+          | "scheduled"
+          | "completed"
+          | "cancelled"
+          | "available"
+          | "pending",
         skip: req.pagination?.skip!,
         limit: req.pagination?.limit!,
       });
@@ -32,7 +40,7 @@ export default class SessionController {
       next(err);
     }
   }
-   async cancelSession(
+  async cancelSession(
     req: Request,
     res: Response,
     next: NextFunction
@@ -42,7 +50,10 @@ export default class SessionController {
       const { sessionId } = req.params;
 
       if (!sessionId) {
-        throw new AppError(ERROR_MESSAGES.DATA_INSUFFICIANT,AppErrorCodes.INVALID_INPUT)
+        throw new AppError(
+          ERROR_MESSAGES.DATA_INSUFFICIANT,
+          AppErrorCodes.INVALID_INPUT
+        );
       }
 
       await this._cancelSessionUserUseCase.execute({
@@ -50,7 +61,38 @@ export default class SessionController {
         userId: userId!,
       });
 
-      res.status(StatusCodes.OK).json({ message: SUCCESS_MESSAGES.SESSION_CANCELLED });
+      res
+        .status(StatusCodes.OK)
+        .json({ message: SUCCESS_MESSAGES.SESSION_CANCELLED });
+    } catch (err) {
+      next(err);
+    }
+  }
+  async checkSessionAccess(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { sessionId } = req.params;
+      const id = req.account?.id;
+
+      if (!sessionId) {
+        console.warn(
+          "Missing sessionId in checkSessionAccess request from:",
+          sessionId
+        );
+        throw new AppError(
+          ERROR_MESSAGES.DATA_INSUFFICIANT,
+          AppErrorCodes.INVALID_INPUT
+        );
+      }
+       
+      const result = await this._checkSessionAccessUseCase.execute({ sessionId, userId: id });
+
+      res.status(StatusCodes.OK).json({
+        ...result,
+      });
     } catch (err) {
       next(err);
     }

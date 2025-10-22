@@ -4,7 +4,7 @@ import cors from "cors"
 import userRoutes from './interfaces/routes/userRoutes';
 import psychologistRoutes from './interfaces/routes/psychologistRoutes';
 import adminRoutes from './interfaces/routes/adminRoutes';
-import refreshRoute from './interfaces/routes/tokenRoute'
+import refreshRoute from './interfaces/routes/sharedRoutes'
 import corsOptions from './infrastructure/config/cors';
 import { errorHandler } from './utils/errorHandler';
 import morgan from "morgan";
