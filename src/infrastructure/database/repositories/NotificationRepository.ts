@@ -15,7 +15,7 @@ export class NotificationRepository
   protected toDomain(doc: INotificationDocument): Notification {
     const notif = doc.toObject();
     return new Notification(
-      notif.recipientId.toString(),
+      notif.recipientId,
       notif.recipientType,
       notif.title,
       notif.message,
@@ -29,7 +29,7 @@ export class NotificationRepository
   protected toPersistence(entity: Partial<Notification>): Partial<INotificationDocument> {
     const persistenceObj: Partial<INotificationDocument> = {};
 
-    if (entity.recipientId) persistenceObj.recipientId = new Types.ObjectId(entity.recipientId);
+    if (entity.recipientId) persistenceObj.recipientId = entity.recipientId;
     if (entity.recipientType) persistenceObj.recipientType = entity.recipientType;
     if (entity.title) persistenceObj.title = entity.title;
     if (entity.message) persistenceObj.message = entity.message;
@@ -47,7 +47,7 @@ export class NotificationRepository
   skip = 0,
   limit = 50
 ) {
-  const query: any = { recipientType,recipientId:new Types.ObjectId(recipientId) }; 
+  const query: any = { recipientType,recipientId:recipientId}; 
 
   const docs = await this.model
     .find(query)
@@ -72,7 +72,7 @@ async getUnreadCount(
   ): Promise<number> {
     const count = await this.model.countDocuments({
       recipientType,
-      recipientId: new Types.ObjectId(recipientId),
+      recipientId: recipientId,
       isRead: false,
     })
     return count;

@@ -1,7 +1,7 @@
 import { PsychApplicationDTO } from "../dtos/psych.dto"
 import { Application} from "../../domain/entities/application.entity"
 import Psychologist from "../../domain/entities/psychologist.entity"
-import { PsychApplication } from "../interfaces/IFetchLatestApplicationByPsychUseCase"
+import { LatestApplicationData } from "../interfaces/IFetchLatestApplicationUseCase"
 
 export interface FileStorageReturn{
     profilePicture:string,
@@ -39,14 +39,34 @@ export const toApplicationDomainSubmit=(application:PsychApplicationDTO,psycholo
 }
 
 
-export const toApplicationStatusResponse=(application:Application|null)=>{
-    if(!application ||!application.status){
-        return {status:null}
-    }else{
-        return{
-  status:application.status
-        }}
-}
+export const toFetchLatestApplicationResponse = (
+  application: Application | null
+): LatestApplicationData | null => {
+  if (!application ) {
+    return null ;
+  }
+
+  return {
+    firstName: application.firstName,
+    lastName: application.lastName,
+    email: application.email,
+    submittedAt: application.submittedAt,
+    phone: application.phone,
+    gender: application.gender,
+    dob: application.dob,
+    profilePicture: application.profilePicture,
+    address: application.address,
+    languages: application.languages,
+    specializations: application.specializations,
+    bio: application.bio,
+    licenseUrl: application.licenseUrl,
+    resume: application.resume,
+    qualifications: application.qualifications,
+    status: application.status,
+    rejectionReason: application.rejectionReason,
+  };
+};
+
 
 export const toAdminApplicationListResponse=(application:Application)=>{
   return{  
@@ -81,24 +101,3 @@ export const toApplicationDetails=(application:Application)=>{
     }
 }
 
-
-export const toPsychApplicationResponse = (app: Application | null): PsychApplication|null => {
-    if(app===null){
-        return null;
-    }
-  return {
-    submittedAt: app.submittedAt!,
-    phone: app.phone ?? "",
-    gender: app.gender as "male" | "female" | "others",
-    dob: app.dob!,
-    profilePicture: app.profilePicture ?? "",
-    address: app.address ?? "",
-    languages: app.languages ?? "",
-    specializations: app.specializations ?? [],
-    bio: app.bio ?? "",
-    license: app.licenseUrl ?? "",
-    resume: app.resume ?? "",
-    qualifications: app.qualifications ?? "",
-    reason:app.rejectionReason!
-  };
-};

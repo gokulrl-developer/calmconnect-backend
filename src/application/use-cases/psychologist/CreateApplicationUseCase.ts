@@ -32,15 +32,29 @@ export default class CreateApplicationUseCase implements ICreateApplicationUseCa
         throw new AppError(ERROR_MESSAGES.ACCEPTED_APPLICATION_EXISTS,AppErrorCodes.FORBIDDEN_ERROR)
       }
      }
-      let licenseUrl = await this._fileStorageService.uploadFile(dto.license, "licenses");
-      let resume = await this._fileStorageService.uploadFile(dto.resume, "resumes");
-      
-      let profilePicture = await this._fileStorageService.uploadFile(dto.profilePicture, "profiles");
-       const urls={licenseUrl,resume,profilePicture}
-     const applicationEntity=toApplicationDomainSubmit(dto,psychologist,urls);
+     let licenseUrl:string;
+     let resume:string;
+     let profilePicture:string;
+     if(typeof dto.license !== "string"){
+      licenseUrl = await this._fileStorageService.uploadFile(dto.license, "licenses");
+    }else{
+      licenseUrl=dto.license
+    }
+    if(typeof dto.resume !== "string"){
+    resume = await this._fileStorageService.uploadFile(dto.resume, "resumes");
+    }else{
+      resume=dto.resume;
+    }
+    if(typeof dto.profilePicture !== "string"){
+      profilePicture = await this._fileStorageService.uploadFile(dto.profilePicture, "profiles");
+    }else{
+      profilePicture=dto.profilePicture
+    }
+     const applicationEntity=toApplicationDomainSubmit(dto,psychologist,{licenseUrl,resume,profilePicture});
     const result= await this._applicationRepository.create(applicationEntity);
     await this._eventBus.emit('application.created', {
-      applicationId: result.id!,
+      adminId:dto.adminId,
+      psychologistName:`${psychologist.firstName} ${psychologist.lastName}`,
       psychologistEmail:psychologist.email!,
     });
   }

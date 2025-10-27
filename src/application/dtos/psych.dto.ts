@@ -38,6 +38,7 @@ export interface PsychCheckStatusDTO {
 }
 
 export interface PsychApplicationDTO {
+  adminId:string;
   psychId: string;
   submittedAt: Date;
   phone: string;

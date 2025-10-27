@@ -95,6 +95,7 @@ export default class SocketServer implements ISocketService {
     payload: SendNotificationPayload
   ): Promise<boolean> {
     const sid = this._userSocketMap.get(accountId);
+    console.log(" the socket id in sendToUser",sid)
     if (!sid) return false;
 
     try {
@@ -218,25 +219,23 @@ export default class SocketServer implements ISocketService {
         .map((c) => c.trim())
         .find((c) => c.startsWith("accessToken="))
         ?.split("=")[1];
-
-      if (!token) {
-        throw new AppError(
-          ERROR_MESSAGES.SESSION_EXPIRED,
-          AppErrorCodes.INVALID_CREDENTIALS
-        );
-      }
-
-      const decoded = await verifyAccessToken(token);
-      if (!decoded?.id || !decoded?.role) {
-        throw new AppError(
-          ERROR_MESSAGES.SESSION_EXPIRED,
-          AppErrorCodes.SESSION_EXPIRED
-        );
-      }
+        
+        if (!token) {
+          throw new AppError(
+            ERROR_MESSAGES.SESSION_EXPIRED,
+            AppErrorCodes.INVALID_CREDENTIALS
+          );
+        }        
+        const decoded = await verifyAccessToken(token);
+        if (!decoded?.id || !decoded?.role) {
+          throw new AppError(
+            ERROR_MESSAGES.SESSION_EXPIRED,
+            AppErrorCodes.SESSION_EXPIRED
+          );
+        }
 
       socket.data.accountId = decoded.id;
       socket.data.role = decoded.role;
-
       if (decoded.role === "user")
         await this._checkStatusUserUseCase.execute({ id: decoded.id });
       else if (decoded.role === "psychologist")
