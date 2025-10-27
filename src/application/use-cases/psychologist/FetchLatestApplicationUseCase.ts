@@ -1,16 +1,16 @@
 import { PsychApplicationStatusDTO } from "../../dtos/psych.dto";
 import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
-import IApplicationStatusUseCase from "../../interfaces/IApplicationStatusUseCase";
-import { toApplicationStatusResponse } from "../../mappers/ApplicationMapper";
+import IFetchLatestApplicationUseCase from "../../interfaces/IFetchLatestApplicationUseCase";
+import { toFetchLatestApplicationResponse } from "../../mappers/ApplicationMapper";
 
 
-export default class ApplicationStatusUseCase implements IApplicationStatusUseCase{
+export default class FetchLatestApplicationUseCase implements IFetchLatestApplicationUseCase{
   constructor(
      private readonly _applicationRepository:IApplicationRepository,
   ){}
   async execute(dto:PsychApplicationStatusDTO){
      const application=await this._applicationRepository.findLatestByPsychId(dto.psychId);
-     return toApplicationStatusResponse(application)
+     return {application:toFetchLatestApplicationResponse(application)}
   }
 
 }

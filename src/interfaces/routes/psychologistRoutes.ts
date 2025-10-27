@@ -16,7 +16,7 @@ import ApplicationController from "../controllers/psychologist/ApplicationContro
 import CreateApplicationUseCase from "../../application/use-cases/psychologist/CreateApplicationUseCase";
 import ApplicationRepository from "../../infrastructure/database/repositories/ApplicationRepository";
 import CloudinaryService from "../../infrastructure/external/CloudinaryService";
-import ApplicationStatusUseCase from "../../application/use-cases/psychologist/ApplicationStatusUseCase";
+import ApplicationStatusUseCase from "../../application/use-cases/psychologist/FetchLatestApplicationUseCase";
 import ResendOtpResetPsychUseCase from "../../application/use-cases/psychologist/ResendOtpResetPsychUseCase";
 import ResendOtpSignUpPsychUseCase from "../../application/use-cases/psychologist/ResendOtpSignUpPsychUseCase";
 import ForgotPasswordPsychUseCase from "../../application/use-cases/psychologist/ForgotPasswordPsychUseCase";
@@ -47,7 +47,6 @@ import { paginationMiddleware } from "../middleware/paginationMiddleware";
 import CancelSessionPsychUseCase from "../../application/use-cases/psychologist/CancelSessionPsychUseCase";
 import TransactionRepository from "../../infrastructure/database/repositories/TransactionRepository";
 import WalletRepository from "../../infrastructure/database/repositories/WalletRepository";
-import FetchLatestApplicationByPsychUseCase from "../../application/use-cases/psychologist/FetchLatestApplicationByPsychUseCase";
 import CheckSessionAccessUseCase from "../../application/use-cases/CheckSessionAccessUseCase";
 import { NotificationRepository } from "../../infrastructure/database/repositories/NotificationRepository";
 import GetNotificationsUseCase from "../../application/use-cases/GetNotificationsUseCase";
@@ -55,6 +54,7 @@ import NotificationController from "../controllers/psychologist/NotificationCont
 import { eventBus } from "../../infrastructure/external/eventBus";
 import MarkNotificationReadUseCase from "../../application/use-cases/MarkNotificationReadUseCase";
 import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetUnReadNotificationsCountUseCase";
+import FetchLatestApplicationUseCase from "../../application/use-cases/psychologist/FetchLatestApplicationUseCase";
 
 const psychRepository = new PsychRepository();
 const otpRepository = new RedisOtpRepository();
@@ -157,7 +157,7 @@ const cancelSessionUseCase = new CancelSessionPsychUseCase(
   transactionRepository,
   walletRepository
 );
-const findLatestApplicationUseCase = new FetchLatestApplicationByPsychUseCase(
+const fetchLatestApplicationUseCase = new FetchLatestApplicationUseCase(
   applicationRepository
 );
 const checkSessionAccessUseCase = new CheckSessionAccessUseCase(
@@ -189,8 +189,7 @@ const psychController = new PsychController(
 );
 const applicationController = new ApplicationController(
   createApplicationUseCase,
-  applicationStatusUseCase,
-  findLatestApplicationUseCase
+  fetchLatestApplicationUseCase
 );
 const availabilityController = new AvailabilityController(
   createAvailabilityRuleUseCase,
@@ -422,7 +421,7 @@ router.get(
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
-  applicationController.getLatestApplication.bind(applicationController)
+  applicationController.getApplication.bind(applicationController)
 );
 
 router.patch(
