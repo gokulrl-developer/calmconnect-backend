@@ -49,18 +49,25 @@ import TransactionRepository from "../../infrastructure/database/repositories/Tr
 import WalletRepository from "../../infrastructure/database/repositories/WalletRepository";
 import FetchLatestApplicationByPsychUseCase from "../../application/use-cases/psychologist/FetchLatestApplicationByPsychUseCase";
 import CheckSessionAccessUseCase from "../../application/use-cases/CheckSessionAccessUseCase";
+import { NotificationRepository } from "../../infrastructure/database/repositories/NotificationRepository";
+import GetNotificationsUseCase from "../../application/use-cases/GetNotificationsUseCase";
+import NotificationController from "../controllers/psychologist/NotificationController";
+import { eventBus } from "../../infrastructure/external/eventBus";
+import MarkNotificationReadUseCase from "../../application/use-cases/MarkNotificationReadUseCase";
+import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetUnReadNotificationsCountUseCase";
 
 const psychRepository = new PsychRepository();
 const otpRepository = new RedisOtpRepository();
 const applicationRepository = new ApplicationRepository();
 const cloudinaryService = new CloudinaryService();
-const availabilityRuleRepository=new AvailabilityRuleRepository();
-const specialDayRepository=new SpecialDayRepository();
-const quickSlotRepository=new QuickSlotRepository(); 
-const sessionRepository=new SessionRepository();
-const userRepository=new UserRepository();
-const transactionRepository=new TransactionRepository();
-const walletRepository=new WalletRepository()
+const availabilityRuleRepository = new AvailabilityRuleRepository();
+const specialDayRepository = new SpecialDayRepository();
+const quickSlotRepository = new QuickSlotRepository();
+const sessionRepository = new SessionRepository();
+const userRepository = new UserRepository();
+const transactionRepository = new TransactionRepository();
+const walletRepository = new WalletRepository();
+const notificationRepository = new NotificationRepository();
 
 const registerPsychUseCase = new RegisterPsychUseCase(
   psychRepository,
@@ -73,33 +80,98 @@ const checkStatusPsychUseCase = new CheckStatusPsychUseCase(psychRepository);
 const createApplicationUseCase = new CreateApplicationUseCase(
   applicationRepository,
   psychRepository,
-  cloudinaryService
+  cloudinaryService,
+  eventBus
 );
 const applicationStatusUseCase = new ApplicationStatusUseCase(
   applicationRepository
 );
-const resendOtpSignUpUseCase=new ResendOtpSignUpPsychUseCase(otpRepository);
-const resendOtpResetUseCase=new ResendOtpResetPsychUseCase(otpRepository);
-const forgotPasswordUserUseCase=new ForgotPasswordPsychUseCase(otpRepository,psychRepository);
-const resetPasswordUserUseCase=new ResetPasswordPsychUseCase(psychRepository,otpRepository);
-const fetchPsychProfileUseCase=new FetchPsychProfileUseCase(psychRepository);
-const updatePsychProfileUseCase=new UpdatePsychProfileUseCase(psychRepository,cloudinaryService)
-const listSessionByPsychUseCase=new SessionListingPsychUseCase(sessionRepository,userRepository)
-const createAvailabilityRuleUseCase = new CreateAvailabilityRuleUseCase(availabilityRuleRepository);
-const editAvailabilityRuleUseCase = new EditAvailabilityRuleUseCase(availabilityRuleRepository,quickSlotRepository);
-const deleteAvailabilityRuleUseCase = new DeleteAvailabilityRuleUseCase(availabilityRuleRepository);
-const fetchAvailabilityRuleUseCase = new FetchAvailabilityRuleUseCase(availabilityRuleRepository);
-const listAvailabilityRuleUseCase = new ListAvailabilityRulesUseCase(availabilityRuleRepository);
-const createSpecialDayUseCase = new CreateSpecialDayUseCase(specialDayRepository,quickSlotRepository);
-const editSpecialDayUseCase = new EditSpecialDayUseCase(specialDayRepository,quickSlotRepository);
-const deleteSpecialDayUseCase = new DeleteSpecialDayUseCase(specialDayRepository,psychRepository);
-const createQuickSlotUseCase = new CreateQuickSlotUseCase(quickSlotRepository,specialDayRepository,availabilityRuleRepository);
-const editQuickSlotUseCase = new EditQuickSlotUseCase(quickSlotRepository,specialDayRepository,availabilityRuleRepository);
-const deleteQuickSlotUseCase = new DeleteQuickSlotUseCase(quickSlotRepository,psychRepository);
-const fetchDailyAvailabilityUseCase = new FetchDailyAvailabilityUseCase(availabilityRuleRepository, specialDayRepository, quickSlotRepository);
-const cancelSessionUseCase=new CancelSessionPsychUseCase(sessionRepository,transactionRepository,walletRepository)
-const findLatestApplicationUseCase=new FetchLatestApplicationByPsychUseCase(applicationRepository)
-const checkSessionAccessUseCase=new CheckSessionAccessUseCase(sessionRepository)
+const resendOtpSignUpUseCase = new ResendOtpSignUpPsychUseCase(otpRepository);
+const resendOtpResetUseCase = new ResendOtpResetPsychUseCase(otpRepository);
+const forgotPasswordUserUseCase = new ForgotPasswordPsychUseCase(
+  otpRepository,
+  psychRepository
+);
+const resetPasswordUserUseCase = new ResetPasswordPsychUseCase(
+  psychRepository,
+  otpRepository
+);
+const fetchPsychProfileUseCase = new FetchPsychProfileUseCase(psychRepository);
+const updatePsychProfileUseCase = new UpdatePsychProfileUseCase(
+  psychRepository,
+  cloudinaryService
+);
+const listSessionByPsychUseCase = new SessionListingPsychUseCase(
+  sessionRepository,
+  userRepository
+);
+const createAvailabilityRuleUseCase = new CreateAvailabilityRuleUseCase(
+  availabilityRuleRepository
+);
+const editAvailabilityRuleUseCase = new EditAvailabilityRuleUseCase(
+  availabilityRuleRepository,
+  quickSlotRepository
+);
+const deleteAvailabilityRuleUseCase = new DeleteAvailabilityRuleUseCase(
+  availabilityRuleRepository
+);
+const fetchAvailabilityRuleUseCase = new FetchAvailabilityRuleUseCase(
+  availabilityRuleRepository
+);
+const listAvailabilityRuleUseCase = new ListAvailabilityRulesUseCase(
+  availabilityRuleRepository
+);
+const createSpecialDayUseCase = new CreateSpecialDayUseCase(
+  specialDayRepository,
+  quickSlotRepository
+);
+const editSpecialDayUseCase = new EditSpecialDayUseCase(
+  specialDayRepository,
+  quickSlotRepository
+);
+const deleteSpecialDayUseCase = new DeleteSpecialDayUseCase(
+  specialDayRepository,
+  psychRepository
+);
+const createQuickSlotUseCase = new CreateQuickSlotUseCase(
+  quickSlotRepository,
+  specialDayRepository,
+  availabilityRuleRepository
+);
+const editQuickSlotUseCase = new EditQuickSlotUseCase(
+  quickSlotRepository,
+  specialDayRepository,
+  availabilityRuleRepository
+);
+const deleteQuickSlotUseCase = new DeleteQuickSlotUseCase(
+  quickSlotRepository,
+  psychRepository
+);
+const fetchDailyAvailabilityUseCase = new FetchDailyAvailabilityUseCase(
+  availabilityRuleRepository,
+  specialDayRepository,
+  quickSlotRepository
+);
+const cancelSessionUseCase = new CancelSessionPsychUseCase(
+  sessionRepository,
+  transactionRepository,
+  walletRepository
+);
+const findLatestApplicationUseCase = new FetchLatestApplicationByPsychUseCase(
+  applicationRepository
+);
+const checkSessionAccessUseCase = new CheckSessionAccessUseCase(
+  sessionRepository
+);
+const getNotificationUseCase = new GetNotificationsUseCase(
+  notificationRepository
+);
+const markNotificationsReadUseCase = new MarkNotificationReadUseCase(
+  notificationRepository
+);
+const getUnreadNotificationCountUseCase = new GetUnreadNotificationCountUseCase(
+  notificationRepository
+);
 
 const authController = new AuthController(
   registerPsychUseCase,
@@ -108,10 +180,13 @@ const authController = new AuthController(
   googleAuthUseCase,
   resendOtpSignUpUseCase,
   resendOtpResetUseCase,
-forgotPasswordUserUseCase,
-resetPasswordUserUseCase
+  forgotPasswordUserUseCase,
+  resetPasswordUserUseCase
 );
-const psychController = new PsychController(fetchPsychProfileUseCase,updatePsychProfileUseCase);
+const psychController = new PsychController(
+  fetchPsychProfileUseCase,
+  updatePsychProfileUseCase
+);
 const applicationController = new ApplicationController(
   createApplicationUseCase,
   applicationStatusUseCase,
@@ -132,7 +207,16 @@ const availabilityController = new AvailabilityController(
   listAvailabilityRuleUseCase
 );
 
-const sessionController=new SessionController(listSessionByPsychUseCase,cancelSessionUseCase,checkSessionAccessUseCase)
+const sessionController = new SessionController(
+  listSessionByPsychUseCase,
+  cancelSessionUseCase,
+  checkSessionAccessUseCase
+);
+const notificationController = new NotificationController(
+  getNotificationUseCase,
+  markNotificationsReadUseCase,
+  getUnreadNotificationCountUseCase
+);
 
 const checkStatusPsych = new CheckStatusPsych(checkStatusPsychUseCase);
 
@@ -208,31 +292,32 @@ router.post(
     applicationController.createApplication(req, res, next)
 );
 
-router.get(`/psychologist/profile`,
+router.get(
+  `/psychologist/profile`,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
-  (req:Request,res:Response,next:NextFunction) =>
-    psychController.fetchProfile(req,res,next)
-)
-router.get(`/psychologist/sessions`,
+  (req: Request, res: Response, next: NextFunction) =>
+    psychController.fetchProfile(req, res, next)
+);
+router.get(
+  `/psychologist/sessions`,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   paginationMiddleware,
   checkStatusPsych.handle.bind(checkStatusPsych),
-  (req:Request,res:Response,next:NextFunction) =>
-    sessionController.listSessions(req,res,next)
-)
-router.patch(`/psychologist/profile`,
+  (req: Request, res: Response, next: NextFunction) =>
+    sessionController.listSessions(req, res, next)
+);
+router.patch(
+  `/psychologist/profile`,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
-  upload.fields([
-    { name: "profilePicture", maxCount: 1 },
-  ]),
-  (req:Request,res:Response,next:NextFunction) =>
-    psychController.updateProfile(req,res,next)
-)
+  upload.fields([{ name: "profilePicture", maxCount: 1 }]),
+  (req: Request, res: Response, next: NextFunction) =>
+    psychController.updateProfile(req, res, next)
+);
 
 // ------------------ Availability Routes ------------------
 
@@ -355,5 +440,28 @@ router.get(
   sessionController.checkSessionAccess.bind(sessionController)
 );
 
+/* ----------------notifications ------------------------------------------- */
+
+router.get(
+  "/psychologist/notifications",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  paginationMiddleware,
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  notificationController.list.bind(notificationController)
+);
+router.patch(
+  "/psychologist/notifications",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  notificationController.markAllRead.bind(notificationController)
+);
+router.get(
+  "/psychologist/notifications/count",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  notificationController.getUnreadCount.bind(notificationController)
+);
 
 export default router;

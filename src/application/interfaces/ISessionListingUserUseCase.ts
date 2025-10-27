@@ -7,7 +7,7 @@ export interface SessionListingUserItem {
   startTime: Date;
   endTime: Date;
   durationInMins: number;
-  status: "scheduled"|"completed"|"cancelled"|"available"|"pending";
+  status: "scheduled"|"completed"|"cancelled"|"ended"|"pending";
   fees: number;
   sessionId: string;
 }
