@@ -8,6 +8,7 @@ import { AppErrorCodes } from "../../error/app-error-codes";
 import AppError from "../../error/AppError";
 import ICreateApplicationUseCase from "../../interfaces/ICreateApplicationUseCase";
 import { toApplicationDomainSubmit } from "../../mappers/ApplicationMapper";
+import { IEventBus } from "../../interfaces/events/IEventBus";
 
 
 export default class CreateApplicationUseCase implements ICreateApplicationUseCase{
@@ -15,6 +16,7 @@ export default class CreateApplicationUseCase implements ICreateApplicationUseCa
      private readonly _applicationRepository:IApplicationRepository,
      private readonly _psychologistRepository:IPsychRepository,
      private readonly _fileStorageService:IFileStorageService,
+     private readonly _eventBus:IEventBus
   ){}
   async execute(dto:PsychApplicationDTO){
      const psychologist=await this._psychologistRepository.findById(dto.psychId) as Psychologist;
@@ -37,6 +39,10 @@ export default class CreateApplicationUseCase implements ICreateApplicationUseCa
        const urls={licenseUrl,resume,profilePicture}
      const applicationEntity=toApplicationDomainSubmit(dto,psychologist,urls);
     const result= await this._applicationRepository.create(applicationEntity);
+    await this._eventBus.emit('application.created', {
+      applicationId: result.id!,
+      psychologistEmail:psychologist.email!,
+    });
   }
 
 }

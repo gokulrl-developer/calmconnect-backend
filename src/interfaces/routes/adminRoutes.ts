@@ -23,64 +23,172 @@ import SessionController from "../controllers/admin/SessionController";
 import { FetchPsychDetailsByAdminUseCase } from "../../application/use-cases/admin/FetchPsychDetailsByAdminUseCase";
 import { FetchUserDetailsByAdminUseCase } from "../../application/use-cases/admin/FetchUserDetailsByAdminUseCase";
 import { paginationMiddleware } from "../middleware/paginationMiddleware";
+import GetNotificationsUseCase from "../../application/use-cases/GetNotificationsUseCase";
+import { NotificationRepository } from "../../infrastructure/database/repositories/NotificationRepository";
+import NotificationController from "../controllers/admin/NotificationController";
+import MarkNotificationReadUseCase from "../../application/use-cases/MarkNotificationReadUseCase";
+import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetUnReadNotificationsCountUseCase";
 
-const applicationRepository=new ApplicationRepository()
-const psychRepository=new PsychRepository()
-const userRepository=new UserRepository();
-const sessionRepository=new SessionRepository();
+const applicationRepository = new ApplicationRepository();
+const psychRepository = new PsychRepository();
+const userRepository = new UserRepository();
+const sessionRepository = new SessionRepository();
+const notificationRepository = new NotificationRepository();
 
-const loginAdminUseCase=new LoginAdminUseCase()
-const listUseCase=new ApplicationListUseCase(applicationRepository)
-const updateApplicationUseCase=new UpdateApplicationUseCase(applicationRepository,psychRepository)
-const listUserUseCase=new UserListUseCase(userRepository)
-const listPsychUseCase=new PsychListUseCase(psychRepository)
-const updateUserUseCase=new UpdateUserStatusUseCase(userRepository);
-const updatePsychUseCase=new UpdatePsychUseCase(psychRepository);
-const applicationDetailsUseCase=new ApplicationDetailsUseCase(applicationRepository)
-const listSessionsUseCase=new SessionListingAdminUseCase(sessionRepository,userRepository,psychRepository)
-const fetchPsychDetailsUseCase=new FetchPsychDetailsByAdminUseCase(psychRepository);
-const fetchUserDetailsUseCase=new FetchUserDetailsByAdminUseCase(userRepository)
+const loginAdminUseCase = new LoginAdminUseCase();
+const listUseCase = new ApplicationListUseCase(applicationRepository);
+const updateApplicationUseCase = new UpdateApplicationUseCase(
+  applicationRepository,
+  psychRepository
+);
+const listUserUseCase = new UserListUseCase(userRepository);
+const listPsychUseCase = new PsychListUseCase(psychRepository);
+const updateUserUseCase = new UpdateUserStatusUseCase(userRepository);
+const updatePsychUseCase = new UpdatePsychUseCase(psychRepository);
+const applicationDetailsUseCase = new ApplicationDetailsUseCase(
+  applicationRepository
+);
+const listSessionsUseCase = new SessionListingAdminUseCase(
+  sessionRepository,
+  userRepository,
+  psychRepository
+);
+const fetchPsychDetailsUseCase = new FetchPsychDetailsByAdminUseCase(
+  psychRepository
+);
+const fetchUserDetailsUseCase = new FetchUserDetailsByAdminUseCase(
+  userRepository
+);
+const getNotificationUseCase = new GetNotificationsUseCase(
+  notificationRepository
+);
+const markNotificationReadUseCase = new MarkNotificationReadUseCase(
+  notificationRepository
+);
+const getUnreadNotificationCountUseCase = new GetUnreadNotificationCountUseCase(
+  notificationRepository
+);
 
-const authController=new AuthController(loginAdminUseCase);
-const applicationController=new ApplicationController(listUseCase,updateApplicationUseCase,applicationDetailsUseCase)
-const userController=new UserController(listUserUseCase,updateUserUseCase,fetchUserDetailsUseCase);
-const psychController=new PsychController(listPsychUseCase,updatePsychUseCase,fetchPsychDetailsUseCase);
-const sessionController=new SessionController(listSessionsUseCase);
+const authController = new AuthController(loginAdminUseCase);
+const applicationController = new ApplicationController(
+  listUseCase,
+  updateApplicationUseCase,
+  applicationDetailsUseCase
+);
+const userController = new UserController(
+  listUserUseCase,
+  updateUserUseCase,
+  fetchUserDetailsUseCase
+);
+const psychController = new PsychController(
+  listPsychUseCase,
+  updatePsychUseCase,
+  fetchPsychDetailsUseCase
+);
+const sessionController = new SessionController(listSessionsUseCase);
+const notificationController = new NotificationController(
+  getNotificationUseCase,
+  markNotificationReadUseCase,
+  getUnreadNotificationCountUseCase
+);
 
-const router =express.Router();
+const router = express.Router();
 
+router.post("/admin/login", (req, res, next) =>
+  authController.loginAdmin(req, res, next)
+);
+router.get(
+  "/admin/applications",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req: Request, res: Response, next: NextFunction) =>
+    applicationController.listApplications(req, res, next)
+);
+router.patch(
+  "/admin/application/:id",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req: Request, res: Response, next: NextFunction) =>
+    applicationController.updateApplicationStatus(req, res, next)
+);
+router.get(
+  "/admin/application/:id",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req: Request, res: Response, next: NextFunction) =>
+    applicationController.findApplicationDetails(req, res, next)
+);
+router.get(
+  "/admin/users",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.listUsers(req, res, next)
+);
+router.patch(
+  "/admin/user/:id",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.updateUserStatus(req, res, next)
+);
+router.get(
+  "/admin/psychologists",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req: Request, res: Response, next: NextFunction) =>
+    psychController.listPsychologists(req, res, next)
+);
+router.patch(
+  "/admin/psychologist/:id",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req: Request, res: Response, next: NextFunction) =>
+    psychController.updatePsychologistStatus(req, res, next)
+);
+router.get(
+  "/admin/psychologist-details/:psychId",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req: Request, res: Response, next: NextFunction) =>
+    psychController.fetchPsychDetails(req, res, next)
+);
+router.get(
+  "/admin/user-details/:userId",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.fetchUserDetails(req, res, next)
+);
+router.get(
+  "/admin/sessions",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  paginationMiddleware,
+  (req: Request, res: Response, next: NextFunction) =>
+    sessionController.listSessions(req, res, next)
+);
 
+/* ----------------notifications ------------------------------------------- */
 
-router.post("/admin/login",(req,res,next)=>authController.loginAdmin(req,res,next));
-router.get("/admin/applications",verifyTokenMiddleware,
-                             authorizeRoles("admin"),
-                             (req:Request,res:Response,next:NextFunction)=>applicationController.listApplications(req,res,next))
-router.patch("/admin/application/:id",verifyTokenMiddleware,
-                             authorizeRoles("admin"),
-                             (req:Request,res:Response,next:NextFunction)=>applicationController.updateApplicationStatus(req,res,next))
-router.get("/admin/application/:id",verifyTokenMiddleware,
-                             authorizeRoles("admin"),
-                             (req:Request,res:Response,next:NextFunction)=>applicationController.findApplicationDetails(req,res,next))
-router.get("/admin/users",verifyTokenMiddleware,
-                             authorizeRoles("admin"),
-                             (req:Request,res:Response,next:NextFunction)=>userController.listUsers(req,res,next))
-router.patch("/admin/user/:id",verifyTokenMiddleware,
-                             authorizeRoles("admin"),
-                             (req:Request,res:Response,next:NextFunction)=>userController.updateUserStatus(req,res,next))
-router.get("/admin/psychologists",verifyTokenMiddleware,
-                             authorizeRoles("admin"),
-                             (req:Request,res:Response,next:NextFunction)=>psychController.listPsychologists(req,res,next))
-router.patch("/admin/psychologist/:id",verifyTokenMiddleware,
-                             authorizeRoles("admin"),
-                             (req:Request,res:Response,next:NextFunction)=>psychController.updatePsychologistStatus(req,res,next))
-router.get("/admin/psychologist-details/:psychId",verifyTokenMiddleware,
-                             authorizeRoles("admin"),
-                             (req:Request,res:Response,next:NextFunction)=>psychController.fetchPsychDetails(req,res,next));
-router.get("/admin/user-details/:userId",verifyTokenMiddleware,
-                             authorizeRoles("admin"),
-                             (req:Request,res:Response,next:NextFunction)=>userController.fetchUserDetails(req,res,next))
-router.get("/admin/sessions",verifyTokenMiddleware,
-                             authorizeRoles("admin"),
-                             paginationMiddleware,
-                             (req:Request,res:Response,next:NextFunction)=>sessionController.listSessions(req,res,next))
+router.get(
+  "/admin/notifications",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  paginationMiddleware,
+  notificationController.list.bind(notificationController)
+);
+router.patch(
+  "/admin/notifications",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  notificationController.markRead.bind(notificationController)
+);
+router.get(
+  "/admin/notifications/count",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  notificationController.getUnreadCount.bind(notificationController)
+);
+
 export default router;

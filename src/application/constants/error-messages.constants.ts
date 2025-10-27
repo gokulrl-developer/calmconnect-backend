@@ -85,4 +85,7 @@ export const ERROR_MESSAGES = {
   THERAPY_SESSION_NOT_OPEN_YET:
     "The session has not started yet. Please try again closer to the scheduled time.",
   THERAPY_SESSION_EXPIRED: "The session has already ended.",
+  NOTIFICATION_NOT_FOUND: "The notification is not found",
+  NOTIFICATION_UPDATE_FAILED:"The notification update failed"
+
 } as const;
