@@ -28,12 +28,7 @@ export default class SessionController {
       const psychId = req.account?.id;
       const result = await this._listSessionsByPsychUseCase.execute({
         psychId: psychId!,
-        status: req.query.status as
-          | "scheduled"
-          | "completed"
-          | "cancelled"
-          | "available"
-          | "pending",
+        status: req.query.status as"scheduled"|"cancelled"|"ended"|"pending",
         skip: req.pagination?.skip!,
         limit: req.pagination?.limit!,
       });

@@ -75,7 +75,7 @@ export interface UpdatePsychProfileDTO {
 
 export interface SessionListingDTO{
   psychId:string,
-  status:"scheduled"|"completed"|"cancelled"|"available"|"pending",
+  status:"scheduled"|"cancelled"|"ended"|"pending",
   skip:number,
   limit:number
 }

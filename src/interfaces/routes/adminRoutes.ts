@@ -28,12 +28,22 @@ import { NotificationRepository } from "../../infrastructure/database/repositori
 import NotificationController from "../controllers/admin/NotificationController";
 import MarkNotificationReadUseCase from "../../application/use-cases/MarkNotificationReadUseCase";
 import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetUnReadNotificationsCountUseCase";
+import FinanceController from "../controllers/admin/FinanceController";
+import GetTransactionListUseCase from "../../application/use-cases/TransactionListUseCase";
+import TransactionRepository from "../../infrastructure/database/repositories/TransactionRepository";
+import FetchWalletUseCase from "../../application/use-cases/FetchWalletUseCase";
+import WalletRepository from "../../infrastructure/database/repositories/WalletRepository";
+import GenerateTransactionReceiptUseCase from "../../application/use-cases/GenerateTransactionReceiptUseCase";
+import { PdfkitReceiptService } from "../../infrastructure/external/PdfkitReceiptService";
 
 const applicationRepository = new ApplicationRepository();
 const psychRepository = new PsychRepository();
 const userRepository = new UserRepository();
 const sessionRepository = new SessionRepository();
 const notificationRepository = new NotificationRepository();
+const transactionRepository=new TransactionRepository();
+const walletRepository=new WalletRepository();
+const receiptService=new PdfkitReceiptService();
 
 const loginAdminUseCase = new LoginAdminUseCase();
 const listUseCase = new ApplicationListUseCase(applicationRepository);
@@ -68,6 +78,9 @@ const markNotificationReadUseCase = new MarkNotificationReadUseCase(
 const getUnreadNotificationCountUseCase = new GetUnreadNotificationCountUseCase(
   notificationRepository
 );
+const transactionListUseCase=new GetTransactionListUseCase(transactionRepository)
+const fetchWalletUseCase=new FetchWalletUseCase(walletRepository)
+const generateTransactionReceiptUseCase=new GenerateTransactionReceiptUseCase(transactionRepository,receiptService,userRepository,psychRepository)
 
 const authController = new AuthController(loginAdminUseCase);
 const applicationController = new ApplicationController(
@@ -91,6 +104,7 @@ const notificationController = new NotificationController(
   markNotificationReadUseCase,
   getUnreadNotificationCountUseCase
 );
+const financeController=new FinanceController(transactionListUseCase,fetchWalletUseCase,generateTransactionReceiptUseCase)
 
 const router = express.Router();
 
@@ -189,6 +203,25 @@ router.get(
   verifyTokenMiddleware,
   authorizeRoles("admin"),
   notificationController.getUnreadCount.bind(notificationController)
+);
+router.get(
+  "/admin/transactions",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  paginationMiddleware,
+  financeController.listTransactions.bind(financeController)
+);
+router.get(
+  "/admin/wallet",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  financeController.fetchWallet.bind(financeController)
+);
+router.get(
+  "/admin/transactions/:transactionId/receipt",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  financeController.generateTransactionReceipt.bind(financeController)
 );
 
 export default router;

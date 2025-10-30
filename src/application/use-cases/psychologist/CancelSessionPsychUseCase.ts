@@ -10,30 +10,64 @@ import { CancelSessionDTO } from "../../dtos/psych.dto";
 import AppError from "../../error/AppError";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";
+import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService";
+import { toWalletDomain } from "../../mappers/WalletMapper";
 
 export default class CancelSessionPsychUseCase {
   constructor(
     private readonly _sessionRepository: ISessionRepository,
     private readonly _transactionRepository: ITransactionRepository,
-    private readonly _walletRepository: IWalletRepository
+    private readonly _walletRepository: IWalletRepository,
+    private readonly _adminConfigService: IAdminConfigService
   ) {}
 
   async execute(dto: CancelSessionDTO): Promise<void> {
-    console.log(dto)
+    console.log(dto);
     const session = await this._sessionRepository.findById(dto.sessionId);
     if (!session)
-      throw new AppError(ERROR_MESSAGES.SESSION_NOT_FOUND, AppErrorCodes.NOT_FOUND);
+      throw new AppError(
+        ERROR_MESSAGES.SESSION_NOT_FOUND,
+        AppErrorCodes.NOT_FOUND
+      );
 
-    let platformWallet = await this._walletRepository.findOne({ ownerType: "admin" });
+    const { email: adminEmail, adminId } =
+      this._adminConfigService.getAdminData();
+    let platformWallet = await this._walletRepository.findOne({
+      ownerType: "platform",
+    });
+    let userWallet = await this._walletRepository.findByOwner(
+      session.user,
+      "user"
+    );
     if (!platformWallet) {
-      platformWallet = await this._walletRepository.create(new Wallet("admin", 0));
+      platformWallet = await this._walletRepository.create(
+        new Wallet("platform", 0, adminId)
+      );
     }
-
-    if(session.psychologist !== dto.psychId){
-        throw new AppError(ERROR_MESSAGES.UNAUTHORISED_ACTION,AppErrorCodes.FORBIDDEN_ERROR)
+    if (!userWallet) {
+      const walletEntity = toWalletDomain("user", 0, session.user);
+      userWallet = await this._walletRepository.create(walletEntity);
     }
-    const debitFromPlatform = toDomainRefundDebit(platformWallet.id!, session.fees, session.id!);
-    const creditToUser = toDomainRefundCredit(session.user, session.fees, session.id!);
+    if (session.psychologist !== dto.psychId) {
+      throw new AppError(
+        ERROR_MESSAGES.UNAUTHORISED_ACTION,
+        AppErrorCodes.FORBIDDEN_ERROR
+      );
+    }
+    const debitFromPlatform = toDomainRefundDebit(
+      platformWallet.id!,
+      adminId,
+      session.user,
+      session.fees,
+      session.id!
+    );
+    const creditToUser = toDomainRefundCredit(
+      userWallet.id!,
+      session.user,
+      adminId,
+      session.fees,
+      session.id!
+    );
 
     platformWallet.balance -= session.fees;
     await this._walletRepository.update(platformWallet.id!, platformWallet);

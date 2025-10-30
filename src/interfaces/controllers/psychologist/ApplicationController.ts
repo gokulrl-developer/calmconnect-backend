@@ -20,7 +20,6 @@ export default class ApplicationController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const adminId=process.env.ADMIN_ID!;
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       if (
         !req.body.submittedAt ||
@@ -115,7 +114,6 @@ export default class ApplicationController {
       }
       await this._createApplicationUseCase.execute({
         ...req.body,
-        adminId:adminId,
         psychId: req?.account?.id,
         license: req.body.license? req.body.license:files?.license?.[0].buffer,
         profilePicture: req.body.profilePicture?req.body.profilePicture:files?.profilePicture?.[0].buffer,

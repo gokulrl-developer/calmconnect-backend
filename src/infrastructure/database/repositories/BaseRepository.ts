@@ -12,7 +12,6 @@ export abstract class BaseRepository<TDomain, TDocument extends Document>
   protected abstract toPersistence(entity: Partial<TDomain>): Partial<TDocument>;
 
   async create(item: Partial<TDomain>): Promise<TDomain> {
-    console.log("kalsdjfdfhsk")
     const created = await this.model.create(this.toPersistence(item));
     return this.toDomain(created);
   }

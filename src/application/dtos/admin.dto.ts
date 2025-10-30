@@ -40,7 +40,7 @@ export interface ApplicationDetailsDTO{
 }
 
 export interface SessionListingDTO{
-  status:"scheduled"|"completed"|"cancelled"|"available"|"pending",
+  status:"scheduled"|"cancelled"|"ended"|"pending",
   skip:number,
   limit:number
 }

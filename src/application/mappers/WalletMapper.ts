@@ -1,7 +1,7 @@
 import Wallet from "../../domain/entities/wallet.entity";
 
 export const toWalletDomain = (
-  ownerType: "user" | "psychologist" | "admin",
+  ownerType: "user" | "psychologist" | "platform",
   balance: number = 0,
   ownerId?: string
 ): Wallet => {
@@ -11,3 +11,11 @@ export const toWalletDomain = (
     ownerId
   );
 };
+
+export const toFetchWalletResponse=(entity:Wallet)=>{
+  return {
+    ownerType:entity.ownerType,
+    balance:entity.balance,
+    walletId:entity.id!
+  }
+}

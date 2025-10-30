@@ -30,3 +30,24 @@ export interface GetUnreadNotificationsCountDTO {
   recipientType: "admin" | "user" | "psychologist";
   recipientId: string;
 }
+
+export interface GetWalletDTO{
+  ownerType: "platform" | "user" | "psychologist";
+  ownerId: string;
+}
+
+export interface GetTransactionsDTO{
+  ownerType: "platform" | "user" | "psychologist";
+  ownerId: string;
+  type?:"credit"|"debit",
+  referenceType?:"booking" | "psychologistPayment" | "refund",
+  date?:string,
+  skip?:number;
+  limit?:number
+}
+
+export interface GetTransactionReceiptDTO{
+  ownerType: "platform" | "user" | "psychologist";
+  ownerId: string;
+  transactionId:string;
+}

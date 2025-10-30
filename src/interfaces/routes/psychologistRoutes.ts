@@ -55,6 +55,12 @@ import { eventBus } from "../../infrastructure/external/eventBus";
 import MarkNotificationReadUseCase from "../../application/use-cases/MarkNotificationReadUseCase";
 import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetUnReadNotificationsCountUseCase";
 import FetchLatestApplicationUseCase from "../../application/use-cases/psychologist/FetchLatestApplicationUseCase";
+import FinanceController from "../controllers/psychologist/FinanceController";
+import GenerateTransactionReceiptUseCase from "../../application/use-cases/GenerateTransactionReceiptUseCase";
+import FetchWalletUseCase from "../../application/use-cases/FetchWalletUseCase";
+import GetTransactionListUseCase from "../../application/use-cases/TransactionListUseCase";
+import { PdfkitReceiptService } from "../../infrastructure/external/PdfkitReceiptService";
+import AdminConfigService from "../../infrastructure/external/AdminConfigService";
 
 const psychRepository = new PsychRepository();
 const otpRepository = new RedisOtpRepository();
@@ -68,6 +74,8 @@ const userRepository = new UserRepository();
 const transactionRepository = new TransactionRepository();
 const walletRepository = new WalletRepository();
 const notificationRepository = new NotificationRepository();
+const receiptService=new PdfkitReceiptService();
+const adminConfigService=new AdminConfigService();
 
 const registerPsychUseCase = new RegisterPsychUseCase(
   psychRepository,
@@ -155,7 +163,8 @@ const fetchDailyAvailabilityUseCase = new FetchDailyAvailabilityUseCase(
 const cancelSessionUseCase = new CancelSessionPsychUseCase(
   sessionRepository,
   transactionRepository,
-  walletRepository
+  walletRepository,
+  adminConfigService
 );
 const fetchLatestApplicationUseCase = new FetchLatestApplicationUseCase(
   applicationRepository
@@ -172,6 +181,9 @@ const markNotificationsReadUseCase = new MarkNotificationReadUseCase(
 const getUnreadNotificationCountUseCase = new GetUnreadNotificationCountUseCase(
   notificationRepository
 );
+const transactionListUseCase=new GetTransactionListUseCase(transactionRepository)
+const fetchWalletUseCase=new FetchWalletUseCase(walletRepository)
+const generateTransactionReceiptUseCase=new GenerateTransactionReceiptUseCase(transactionRepository,receiptService,userRepository,psychRepository)
 
 const authController = new AuthController(
   registerPsychUseCase,
@@ -216,6 +228,7 @@ const notificationController = new NotificationController(
   markNotificationsReadUseCase,
   getUnreadNotificationCountUseCase
 );
+const financeController=new FinanceController(transactionListUseCase,fetchWalletUseCase,generateTransactionReceiptUseCase)
 
 const checkStatusPsych = new CheckStatusPsych(checkStatusPsychUseCase);
 
@@ -461,6 +474,25 @@ router.get(
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   notificationController.getUnreadCount.bind(notificationController)
+);
+router.get(
+  "/psychologist/transactions",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  paginationMiddleware,
+  financeController.listTransactions.bind(financeController)
+);
+router.get(
+  "/psychologist/wallet",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  financeController.fetchWallet.bind(financeController)
+);
+router.get(
+  "/psychologist/transactions/:transactionId/receipt",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  financeController.generateTransactionReceipt.bind(financeController)
 );
 
 export default router;
