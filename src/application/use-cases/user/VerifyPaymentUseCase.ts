@@ -19,6 +19,7 @@ import { toWalletDomain } from "../../mappers/WalletMapper";
 import { IEventBus } from "../../interfaces/events/IEventBus";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import { ISessionTaskQueue } from "../../../domain/interfaces/ISessionTaskQueue";
+import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService";
 
 export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
   constructor(
@@ -28,7 +29,8 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     private readonly _walletRepository: IWalletRepository,
     private readonly _userRepository: IUserRepository,
     private readonly _sessionTaskQueue: ISessionTaskQueue,
-    private readonly _eventBus: IEventBus
+    private readonly _eventBus: IEventBus,
+    private readonly _adminConfigService:IAdminConfigService,
   ) {}
 
   async execute(dto: VerifyPaymentDTO): Promise<VerifyPaymentResponse> {
@@ -50,11 +52,11 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
       );
     }
 
-    let platformWallet = await this._walletRepository.findOne({
-      ownerType: "admin",
-    });
+    const adminData=this._adminConfigService.getAdminData();
+    let platformWallet = await this._walletRepository.findByOwner(adminData.adminId,"platform")
+    let userWallet = await this._walletRepository.findByOwner(dto.userId,"user");
     if (!platformWallet) {
-      const walletEntity = toWalletDomain("admin", verificationResult.amount!);
+      const walletEntity = toWalletDomain("platform", verificationResult.amount!/100,adminData.adminId);
       platformWallet = await this._walletRepository.create(walletEntity);
     } else {
       platformWallet.balance =
@@ -62,16 +64,25 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     }
     await this._walletRepository.update(platformWallet.id!, platformWallet);
 
+    if(!userWallet){
+      const walletEntity = toWalletDomain("user", 0,dto.userId);
+      userWallet = await this._walletRepository.create(walletEntity);
+    }
+
     const transactionCredit = toDomainBookingCredit(
       platformWallet.id!,
-      verificationResult.amount!,
+      adminData.adminId,
+      dto.userId,
+      verificationResult.amount!/100,
       session.id!,
       dto.providerPaymentId
     );
 
     const transactionDebit = toDomainBookingDebit(
+      userWallet.id!,
       dto.userId!,
-      verificationResult.amount!,
+      adminData.adminId,
+      verificationResult.amount!/100,
       session.id!,
       dto.providerPaymentId
     );

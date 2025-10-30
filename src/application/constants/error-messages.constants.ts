@@ -86,6 +86,10 @@ export const ERROR_MESSAGES = {
     "The session has not started yet. Please try again closer to the scheduled time.",
   THERAPY_SESSION_EXPIRED: "The session has already ended.",
   NOTIFICATION_NOT_FOUND: "The notification is not found",
-  NOTIFICATION_UPDATE_FAILED:"The notification update failed"
-
+  NOTIFICATION_UPDATE_FAILED:"The notification update failed",
+  WALLET_NOT_FOUND:"The wallet data for this account is not found",
+  TRANSACTION_NOT_FOUND:"The transaction is not found",
+  TRANSACTION_TYPE_INVALID_FORMAT:"The transaction type is in invalid format",
+  TRANSACTION_REFERENCE_TYPE_INVALID_FORMAT:"The transaction reference type is in invalid format",
+  TRANSACTION_DATE_INVALID_FORMAT:"The transaction date is in invalid format",
 } as const;

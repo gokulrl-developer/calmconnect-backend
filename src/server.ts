@@ -21,6 +21,8 @@ import NotificationHandler from "./application/event-handlers/NotificationHandle
 import { NotificationRepository } from "./infrastructure/database/repositories/NotificationRepository";
 import MarkSessionOverUseCase from "./application/use-cases/MarkSessionOverUseCase";
 import BullMQSessionTaskWorker from "./infrastructure/external/BullMQSessionTaskWorker";
+import TransactionRepository from "./infrastructure/database/repositories/TransactionRepository";
+import WalletRepository from "./infrastructure/database/repositories/WalletRepository";
 
 const PORT = process.env.PORT || 5000;
 
@@ -36,6 +38,8 @@ const startServer = async () => {
     const userRepository = new UserRepository();
     const notificationRepository = new NotificationRepository();
     const psychRepository = new PsychRepository();
+    const transactionRepository=new TransactionRepository();
+    const walletRepository=new WalletRepository();
 
     const checkSessionAccessUseCase = new CheckSessionAccessUseCase(
       sessionRepository
@@ -64,7 +68,7 @@ const startServer = async () => {
       notificationRepository,
       socketServer
     );
-    const markSessionOverUseCase =new MarkSessionOverUseCase(sessionRepository)
+    const markSessionOverUseCase =new MarkSessionOverUseCase(sessionRepository,transactionRepository,walletRepository)
 
     const bullMQSessionTaskWorker=new BullMQSessionTaskWorker(sendNotificationUseCase,markSessionOverUseCase)
    const notificationHandler = new NotificationHandler(

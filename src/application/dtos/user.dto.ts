@@ -69,12 +69,12 @@ export interface VerifyPaymentDTO {
   providerPaymentId: string; 
   signature: string;         
   userId: string;  
-  sessionId:string          
+  sessionId:string;
 }
 
 export interface SessionListingDTO{
   userId:string,
-  status:"scheduled"|"completed"|"cancelled"|"available"|"pending",
+  status:"scheduled"|"cancelled"|"ended"|"pending",
   skip:number,
   limit:number
 }

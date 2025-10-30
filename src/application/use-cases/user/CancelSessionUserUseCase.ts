@@ -13,12 +13,14 @@ import AppError from "../../error/AppError";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";
 import ICancelSessionUserUseCase from "../../interfaces/ICancelSessionUserUseCase";
+import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService";
 
 export default class CancelSessionUserUseCase implements ICancelSessionUserUseCase{
   constructor(
     private readonly _sessionRepository: ISessionRepository,
     private readonly _transactionRepository: ITransactionRepository,
-    private readonly _walletRepository: IWalletRepository
+    private readonly _walletRepository: IWalletRepository,
+    private readonly _adminConfigService:IAdminConfigService
   ) {}
 
   async execute(dto: CancelSessionDTO): Promise<void> {
@@ -33,17 +35,19 @@ export default class CancelSessionUserUseCase implements ICancelSessionUserUseCa
     const sessionStart = new Date(session.startTime);
     const threeDaysBefore = new Date(sessionStart);
     threeDaysBefore.setDate(sessionStart.getDate() - 3);
+    
+    const {email:adminEmail,adminId}=this._adminConfigService.getAdminData();
 
-    let platformWallet = await this._walletRepository.findOne({ ownerType: "admin" });
+    let platformWallet = await this._walletRepository.findOne({ ownerType: "platform" });
     if (!platformWallet) {
-      platformWallet = await this._walletRepository.create(new Wallet("admin", 0));
+      platformWallet = await this._walletRepository.create(new Wallet("platform", 0,adminId));
     }
 
     let transactions: string[] = [];
-
+  
     if (now <= threeDaysBefore) {
-      const debitFromPlatform = toDomainRefundDebit(platformWallet.id!, session.fees, session.id!);
-      const creditToUser = toDomainRefundCredit(dto.userId!, session.fees, session.id!);
+      const debitFromPlatform = toDomainRefundDebit(platformWallet.id!,adminId,dto.userId, session.fees, session.id!);
+      const creditToUser = toDomainRefundCredit(dto.userId!,dto.userId,adminId, session.fees, session.id!);
 
       platformWallet.balance -= session.fees;
       await this._walletRepository.update(platformWallet.id!, platformWallet);
@@ -66,8 +70,8 @@ export default class CancelSessionUserUseCase implements ICancelSessionUserUseCa
 
       const amountToPsych = session.fees * 0.9;
 
-      const debitFromPlatform = toDomainPayoutDebit(platformWallet.id!, amountToPsych, session.id!);
-      const creditToPsych = toDomainPayoutCredit(psychWallet.id!, amountToPsych, session.id!);
+      const debitFromPlatform = toDomainPayoutDebit(platformWallet.id!,adminId,session.psychologist, amountToPsych, session.id!);
+      const creditToPsych = toDomainPayoutCredit(psychWallet.id!,session.psychologist,adminId, amountToPsych, session.id!);
 
       platformWallet.balance -= amountToPsych;
       psychWallet.balance += amountToPsych;

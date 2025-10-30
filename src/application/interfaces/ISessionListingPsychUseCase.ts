@@ -7,7 +7,7 @@ export interface SessionListingPsychItem {
   startTime: Date;
   endTime:Date;
   durationInMins: number;
-  status: "scheduled"|"completed"|"cancelled"|"ended"|"pending";
+  status: "scheduled"|"cancelled"|"ended"|"pending";
   fees: number;
   sessionId: string;
 }

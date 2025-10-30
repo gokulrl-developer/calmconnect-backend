@@ -27,9 +27,8 @@ export default class SessionController {
         userId: userId!,
         status: req.query.status as
           | "scheduled"
-          | "completed"
           | "cancelled"
-          | "available"
+          | "ended"
           | "pending",
         skip: req.pagination?.skip!,
         limit: req.pagination?.limit!,
@@ -87,8 +86,11 @@ export default class SessionController {
           AppErrorCodes.INVALID_INPUT
         );
       }
-       
-      const result = await this._checkSessionAccessUseCase.execute({ sessionId, userId: id });
+
+      const result = await this._checkSessionAccessUseCase.execute({
+        sessionId,
+        userId: id,
+      });
 
       res.status(StatusCodes.OK).json({
         ...result,

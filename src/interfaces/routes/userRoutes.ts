@@ -44,7 +44,13 @@ import { NotificationRepository } from "../../infrastructure/database/repositori
 import BullMQNotificationQueue from "../../infrastructure/external/BullMQSessionTaskQueue";
 import { eventBus } from "../../infrastructure/external/eventBus";
 import MarkNotificationsReadUseCase from "../../application/use-cases/MarkNotificationReadUseCase";
+import FinanceController from "../controllers/user/FinanceController";
+import GenerateTransactionReceiptUseCase from "../../application/use-cases/GenerateTransactionReceiptUseCase";
+import FetchWalletUseCase from "../../application/use-cases/FetchWalletUseCase";
+import GetTransactionListUseCase from "../../application/use-cases/TransactionListUseCase";
+import { PdfkitReceiptService } from "../../infrastructure/external/PdfkitReceiptService";
 import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetUnReadNotificationsCountUseCase";
+import AdminConfigService from "../../infrastructure/external/AdminConfigService";
 
 const userRepository = new UserRepository();
 const otpRepository = new RedisOtpRepository();
@@ -59,6 +65,8 @@ const walletRepository = new WalletRepository();
 const transactionRepository = new TransactionRepository();
 const notificationRepository = new NotificationRepository();
 const notificationQueue = new BullMQNotificationQueue();
+const receiptService=new PdfkitReceiptService();
+const adminConfigService=new AdminConfigService();
 
 const registerUserUseCase = new RegisterUserUseCase(
   userRepository,
@@ -119,7 +127,8 @@ const verifyPaymentUseCase = new VerifyPaymentUseCase(
   walletRepository,
   userRepository,
   notificationQueue,
-  eventBus
+  eventBus,
+  adminConfigService
 );
 const listSessionsByUserUseCase = new SessionListingUserUseCase(
   sessionRepository,
@@ -128,7 +137,8 @@ const listSessionsByUserUseCase = new SessionListingUserUseCase(
 const cancelSessionUseCase = new CancelSessionUserUseCase(
   sessionRepository,
   transactionRepository,
-  walletRepository
+  walletRepository,
+  adminConfigService
 );
 const checkSessionAccessUseCase = new CheckSessionAccessUseCase(
   sessionRepository
@@ -142,6 +152,10 @@ const markNotificationsReadUseCase = new MarkNotificationsReadUseCase(
 const getUnreadNotificationCountUseCase = new GetUnreadNotificationCountUseCase(
   notificationRepository
 );
+const transactionListUseCase=new GetTransactionListUseCase(transactionRepository)
+const fetchWalletUseCase=new FetchWalletUseCase(walletRepository)
+const generateTransactionReceiptUseCase=new GenerateTransactionReceiptUseCase(transactionRepository,receiptService,userRepository,psychRepository)
+
 const authController = new AuthController(
   registerUserUseCase,
   signUpUseCase,
@@ -173,6 +187,7 @@ const notificationController = new NotificationController(
   markNotificationsReadUseCase,
   getUnreadNotificationCountUseCase
 );
+const financeController=new FinanceController(transactionListUseCase,fetchWalletUseCase,generateTransactionReceiptUseCase)
 
 const checkStatusUser = new CheckStatusUser(checkStatusUserUseCase);
 
@@ -329,4 +344,24 @@ router.get(
   authorizeRoles("user"),
   notificationController.getUnreadCount.bind(notificationController)
 );
+router.get(
+  "/user/transactions",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  paginationMiddleware,
+  financeController.listTransactions.bind(financeController)
+);
+router.get(
+  "/user/wallet",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  financeController.fetchWallet.bind(financeController)
+);
+router.get(
+  "/user/transactions/:transactionId/receipt",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  financeController.generateTransactionReceipt.bind(financeController)
+);
+
 export default router;

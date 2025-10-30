@@ -9,6 +9,7 @@ import AppError from "../../error/AppError";
 import ICreateApplicationUseCase from "../../interfaces/ICreateApplicationUseCase";
 import { toApplicationDomainSubmit } from "../../mappers/ApplicationMapper";
 import { IEventBus } from "../../interfaces/events/IEventBus";
+import { adminConfig } from "../../../utils/adminConfig";
 
 
 export default class CreateApplicationUseCase implements ICreateApplicationUseCase{
@@ -52,8 +53,9 @@ export default class CreateApplicationUseCase implements ICreateApplicationUseCa
     }
      const applicationEntity=toApplicationDomainSubmit(dto,psychologist,{licenseUrl,resume,profilePicture});
     const result= await this._applicationRepository.create(applicationEntity);
+    
     await this._eventBus.emit('application.created', {
-      adminId:dto.adminId,
+      adminId:adminConfig.adminId,
       psychologistName:`${psychologist.firstName} ${psychologist.lastName}`,
       psychologistEmail:psychologist.email!,
     });
