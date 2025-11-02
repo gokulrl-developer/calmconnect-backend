@@ -15,7 +15,7 @@ export default class UpdatePsychProfileUseCase implements IUpdatePsychProfileUse
     ) {}
 
     async execute(dto: UpdatePsychProfileDTO & { psychId: string }): Promise<void> {
-        const { psychId, profilePicture, address, languages, specializations, bio, qualifications, hourlyFees, quickSlotHourlyFees } = dto;
+        const { psychId, profilePicture, hourlyFees, quickSlotHourlyFees } = dto;
 
         if (hourlyFees !== undefined && hourlyFees <= 0) {
             throw new AppError(ERROR_MESSAGES.INVALID_HOURLY_FEES, AppErrorCodes.VALIDATION_ERROR);

@@ -133,22 +133,15 @@ export default class PsychController {
         AppErrorCodes.VALIDATION_ERROR
       );
     }
-    let profilePicture:  string|Buffer|undefined =undefined;
+    let profilePicture:  Buffer|undefined =undefined;
     if (files?.profilePicture?.[0]?.buffer instanceof Buffer) {
-      console.log("file")
       profilePicture = files.profilePicture[0].buffer;
-    } else {
-      console.log(profilePicture)
-      throw new AppError(
-        ERROR_MESSAGES.PROFILE_PICTURE_REQUIRED,
-        AppErrorCodes.VALIDATION_ERROR
-      );
     }
     
     await this._updatePsychProfileUseCase.execute({
       psychId: psychId!,
       ...req.body,
-      profilePicture
+      ...(profilePicture&&{profilePicture:profilePicture})
     });
 
     res.status(StatusCodes.OK).json({

@@ -49,7 +49,7 @@ import GenerateTransactionReceiptUseCase from "../../application/use-cases/Gener
 import FetchWalletUseCase from "../../application/use-cases/FetchWalletUseCase";
 import GetTransactionListUseCase from "../../application/use-cases/TransactionListUseCase";
 import { PdfkitReceiptService } from "../../infrastructure/external/PdfkitReceiptService";
-import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetUnReadNotificationsCountUseCase";
+import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetNotificationsCountUseCase";
 import AdminConfigService from "../../infrastructure/external/AdminConfigService";
 
 const userRepository = new UserRepository();

@@ -40,23 +40,23 @@ export default class CreateQuickSlotUseCase implements ICreateQuickSlotUseCase {
     }
 
     const weekDay = quickSlot.date.getDay(); 
-    const availabilityRule = await this._availabilityRuleRepo.findActiveByWeekDayPsych(
+    const availabilityRules = await this._availabilityRuleRepo.findActiveByWeekDayPsych(
       weekDay,
       quickSlot.psychologist
     );
     const specialDay=await this._specialDayRepo.findActiveByDatePsych(new Date(quickSlot.date),quickSlot.psychologist)
 
-    if(!availabilityRule && ! specialDay){
+    if(availabilityRules.length===0 && ! specialDay){
     throw new AppError(ERROR_MESSAGES.AVAILABILITY_NOT_SET,AppErrorCodes.CONFLICT)
   }
 
-    if (availabilityRule) {
+  for(let availabilityRule of availabilityRules){
       const slotStartMinutes = quickSlot.startTime.getHours() * 60 + quickSlot.startTime.getMinutes();
       const slotEndMinutes = quickSlot.endTime.getHours() * 60 + quickSlot.endTime.getMinutes();
       const ruleStartMinutes = timeStringToMinutes(availabilityRule.startTime);
       const ruleEndMinutes = timeStringToMinutes(availabilityRule.endTime);
 
-      if (specialDay===null &&((slotStartMinutes > ruleStartMinutes&& slotEndMinutes<ruleEndMinutes)||(slotEndMinutes < ruleEndMinutes && slotEndMinutes>ruleStartMinutes))) {
+      if (specialDay===null &&((slotStartMinutes > ruleStartMinutes&& slotStartMinutes<ruleEndMinutes)||(slotEndMinutes < ruleEndMinutes && slotEndMinutes>ruleStartMinutes))) {
         throw new AppError(
           ERROR_MESSAGES.CONFLICTING_AVAILABILITY_RULE,
           AppErrorCodes.CONFLICT

@@ -24,23 +24,21 @@ export default class FetchDailyAvailabilityUseCase implements IFetchDailyAvailab
     const { psychId, date } = dto;
     const weekDay = new Date(date).getDay();       // 0-6
 
-    const availabilityRule: AvailabilityRule | null = await this._availabilityRuleRepository.findActiveByWeekDayPsych(weekDay, psychId);
-    if (!availabilityRule) {
-      throw new AppError(ERROR_MESSAGES.AVAILABILITY_RULE_NOT_FOUND, AppErrorCodes.NOT_FOUND);
+    const availabilityRules = await this._availabilityRuleRepository.findActiveByWeekDayPsych(weekDay, psychId);
+    if (availabilityRules.length===0) {
+      throw new AppError(ERROR_MESSAGES.AVAILABILITY_NOT_SET, AppErrorCodes.CONFLICT);
     }
 
     const specialDay: SpecialDay | null = await this._specialDayRepository.findActiveByDatePsych(new Date(date), psychId);
 
     const quickSlots: QuickSlot[] = await this._quickSlotRepository.findActiveByDatePsych(new Date(date), psychId);
 
-    const dailyAvailabilityRule = specialDay
-      ? mapDomainToDailySpecialDay(specialDay)
-      : mapDomainToDailyAvailabilityRule(availabilityRule, new Date(date));
+    const activeAvailabilityRules = availabilityRules.map((availabilityRule:AvailabilityRule)=> mapDomainToDailyAvailabilityRule(availabilityRule, new Date(date)));
 
     const dailyQuickSlots = quickSlots.map(mapDomainToDailyQuickSlot);
 
     return {
-      availabilityRule: !specialDay? mapDomainToDailyAvailabilityRule(availabilityRule, new Date(date)):undefined, 
+      availabilityRules: !specialDay? activeAvailabilityRules:[], 
       specialDay: specialDay ? mapDomainToDailySpecialDay(specialDay) : undefined,
       quickSlots: dailyQuickSlots
     };

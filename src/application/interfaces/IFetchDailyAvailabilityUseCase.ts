@@ -28,7 +28,7 @@ export interface DailyQuickSlot {
   quickSlotId: string;
 }
 export interface DailyAvailability {
-  availabilityRule?: DailyAvailabilityRule;
+  availabilityRules: DailyAvailabilityRule[];
   specialDay?: DailySpecialDay;
   quickSlots: DailyQuickSlot[];
 }

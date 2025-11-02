@@ -9,7 +9,6 @@ import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 export default class DeleteQuickSlotUseCase implements IDeleteQuickSlotUseCase {
   constructor(
     private readonly _quickSlotRepository: IQuickSlotRepository,
-    private readonly _psychologistRepository: IPsychRepository
   ) {}
 
   async execute(dto: DeleteQuickSlotDTO): Promise<void> {

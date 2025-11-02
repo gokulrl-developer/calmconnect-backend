@@ -3,7 +3,6 @@ dotenv.config();
 
 import app from "./app";
 import http from "http";
-import type { Server as HttpServer } from "http";
 import { connectDB } from "./infrastructure/config/mongoDB";
 import CheckSessionAccessUseCase from "./application/use-cases/CheckSessionAccessUseCase";
 import PostMessageUseCase from "./application/use-cases/PostMessageUseCase";

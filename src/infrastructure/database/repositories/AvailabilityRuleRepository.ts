@@ -45,11 +45,9 @@ export default class AvailabilityRuleRepository
     return rules.map((rule) => this.toDomain(rule));
   }
 
-  async findActiveByWeekDayPsych(weekDay: number, psychId: string): Promise<AvailabilityRule|null> {
-    const rule = await this.model.findOne({ psychologist: psychId, weekDay,status:"active" });
-    if (!rule) {
-      return null;
-    }
-    return this.toDomain(rule);
+  async findActiveByWeekDayPsych(weekDay: number, psychId: string): Promise<AvailabilityRule[]> {
+    const docs = await this.model.find({ psychologist: psychId, weekDay,status:"active" });
+   
+    return docs.map((doc)=>this.toDomain(doc));
   }
 }
