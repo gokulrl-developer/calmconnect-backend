@@ -92,4 +92,6 @@ export const ERROR_MESSAGES = {
   TRANSACTION_TYPE_INVALID_FORMAT:"The transaction type is in invalid format",
   TRANSACTION_REFERENCE_TYPE_INVALID_FORMAT:"The transaction reference type is in invalid format",
   TRANSACTION_DATE_INVALID_FORMAT:"The transaction date is in invalid format",
+  SELECTED_DATE_PASSED:"Selected date has already passed. Please choose a future date.",
+  SELECTED_SLOT_PASSED:"Selected slot has already passed. Please choose an upcoming slot.",
 } as const;

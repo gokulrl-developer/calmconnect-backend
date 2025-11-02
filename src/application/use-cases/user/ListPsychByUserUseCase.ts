@@ -4,7 +4,10 @@ import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
 import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
 import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { ListPsychByUserDTO } from "../../dtos/user.dto";
+import { AppErrorCodes } from "../../error/app-error-codes";
+import AppError from "../../error/AppError";
 import IListPsychByUserUseCase from "../../interfaces/IListPsychByUserUseCase";
 import {
   toPsychListByUserPersistence,
@@ -13,9 +16,7 @@ import {
 import { calculatePagination } from "../../utils/calculatePagination";
 import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych";
 
-export default class ListPsychByUserUseCase
-  implements IListPsychByUserUseCase
-{
+export default class ListPsychByUserUseCase implements IListPsychByUserUseCase {
   constructor(
     private readonly _psychRepository: IPsychRepository,
     private readonly _availabilityRuleRepository: IAvailabilityRuleRepository,
@@ -36,9 +37,17 @@ export default class ListPsychByUserUseCase
       const weekDay = new Date(dto.date).getDay();
       const selectedDate = new Date(dto.date);
 
+      const startOfToday = new Date();
+      startOfToday.setHours(0, 0, 0, 0);
+      if (startOfToday > selectedDate) {
+        throw new AppError(
+          ERROR_MESSAGES.SELECTED_DATE_PASSED,
+          AppErrorCodes.VALIDATION_ERROR
+        );
+      }
       const availabilityChecks = await Promise.all(
         psychologistsBeforeDateFilter.map(async (psych) => {
-          const [availabilityRule, specialDay, quickSlots, sessions] =
+          const [availabilityRules, specialDay, quickSlots, sessions] =
             await Promise.all([
               this._availabilityRuleRepository.findActiveByWeekDayPsych(
                 weekDay,
@@ -60,7 +69,7 @@ export default class ListPsychByUserUseCase
 
           const slotsCreated = getAvailableSlotsForDatePsych(
             specialDay,
-            availabilityRule,
+            availabilityRules,
             quickSlots,
             sessions
           );

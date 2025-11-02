@@ -1,6 +1,4 @@
 import { VerifyPaymentDTO } from "../../dtos/user.dto";
-import Transaction from "../../../domain/entities/transaction.entity";
-import Wallet from "../../../domain/entities/wallet.entity";
 import IPaymentProvider from "../../../domain/interfaces/IPaymentProvider";
 import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
 import ITransactionRepository from "../../../domain/interfaces/ITransactionRepository";

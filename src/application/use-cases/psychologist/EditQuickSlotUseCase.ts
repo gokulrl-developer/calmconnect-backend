@@ -69,20 +69,29 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
     }
 
     const weekDay = startTime.getDay();
-    const availabilityRule =await this._availabilityRuleRepo.findActiveByWeekDayPsych(weekDay, dto.psychId);
-  const specialDay=await this._specialDayRepo.findActiveByDatePsych(existingQuickSlot.date,existingQuickSlot.psychologist)
-  
-    if (availabilityRule) {
+    const availabilityRules =
+      await this._availabilityRuleRepo.findActiveByWeekDayPsych(
+        weekDay,
+        dto.psychId
+      );
+    const specialDay = await this._specialDayRepo.findActiveByDatePsych(
+      existingQuickSlot.date,
+      existingQuickSlot.psychologist
+    );
+
+    for (let availabilityRule of availabilityRules) {
       const slotStartMinutes =
         startTime.getHours() * 60 + startTime.getMinutes();
       const slotEndMinutes = endTime.getHours() * 60 + endTime.getMinutes();
       const ruleStartMinutes = timeStringToMinutes(availabilityRule.startTime);
       const ruleEndMinutes = timeStringToMinutes(availabilityRule.endTime);
 
-      if (!specialDay &&
-        (slotStartMinutes > ruleStartMinutes &&
-          slotEndMinutes < ruleEndMinutes) ||
-        (slotEndMinutes < ruleEndMinutes && slotEndMinutes > ruleStartMinutes)
+      if (
+        specialDay === null &&
+        ((slotStartMinutes > ruleStartMinutes &&
+          slotStartMinutes < ruleEndMinutes) ||
+          (slotEndMinutes < ruleEndMinutes &&
+            slotEndMinutes > ruleStartMinutes))
       ) {
         throw new AppError(
           ERROR_MESSAGES.CONFLICTING_AVAILABILITY_RULE,
@@ -90,7 +99,6 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
         );
       }
     }
-
     const updatedQuickSlot: QuickSlot = mapEditQuickSlotDTOToDomain(
       dto,
       existingQuickSlot

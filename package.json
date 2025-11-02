@@ -41,6 +41,7 @@
     "pdfkit": "^0.17.2",
     "razorpay": "^2.9.6",
     "redis": "^5.8.0",
+    "rotating-file-stream": "^3.2.7",
     "socket.io": "^4.8.1",
     "streamifier": "^0.1.1",
     "uuid": "^13.0.0"

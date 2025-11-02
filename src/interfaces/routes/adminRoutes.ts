@@ -27,7 +27,7 @@ import GetNotificationsUseCase from "../../application/use-cases/GetNotification
 import { NotificationRepository } from "../../infrastructure/database/repositories/NotificationRepository";
 import NotificationController from "../controllers/admin/NotificationController";
 import MarkNotificationReadUseCase from "../../application/use-cases/MarkNotificationReadUseCase";
-import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetUnReadNotificationsCountUseCase";
+import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetNotificationsCountUseCase";
 import FinanceController from "../controllers/admin/FinanceController";
 import GetTransactionListUseCase from "../../application/use-cases/TransactionListUseCase";
 import TransactionRepository from "../../infrastructure/database/repositories/TransactionRepository";

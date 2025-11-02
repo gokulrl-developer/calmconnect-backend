@@ -8,12 +8,28 @@ import refreshRoute from './interfaces/routes/sharedRoutes'
 import corsOptions from './infrastructure/config/cors';
 import { errorHandler } from './utils/errorHandler';
 import morgan from "morgan";
+import * as rfs from "rotating-file-stream"; 
+import fs from "fs";
+import path from "path";
 
 const app= express();
 app.use(express.json());
 
 app.use(cors(corsOptions));
-app.use(cookieParser())
+app.use(cookieParser());
+const logDirectory = path.join(process.cwd(), "logs");
+if (!fs.existsSync(logDirectory)) {
+  fs.mkdirSync(logDirectory);
+}
+
+const accessLogStream = rfs.createStream("access.log", {
+  interval: "1d",      
+  path: logDirectory,
+  maxFiles: 7,          
+  compress: "gzip"      
+});
+
+app.use(morgan("combined", { stream: accessLogStream }));
 app.use(morgan("dev")); 
 
 app.use("/", userRoutes);

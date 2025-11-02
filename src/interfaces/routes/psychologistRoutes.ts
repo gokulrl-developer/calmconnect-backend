@@ -53,7 +53,7 @@ import GetNotificationsUseCase from "../../application/use-cases/GetNotification
 import NotificationController from "../controllers/psychologist/NotificationController";
 import { eventBus } from "../../infrastructure/external/eventBus";
 import MarkNotificationReadUseCase from "../../application/use-cases/MarkNotificationReadUseCase";
-import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetUnReadNotificationsCountUseCase";
+import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetNotificationsCountUseCase";
 import FetchLatestApplicationUseCase from "../../application/use-cases/psychologist/FetchLatestApplicationUseCase";
 import FinanceController from "../controllers/psychologist/FinanceController";
 import GenerateTransactionReceiptUseCase from "../../application/use-cases/GenerateTransactionReceiptUseCase";
@@ -153,7 +153,6 @@ const editQuickSlotUseCase = new EditQuickSlotUseCase(
 );
 const deleteQuickSlotUseCase = new DeleteQuickSlotUseCase(
   quickSlotRepository,
-  psychRepository
 );
 const fetchDailyAvailabilityUseCase = new FetchDailyAvailabilityUseCase(
   availabilityRuleRepository,
