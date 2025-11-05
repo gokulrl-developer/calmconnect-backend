@@ -27,5 +27,7 @@ SPECIAL_DAY_DELETED: "Special day deleted successfully",
 SESSION_CANCELLED:"Session cancelled successfully",
 MESSAGE_SENT:"Message sent successfully",
 NOTIFICATION_MARK_READ:"Notification marked read successfully",
-NOTIFICATION_COUNT_FETCHED:"Count of unread notifications fetched successfully"
+NOTIFICATION_COUNT_FETCHED:"Count of unread notifications fetched successfully",
+COMPLAINT_RESOLVED:"Complaint resolved successfully",
+COMPLAINT_SUBMITTED:"Complaint submitted successfully",
 } as const;

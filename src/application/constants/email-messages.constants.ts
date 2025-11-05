@@ -1,8 +1,8 @@
 export const EMAIL_MESSAGES = {
   OTP_SUBJECT: "CalmConnect Otp Verification",
-OTP_BODY: (otp: string) => `Your OTP code is: ${otp}`,
-REJECTON_MAIL_SUBJECT: "CalmConnect Application Status",
-REJECTION_MAIL_BODY: (name: string, reason: string) => `
+  OTP_BODY: (otp: string) => `Your OTP code is: ${otp}`,
+  REJECTON_MAIL_SUBJECT: "CalmConnect Application Status",
+  REJECTION_MAIL_BODY: (name: string, reason: string) => `
     <p>Dear ${name},</p>
 
     <p>We appreciate the time and effort you took to apply to join <strong>CalmConnect</strong> as a psychologist. 
@@ -20,4 +20,4 @@ REJECTION_MAIL_BODY: (name: string, reason: string) => `
     <p>Sincerely,<br/>
     The CalmConnect Team</p>
   `,
-}
+};

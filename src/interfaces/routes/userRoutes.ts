@@ -51,6 +51,11 @@ import GetTransactionListUseCase from "../../application/use-cases/TransactionLi
 import { PdfkitReceiptService } from "../../infrastructure/external/PdfkitReceiptService";
 import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetNotificationsCountUseCase";
 import AdminConfigService from "../../infrastructure/external/AdminConfigService";
+import ComplaintController from "../controllers/user/ComplaintController";
+import CreateComplaintUseCase from "../../application/use-cases/user/CreateComplaintUseCase";
+import ComplaintRepository from "../../infrastructure/database/repositories/ComplaintRepository";
+import ComplaintDetailsByUserUseCase from "../../application/use-cases/user/ComplaintDetailsByUserUseCase";
+import ComplaintListingByUserUseCase from "../../application/use-cases/user/ComplaintListingByUserUseCase";
 
 const userRepository = new UserRepository();
 const otpRepository = new RedisOtpRepository();
@@ -65,8 +70,9 @@ const walletRepository = new WalletRepository();
 const transactionRepository = new TransactionRepository();
 const notificationRepository = new NotificationRepository();
 const notificationQueue = new BullMQNotificationQueue();
-const receiptService=new PdfkitReceiptService();
-const adminConfigService=new AdminConfigService();
+const receiptService = new PdfkitReceiptService();
+const adminConfigService = new AdminConfigService();
+const complaintRepository = new ComplaintRepository();
 
 const registerUserUseCase = new RegisterUserUseCase(
   userRepository,
@@ -152,9 +158,33 @@ const markNotificationsReadUseCase = new MarkNotificationsReadUseCase(
 const getUnreadNotificationCountUseCase = new GetUnreadNotificationCountUseCase(
   notificationRepository
 );
-const transactionListUseCase=new GetTransactionListUseCase(transactionRepository)
-const fetchWalletUseCase=new FetchWalletUseCase(walletRepository)
-const generateTransactionReceiptUseCase=new GenerateTransactionReceiptUseCase(transactionRepository,receiptService,userRepository,psychRepository)
+const transactionListUseCase = new GetTransactionListUseCase(
+  transactionRepository
+);
+const fetchWalletUseCase = new FetchWalletUseCase(walletRepository);
+const generateTransactionReceiptUseCase = new GenerateTransactionReceiptUseCase(
+  transactionRepository,
+  receiptService,
+  userRepository,
+  psychRepository
+);
+const createComplaintUseCase = new CreateComplaintUseCase(
+  complaintRepository,
+  sessionRepository,
+  userRepository,
+  psychRepository,
+  eventBus
+);
+const complaintListingByUserUseCase = new ComplaintListingByUserUseCase(
+  complaintRepository,
+  psychRepository,
+  sessionRepository
+);
+const complaintDetailsByUserUseCase = new ComplaintDetailsByUserUseCase(
+  complaintRepository,
+  psychRepository,
+  sessionRepository
+);
 
 const authController = new AuthController(
   registerUserUseCase,
@@ -187,8 +217,16 @@ const notificationController = new NotificationController(
   markNotificationsReadUseCase,
   getUnreadNotificationCountUseCase
 );
-const financeController=new FinanceController(transactionListUseCase,fetchWalletUseCase,generateTransactionReceiptUseCase)
-
+const financeController = new FinanceController(
+  transactionListUseCase,
+  fetchWalletUseCase,
+  generateTransactionReceiptUseCase
+);
+const complaintController = new ComplaintController(
+  createComplaintUseCase,
+  complaintListingByUserUseCase,
+  complaintDetailsByUserUseCase
+);
 const checkStatusUser = new CheckStatusUser(checkStatusUserUseCase);
 
 const router = express.Router();
@@ -362,6 +400,27 @@ router.get(
   verifyTokenMiddleware,
   authorizeRoles("user"),
   financeController.generateTransactionReceipt.bind(financeController)
+);
+
+/* complaint related routes */
+router.get(
+  "/user/complaints/:complaintId/",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  complaintController.fetchComplaintDetails.bind(complaintController)
+);
+router.get(
+  "/user/complaints/",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  paginationMiddleware,
+  complaintController.listComplaints.bind(complaintController)
+);
+router.post(
+  "/user/complaints/",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  complaintController.createComplaint.bind(complaintController)
 );
 
 export default router;

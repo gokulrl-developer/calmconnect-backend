@@ -52,3 +52,29 @@ export interface PsychDetailsByAdminDTO{
 export interface UserDetailsByAdminDTO{
     userId:string
 }
+
+export interface ComplaintListingByAdminDTO{
+    skip:number;
+    limit:number;
+    status?:"pending"|"resolved";
+    search?:string;
+}
+
+export interface ComplaintDetailsByAdminDTO{
+    complaintId:string
+}
+
+export interface ComplaintResolutionDTO{
+    complaintId:string;
+    adminNotes:string;
+}
+
+export interface ComplaintSessionDetailsDTO{
+    sessionId:string;
+}
+
+export interface ComplainthIstoryDTO{
+    psychId:string;
+    skip:number;
+    limit:number
+}

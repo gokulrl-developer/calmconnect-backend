@@ -3,7 +3,6 @@ import { StatusCodes } from "../../../utils/http-statuscodes";
 import IApplicationListUseCase from "../../../application/interfaces/IApplicationListUseCase";
 import IUpdateApplicationUseCase from "../../../application/interfaces/IUpdateApplicationUseCase";
 import { ListApplicationsDTO, UpdateApplicationStatusDTO } from "../../../application/dtos/admin.dto";
-import { NestedPaths } from "mongoose";
 import AppError from "../../../application/error/AppError";
 import IApplicationDetailsUseCase from "../../../application/interfaces/IApplicationDetailsUseCase";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
