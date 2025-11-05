@@ -35,15 +35,23 @@ import FetchWalletUseCase from "../../application/use-cases/FetchWalletUseCase";
 import WalletRepository from "../../infrastructure/database/repositories/WalletRepository";
 import GenerateTransactionReceiptUseCase from "../../application/use-cases/GenerateTransactionReceiptUseCase";
 import { PdfkitReceiptService } from "../../infrastructure/external/PdfkitReceiptService";
+import ComplaintController from "../controllers/admin/ComplaintController";
+import ComplaintListingByAdminUseCase from "../../application/use-cases/admin/ComplaintListingByAdminUseCase";
+import ComplaintRepository from "../../infrastructure/database/repositories/ComplaintRepository";
+import ComplaintDetailsByAdminUseCase from "../../application/use-cases/admin/ComplaintDetailsByAdminUseCase";
+import ComplaintResolutionUseCase from "../../application/use-cases/admin/ComplaintResolutionUseCase";
+import ComplaintHistoryByPsychUseCase from "../../application/use-cases/admin/ComplaintHistoryByPsychUseCase";
+import { eventBus } from "../../infrastructure/external/eventBus";
 
 const applicationRepository = new ApplicationRepository();
 const psychRepository = new PsychRepository();
 const userRepository = new UserRepository();
 const sessionRepository = new SessionRepository();
 const notificationRepository = new NotificationRepository();
-const transactionRepository=new TransactionRepository();
-const walletRepository=new WalletRepository();
-const receiptService=new PdfkitReceiptService();
+const transactionRepository = new TransactionRepository();
+const walletRepository = new WalletRepository();
+const receiptService = new PdfkitReceiptService();
+const complaintRepository = new ComplaintRepository();
 
 const loginAdminUseCase = new LoginAdminUseCase();
 const listUseCase = new ApplicationListUseCase(applicationRepository);
@@ -78,9 +86,39 @@ const markNotificationReadUseCase = new MarkNotificationReadUseCase(
 const getUnreadNotificationCountUseCase = new GetUnreadNotificationCountUseCase(
   notificationRepository
 );
-const transactionListUseCase=new GetTransactionListUseCase(transactionRepository)
-const fetchWalletUseCase=new FetchWalletUseCase(walletRepository)
-const generateTransactionReceiptUseCase=new GenerateTransactionReceiptUseCase(transactionRepository,receiptService,userRepository,psychRepository)
+const transactionListUseCase = new GetTransactionListUseCase(
+  transactionRepository
+);
+const fetchWalletUseCase = new FetchWalletUseCase(walletRepository);
+const generateTransactionReceiptUseCase = new GenerateTransactionReceiptUseCase(
+  transactionRepository,
+  receiptService,
+  userRepository,
+  psychRepository
+);
+const complaintListingByAdminUseCase = new ComplaintListingByAdminUseCase(
+  complaintRepository,
+  userRepository,
+  psychRepository,
+  sessionRepository
+);
+const complaintDetailsByAdminUseCase = new ComplaintDetailsByAdminUseCase(
+  complaintRepository,
+  userRepository,
+  psychRepository,
+  sessionRepository
+);
+const complaintResolutionUseCase = new ComplaintResolutionUseCase(
+  complaintRepository,
+  psychRepository,
+  eventBus
+);
+const complaintHistoryByPsychUseCase = new ComplaintHistoryByPsychUseCase(
+  complaintRepository,
+  userRepository,
+  psychRepository,
+  sessionRepository
+);
 
 const authController = new AuthController(loginAdminUseCase);
 const applicationController = new ApplicationController(
@@ -104,8 +142,17 @@ const notificationController = new NotificationController(
   markNotificationReadUseCase,
   getUnreadNotificationCountUseCase
 );
-const financeController=new FinanceController(transactionListUseCase,fetchWalletUseCase,generateTransactionReceiptUseCase)
-
+const financeController = new FinanceController(
+  transactionListUseCase,
+  fetchWalletUseCase,
+  generateTransactionReceiptUseCase
+);
+const complaintController = new ComplaintController(
+  complaintDetailsByAdminUseCase,
+  complaintListingByAdminUseCase,
+  complaintResolutionUseCase,
+  complaintHistoryByPsychUseCase
+);
 const router = express.Router();
 
 router.post("/admin/login", (req, res, next) =>
@@ -222,6 +269,34 @@ router.get(
   verifyTokenMiddleware,
   authorizeRoles("admin"),
   financeController.generateTransactionReceipt.bind(financeController)
+);
+
+/* complaint related routes */
+router.get(
+  "/admin/complaints/:complaintId/",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  complaintController.fetchComplaintDetails.bind(complaintController)
+);
+router.get(
+  "/admin/complaints/",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  paginationMiddleware,
+  complaintController.listComplaints.bind(complaintController)
+);
+router.get(
+  "/admin/complaints/",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  paginationMiddleware,
+  complaintController.listComplaintHistory.bind(complaintController)
+);
+router.patch(
+  "/admin/complaints/:complaintId",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  complaintController.resolveComplaint.bind(complaintController)
 );
 
 export default router;

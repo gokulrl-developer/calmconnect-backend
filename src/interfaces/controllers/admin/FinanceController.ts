@@ -7,7 +7,6 @@ import {
   GetWalletDTO,
   GetTransactionReceiptDTO,
 } from "../../../application/dtos/shared.dto";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
 import AppError from "../../../application/error/AppError";
 import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
 import { AppErrorCodes } from "../../../application/error/app-error-codes";

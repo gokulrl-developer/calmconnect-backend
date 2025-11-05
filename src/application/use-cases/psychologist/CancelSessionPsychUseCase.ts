@@ -22,7 +22,6 @@ export default class CancelSessionPsychUseCase {
   ) {}
 
   async execute(dto: CancelSessionDTO): Promise<void> {
-    console.log(dto);
     const session = await this._sessionRepository.findById(dto.sessionId);
     if (!session)
       throw new AppError(

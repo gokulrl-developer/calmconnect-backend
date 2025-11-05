@@ -94,4 +94,12 @@ export const ERROR_MESSAGES = {
   TRANSACTION_DATE_INVALID_FORMAT:"The transaction date is in invalid format",
   SELECTED_DATE_PASSED:"Selected date has already passed. Please choose a future date.",
   SELECTED_SLOT_PASSED:"Selected slot has already passed. Please choose an upcoming slot.",
+  THERAPY_SESSION_NOT_FOUND:"The therapy session you are trying to access is not found.",
+  COMPLAINT_NOT_FOUND:"The complaint you are trying to access is not found.",
+  COMPLAINT_ALREADY_RESOLVED:"The complaint is already resolved",
+  COMPLAINT_STATUS_INVALID:"The complaint status is in invalid format.",
+  SEARCH_FIELD_INVALID:"The search value you entered is in invalid format.",
+  ADMIN_NOTES_REQUIRED:"Admin notes is not present or is in invalid format.",
+  COMPLAINT_DESCRIPTION_REQUIRED:"Description of the complaint is required.",
+  COMPLAINT_ALREADY_REGISTERED:"A complaint has already been registered for the same session."
 } as const;

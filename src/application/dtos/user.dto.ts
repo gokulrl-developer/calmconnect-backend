@@ -99,4 +99,18 @@ export interface PsychDetailsByUserDTO {
   psychId: string;
 }
 
+export interface CreateComplaintDTO{
+  userId:string;
+  sessionId:string;
+  description:string;
+}
 
+export interface ListComplaintsDTO{
+  userId:string;
+  skip:number;
+  limit:number
+}
+
+export interface ComplaintDetailsDTO{
+  complaintId:string
+}
