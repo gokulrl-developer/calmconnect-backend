@@ -10,7 +10,6 @@ export interface ISessionDocument extends Document {
   status: "scheduled"|"cancelled"|"ended"|"pending";
   fees: number; 
   videoRoomId?: string;
-  progressNotesId?: string;
 }
 
 const SessionSchema = new Schema<ISessionDocument>({
@@ -23,7 +22,6 @@ const SessionSchema = new Schema<ISessionDocument>({
   status: { type: String, enum: ["scheduled","cancelled","ended","pending"], required: true },
   fees: { type: Number, required: true },
   videoRoomId: { type: String },
-  progressNotesId: { type: String },
 });
 
 export const SessionModel = model<ISessionDocument>("Session", SessionSchema);

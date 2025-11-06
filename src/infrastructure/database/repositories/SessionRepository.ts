@@ -25,7 +25,6 @@ export default class SessionRepository
       session.fees,
       session._id.toString(),
       session.videoRoomId,
-      session.progressNotesId
     );
   }
 
@@ -42,7 +41,6 @@ export default class SessionRepository
       status: entity.status,
       fees: entity.fees,
       videoRoomId: entity.videoRoomId,
-      progressNotesId: entity.progressNotesId,
       _id: entity.id ? new Types.ObjectId(entity.id) : undefined,
     };
   }

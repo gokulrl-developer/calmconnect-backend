@@ -10,6 +10,5 @@ export default class Session{
        public fees:number, //rupees
        public id?:string,
        public videoRoomId?:string,
-       public progressNotesId?:string,
     ){}
 }
