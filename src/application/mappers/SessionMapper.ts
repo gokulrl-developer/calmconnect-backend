@@ -1,14 +1,34 @@
 import Session from "../../domain/entities/session.entity";
+import { HHMMToIso } from "../../utils/timeConverter";
+import { CreateOrderDTO } from "../dtos/user.dto";
 import { SessionDetailsInVideoCall } from "../interfaces/ICheckSessionAccessUseCase";
 
+export const mapCreateOrderDTOToDomain = (
+  dto: CreateOrderDTO,
+  startTime: Date,
+  endTime: Date,
+  duration: number,
+  fees: number
+) => {
+  return new Session(
+    dto.psychId,
+    dto.userId,
+    startTime,
+    endTime,
+    duration,
+    [],
+    "pending",
+    fees
+  );
+};
 export const toSessionListingUserResponse = (
   session: Session,
   psychFullName: string,
-  psychEmail:string,
+  psychEmail: string
 ) => {
   return {
     psychFullName: psychFullName,
-    psychEmail:psychEmail,
+    psychEmail: psychEmail,
     startTime: session.startTime,
     endTime: session.endTime,
     durationInMins: session.durationInMins,
@@ -20,7 +40,7 @@ export const toSessionListingUserResponse = (
 export const toSessionListingPsychResponse = (
   session: Session,
   userFullName: string,
-  userEmail:string
+  userEmail: string
 ) => {
   return {
     userFullName: userFullName,
@@ -37,14 +57,14 @@ export const toSessionListingAdminResponse = (
   session: Session,
   psychFullName: string,
   userFullName: string,
-  psychEmail:string,
-  userEmail:string
+  psychEmail: string,
+  userEmail: string
 ) => {
   return {
     userFullName: userFullName,
     psychFullName: psychFullName,
-    userEmail:userEmail,
-    psychEmail:psychEmail,
+    userEmail: userEmail,
+    psychEmail: psychEmail,
     startTime: session.startTime,
     endTime: session.endTime,
     durationInMins: session.durationInMins,
@@ -54,7 +74,9 @@ export const toSessionListingAdminResponse = (
   };
 };
 
-export const toSessionDetailsInVideoCall = (session: Session): SessionDetailsInVideoCall => {
+export const toSessionDetailsInVideoCall = (
+  session: Session
+): SessionDetailsInVideoCall => {
   return {
     psychologist: session.psychologist,
     user: session.user,
@@ -64,3 +86,4 @@ export const toSessionDetailsInVideoCall = (session: Session): SessionDetailsInV
     sessionId: session.id!,
   };
 };
+

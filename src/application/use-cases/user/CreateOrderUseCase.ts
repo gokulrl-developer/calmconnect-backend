@@ -6,7 +6,7 @@ import ICreateOrderUseCase, {
 import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import { HHMMToIso} from "../../../utils/timeConverter";
+import { HHMMToIso } from "../../../utils/timeConverter";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 import { AppErrorCodes } from "../../error/app-error-codes";
 import AppError from "../../error/AppError";
@@ -15,6 +15,7 @@ import IPaymentProvider from "../../../domain/interfaces/IPaymentProvider";
 import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
 import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
 import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych";
+import { mapCreateOrderDTOToDomain } from "../../mappers/SessionMapper";
 
 export default class CreateOrderUseCase implements ICreateOrderUseCase {
   constructor(
@@ -38,8 +39,11 @@ export default class CreateOrderUseCase implements ICreateOrderUseCase {
 
     const selectedDate = new Date(dto.date);
     const weekDay = new Date(dto.date).getDay();
-    if(new Date(dto.startTime)<new Date()){
-      throw new AppError(ERROR_MESSAGES.SELECTED_SLOT_PASSED,AppErrorCodes.VALIDATION_ERROR)
+    if (new Date(dto.startTime) < new Date()) {
+      throw new AppError(
+        ERROR_MESSAGES.SELECTED_SLOT_PASSED,
+        AppErrorCodes.VALIDATION_ERROR
+      );
     }
 
     const availabilityRules =
@@ -77,25 +81,27 @@ export default class CreateOrderUseCase implements ICreateOrderUseCase {
       );
     }
 
-const end = new Date(HHMMToIso(requiredSlot.endTime, selectedDate)).getTime();
-const start = new Date(HHMMToIso(requiredSlot.startTime, selectedDate)).getTime();
-const duration = (end - start) / (60 * 1000);
+    const end = new Date(
+      HHMMToIso(requiredSlot.endTime, selectedDate)
+    ).getTime();
+    const start = new Date(
+      HHMMToIso(requiredSlot.startTime, selectedDate)
+    ).getTime();
+    const duration = (end - start) / (60 * 1000);
     const fees = (psychologist.hourlyFees! * duration!) / 60;
 
     const paymentOrder = await this._paymentProvider.createOrder({
       amount: Math.round(fees * 100),
       currency: "INR",
     });
-    const session = await this._sessionRepository.create({
-      psychologist: dto.psychId,
-      user: dto.userId,
-      startTime: new Date(HHMMToIso(requiredSlot.startTime, selectedDate)),
-      endTime: new Date(HHMMToIso(requiredSlot.endTime, selectedDate)),
-      durationInMins: duration,
-      transactionIds: [],
-      status: "pending",
-      fees,
-    });
+    const sessionEntity = mapCreateOrderDTOToDomain(
+      dto,
+      new Date(HHMMToIso(requiredSlot.startTime, selectedDate)),
+      new Date(HHMMToIso(requiredSlot.endTime, selectedDate)),
+      duration,
+      fees
+    );
+    const session = await this._sessionRepository.create(sessionEntity);
     return {
       providerOrderId: paymentOrder.providerOrderId,
       amount: Math.round(fees * 100),
