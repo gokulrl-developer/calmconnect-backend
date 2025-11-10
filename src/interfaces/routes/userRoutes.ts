@@ -56,6 +56,10 @@ import CreateComplaintUseCase from "../../application/use-cases/user/CreateCompl
 import ComplaintRepository from "../../infrastructure/database/repositories/ComplaintRepository";
 import ComplaintDetailsByUserUseCase from "../../application/use-cases/user/ComplaintDetailsByUserUseCase";
 import ComplaintListingByUserUseCase from "../../application/use-cases/user/ComplaintListingByUserUseCase";
+import ReviewController from "../controllers/user/ReviewController";
+import CreateReviewUseCase from "../../application/use-cases/user/CreateReviewUseCase";
+import ReviewRepository from "../../infrastructure/database/repositories/ReviewRepository";
+import ListPsychReviewsUseCase from "../../application/use-cases/user/ListPsychReviewsUseCase";
 
 const userRepository = new UserRepository();
 const otpRepository = new RedisOtpRepository();
@@ -73,6 +77,7 @@ const notificationQueue = new BullMQNotificationQueue();
 const receiptService = new PdfkitReceiptService();
 const adminConfigService = new AdminConfigService();
 const complaintRepository = new ComplaintRepository();
+const reviewRepository=new ReviewRepository();
 
 const registerUserUseCase = new RegisterUserUseCase(
   userRepository,
@@ -185,6 +190,14 @@ const complaintDetailsByUserUseCase = new ComplaintDetailsByUserUseCase(
   psychRepository,
   sessionRepository
 );
+const createReviewUseCase=new CreateReviewUseCase(
+  reviewRepository,
+  sessionRepository,
+  psychRepository
+)
+const listPsychReviewsUseCase=new ListPsychReviewsUseCase(
+  reviewRepository
+)
 
 const authController = new AuthController(
   registerUserUseCase,
@@ -227,6 +240,10 @@ const complaintController = new ComplaintController(
   complaintListingByUserUseCase,
   complaintDetailsByUserUseCase
 );
+const reviewController=new ReviewController(
+  createReviewUseCase,
+  listPsychReviewsUseCase
+)
 const checkStatusUser = new CheckStatusUser(checkStatusUserUseCase);
 
 const router = express.Router();
@@ -421,6 +438,22 @@ router.post(
   verifyTokenMiddleware,
   authorizeRoles("user"),
   complaintController.createComplaint.bind(complaintController)
+);
+
+// Review related routes----------------------------------------
+
+router.post(
+  "/user/reviews/",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  reviewController.createReview.bind(reviewController)
+);
+router.get(
+  "/user/reviews/",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  paginationMiddleware,
+  reviewController.listPsychReviews.bind(reviewController)
 );
 
 export default router;

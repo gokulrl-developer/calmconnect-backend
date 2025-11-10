@@ -30,4 +30,5 @@ NOTIFICATION_MARK_READ:"Notification marked read successfully",
 NOTIFICATION_COUNT_FETCHED:"Count of unread notifications fetched successfully",
 COMPLAINT_RESOLVED:"Complaint resolved successfully",
 COMPLAINT_SUBMITTED:"Complaint submitted successfully",
+REVIEW_SUBMITTED:"Review submitted successfully",
 } as const;

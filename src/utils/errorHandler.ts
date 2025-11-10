@@ -56,6 +56,8 @@ const errorToHttpStatus = (code: string): number => {
       return StatusCodes.CONFLICT;
     case AppErrorCodes.COMPLAINT_ALREADY_EXISTS:
       return StatusCodes.CONFLICT;
+    case AppErrorCodes.REVIEW_ALREADY_EXISTS:
+      return StatusCodes.CONFLICT;
 
     case AppErrorCodes.NOT_FOUND:
     case AppErrorCodes.THERAPY_SESSION_NOT_FOUND:

@@ -101,5 +101,11 @@ export const ERROR_MESSAGES = {
   SEARCH_FIELD_INVALID:"The search value you entered is in invalid format.",
   ADMIN_NOTES_REQUIRED:"Admin notes is not present or is in invalid format.",
   COMPLAINT_DESCRIPTION_REQUIRED:"Description of the complaint is required.",
-  COMPLAINT_ALREADY_REGISTERED:"A complaint has already been registered for the same session."
+  COMPLAINT_ALREADY_REGISTERED:"A complaint has already been registered for the same session.",
+  REVIEW_ALREADY_EXISTS:"A review has already been given for the same session.",
+  REVIEW_RATING_REQUIRED:"Rating is required when submitting review",
+  REVIEW_RATING_INVALID_FORMAT:"Rating is in invalid format",
+  REVIEW_COMMENT_INVALID_FORMAT:"Review comment is in invalid format",
+  REVIEW_COMMENT_EXCEEDS_LENGTH:"Review comment length should not exceed 300 characters.",
+  REVIEW_SORT_INVALID_FORMAT:"Review sort is in invalid format."
 } as const;

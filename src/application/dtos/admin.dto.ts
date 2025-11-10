@@ -78,3 +78,4 @@ export interface ComplainthIstoryDTO{
     skip:number;
     limit:number
 }
+
