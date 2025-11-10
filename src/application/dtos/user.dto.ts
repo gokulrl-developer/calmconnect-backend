@@ -114,3 +114,17 @@ export interface ListComplaintsDTO{
 export interface ComplaintDetailsDTO{
   complaintId:string
 }
+
+export interface CreateReviewDTO{
+  userId:string,
+  sessionId:string,
+  rating:number,
+  comment?:string, // max 300 characters
+}
+
+export interface ListPsychReviewsDTO{
+ psychId:string;
+ sort:"recent"|"top-rated";
+ skip:number;
+ limit:number;
+}
