@@ -1,6 +1,8 @@
 import { UpdateUserProfileDTO, UserSignUpDTO } from "../dtos/user.dto"
 import User from "../../domain/entities/user.entity"
 import { UserProfile } from "../interfaces/IFetchUserProfileUseCase"
+import { UserTrendsSummary } from "../../domain/interfaces/IUserRepository"
+import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase"
 
 
 export const toUserDomainRegister=(user:UserSignUpDTO):User=>{
@@ -120,6 +122,11 @@ export const mapDomainToDetailsResponseByAdmin=(user:User)=>{
     address:user.address
     }
 }
+
+export const mapUserSummaryToCardItem = (summary: UserTrendsSummary): SummaryCardItem => ({
+  totalValue: summary.totalValue,
+  addedValue: summary.addedValue,
+});
 
 
 

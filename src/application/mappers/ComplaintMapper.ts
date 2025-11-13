@@ -9,6 +9,8 @@ import { ComplaintDetailsResponse as AdminComplaintDetailsResponse } from "../in
 import { ComplaintDetailsResponse as UserComplaintDetailsResponse } from "../interfaces/IComplaintDetailsByUserUseCase";
 import { ComplaintListByUserItem } from "../interfaces/IComplaintListinByUserUseCase";
 import { createFullName } from "../../utils/createFullName";
+import { UserRecentComplaintsEntryFromPersistence } from "../../domain/interfaces/IComplaintRepository";
+import { UserRecentComplaintsEntry } from "../interfaces/IFetchUserDashboardUseCase";
 
 export const mapCreateComplaintDTOToDomain = (
   dto: CreateComplaintDTO,
@@ -148,3 +150,14 @@ export const mapComplaintResolutionDTOToDomain = (
     new Date()
   );
 };
+
+export const mapRecentUserComplaintsFromPersistence = (
+  entry: UserRecentComplaintsEntryFromPersistence
+): UserRecentComplaintsEntry =>{
+ return {
+    complaintId: entry.complaintId,
+    psychFirstName: entry.psychFirstName,
+    psychLastName: entry.psychLastName,
+    raisedTime: entry.raisedTime,
+    status: entry.status,
+  }};

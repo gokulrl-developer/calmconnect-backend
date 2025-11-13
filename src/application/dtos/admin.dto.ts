@@ -79,3 +79,25 @@ export interface ComplainthIstoryDTO{
     limit:number
 }
 
+export interface FetchRevenueTrendsDTO{
+    fromDate:string;
+    toDate:string;
+}
+export interface FetchClientTrendsDTO{
+    fromDate:string;
+    toDate:string;
+}
+export interface FetchSessionTrendsDTO{
+    fromDate:string;
+    toDate:string;
+}
+export interface FetchTopPsychologistDTO{
+    fromDate:string;
+    toDate:string;
+    limit:number;
+}
+
+export interface FetchDashboardSummaryCardsDTO{
+    fromDate:string;
+    toDate:string;
+}

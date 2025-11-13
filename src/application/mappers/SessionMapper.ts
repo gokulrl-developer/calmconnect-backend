@@ -1,7 +1,13 @@
 import Session from "../../domain/entities/session.entity";
-import { HHMMToIso } from "../../utils/timeConverter";
+import { PsychSessionSummaryFromPersistence, PsychSessionTrendsEntry, RecentSessionEntryFromPersistence, RecentUserSessionEntryFromPersistence, SessionTrendsEntry, SessionTrendsSummary, TopPsychologistsEntryFromPersistence, UserSessionSummaryFromPersistence } from "../../domain/interfaces/ISessionRepository";
+import { SessionTrendsEntry as ResponseSessionTrendsEntry } from "../../application/interfaces/ISessionTrendsUseCase";
+import { PsychSessionsSummary, RecentSessionEntry, PsychSessionsTrendEntry as ResponsePsychSessionTrendsEntry } from "../../application/interfaces/IFetchPsychDashboardUseCase";
 import { CreateOrderDTO } from "../dtos/user.dto";
 import { SessionDetailsInVideoCall } from "../interfaces/ICheckSessionAccessUseCase";
+import { TopPsychologistResponse } from "../interfaces/IFetchTopPsychologistsUseCase";
+import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase";
+import User from "../../domain/entities/user.entity";
+import { UserRecentSessionsEntry, UserSessionSummary } from "../interfaces/IFetchUserDashboardUseCase";
 
 export const mapCreateOrderDTOToDomain = (
   dto: CreateOrderDTO,
@@ -87,3 +93,82 @@ export const toSessionDetailsInVideoCall = (
   };
 };
 
+export const toSessionTrendsResponse = (
+  entry: SessionTrendsEntry
+): ResponseSessionTrendsEntry => {
+  return {
+    label: entry.label,
+    sessions: entry.sessions,
+    cancelledSessions: entry.cancelledSessions ?? 0, 
+  };
+};
+
+export const toTopPsychResponse = (
+  entry: TopPsychologistsEntryFromPersistence
+): TopPsychologistResponse => {
+  return {
+    id: entry.id,
+    firstName: entry.firstName,
+    lastName: entry.lastName,
+    email: entry.email,
+    sessionCount: entry.sessionCount,
+    profilePicture:entry.profilePicture
+  };
+};
+
+export const mapSessionTrendsSummaryToCardItem = (summary: SessionTrendsSummary): SummaryCardItem => ({
+  totalValue: summary.totalValue,
+  addedValue: summary.addedValue,
+});
+
+export const mapPsychSessionTrendsToResponse = (
+  entry: PsychSessionTrendsEntry
+):  ResponsePsychSessionTrendsEntry=> ({
+  week: entry.week,
+  sessions: entry.sessions,
+});
+
+
+
+export const mapRecentSessionsToResponse = (entry:RecentSessionEntryFromPersistence): RecentSessionEntry => ({
+  id: entry.id!,
+  firstName:entry.firstName,
+  lastName:entry.lastName,
+  profilePicture:entry.profilePicture,
+  startTime: entry.startTime,
+  status: entry.status as "scheduled" | "cancelled" | "ended" | "pending",
+});
+
+
+export const mapSessionSummaryToResponse = (
+  summary: PsychSessionSummaryFromPersistence
+):PsychSessionsSummary => ({
+  todaySessions: summary.todaySessions,
+  upcomingSessions: summary.upcomingSessions,
+  nextSessionTime: summary.nextSessionTime
+    ? summary.nextSessionTime.toISOString()
+    : "N/A",
+  totalSessions: summary.totalSessions,
+  thisMonthSessions: summary.thisMonthSessions,
+});
+
+export const mapUserSessionSummaryFromPersistence = (
+  data: UserSessionSummaryFromPersistence
+): UserSessionSummary => ({
+  totalSessions: data.totalSessions,
+  completedSessions: data.completedSessions,
+  upcomingSessions: data.upcomingSessions,
+  cancelledSessions: data.cancelledSessions,
+});
+
+export const mapRecentUserSessionsFromPersistence = (
+  entry: RecentUserSessionEntryFromPersistence
+): UserRecentSessionsEntry =>{
+  return{
+    sessionId: entry.sessionId,
+    firstName: entry.firstName,
+    lastName: entry.lastName,
+    profilePicture: entry.profilePicture,
+    startTime: entry.startTime,
+    status: entry.status,
+  }};

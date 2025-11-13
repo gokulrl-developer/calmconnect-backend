@@ -182,3 +182,7 @@ export interface FetchDailyAvailabilityDTO {
 export interface FetchLatestApplicationDTO{
   psychId:string
 }
+
+export interface FetchPsychDashboardDTO {
+  psychId: string; 
+}
