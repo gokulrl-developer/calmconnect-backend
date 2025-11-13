@@ -1,6 +1,6 @@
 import { Types, Document } from "mongoose";
 import Review from "../../../domain/entities/review.entity";
-import IReviewRepository, { ListPsychReviewsFilter } from "../../../domain/interfaces/IReviewRepository";
+import IReviewRepository, { ListPsychReviewsFilter, RatingSummaryFromPersistence } from "../../../domain/interfaces/IReviewRepository";
 import { ReviewModel, IReviewDocument } from "../models/ReviewModel";
 import { BaseRepository } from "./BaseRepository";
 import { SortOrder } from "mongoose";
@@ -56,5 +56,37 @@ export default class ReviewRepository
 
     const reviews = docs.map((d) => this.toDomain(d));
     return { reviews, totalItems };
+  }
+
+   async fetchRatingSummaryByPsych(
+    psychId: string
+  ): Promise<RatingSummaryFromPersistence> {
+    const psychologistId = new Types.ObjectId(psychId);
+
+    const currentAgg = await this.model.aggregate([
+      { $match: { psychologist: psychologistId } },
+      { $group: { _id: null, avgRating: { $avg: "$rating" } } },
+    ]);
+
+    const current =
+      currentAgg.length > 0 ? currentAgg[0].avgRating : 0;
+
+    const lastMonthStart = new Date();
+    lastMonthStart.setMonth(lastMonthStart.getMonth() - 1);
+
+    const lastMonthAgg = await this.model.aggregate([
+      {
+        $match: {
+          psychologist: psychologistId,
+          createdAt: { $gte: lastMonthStart },
+        },
+      },
+      { $group: { _id: null, avgRating: { $avg: "$rating" } } },
+    ]);
+
+    const lastMonth =
+      lastMonthAgg.length > 0 ? lastMonthAgg[0].avgRating : 0;
+
+    return { current, lastMonth };
   }
 }

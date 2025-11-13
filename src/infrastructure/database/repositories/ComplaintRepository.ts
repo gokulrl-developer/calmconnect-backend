@@ -1,6 +1,6 @@
 import { Types, PipelineStage, Document } from "mongoose";
 import Complaint from "../../../domain/entities/complaint.entity";
-import IComplaintRepository, { ComplaintHistoryFilter } from "../../../domain/interfaces/IComplaintRepository";
+import IComplaintRepository, { ComplaintHistoryFilter, UserRecentComplaintsEntryFromPersistence } from "../../../domain/interfaces/IComplaintRepository";
 import { ComplaintModel, IComplaintDocument } from "../models/ComplaintModel";
 import { BaseRepository } from "./BaseRepository";
 
@@ -142,5 +142,46 @@ export default class ComplaintRepository
 
     const complaints = results.map((r) => this.toDomain(r));
     return { complaints, totalItems };
+  }
+
+  async fetchRecentUserComplaints(
+    userId: string,
+    limit: number
+  ): Promise<UserRecentComplaintsEntryFromPersistence[]> {
+    const userObjectId = new Types.ObjectId(userId);
+
+    const pipeline: PipelineStage[] = [
+      { $match: { user: userObjectId } },
+      {
+        $lookup: {
+          from: "psychologists",
+          localField: "psychologist",
+          foreignField: "_id",
+          as: "psychologist",
+        },
+      },
+      { $unwind: "$psychologist" },
+      { $sort: { createdAt: -1 } },
+      { $limit: limit },
+      {
+        $project: {
+          complaintId: "$_id",
+          psychFirstName: "$psychologist.firstName",
+          psychLastName: "$psychologist.lastName",
+          raisedTime: "$createdAt",
+          status: 1,
+        },
+      },
+    ];
+
+    const results = await this.model.aggregate(pipeline);
+
+    return results.map((r) => ({
+      complaintId: r.complaintId.toString(),
+      psychFirstName: r.psychFirstName,
+      psychLastName: r.psychLastName,
+      raisedTime: r.raisedTime,
+      status: r.status,
+    }));
   }
 }

@@ -128,3 +128,7 @@ export interface ListPsychReviewsDTO{
  skip:number;
  limit:number;
 }
+
+export interface FetchUserDashboardDTO{
+  userId:string;
+}

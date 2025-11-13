@@ -1,5 +1,10 @@
 import Transaction from "../../domain/entities/transaction.entity";
 import { TransactionListItem } from "../interfaces/IFetchTransactionsUseCase";
+import { RevenueTrendsEntry as DomainRevenueTrendsEntry, PsychRevenueTrendsEntry, RecentUserTransactionEntryFromPersistence, RevenueSummary, RevenueSummaryByPsych, RevenueTrendsEntry } from "../../domain/interfaces/ITransactionRepository";
+import { RevenueTrendsEntry as ResponseRevenueTrendsEntry } from "../../application/interfaces/IFetchRevenueTrendsUseCase";
+import { PsychRevenueSummary, RevenueTrendEntry as ResponsePsychRevenueTrendsEntry } from "../../application/interfaces/IFetchPsychDashboardUseCase";
+import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase";
+import { UserRecentTransactionsEntry } from "../interfaces/IFetchUserDashboardUseCase";
 
 
 export const toDomainBookingDebit = (
@@ -165,3 +170,43 @@ export const toTransactionListItem = (
     createdAt: transaction.createdAt!,
   };
 };
+
+export const toRevenueTrendsResponse = (
+  entry: DomainRevenueTrendsEntry
+): ResponseRevenueTrendsEntry => {
+  return {
+    label: entry.label, 
+    revenue: entry.revenue,
+  };
+};
+
+export const mapRevenueSummaryToCardItem = (summary: RevenueSummary): SummaryCardItem => ({
+  totalValue: summary.totalValue,
+  addedValue: summary.addedValue,
+});
+
+export const mapPsychRevenueTrendsToResponse = (
+  entry: PsychRevenueTrendsEntry
+): ResponsePsychRevenueTrendsEntry => ({
+  week: entry.week,
+  revenue: entry.revenue,
+});
+
+export const mapRevenueSummaryToResponse = (
+  summary: PsychRevenueSummary
+): RevenueSummaryByPsych => ({
+  current: summary.current,
+  lastMonth: summary.lastMonth,
+});
+
+export const mapRecentUserTransactionsFromPersistence = (
+  entry: RecentUserTransactionEntryFromPersistence
+): UserRecentTransactionsEntry =>
+  {return{
+    transactionId: entry.transactionId,
+    time: entry.time,
+    type: entry.type,
+    referenceType: entry.referenceType,
+    psychFirstName: entry.psychFirstName,
+    psychLastName: entry.psychLastName,
+  }};

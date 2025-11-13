@@ -1,6 +1,6 @@
 import { ListPsychDTO } from "../../../application/dtos/admin.dto";
 import Psychologist from "../../../domain/entities/psychologist.entity";
-import IPsychologistRepository, { ListPsychQueryByUser } from "../../../domain/interfaces/IPsychRepository";
+import IPsychologistRepository, { ListPsychQueryByUser, PsychSummary, PsychTrendsEntry } from "../../../domain/interfaces/IPsychRepository";
 import { IPsychDocument, PsychModel } from "../models/PsychologistModel";
 import { BaseRepository } from "./BaseRepository";
 
@@ -154,4 +154,47 @@ export default class PsychRepository
   return { psychologists, totalItems };
 }
 
+ async fetchPsychTrends(
+    fromDate: Date,
+    toDate: Date,
+    interval: "day" | "month" | "year"
+  ): Promise<PsychTrendsEntry[]> {
+    const dateFormat =
+      interval === "day"
+        ? { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }
+        : interval === "month"
+        ? { $dateToString: { format: "%Y-%m", date: "$createdAt" } }
+        : { $dateToString: { format: "%Y", date: "$createdAt" } };
+
+    const results = await this.model.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: fromDate, $lte: toDate },
+        },
+      },
+      {
+        $group: {
+          _id: dateFormat,
+          psychologists: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    return results.map((r) => ({
+      label: r._id,
+      psychologists: r.psychologists,
+    }));
+  }
+async fetchPsychSummary(fromDate: Date, toDate: Date): Promise<PsychSummary> {
+  const totalValuePromise = this.model.countDocuments({ isVerified: true }).exec();
+
+  const addedValuePromise = this.model.countDocuments({
+    createdAt: { $gte: fromDate, $lte: toDate },
+  }).exec();
+
+  const [totalValue, addedValue] = await Promise.all([totalValuePromise, addedValuePromise]);
+
+  return { totalValue, addedValue };
+}
 }

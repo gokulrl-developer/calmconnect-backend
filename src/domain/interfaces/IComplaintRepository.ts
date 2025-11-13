@@ -20,4 +20,14 @@ export default interface IComplaintRepository
     limit: number;
   }): Promise<{ complaints: Complaint[]; totalItems: number }>;
   findComplaintsByPsychologist(filter: ComplaintHistoryFilter): Promise<{ complaints: Complaint[]; totalItems: number }>;
+  fetchRecentUserComplaints(userId:string,limit:number):Promise<UserRecentComplaintsEntryFromPersistence[]>
+}
+
+
+export interface UserRecentComplaintsEntryFromPersistence{
+    complaintId:string;
+    psychFirstName:string;
+    psychLastName:string;
+    raisedTime:string;
+    status:"pending"|"resolved"
 }

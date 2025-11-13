@@ -61,6 +61,8 @@ import FetchWalletUseCase from "../../application/use-cases/FetchWalletUseCase";
 import GetTransactionListUseCase from "../../application/use-cases/TransactionListUseCase";
 import { PdfkitReceiptService } from "../../infrastructure/external/PdfkitReceiptService";
 import AdminConfigService from "../../infrastructure/external/AdminConfigService";
+import FetchPsychDashboardUseCase from "../../application/use-cases/psychologist/FetchPsychDashboardUseCase";
+import ReviewRepository from "../../infrastructure/database/repositories/ReviewRepository";
 
 const psychRepository = new PsychRepository();
 const otpRepository = new RedisOtpRepository();
@@ -76,6 +78,7 @@ const walletRepository = new WalletRepository();
 const notificationRepository = new NotificationRepository();
 const receiptService=new PdfkitReceiptService();
 const adminConfigService=new AdminConfigService();
+const reviewRepository=new ReviewRepository();
 
 const registerPsychUseCase = new RegisterPsychUseCase(
   psychRepository,
@@ -183,6 +186,11 @@ const getUnreadNotificationCountUseCase = new GetUnreadNotificationCountUseCase(
 const transactionListUseCase=new GetTransactionListUseCase(transactionRepository)
 const fetchWalletUseCase=new FetchWalletUseCase(walletRepository)
 const generateTransactionReceiptUseCase=new GenerateTransactionReceiptUseCase(transactionRepository,receiptService,userRepository,psychRepository)
+const fetchPsychDashboardUseCase = new FetchPsychDashboardUseCase(
+  sessionRepository,
+  transactionRepository,
+  reviewRepository
+);
 
 const authController = new AuthController(
   registerPsychUseCase,
@@ -196,7 +204,8 @@ const authController = new AuthController(
 );
 const psychController = new PsychController(
   fetchPsychProfileUseCase,
-  updatePsychProfileUseCase
+  updatePsychProfileUseCase,
+  fetchPsychDashboardUseCase
 );
 const applicationController = new ApplicationController(
   createApplicationUseCase,

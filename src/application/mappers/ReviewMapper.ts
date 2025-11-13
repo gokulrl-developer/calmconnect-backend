@@ -1,6 +1,8 @@
 import Review from "../../domain/entities/review.entity";
 import Session from "../../domain/entities/session.entity";
+import { RatingSummaryFromPersistence } from "../../domain/interfaces/IReviewRepository";
 import { CreateReviewDTO } from "../dtos/user.dto";
+import { PsychRatingSummary } from "../interfaces/IFetchPsychDashboardUseCase";
 
 export const mapCreateReviewDTOToDomain = (
   dto: CreateReviewDTO,
@@ -25,3 +27,10 @@ export const mapDomainToListPsychReviewsResponse = (review: Review) => {
     comment: review.comment,
   };
 };
+
+export const mapRatingSummaryToResponse = (
+  summary: RatingSummaryFromPersistence
+): PsychRatingSummary => ({
+  current: summary.current,
+  lastMonth: summary.lastMonth,
+});

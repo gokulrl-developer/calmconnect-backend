@@ -60,6 +60,7 @@ import ReviewController from "../controllers/user/ReviewController";
 import CreateReviewUseCase from "../../application/use-cases/user/CreateReviewUseCase";
 import ReviewRepository from "../../infrastructure/database/repositories/ReviewRepository";
 import ListPsychReviewsUseCase from "../../application/use-cases/user/ListPsychReviewsUseCase";
+import FetchUserDashboardUseCase from "../../application/use-cases/user/FetchUserDashboardUseCase";
 
 const userRepository = new UserRepository();
 const otpRepository = new RedisOtpRepository();
@@ -77,7 +78,7 @@ const notificationQueue = new BullMQNotificationQueue();
 const receiptService = new PdfkitReceiptService();
 const adminConfigService = new AdminConfigService();
 const complaintRepository = new ComplaintRepository();
-const reviewRepository=new ReviewRepository();
+const reviewRepository = new ReviewRepository();
 
 const registerUserUseCase = new RegisterUserUseCase(
   userRepository,
@@ -190,14 +191,17 @@ const complaintDetailsByUserUseCase = new ComplaintDetailsByUserUseCase(
   psychRepository,
   sessionRepository
 );
-const createReviewUseCase=new CreateReviewUseCase(
+const createReviewUseCase = new CreateReviewUseCase(
   reviewRepository,
   sessionRepository,
   psychRepository
-)
-const listPsychReviewsUseCase=new ListPsychReviewsUseCase(
-  reviewRepository
-)
+);
+const listPsychReviewsUseCase = new ListPsychReviewsUseCase(reviewRepository);
+const fetchDashboardUseCase = new FetchUserDashboardUseCase(
+  sessionRepository,
+  transactionRepository,
+  complaintRepository
+);
 
 const authController = new AuthController(
   registerUserUseCase,
@@ -223,7 +227,8 @@ const sessionController = new SessionController(
 );
 const userController = new UserController(
   fetchProfileUseCase,
-  updateProfileUseCase
+  updateProfileUseCase,
+  fetchDashboardUseCase
 );
 const notificationController = new NotificationController(
   getNotificationUseCase,
@@ -240,10 +245,10 @@ const complaintController = new ComplaintController(
   complaintListingByUserUseCase,
   complaintDetailsByUserUseCase
 );
-const reviewController=new ReviewController(
+const reviewController = new ReviewController(
   createReviewUseCase,
   listPsychReviewsUseCase
-)
+);
 const checkStatusUser = new CheckStatusUser(checkStatusUserUseCase);
 
 const router = express.Router();

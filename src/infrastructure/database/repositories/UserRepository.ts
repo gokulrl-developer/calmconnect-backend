@@ -1,6 +1,6 @@
 import { ListUsersDTO } from "../../../application/dtos/admin.dto";
 import User from "../../../domain/entities/user.entity";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
+import IUserRepository, { UserTrendsEntry, UserTrendsSummary } from "../../../domain/interfaces/IUserRepository";
 import { IUserDocument, UserModel } from "../models/UserModel";
 import { BaseRepository } from "./BaseRepository";
 
@@ -75,5 +75,53 @@ export default class UserRepository
 
     const users = await this.model.find(query).skip(skip).limit(limit);
     return users.map((u) => this.toDomain(u));
+  }
+  async fetchUserTrends(
+    fromDate: Date,
+    toDate: Date,
+    interval: "day" | "month" | "year"
+  ): Promise<UserTrendsEntry[]> {
+    let dateFormat=
+    interval==="day"?
+       { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }:
+      interval=== "month"?
+      { $dateToString: { format: "%Y-%m", date: "$createdAt" } }:
+      { $dateToString: { format: "%Y", date: "$createdAt" } };
+    
+    const results = await this.model.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: fromDate, $lte: toDate },
+        },
+      },
+      {
+        $group: {
+          _id: dateFormat,
+          users: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+    ]);
+  console.log(results)
+    return results.map((r) => ({
+      label: r._id,
+      users: r.users,
+    }));
+  }
+
+  async fetchUserTrendsSummary(fromDate: Date, toDate: Date): Promise<UserTrendsSummary> {
+    const totalPromise = this.model.countDocuments({});
+    const addedPromise = this.model.countDocuments(
+      {$and:[{createdAt:{$gte:fromDate}},{createdAt:{$lte:toDate}}]}
+    );
+
+    const [total, added] = await Promise.all([totalPromise, addedPromise]);
+
+    return {
+      totalValue: total,
+      addedValue: added,
+    };
   }
 }

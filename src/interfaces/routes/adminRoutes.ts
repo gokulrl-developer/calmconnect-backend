@@ -42,6 +42,12 @@ import ComplaintDetailsByAdminUseCase from "../../application/use-cases/admin/Co
 import ComplaintResolutionUseCase from "../../application/use-cases/admin/ComplaintResolutionUseCase";
 import ComplaintHistoryByPsychUseCase from "../../application/use-cases/admin/ComplaintHistoryByPsychUseCase";
 import { eventBus } from "../../infrastructure/external/eventBus";
+import FetchRevenueTrendsUseCase from "../../application/use-cases/admin/FetchRevenueTrendsUseCase";
+import FetchClientsTrendsUseCase from "../../application/use-cases/admin/FetchClientTrendsUseCase";
+import FetchSessionTrendsUseCase from "../../application/use-cases/admin/FetchSessionTrendsUseCase";
+import FetchTopPsychologistsUseCase from "../../application/use-cases/admin/FetchTopPsychologistsUseCase";
+import DashboardController from "../controllers/admin/DashboardController";
+import FetchDashboardSummaryCardsUseCase from "../../application/use-cases/admin/FetchDashboardSummaryCards";
 
 const applicationRepository = new ApplicationRepository();
 const psychRepository = new PsychRepository();
@@ -119,6 +125,25 @@ const complaintHistoryByPsychUseCase = new ComplaintHistoryByPsychUseCase(
   psychRepository,
   sessionRepository
 );
+const fetchRevenueTrendsUseCase = new FetchRevenueTrendsUseCase(
+  transactionRepository
+);
+const fetchClientsTrendsUseCase = new FetchClientsTrendsUseCase(
+  userRepository,
+  psychRepository
+);
+const fetchSessionsTrendsUseCase = new FetchSessionTrendsUseCase(
+  sessionRepository
+);
+const fetchTopPsychologistsUseCase = new FetchTopPsychologistsUseCase(
+  sessionRepository
+);
+const fetchDashboardSummaryCardsUseCase = new FetchDashboardSummaryCardsUseCase(
+  userRepository,
+  psychRepository,
+  sessionRepository,
+  transactionRepository
+);
 
 const authController = new AuthController(loginAdminUseCase);
 const applicationController = new ApplicationController(
@@ -152,6 +177,13 @@ const complaintController = new ComplaintController(
   complaintListingByAdminUseCase,
   complaintResolutionUseCase,
   complaintHistoryByPsychUseCase
+);
+const dashboardController = new DashboardController(
+  fetchRevenueTrendsUseCase,
+  fetchSessionsTrendsUseCase,
+  fetchClientsTrendsUseCase,
+  fetchTopPsychologistsUseCase,
+  fetchDashboardSummaryCardsUseCase 
 );
 const router = express.Router();
 
@@ -299,4 +331,39 @@ router.patch(
   complaintController.resolveComplaint.bind(complaintController)
 );
 
+/* ---------------- Dashboard ---------------- */
+router.get(
+  "/admin/dashboard/revenue",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req, res, next) => dashboardController.fetchRevenueTrends(req, res, next)
+);
+
+router.get(
+  "/admin/dashboard/clients",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req, res, next) =>
+    dashboardController.fetchRegistrationTrends(req, res, next)
+);
+
+router.get(
+  "/admin/dashboard/sessions",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req, res, next) => dashboardController.fetchSessionTrends(req, res, next)
+);
+
+router.get(
+  "/admin/dashboard/top-psychologists",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req, res, next) => dashboardController.fetchTopPsychologists(req, res, next)
+);
+router.get(
+  "/admin/dashboard/summary-cards",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  (req, res, next) => dashboardController.fetchSummaryCards(req, res, next)
+);
 export default router;
