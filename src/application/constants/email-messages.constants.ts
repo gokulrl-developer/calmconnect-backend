@@ -20,4 +20,36 @@ export const EMAIL_MESSAGES = {
     <p>Sincerely,<br/>
     The CalmConnect Team</p>
   `,
+  SESSION_REMINDER_SUBJECT: "Upcoming Session Reminder",
+  SESSION_REMINDER_BODY_USER: (userFullName: string, minutes: number, startTime: string) => `
+    <p>Hi <strong>${userFullName}</strong>,</p>
+    <p>This is a reminder that your session starts in <strong>${minutes} minutes</strong> at <strong>${startTime}</strong>.</p>
+    <p>Please be ready on time.</p>
+    <p>Best regards,<br/>CalmConnect Team</p>
+  `,
+  SESSION_REMINDER_BODY_PSYCH: (psychFullName: string, userFullName: string, minutes: number, startTime: string) => `
+    <p>Hi <strong>${psychFullName}</strong>,</p>
+    <p>This is a reminder that your session with <strong>${userFullName}</strong> starts in <strong>${minutes} minutes</strong> at <strong>${startTime}</strong>.</p>
+    <p>Please be ready on time.</p>
+    <p>Best regards,<br/>CalmConnect Team</p>
+  `,
+  SESSION_REMINDER_BODY_USER_TEXT: (userFullName: string, minutes: number, startTime: string) => `
+Hi ${userFullName},
+
+This is a reminder that your session starts in ${minutes} minutes at ${startTime}.
+
+Please be ready on time.
+
+Best regards,
+CalmConnect Team
+  `,SESSION_REMINDER_BODY_PSYCH_TEXT: (psychFullName: string, userFullName: string, minutes: number, startTime: string) => `
+Hi ${psychFullName},
+
+This is a reminder that your session with ${userFullName} starts in ${minutes} minutes at ${startTime}.
+
+Please be ready on time.
+
+Best regards,
+CalmConnect Team
+  `,
 };

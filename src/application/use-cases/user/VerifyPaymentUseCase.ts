@@ -18,6 +18,7 @@ import { IEventBus } from "../../interfaces/events/IEventBus";
 import IUserRepository from "../../../domain/interfaces/IUserRepository";
 import { ISessionTaskQueue } from "../../../domain/interfaces/ISessionTaskQueue";
 import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
 
 export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
   constructor(
@@ -29,6 +30,7 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     private readonly _sessionTaskQueue: ISessionTaskQueue,
     private readonly _eventBus: IEventBus,
     private readonly _adminConfigService:IAdminConfigService,
+    private readonly _psychRepository:IPsychRepository
   ) {}
 
   async execute(dto: VerifyPaymentDTO): Promise<VerifyPaymentResponse> {
@@ -114,7 +116,10 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
       { minutes: 30, event: "session-reminder.30min" },
       { minutes: 5, event: "session-reminder.5min" },
     ];
-
+   const psychologist=await this._psychRepository.findById(session.psychologist);
+   if (!psychologist) {
+      throw new Error(ERROR_MESSAGES.PSYCHOLOGIST_NOT_FOUND);
+    }
     for (const { minutes, event } of reminders) {
       const delay = startTimestamp - now - minutes * 60 * 1000;
 
@@ -126,6 +131,11 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
             recipientId: session.psychologist,
             sessionId,
             minutes,
+            userEmail:user.email,
+            psychEmail:psychologist.email,
+            userFullName:`${user.firstName} ${user.lastName}`,
+            psychFullName:`${psychologist.firstName} ${psychologist.lastName}`,
+            startTime:session.startTime.toISOString()
           },
           delay
         );
@@ -136,6 +146,11 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
             recipientId: userId,
             sessionId,
             minutes,
+            userEmail:user.email,
+            psychEmail:psychologist.email,
+            userFullName:`${user.firstName} ${user.lastName}`,
+            psychFullName:`${psychologist.firstName} ${psychologist.lastName}`,
+            startTime:session.startTime.toISOString()
           },
           delay
         );

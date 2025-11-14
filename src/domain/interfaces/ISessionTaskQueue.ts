@@ -3,6 +3,11 @@ export interface SessionReminderTaskPayload {
   recipientId: string;
   sessionId: string;
   minutes: number;
+  userEmail:string;
+  psychEmail:string;
+  userFullName:string;
+  psychFullName:string;
+  startTime:string;
 }
 
 export interface SessionOverTaskPayload{
