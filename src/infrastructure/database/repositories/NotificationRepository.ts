@@ -77,4 +77,10 @@ async getUnreadCount(
     })
     return count;
   }
+  async deleteAllByAccount(
+    recipientId: string,
+    recipientType: "admin" | "user" | "psychologist"
+  ): Promise<void> {
+    await this.model.deleteMany({ recipientId, recipientType });
+  }
 }

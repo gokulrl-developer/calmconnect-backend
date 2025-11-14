@@ -63,6 +63,7 @@ import { PdfkitReceiptService } from "../../infrastructure/external/PdfkitReceip
 import AdminConfigService from "../../infrastructure/external/AdminConfigService";
 import FetchPsychDashboardUseCase from "../../application/use-cases/psychologist/FetchPsychDashboardUseCase";
 import ReviewRepository from "../../infrastructure/database/repositories/ReviewRepository";
+import ClearNotificationsUseCase from "../../application/use-cases/ClearNotificationsUseCase";
 
 const psychRepository = new PsychRepository();
 const otpRepository = new RedisOtpRepository();
@@ -191,6 +192,7 @@ const fetchPsychDashboardUseCase = new FetchPsychDashboardUseCase(
   transactionRepository,
   reviewRepository
 );
+const clearNotficationsUseCase=new ClearNotificationsUseCase(notificationRepository)
 
 const authController = new AuthController(
   registerPsychUseCase,
@@ -234,7 +236,8 @@ const sessionController = new SessionController(
 const notificationController = new NotificationController(
   getNotificationUseCase,
   markNotificationsReadUseCase,
-  getUnreadNotificationCountUseCase
+  getUnreadNotificationCountUseCase,
+  clearNotficationsUseCase
 );
 const financeController=new FinanceController(transactionListUseCase,fetchWalletUseCase,generateTransactionReceiptUseCase)
 
@@ -483,6 +486,14 @@ router.get(
   authorizeRoles("psychologist"),
   notificationController.getUnreadCount.bind(notificationController)
 );
+router.delete(
+  "/psychologist/notifications",
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  notificationController.clearNotifications.bind(notificationController)
+);
+
+
 router.get(
   "/psychologist/transactions",
   verifyTokenMiddleware,
