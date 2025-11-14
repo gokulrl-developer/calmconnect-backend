@@ -85,14 +85,17 @@ export default class ApplicationRepository
     return apps.map((a) => this.toDomain(a));
   }
 
-  async findPendingApplications(skip: number, limit: number,search:string): Promise<Application[]> {
-    const query: any = { status: "pending" };
+  async listApplications(skip: number, limit: number,search:string,status?:"pending"|"accepted"|"rejected"): Promise<Application[]> {
+    const query: ListApplicationsQuery={};
     if (search) {
       query.$or = [
         { firstName: { $regex: search, $options: "i" } },
         { lastName: { $regex: search, $options: "i" } },
         { email: { $regex: search, $options: "i" } },
       ];
+    }
+    if(status){
+      query.status=status
     }
     const apps = await this.model
       .find(query) 
@@ -103,9 +106,18 @@ export default class ApplicationRepository
     return apps.map((a) => this.toDomain(a));
   }
 
-  async findPendingApplicationById(id: string): Promise<Application | null> {
+  async findApplicationById(id: string): Promise<Application | null> {
     const app=await this.model
-    .findOne({_id:id,status:"pending"})
+    .findOne({_id:id})
     return app?this.toDomain(app):null;
   }
+}
+
+interface ListApplicationsQuery{
+ $or?: {
+    firstName?: { $regex: string; $options: string };
+    lastName?: { $regex: string; $options: string };
+    email?: { $regex: string; $options: string };
+  }[];
+  status?: "pending" | "accepted" | "rejected";
 }

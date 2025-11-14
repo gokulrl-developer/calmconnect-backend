@@ -11,7 +11,7 @@ export default class ApplicationListUseCase implements IApplicationListUseCase {
     const page=dto.page;
     const limit=10;
     const skip=(page-1)*10
-    const applications = await this._applicationRepository.findPendingApplications(skip,limit,dto.search);
+    const applications = await this._applicationRepository.listApplications(skip,limit,dto.search,dto.status);
     return applications.map(app => toAdminApplicationListResponse(app));
   }
 }
