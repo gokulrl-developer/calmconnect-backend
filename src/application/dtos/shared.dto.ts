@@ -51,3 +51,8 @@ export interface GetTransactionReceiptDTO{
   ownerId: string;
   transactionId:string;
 }
+
+export interface ClearNotificationsDTO {
+  recipientType: "admin" | "user" | "psychologist";
+  recipientId: string;
+}

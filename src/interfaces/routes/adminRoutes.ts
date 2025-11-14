@@ -48,6 +48,7 @@ import FetchSessionTrendsUseCase from "../../application/use-cases/admin/FetchSe
 import FetchTopPsychologistsUseCase from "../../application/use-cases/admin/FetchTopPsychologistsUseCase";
 import DashboardController from "../controllers/admin/DashboardController";
 import FetchDashboardSummaryCardsUseCase from "../../application/use-cases/admin/FetchDashboardSummaryCards";
+import ClearNotificationsUseCase from "../../application/use-cases/ClearNotificationsUseCase";
 
 const applicationRepository = new ApplicationRepository();
 const psychRepository = new PsychRepository();
@@ -144,6 +145,7 @@ const fetchDashboardSummaryCardsUseCase = new FetchDashboardSummaryCardsUseCase(
   sessionRepository,
   transactionRepository
 );
+const clearNotficationsUseCase=new ClearNotificationsUseCase(notificationRepository)
 
 const authController = new AuthController(loginAdminUseCase);
 const applicationController = new ApplicationController(
@@ -165,7 +167,8 @@ const sessionController = new SessionController(listSessionsUseCase);
 const notificationController = new NotificationController(
   getNotificationUseCase,
   markNotificationReadUseCase,
-  getUnreadNotificationCountUseCase
+  getUnreadNotificationCountUseCase,
+  clearNotficationsUseCase
 );
 const financeController = new FinanceController(
   transactionListUseCase,
@@ -282,6 +285,12 @@ router.get(
   verifyTokenMiddleware,
   authorizeRoles("admin"),
   notificationController.getUnreadCount.bind(notificationController)
+);
+router.delete(
+  "/admin/notifications",
+  verifyTokenMiddleware,
+  authorizeRoles("admin"),
+  notificationController.clearNotifications.bind(notificationController)
 );
 router.get(
   "/admin/transactions",

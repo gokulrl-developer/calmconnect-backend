@@ -61,6 +61,7 @@ import CreateReviewUseCase from "../../application/use-cases/user/CreateReviewUs
 import ReviewRepository from "../../infrastructure/database/repositories/ReviewRepository";
 import ListPsychReviewsUseCase from "../../application/use-cases/user/ListPsychReviewsUseCase";
 import FetchUserDashboardUseCase from "../../application/use-cases/user/FetchUserDashboardUseCase";
+import ClearNotificationsUseCase from "../../application/use-cases/ClearNotificationsUseCase";
 
 const userRepository = new UserRepository();
 const otpRepository = new RedisOtpRepository();
@@ -202,6 +203,7 @@ const fetchDashboardUseCase = new FetchUserDashboardUseCase(
   transactionRepository,
   complaintRepository
 );
+const clearNotficationsUseCase=new ClearNotificationsUseCase(notificationRepository)
 
 const authController = new AuthController(
   registerUserUseCase,
@@ -233,7 +235,8 @@ const userController = new UserController(
 const notificationController = new NotificationController(
   getNotificationUseCase,
   markNotificationsReadUseCase,
-  getUnreadNotificationCountUseCase
+  getUnreadNotificationCountUseCase,
+  clearNotficationsUseCase
 );
 const financeController = new FinanceController(
   transactionListUseCase,
@@ -404,6 +407,13 @@ router.get(
   authorizeRoles("user"),
   notificationController.getUnreadCount.bind(notificationController)
 );
+router.delete(
+  "/user/notifications",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  notificationController.clearNotifications.bind(notificationController)
+);
+
 router.get(
   "/user/transactions",
   verifyTokenMiddleware,

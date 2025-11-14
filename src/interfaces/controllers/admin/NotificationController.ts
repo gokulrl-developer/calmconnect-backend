@@ -7,12 +7,14 @@ import { StatusCodes } from "../../../utils/http-statuscodes";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
 import IMarkNotificationReadUseCase from "../../../application/interfaces/IMarkNotificationsReadUseCase";
 import IGetUnreadNotificationsCountUseCase from "../../../application/interfaces/IGetUnreadNotificationsCountUseCase";
+import IClearNotificationsUseCase from "../../../application/interfaces/IClearNotificationsUseCase";
 
 export default class NotificationController {
   constructor(
     private readonly _getNotificationsUseCase: IGetNotificationsUseCase,
     private readonly _markNotificationReadUseCase: IMarkNotificationReadUseCase,
-    private readonly _getUnreadCountUseCase: IGetUnreadNotificationsCountUseCase
+    private readonly _getUnreadCountUseCase: IGetUnreadNotificationsCountUseCase,
+    private readonly _clearNotificationsUseCase: IClearNotificationsUseCase
   ) {}
 
   async list(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -21,14 +23,15 @@ export default class NotificationController {
       const limit = parseInt(req.query.limit as string) || 10;
       const recipientId = req?.account?.id;
 
-      const {notifications,paginationData} = await this._getNotificationsUseCase.execute({
-        recipientType: "admin",
-        recipientId: recipientId!,
-        skip,
-        limit,
-      });
+      const { notifications, paginationData } =
+        await this._getNotificationsUseCase.execute({
+          recipientType: "admin",
+          recipientId: recipientId!,
+          skip,
+          limit,
+        });
 
-      res.status(StatusCodes.OK).json({ notifications,paginationData });
+      res.status(StatusCodes.OK).json({ notifications, paginationData });
     } catch (err) {
       next(err);
     }
@@ -43,7 +46,7 @@ export default class NotificationController {
       const recipientType = req?.account?.role;
 
       await this._markNotificationReadUseCase.execute({
-      recipientType: recipientType!,
+        recipientType: recipientType!,
         recipientId: accountId!,
       });
 
@@ -64,7 +67,7 @@ export default class NotificationController {
       const accountId = req?.account?.id;
       const recipientType = req?.account?.role;
 
-      const count=await this._getUnreadCountUseCase.execute({
+      const count = await this._getUnreadCountUseCase.execute({
         recipientType: recipientType!,
         recipientId: accountId!,
       });
@@ -72,6 +75,28 @@ export default class NotificationController {
       res.status(StatusCodes.OK).json({
         count,
         message: SUCCESS_MESSAGES.NOTIFICATION_COUNT_FETCHED,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async clearNotifications(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const accountId = req?.account?.id;
+      const recipientType = req?.account?.role;
+
+      const count = await this._clearNotificationsUseCase.execute({
+        recipientType: recipientType!,
+        recipientId: accountId!,
+      });
+
+      res.status(StatusCodes.OK).json({
+        message: SUCCESS_MESSAGES.NOTIFICATIONS_CLEARED,
       });
     } catch (err) {
       next(err);
