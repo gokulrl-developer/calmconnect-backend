@@ -20,8 +20,8 @@ export default class NotificationController {
   async list(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const recipientId = req?.account?.id;
-      const skip = parseInt(req.query.skip as string) || 0;
-      const limit = parseInt(req.query.limit as string) || 10;
+      const skip = req.pagination!.skip;
+      const limit = req.pagination!.limit;
 
       if (!recipientId) {
         throw new AppError(

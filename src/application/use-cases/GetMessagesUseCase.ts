@@ -1,6 +1,6 @@
 import { ChatMessage } from "../../domain/entities/chat-message.entity";
 import { GetMessagesDTO } from "../dtos/shared.dto";
-import { GetMessageResponse } from "../interfaces/IGetMessagesUseCase";
+import IGetMessagesUseCase, { GetMessageResponse } from "../interfaces/IGetMessagesUseCase";
 import AppError from "../error/AppError";
 import { ERROR_MESSAGES } from "../constants/error-messages.constants";
 import { AppErrorCodes } from "../error/app-error-codes";
@@ -9,7 +9,7 @@ import { mapDomainToGetMessagesResponse } from "../mappers/ChatMessageMapper";
 
 
 
-export default class GetMessagesUseCase {
+export default class GetMessagesUseCase implements IGetMessagesUseCase{
   constructor(private readonly _chatMessageRepo: IChatMessageRepository) {}
 
   async execute(dto: GetMessagesDTO): Promise<GetMessageResponse[]> {

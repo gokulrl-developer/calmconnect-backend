@@ -105,7 +105,11 @@ export default class ApplicationRepository
 
     return apps.map((a) => this.toDomain(a));
   }
-
+/**
+ * 
+ * @param id 
+ * @returns 
+ */
   async findApplicationById(id: string): Promise<Application | null> {
     const app=await this.model
     .findOne({_id:id})
