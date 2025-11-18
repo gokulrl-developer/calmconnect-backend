@@ -6,6 +6,7 @@ export interface AdminLoginDTO{
 export interface ListApplicationsDTO{
     page:number,
     search:string |null,
+    status?:"pending"|"accepted"|"rejected"
 }
 export interface UpdateApplicationStatusDTO{
     applicationId:string,

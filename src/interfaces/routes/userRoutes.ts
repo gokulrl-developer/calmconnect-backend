@@ -141,7 +141,8 @@ const verifyPaymentUseCase = new VerifyPaymentUseCase(
   userRepository,
   notificationQueue,
   eventBus,
-  adminConfigService
+  adminConfigService,
+  psychRepository
 );
 const listSessionsByUserUseCase = new SessionListingUserUseCase(
   sessionRepository,

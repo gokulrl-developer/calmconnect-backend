@@ -11,7 +11,7 @@ constructor(
 private readonly _applicationRepository:IApplicationRepository
 ){}
 async execute(dto:ApplicationDetailsDTO){
-  const result =await this._applicationRepository.findPendingApplicationById(dto.applicationId);
+  const result =await this._applicationRepository.findApplicationById(dto.applicationId);
   if(!result){
     throw new AppError(ERROR_MESSAGES.APPLICATION_NOT_FOUND,AppErrorCodes.NOT_FOUND)
 }

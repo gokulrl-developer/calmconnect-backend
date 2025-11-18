@@ -35,7 +35,6 @@ export default class CancelSessionUserUseCase implements ICancelSessionUserUseCa
     const sessionStart = new Date(session.startTime);
     const threeDaysBefore = new Date(sessionStart);
     threeDaysBefore.setDate(sessionStart.getDate() - 3);
-    
     const {email:adminEmail,adminId}=this._adminConfigService.getAdminData();
 
     let platformWallet = await this._walletRepository.findOne({ ownerType: "platform" });

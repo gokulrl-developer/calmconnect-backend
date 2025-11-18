@@ -3,6 +3,8 @@ import IORedis from "ioredis";
 import IMarkSessionOverUseCase from "../../application/interfaces/IMarkSessionOverUseCase";
 import ISendNotificationUseCase from "../../application/interfaces/ISendNotificationUseCase";
 import { SessionTaskJobMap } from "../../domain/interfaces/ISessionTaskQueue";
+import { transporter } from "../config/nodeMailerConfig";
+import { EMAIL_MESSAGES } from "../../application/constants/email-messages.constants";
 
 export default class BullMQSessionTaskWorker {
   private readonly queueName = "session-task-queue";
@@ -38,9 +40,16 @@ export default class BullMQSessionTaskWorker {
       switch (job.name) {
         case "session-reminder.30min":
         case "session-reminder.5min": {
-          const { recipientId, recipientType, minutes } =
-            data as SessionTaskJobMap["session-reminder.30min"];
-
+          const {
+            recipientId,
+            recipientType,
+            minutes,
+            userEmail,
+            psychEmail,
+            userFullName,
+            psychFullName,
+            startTime,
+          } = data as SessionTaskJobMap["session-reminder.30min"];
           const message = `Your session starts in ${minutes} minutes.`;
           await this._sendNotificationUseCase.execute({
             recipientType,
@@ -48,6 +57,21 @@ export default class BullMQSessionTaskWorker {
             title: "Session Reminder",
             message,
             type: "reminder",
+          });
+          await transporter.sendMail({
+            from: `"CalmConnect" <${process.env.SMTP_EMAIL}>`,
+            to: userEmail,
+            subject: EMAIL_MESSAGES.SESSION_REMINDER_SUBJECT,
+            html: EMAIL_MESSAGES.SESSION_REMINDER_BODY_USER(userFullName, minutes, new Date(startTime).toLocaleString()),
+            text: EMAIL_MESSAGES.SESSION_REMINDER_BODY_USER_TEXT(userFullName, minutes, new Date(startTime).toLocaleString()),
+          });
+
+          await transporter.sendMail({
+            from: `"CalmConnect" <${process.env.SMTP_EMAIL}>`,
+            to: psychEmail,
+            subject: EMAIL_MESSAGES.SESSION_REMINDER_SUBJECT,
+            html: EMAIL_MESSAGES.SESSION_REMINDER_BODY_PSYCH(psychFullName, userFullName, minutes, new Date(startTime).toLocaleString()),
+            text: EMAIL_MESSAGES.SESSION_REMINDER_BODY_PSYCH_TEXT(psychFullName, userFullName, minutes, new Date(startTime).toLocaleString()),
           });
           break;
         }

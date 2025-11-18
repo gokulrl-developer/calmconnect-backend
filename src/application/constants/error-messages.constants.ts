@@ -107,5 +107,6 @@ export const ERROR_MESSAGES = {
   REVIEW_RATING_INVALID_FORMAT:"Rating is in invalid format",
   REVIEW_COMMENT_INVALID_FORMAT:"Review comment is in invalid format",
   REVIEW_COMMENT_EXCEEDS_LENGTH:"Review comment length should not exceed 300 characters.",
-  REVIEW_SORT_INVALID_FORMAT:"Review sort is in invalid format."
+  REVIEW_SORT_INVALID_FORMAT:"Review sort is in invalid format.",
+  APPLICATION_STATUS_FILTER_INVALID:"The applications status filter is invalid"
 } as const;
