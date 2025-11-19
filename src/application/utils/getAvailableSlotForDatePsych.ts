@@ -22,7 +22,7 @@ export function getAvailableSlotsForDatePsych(
       AppErrorCodes.INVALID_INPUT
     );
   }
-  let allSlots: { startTime: string; endTime: string }[] = [];
+  const allSlots: { startTime: string; endTime: string }[] = [];
   if (specialDay) {
     if (specialDay.type === "override") {
       availability = {

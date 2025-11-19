@@ -30,7 +30,7 @@ export default class ListPsychByUserUseCase implements IListPsychByUserUseCase {
       toPsychListByUserPersistence(dto)
     );
 
-    let psychologistsBeforeDateFilter = filteredData.psychologists;
+    const psychologistsBeforeDateFilter = filteredData.psychologists;
     let psychologistsAfterDateFilter: Psychologist[] = [];
 
     if (dto.date) {

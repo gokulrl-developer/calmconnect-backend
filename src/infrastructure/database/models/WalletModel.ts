@@ -3,7 +3,7 @@ import { model, Schema, Document, Types } from "mongoose";
 export interface IWalletDocument extends Document {
   ownerType: "user" | "psychologist" | "platform";
   balance: number;
-  ownerId?: String;
+  ownerId?: string;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -13,7 +13,7 @@ export default class ListPsychReviewsUseCase
 
   async execute(dto: ListPsychReviewsDTO): Promise<ListPsychReviewsResponse> {
     const { skip, limit } = dto;
-    let { reviews, totalItems } = await this._reviewRepository.listPsychReviews(
+    const { reviews, totalItems } = await this._reviewRepository.listPsychReviews(
       {
         psychId: dto.psychId,
         sort: dto.sort,

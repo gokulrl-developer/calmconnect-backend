@@ -2,9 +2,9 @@ import { model, Schema, Document, Types } from "mongoose";
 
 export interface ITransactionDocument extends Document {
   walletId: Types.ObjectId;
-  ownerId:String;
-  sourceId:String;
-  recipientId:String;
+  ownerId:string;
+  sourceId:string;
+  recipientId:string;
   ownerType:"user"|"psychologist"|"platform";
   sourceType:"user"|"psychologist"|"platform";
   recipientType:"user"|"psychologist"|"platform";

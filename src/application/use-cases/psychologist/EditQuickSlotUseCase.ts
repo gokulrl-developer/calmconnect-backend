@@ -79,7 +79,7 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
       existingQuickSlot.psychologist
     );
 
-    for (let availabilityRule of availabilityRules) {
+    for (const availabilityRule of availabilityRules) {
       const slotStartMinutes =
         startTime.getHours() * 60 + startTime.getMinutes();
       const slotEndMinutes = endTime.getHours() * 60 + endTime.getMinutes();

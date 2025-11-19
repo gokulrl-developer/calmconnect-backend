@@ -283,7 +283,7 @@ export default class SessionRepository
     ]);
 
     const filled: PsychSessionTrendsEntry[] = [];
-    let currentWeekDate = startOfWeek(endDate, { weekStartsOn: 1 });
+    const currentWeekDate = startOfWeek(endDate, { weekStartsOn: 1 });
 
     for (let i = 3; i >= 0; i--) {
       const weekDate = subWeeks(currentWeekDate, i);

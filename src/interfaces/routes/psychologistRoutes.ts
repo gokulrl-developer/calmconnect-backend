@@ -16,7 +16,6 @@ import ApplicationController from "../controllers/psychologist/ApplicationContro
 import CreateApplicationUseCase from "../../application/use-cases/psychologist/CreateApplicationUseCase.js";
 import ApplicationRepository from "../../infrastructure/database/repositories/ApplicationRepository.js";
 import CloudinaryService from "../../infrastructure/external/CloudinaryService.js";
-import ApplicationStatusUseCase from "../../application/use-cases/psychologist/FetchLatestApplicationUseCase.js";
 import ResendOtpResetPsychUseCase from "../../application/use-cases/psychologist/ResendOtpResetPsychUseCase.js";
 import ResendOtpSignUpPsychUseCase from "../../application/use-cases/psychologist/ResendOtpSignUpPsychUseCase.js";
 import ForgotPasswordPsychUseCase from "../../application/use-cases/psychologist/ForgotPasswordPsychUseCase.js";
@@ -96,9 +95,7 @@ const createApplicationUseCase = new CreateApplicationUseCase(
   cloudinaryService,
   eventBus
 );
-const applicationStatusUseCase = new ApplicationStatusUseCase(
-  applicationRepository
-);
+
 const resendOtpSignUpUseCase = new ResendOtpSignUpPsychUseCase(otpRepository);
 const resendOtpResetUseCase = new ResendOtpResetPsychUseCase(otpRepository);
 const forgotPasswordUserUseCase = new ForgotPasswordPsychUseCase(

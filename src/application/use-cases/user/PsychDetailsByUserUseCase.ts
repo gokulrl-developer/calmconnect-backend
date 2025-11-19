@@ -46,9 +46,9 @@ private readonly _availabilityRuleRepository: IAvailabilityRuleRepository,
         const quickSlots =await this._quickSlotRepository.findActiveByDatePsych(selectedDate,dto.psychId)  
         const sessions =await this._sessionRepository.findBookedSessions(selectedDate,dto.psychId)
     
-       let availableSlots=getAvailableSlotsForDatePsych(specialDay,availabilityRules,quickSlots,sessions);
-       let filteredSlots:Slot[]=[];
-       for(let slot of availableSlots){
+       const availableSlots=getAvailableSlotsForDatePsych(specialDay,availabilityRules,quickSlots,sessions);
+       const filteredSlots:Slot[]=[];
+       for(const slot of availableSlots){
         const slotStartTime = new Date(HHMMToIso(slot.startTime, new Date(dto.date!)));
         if(slotStartTime.getTime()>Date.now()){
            filteredSlots.push(slot)

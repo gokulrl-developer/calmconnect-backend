@@ -81,7 +81,7 @@ export default class UserRepository
     toDate: Date,
     interval: "day" | "month" | "year"
   ): Promise<UserTrendsEntry[]> {
-    let dateFormat=
+    const dateFormat=
     interval==="day"?
        { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }:
       interval=== "month"?

@@ -61,7 +61,7 @@ export default class PsychController {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       const psychId = req.account?.id;
 
-      let {
+      const {
         address,
         languages,
         specializations,

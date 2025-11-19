@@ -50,7 +50,7 @@ export default class CreateQuickSlotUseCase implements ICreateQuickSlotUseCase {
     throw new AppError(ERROR_MESSAGES.AVAILABILITY_NOT_SET,AppErrorCodes.CONFLICT)
   }
 
-  for(let availabilityRule of availabilityRules){
+  for(const availabilityRule of availabilityRules){
       const slotStartMinutes = quickSlot.startTime.getHours() * 60 + quickSlot.startTime.getMinutes();
       const slotEndMinutes = quickSlot.endTime.getHours() * 60 + quickSlot.endTime.getMinutes();
       const ruleStartMinutes = timeStringToMinutes(availabilityRule.startTime);

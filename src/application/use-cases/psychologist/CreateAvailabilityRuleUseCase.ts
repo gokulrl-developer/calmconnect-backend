@@ -20,9 +20,9 @@ export default class CreateAvailabilityRuleUseCase
         dto.weekDay,
         dto.psychId
       );
-      let currentRuleStartMinutes=timeStringToMinutes(dto.startTime);
-      let currentRuleEndMinutes=timeStringToMinutes(dto.endTime);
-    for (let availabilityRule of weekDayAvailabilityRules) {
+      const currentRuleStartMinutes=timeStringToMinutes(dto.startTime);
+      const currentRuleEndMinutes=timeStringToMinutes(dto.endTime);
+    for (const availabilityRule of weekDayAvailabilityRules) {
       const ruleStartMinutes = timeStringToMinutes(availabilityRule.startTime);
       const ruleEndMinutes = timeStringToMinutes(availabilityRule.endTime);
 

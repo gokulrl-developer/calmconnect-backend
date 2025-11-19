@@ -42,7 +42,7 @@ export default class CancelSessionUserUseCase implements ICancelSessionUserUseCa
       platformWallet = await this._walletRepository.create(new Wallet("platform", 0,adminId));
     }
 
-    let transactions: string[] = [];
+    const transactions: string[] = [];
   
     if (now <= threeDaysBefore) {
       const debitFromPlatform = toDomainRefundDebit(platformWallet.id!,adminId,dto.userId, session.fees, session.id!);

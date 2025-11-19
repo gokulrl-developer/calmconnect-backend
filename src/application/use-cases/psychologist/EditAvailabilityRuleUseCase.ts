@@ -47,9 +47,9 @@ export default class EditAvailabilityRuleUseCase
         updatedRule.weekDay,
         dto.psychId
       );
-    let currentRuleStartMinutes = timeStringToMinutes(updatedRule.startTime);
-    let currentRuleEndMinutes = timeStringToMinutes(updatedRule.endTime);
-    for (let availabilityRule of weekDayAvailabilityRules) {
+    const currentRuleStartMinutes = timeStringToMinutes(updatedRule.startTime);
+    const currentRuleEndMinutes = timeStringToMinutes(updatedRule.endTime);
+    for (const availabilityRule of weekDayAvailabilityRules) {
       if(availabilityRule.id===dto.availabilityRuleId){
         continue;
       }

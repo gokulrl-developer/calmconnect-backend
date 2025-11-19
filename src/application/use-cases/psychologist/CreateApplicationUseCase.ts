@@ -24,7 +24,7 @@ export default class CreateApplicationUseCase implements ICreateApplicationUseCa
      if(applications.length>=3){
         throw new AppError(ERROR_MESSAGES.APPLICATION_LIMIT_EXCEEDED,AppErrorCodes.FORBIDDEN_ERROR)
      };
-     for(let app of applications){
+     for(const app of applications){
       if(app.status==="pending"){
         throw new AppError(ERROR_MESSAGES.PENDING_APPLICATION_EXISTS,AppErrorCodes.FORBIDDEN_ERROR)
       }

@@ -1,34 +1,36 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response} from "express";
 import { AppErrorCodes } from "../application/error/app-error-codes.js";
 import AppError from "../application/error/AppError.js";
 import { StatusCodes } from "./http-statuscodes.js";
 export const errorHandler = (
-  err: any,
+  err:AppError | Error | { code?: string; message?: string },
   req: Request,
   res: Response,
-  next: NextFunction
 ) => {
   console.log(err)
-  if (err.code) {
+  if (err instanceof AppError) {
     const statusCode = errorToHttpStatus(err.code);
-    console.log(statusCode,err.code,err.message)
-    if (err instanceof AppError) {
-      if (statusCode >= 400 && statusCode < 500) {
-        return res.status(statusCode).json({
-          code: err.code,
-          message: err.message,
-          success: false,
-        });
-      } else {
-        console.error("custom Error :", err.message, err.code);
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Internal server error",
-          success:false
-        });
-      }
+    if (statusCode >= 400 && statusCode < 500) {
+      return res.status(statusCode).json({
+        code: err.code,
+        message: err.message,
+        success: false,
+      });
+    } else {
+      console.error("Custom Error:", err.message, err.code);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Internal server error",
+        success: false,
+      });
     }
   }
+
+  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    code: "INTERNAL_SERVER_ERROR",
+    message: err.message || "Internal server error",
+    success: false,
+  });
 };
 
 

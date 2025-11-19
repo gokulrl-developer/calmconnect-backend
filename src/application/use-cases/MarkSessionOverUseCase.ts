@@ -33,7 +33,7 @@ export default class MarkSessionOverUseCase implements IMarkSessionOverUseCase {
       session.psychologist,
       "psychologist"
     );
-    let platformWallet = await this._walletRepo.findByOwner(
+    const platformWallet = await this._walletRepo.findByOwner(
       adminData.adminId,
       "platform"
     );

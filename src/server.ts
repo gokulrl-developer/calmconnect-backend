@@ -18,7 +18,6 @@ import SendNotificationUseCase from "./application/use-cases/SendNotificationUse
 import NotificationHandler from "./application/event-handlers/NotificationHandler.js";
 import { NotificationRepository } from "./infrastructure/database/repositories/NotificationRepository.js";
 import MarkSessionOverUseCase from "./application/use-cases/MarkSessionOverUseCase.js";
-import BullMQSessionTaskWorker from "./infrastructure/external/BullMQSessionTaskWorker.js";
 import TransactionRepository from "./infrastructure/database/repositories/TransactionRepository.js";
 import WalletRepository from "./infrastructure/database/repositories/WalletRepository.js";
 import app from "./app.js";
@@ -72,10 +71,6 @@ const startServer = async () => {
       walletRepository
     );
 
-    const bullMQSessionTaskWorker = new BullMQSessionTaskWorker(
-      sendNotificationUseCase,
-      markSessionOverUseCase
-    );
     const notificationHandler = new NotificationHandler(
       sendNotificationUseCase
     );

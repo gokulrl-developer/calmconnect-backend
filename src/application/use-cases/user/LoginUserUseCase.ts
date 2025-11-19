@@ -15,7 +15,7 @@ export default class LoginUserUseCase implements ILoginUserUseCase{
   ) {}
 
   async execute(dto: UserLoginDTO):Promise<LoginResponse>{
-    const { email, password } = dto;
+    const { password } = dto;
 
   
     const userEntity = await this._userRepository.findByEmail(dto.email);

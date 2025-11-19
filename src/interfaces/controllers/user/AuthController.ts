@@ -49,12 +49,12 @@ export default class AuthController {
           AppErrorCodes.VALIDATION_ERROR
         );
       }
-      const result = await this._registerUserUseCase.execute(req.body);
+      await this._registerUserUseCase.execute(req.body);
       res
         .status(StatusCodes.CREATED)
         .json({ message: SUCCESS_MESSAGES.REGISTRATION_SUCCESSFUL });
     } catch (error) {
-      next();
+      next(error);
     }
   }
   async resetPassword(
@@ -81,12 +81,12 @@ export default class AuthController {
           AppErrorCodes.VALIDATION_ERROR
         );
       }
-      const result = await this._resetPasswordUseCase.execute(req.body);
+       await this._resetPasswordUseCase.execute(req.body);
       res
         .status(StatusCodes.CREATED)
         .json({ message: SUCCESS_MESSAGES.PASSWORD_RESET_SUCCESSFUL });
     } catch (error) {
-      next();
+      next(error);
     }
   }
 
