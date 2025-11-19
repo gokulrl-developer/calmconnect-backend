@@ -1,7 +1,7 @@
-import { transporter } from "../infrastructure/config/nodeMailerConfig";
+import { transporter } from "../infrastructure/config/nodeMailerConfig.js";
 
 
-transporter.verify((error, success) => {
+transporter.verify((error) => {
   if (error) {
     console.error('Error verifying mailer:', error);
   } else {

@@ -1,11 +1,11 @@
-import { UpdateUserProfileDTO } from "../../dtos/user.dto";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import { IFileStorageService } from "../../../domain/interfaces/IFileStorageService";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IUpdateUserProfileUseCase from "../../interfaces/IUpdateUserProfileUseCase";
-import { toUserDomainFromUpdateDTO } from "../../mappers/UserMapper";
+import { UpdateUserProfileDTO } from "../../dtos/user.dto.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import { IFileStorageService } from "../../../domain/interfaces/IFileStorageService.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IUpdateUserProfileUseCase from "../../interfaces/IUpdateUserProfileUseCase.js";
+import { toUserDomainFromUpdateDTO } from "../../mappers/UserMapper.js";
 
 export default class UpdateUserProfileUseCase implements IUpdateUserProfileUseCase {
     constructor(

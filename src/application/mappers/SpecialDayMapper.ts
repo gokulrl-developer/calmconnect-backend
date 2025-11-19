@@ -1,6 +1,5 @@
-import { stringify } from "querystring";
-import SpecialDay from "../../domain/entities/special-day.entity";
-import { CreateSpecialDayDTO, EditSpecialDayDTO,  } from "../dtos/psych.dto";
+import SpecialDay from "../../domain/entities/special-day.entity.js";
+import { CreateSpecialDayDTO, EditSpecialDayDTO,  } from "../dtos/psych.dto.js";
 
 export const mapCreateSpecialDayDTOToDomain=(dto:CreateSpecialDayDTO)=>{
     return new SpecialDay(

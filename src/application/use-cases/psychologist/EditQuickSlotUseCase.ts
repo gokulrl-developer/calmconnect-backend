@@ -1,14 +1,14 @@
-import { EditQuickSlotDTO } from "../../dtos/psych.dto";
-import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
-import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import QuickSlot from "../../../domain/entities/quick-slot.entity";
-import IEditQuickSlotUseCase from "../../interfaces/IEditQuickSlotUseCase";
-import { mapEditQuickSlotDTOToDomain } from "../../mappers/QuickSlotMapper";
-import { timeStringToMinutes } from "../../../utils/timeConverter";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
+import { EditQuickSlotDTO } from "../../dtos/psych.dto.js";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import QuickSlot from "../../../domain/entities/quick-slot.entity.js";
+import IEditQuickSlotUseCase from "../../interfaces/IEditQuickSlotUseCase.js";
+import { mapEditQuickSlotDTOToDomain } from "../../mappers/QuickSlotMapper.js";
+import { timeStringToMinutes } from "../../../utils/timeConverter.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
 
 export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
   constructor(
@@ -69,20 +69,29 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
     }
 
     const weekDay = startTime.getDay();
-    const availabilityRule =await this._availabilityRuleRepo.findActiveByWeekDayPsych(weekDay, dto.psychId);
-  const specialDay=await this._specialDayRepo.findActiveByDatePsych(existingQuickSlot.date,existingQuickSlot.psychologist)
-  
-    if (availabilityRule) {
+    const availabilityRules =
+      await this._availabilityRuleRepo.findActiveByWeekDayPsych(
+        weekDay,
+        dto.psychId
+      );
+    const specialDay = await this._specialDayRepo.findActiveByDatePsych(
+      existingQuickSlot.date,
+      existingQuickSlot.psychologist
+    );
+
+    for (const availabilityRule of availabilityRules) {
       const slotStartMinutes =
         startTime.getHours() * 60 + startTime.getMinutes();
       const slotEndMinutes = endTime.getHours() * 60 + endTime.getMinutes();
       const ruleStartMinutes = timeStringToMinutes(availabilityRule.startTime);
       const ruleEndMinutes = timeStringToMinutes(availabilityRule.endTime);
 
-      if (!specialDay &&
-        (slotStartMinutes > ruleStartMinutes &&
-          slotEndMinutes < ruleEndMinutes) ||
-        (slotEndMinutes < ruleEndMinutes && slotEndMinutes > ruleStartMinutes)
+      if (
+        specialDay === null &&
+        ((slotStartMinutes > ruleStartMinutes &&
+          slotStartMinutes < ruleEndMinutes) ||
+          (slotEndMinutes < ruleEndMinutes &&
+            slotEndMinutes > ruleStartMinutes))
       ) {
         throw new AppError(
           ERROR_MESSAGES.CONFLICTING_AVAILABILITY_RULE,
@@ -90,7 +99,6 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
         );
       }
     }
-
     const updatedQuickSlot: QuickSlot = mapEditQuickSlotDTOToDomain(
       dto,
       existingQuickSlot

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import ISessionListingAdminUseCase from "../../../application/interfaces/ISessionListingAdminUseCase";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import ISessionListingAdminUseCase from "../../../application/interfaces/ISessionListingAdminUseCase.js";
 
 export default class SessionController {
   constructor(
@@ -14,7 +14,9 @@ export default class SessionController {
   ): Promise<void> {
     try {
       const result = await this._listSessionsUseCase.execute({
-        status:req.query.status as string
+        status:req.query.status as "scheduled"|"cancelled"|"ended"|"pending",
+        skip: req.pagination?.skip!,
+        limit: req.pagination?.limit!,
       });
 
       res.status(StatusCodes.OK).json({ ...result });

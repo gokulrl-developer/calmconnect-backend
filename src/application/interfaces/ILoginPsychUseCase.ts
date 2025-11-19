@@ -1,4 +1,4 @@
-import { PsychLoginDTO } from "../dtos/psych.dto";
+import { PsychLoginDTO } from "../dtos/psych.dto.js";
 
 export interface LoginResponse {
   psych: {

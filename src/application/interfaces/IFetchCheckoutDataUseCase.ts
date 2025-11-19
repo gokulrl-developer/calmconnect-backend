@@ -1,4 +1,4 @@
-import { FetchCheckoutDataDTO } from "../dtos/user.dto";
+import { FetchCheckoutDataDTO } from "../dtos/user.dto.js";
 
 export interface CheckoutData{
   startTime:string,

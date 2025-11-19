@@ -1,9 +1,9 @@
 import { model, Schema, Document, Types } from "mongoose";
 
 export interface IWalletDocument extends Document {
-  ownerType: "user" | "psychologist" | "admin";
+  ownerType: "user" | "psychologist" | "platform";
   balance: number;
-  ownerId?: Types.ObjectId;
+  ownerId?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -12,11 +12,11 @@ const WalletSchema = new Schema<IWalletDocument>(
   {
     ownerType: {
       type: String,
-      enum: ["user", "psychologist", "admin"],
+      enum: ["user", "psychologist", "platform"],
       required: true,
     },
     balance: { type: Number, required: true, default: 0 },
-    ownerId: { type: Schema.Types.ObjectId, refPath: "ownerType" }, 
+    ownerId: { type: String, refPath: "ownerType" }, 
   },
   {
     timestamps: true, 

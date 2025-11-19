@@ -1,9 +1,7 @@
 // checkStatus.middleware.ts
 import { Request, Response, NextFunction } from "express";
-import ICheckStatusUserUseCase from "../../application/interfaces/ICheckStatusUserUseCase";
-import AppError from "../../application/error/AppError";
-import { AppErrorCodes } from "../../application/error/app-error-codes";
-import ICheckStatusPsychUseCase from "../../application/interfaces/ICheckStatusPsychUseCase";
+import ICheckStatusUserUseCase from "../../application/interfaces/ICheckStatusUserUseCase.js";
+import ICheckStatusPsychUseCase from "../../application/interfaces/ICheckStatusPsychUseCase.js";
 
 export class CheckStatusUser {
   constructor(

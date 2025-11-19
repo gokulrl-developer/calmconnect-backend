@@ -1,13 +1,16 @@
-import { SessionListingDTO } from "../dtos/psych.dto";
+import { SessionListingDTO } from "../dtos/psych.dto.js";
+import PaginationData from "../utils/calculatePagination.js";
 
 export interface SessionListingPsychItem {
-  user: string;
-  startTime: string;
+  userFullName: string;
+  userEmail:string;
+  startTime: Date;
+  endTime:Date;
   durationInMins: number;
-  status: string;
+  status: "scheduled"|"cancelled"|"ended"|"pending";
   fees: number;
   sessionId: string;
 }
 export default interface ISessionListingPsychUseCase {
-  execute(dto: SessionListingDTO): Promise<SessionListingPsychItem[]>;
+  execute(dto: SessionListingDTO): Promise<{sessions:SessionListingPsychItem[],paginationData:PaginationData}>;
 }

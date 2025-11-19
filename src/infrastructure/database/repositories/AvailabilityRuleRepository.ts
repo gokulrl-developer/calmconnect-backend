@@ -1,8 +1,9 @@
 import { Types } from "mongoose";
-import AvailabilityRule from "../../../domain/entities/availability-rule.entity";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import { AvailabilityRuleModel, IAvailabilityRuleDocument } from "../models/AvailabilityRuleModel";
-import { BaseRepository } from "./BaseRepository";
+import AvailabilityRule from "../../../domain/entities/availability-rule.entity.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import { AvailabilityRuleModel, IAvailabilityRuleDocument } from "../models/AvailabilityRuleModel.js";
+import { BaseRepository } from "./BaseRepository.js";
+
 
 export default class AvailabilityRuleRepository
   extends BaseRepository<AvailabilityRule, IAvailabilityRuleDocument>
@@ -45,11 +46,9 @@ export default class AvailabilityRuleRepository
     return rules.map((rule) => this.toDomain(rule));
   }
 
-  async findActiveByWeekDayPsych(weekDay: number, psychId: string): Promise<AvailabilityRule|null> {
-    const rule = await this.model.findOne({ psychologist: psychId, weekDay,status:"active" });
-    if (!rule) {
-      return null;
-    }
-    return this.toDomain(rule);
+  async findActiveByWeekDayPsych(weekDay: number, psychId: string): Promise<AvailabilityRule[]> {
+    const docs = await this.model.find({ psychologist: psychId, weekDay,status:"active" });
+   
+    return docs.map((doc)=>this.toDomain(doc));
   }
 }

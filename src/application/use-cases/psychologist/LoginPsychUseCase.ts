@@ -1,15 +1,12 @@
-import { PsychLoginDTO } from "../../dtos/psych.dto";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { comparePasswords } from "../../../utils/passwordEncryption";
-import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import { ILoginPsychUseCase, LoginResponse } from "../../interfaces/ILoginPsychUseCase";
-import { toLoginResponse } from "../../mappers/PsychMapper";
-
-
-
+import { PsychLoginDTO } from "../../dtos/psych.dto.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { comparePasswords } from "../../../utils/passwordEncryption.js";
+import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import { ILoginPsychUseCase, LoginResponse } from "../../interfaces/ILoginPsychUseCase.js";
+import { toLoginResponse } from "../../mappers/PsychMapper.js";
 
 export default class LoginPsychUseCase implements ILoginPsychUseCase{
   constructor(
@@ -44,7 +41,7 @@ export default class LoginPsychUseCase implements ILoginPsychUseCase{
     
     const refreshToken = generateRefreshToken({ id: psychEntity.id!,role:"psychologist"});
     const accessToken = generateAccessToken({ id: psychEntity.id!,role:"psychologist" });
-
+    
     return toLoginResponse(psychEntity,accessToken,refreshToken);
   }
 }

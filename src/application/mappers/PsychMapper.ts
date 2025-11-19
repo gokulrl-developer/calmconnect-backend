@@ -1,10 +1,14 @@
-import { PsychSignUpDTO, UpdatePsychProfileDTO } from "../dtos/psych.dto";
-import { Application } from "../../domain/entities/application.entity";
-import Psychologist from "../../domain/entities/psychologist.entity";
-import { PsychProfile } from "../interfaces/IFetchPsychProfileUseCase";
-import { ListPsychByUserDTO } from "../dtos/user.dto";
-import { ListPsychQueryByUser } from "../../domain/interfaces/IPsychRepository";
-import { Slot } from "../utils/generateSlots";
+import { PsychSignUpDTO, UpdatePsychProfileDTO } from "../dtos/psych.dto.js";
+import { Application } from "../../domain/entities/application.entity.js";
+import Psychologist from "../../domain/entities/psychologist.entity.js";
+import { PsychProfile } from "../interfaces/IFetchPsychProfileUseCase.js";
+import { ListPsychByUserDTO } from "../dtos/user.dto.js";
+import {
+  ListPsychQueryByUser,
+  PsychSummary,
+} from "../../domain/interfaces/IPsychRepository.js";
+import { Slot } from "../utils/generateSlots.js";
+import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
 
 export const toPsychDomainRegister = (psych: PsychSignUpDTO): Psychologist => {
   return new Psychologist(
@@ -146,23 +150,23 @@ export const toAdminPsychListResponse = (psych: Psychologist) => {
   };
 };
 
-export const toPsychListByUserPersistence = (dto: ListPsychByUserDTO): ListPsychQueryByUser => {
+export const toPsychListByUserPersistence = (
+  dto: ListPsychByUserDTO
+): ListPsychQueryByUser => {
   return {
     specialization: dto.specialization ?? null,
     gender: dto.gender ?? null,
     date: dto.date ?? null,
     sort:
       (dto.sort as undefined | "a-z" | "z-a" | "price" | "rating") ??
-      "a-z", /* a-z,z-a,rating,price */
+      "a-z" /* a-z,z-a,rating,price */,
     search: dto.search ?? null /* name,specializations,languages fields */,
     skip: dto.skip,
     limit: dto.limit,
   };
 };
 
-export const toPsychListByUserResponse = (
-  psych: Psychologist
-) => {
+export const toPsychListByUserResponse = (psych: Psychologist) => {
   return {
     psychId: psych.id!,
     name: psych.firstName + " " + psych.lastName,
@@ -207,7 +211,7 @@ export const toFetchPsychProfileResponse = (
   bio: psych.bio ?? "",
   qualifications: psych.qualifications ?? "",
   hourlyFees: psych.hourlyFees ?? null,
-  quickSlotHourlyFees:null
+  quickSlotHourlyFees: null,
 });
 
 export const toPsychDomainFromUpdateDTO = (
@@ -240,3 +244,29 @@ export const toPsychDomainFromUpdateDTO = (
     existingPsych.googleId
   );
 };
+
+export const mapDomainToDetailsResponseByAdmin = (psych: Psychologist) => {
+  return {
+    firstName: psych.firstName,
+    lastName: psych.lastName,
+    email: psych.email,
+    isBlocked: psych.isBlocked,
+    psychId: psych.id!,
+    gender: psych.gender,
+    dob: psych.dob,
+    profilePicture: psych.profilePicture,
+    address: psych.address,
+    languages: psych.languages,
+    specializations: psych.specializations,
+    bio: psych.bio,
+    rating: psych.avgRating,
+    license: psych.licenseUrl,
+    qualifications: psych.qualifications,
+    createdAt: psych.createdAt,
+  };
+};
+
+export const mapPsychSummaryToCardItem = (summary: PsychSummary): SummaryCardItem => ({
+  totalValue: summary.totalValue,
+  addedValue: summary.addedValue,
+});

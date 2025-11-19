@@ -6,10 +6,9 @@ export default class Session{
        public endTime:Date,
        public durationInMins:number,
        public transactionIds:string[],
-       public status:"scheduled"|"completed"|"cancelled"|"available"|"pending",
+       public status:"scheduled"|"cancelled"|"ended"|"pending",
        public fees:number, //rupees
        public id?:string,
        public videoRoomId?:string,
-       public progressNotesId?:string,
     ){}
 }

@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from "express";
-import IListPsychByUserUseCase from "../../../application/interfaces/IListPsychByUserUseCase";
-import { StatusCodes } from "../../../utils/http-statuscodes";
+import IListPsychByUserUseCase from "../../../application/interfaces/IListPsychByUserUseCase.js";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
 import IPsychDetailsByUserUseCase, {
   PsychDetails,
-} from "../../../application/interfaces/IPsychDetailsByUserUseCase";
-import AppError from "../../../application/error/AppError";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import {VerifyPaymentDTO, CreateOrderDTO, FetchCheckoutDataDTO } from "../../../application/dtos/user.dto";
-import IFetchCheckoutDataUseCase from "../../../application/interfaces/IFetchCheckoutDataUseCase";
-import ICreateOrderUseCase from "../../../application/interfaces/ICreateOrderUseCase";
-import IVerifyPaymentUseCase from "../../../application/interfaces/IVerifyPaymentUseCase";
+} from "../../../application/interfaces/IPsychDetailsByUserUseCase.js";
+import AppError from "../../../application/error/AppError.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import { VerifyPaymentDTO, CreateOrderDTO, FetchCheckoutDataDTO } from "../../../application/dtos/user.dto.js";
+import IFetchCheckoutDataUseCase from "../../../application/interfaces/IFetchCheckoutDataUseCase.js";
+import ICreateOrderUseCase from "../../../application/interfaces/ICreateOrderUseCase.js";
+import IVerifyPaymentUseCase from "../../../application/interfaces/IVerifyPaymentUseCase.js";
 
 export default class AppointmentController {
   constructor(

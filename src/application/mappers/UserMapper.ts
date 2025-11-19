@@ -1,7 +1,8 @@
-import { UpdateUserProfileDTO, UserSignUpDTO } from "../dtos/user.dto"
-import User from "../../domain/entities/user.entity"
-import { UserProfile } from "../interfaces/IFetchUserProfileUseCase"
-
+import { UpdateUserProfileDTO, UserSignUpDTO } from "../dtos/user.dto.js";
+import User from "../../domain/entities/user.entity.js";
+import { UserProfile } from "../interfaces/IFetchUserProfileUseCase.js";
+import { UserTrendsSummary } from "../../domain/interfaces/IUserRepository.js";
+import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
 
 export const toUserDomainRegister=(user:UserSignUpDTO):User=>{
   
@@ -106,6 +107,25 @@ export const toUserDomainFromUpdateDTO = (
     existingUser.googleId
   );
 };
+
+export const mapDomainToDetailsResponseByAdmin=(user:User)=>{
+  return {
+    firstName:user.firstName,
+    lastName:user.lastName,
+    email:user.email,
+    isBlocked:user.isBlocked,
+    userId:user.id!,
+    gender:user.gender,
+    dob:user.dob,
+    profilePicture:user.profilePicture,
+    address:user.address
+    }
+}
+
+export const mapUserSummaryToCardItem = (summary: UserTrendsSummary): SummaryCardItem => ({
+  totalValue: summary.totalValue,
+  addedValue: summary.addedValue,
+});
 
 
 

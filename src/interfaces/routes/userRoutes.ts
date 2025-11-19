@@ -1,129 +1,476 @@
-import express,{ Request, Response, NextFunction } from "express";
-import GoogleAuthUserUseCase from "../../application/use-cases/user/GoogleAuthUserUseCase";
-import LoginUserUseCase from "../../application/use-cases/user/LoginUserUseCase";
-import RegisterUserUseCase from "../../application/use-cases/user/RegisterUserUseCase";
-import SignUpUserUseCase from "../../application/use-cases/user/SignUpUserUseCase";
-import UserRepository from "../../infrastructure/database/repositories/UserRepository";
-import RedisOtpRepository from "../../infrastructure/database/repositories/RedisOtpRepository";
-import AuthController from "../controllers/user/AuthController";
-import UserController from "../controllers/user/UserController";
-import verifyTokenMiddleware from "../middleware/verifyTokenMiddleware";
-import { authorizeRoles } from "../middleware/authorizeRolesMiddleware";
-import { CheckStatusUser } from "../middleware/checkStatus";
-import { CheckStatusUserUseCase } from "../../application/use-cases/user/CheckStatusUserUseCase";
-import ResendOtpSignUpUserUseCase from "../../application/use-cases/user/ResendOtpSignUpUserUseCase";
-import ResendOtpResetUserUseCase from "../../application/use-cases/user/ResendOtpResetUserUseCase";
-import ForgotPasswordUserUseCase from "../../application/use-cases/user/ForgotPasswordUserUseCase";
-import ResetPasswordUserUseCase from "../../application/use-cases/user/ResetPasswordUserUseCase";
-import PsychDetailsByUserUseCase from "../../application/use-cases/user/PsychDetailsByUserUseCase";
-import ListPsychByUserUseCase from "../../application/use-cases/user/ListPsychByUserUseCase";
-import PsychRepository from "../../infrastructure/database/repositories/PsychRepository";
-import AvailabilityRuleRepository from "../../infrastructure/database/repositories/AvailabilityRuleRepository";
-import SessionRepository from "../../infrastructure/database/repositories/SessionRepository";
-import AppointmentController from "../controllers/user/AppointmentController";
-import { paginationMiddleware } from "../middleware/paginationMiddleware";
-import FetchUserProfileUseCase from "../../application/use-cases/user/FetchUserProfileUseCase";
-import UpdateUserProfileUseCase from "../../application/use-cases/user/UpdateUserProfileUseCase";
-import CloudinaryService from "../../infrastructure/external/CloudinaryService";
-import FetchCheckoutDataUseCase from "../../application/use-cases/user/FetchCheckoutDataUseCase";
-import CreateOrderUseCase from "../../application/use-cases/user/CreateOrderUseCase";
-import RazorpayPaymentProvider from "../../infrastructure/external/RazorpayPaymentProvider";
-import VerifyPaymentUseCase from "../../application/use-cases/user/VerifyPaymentUseCase";
-import WalletRepository from "../../infrastructure/database/repositories/WalletRepository";
-import TransactionRepository from "../../infrastructure/database/repositories/TransactionRepository";
-import { upload } from "../../infrastructure/config/multerConfig";
-import SessionController from "../controllers/user/SessionController";
-import SessionListingUserUseCase from "../../application/use-cases/user/SessionListingUserUseCase";
-import SpecialDayRepository from "../../infrastructure/database/repositories/SpecialDayRepository";
-import QuickSlotRepository from "../../infrastructure/database/repositories/QuickSlotRepository";
+import express, { Request, Response, NextFunction } from "express";
+import GoogleAuthUserUseCase from "../../application/use-cases/user/GoogleAuthUserUseCase.js";
+import LoginUserUseCase from "../../application/use-cases/user/LoginUserUseCase.js";
+import RegisterUserUseCase from "../../application/use-cases/user/RegisterUserUseCase.js";
+import SignUpUserUseCase from "../../application/use-cases/user/SignUpUserUseCase.js";
+import UserRepository from "../../infrastructure/database/repositories/UserRepository.js";
+import RedisOtpRepository from "../../infrastructure/database/repositories/RedisOtpRepository.js";
+import AuthController from "../controllers/user/AuthController.js";
+import UserController from "../controllers/user/UserController.js";
+import verifyTokenMiddleware from "../middleware/verifyTokenMiddleware.js";
+import { authorizeRoles } from "../middleware/authorizeRolesMiddleware.js";
+import { CheckStatusUser } from "../middleware/checkStatus.js";
+import { CheckStatusUserUseCase } from "../../application/use-cases/user/CheckStatusUserUseCase.js";
+import ResendOtpSignUpUserUseCase from "../../application/use-cases/user/ResendOtpSignUpUserUseCase.js";
+import ResendOtpResetUserUseCase from "../../application/use-cases/user/ResendOtpResetUserUseCase.js";
+import ForgotPasswordUserUseCase from "../../application/use-cases/user/ForgotPasswordUserUseCase.js";
+import ResetPasswordUserUseCase from "../../application/use-cases/user/ResetPasswordUserUseCase.js";
+import PsychDetailsByUserUseCase from "../../application/use-cases/user/PsychDetailsByUserUseCase.js";
+import ListPsychByUserUseCase from "../../application/use-cases/user/ListPsychByUserUseCase.js";
+import PsychRepository from "../../infrastructure/database/repositories/PsychRepository.js";
+import AvailabilityRuleRepository from "../../infrastructure/database/repositories/AvailabilityRuleRepository.js";
+import SessionRepository from "../../infrastructure/database/repositories/SessionRepository.js";
+import AppointmentController from "../controllers/user/AppointmentController.js";
+import { paginationMiddleware } from "../middleware/paginationMiddleware.js";
+import FetchUserProfileUseCase from "../../application/use-cases/user/FetchUserProfileUseCase.js";
+import UpdateUserProfileUseCase from "../../application/use-cases/user/UpdateUserProfileUseCase.js";
+import CloudinaryService from "../../infrastructure/external/CloudinaryService.js";
+import FetchCheckoutDataUseCase from "../../application/use-cases/user/FetchCheckoutDataUseCase.js";
+import CreateOrderUseCase from "../../application/use-cases/user/CreateOrderUseCase.js";
+import RazorpayPaymentProvider from "../../infrastructure/external/RazorpayPaymentProvider.js";
+import VerifyPaymentUseCase from "../../application/use-cases/user/VerifyPaymentUseCase.js";
+import WalletRepository from "../../infrastructure/database/repositories/WalletRepository.js";
+import TransactionRepository from "../../infrastructure/database/repositories/TransactionRepository.js";
+import { upload } from "../../infrastructure/config/multerConfig.js";
+import SessionController from "../controllers/user/SessionController.js";
+import SessionListingUserUseCase from "../../application/use-cases/user/SessionListingUserUseCase.js";
+import SpecialDayRepository from "../../infrastructure/database/repositories/SpecialDayRepository.js";
+import QuickSlotRepository from "../../infrastructure/database/repositories/QuickSlotRepository.js";
+import CancelSessionUserUseCase from "../../application/use-cases/user/CancelSessionUserUseCase.js";
+import CheckSessionAccessUseCase from "../../application/use-cases/CheckSessionAccessUseCase.js";
+import NotificationController from "../controllers/user/NotificationController.js";
+import GetNotificationsUseCase from "../../application/use-cases/GetNotificationsUseCase.js";
+import { NotificationRepository } from "../../infrastructure/database/repositories/NotificationRepository.js";
+import BullMQNotificationQueue from "../../infrastructure/external/BullMQSessionTaskQueue.js";
+import { eventBus } from "../../infrastructure/external/eventBus.js";
+import MarkNotificationsReadUseCase from "../../application/use-cases/MarkNotificationReadUseCase.js";
+import FinanceController from "../controllers/user/FinanceController.js";
+import GenerateTransactionReceiptUseCase from "../../application/use-cases/GenerateTransactionReceiptUseCase.js";
+import FetchWalletUseCase from "../../application/use-cases/FetchWalletUseCase.js";
+import GetTransactionListUseCase from "../../application/use-cases/TransactionListUseCase.js";
+import { PdfkitReceiptService } from "../../infrastructure/external/PdfkitReceiptService.js";
+import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetNotificationsCountUseCase.js";
+import AdminConfigService from "../../infrastructure/external/AdminConfigService.js";
+import ComplaintController from "../controllers/user/ComplaintController.js";
+import CreateComplaintUseCase from "../../application/use-cases/user/CreateComplaintUseCase.js";
+import ComplaintRepository from "../../infrastructure/database/repositories/ComplaintRepository.js";
+import ComplaintDetailsByUserUseCase from "../../application/use-cases/user/ComplaintDetailsByUserUseCase.js";
+import ComplaintListingByUserUseCase from "../../application/use-cases/user/ComplaintListingByUserUseCase.js";
+import ReviewController from "../controllers/user/ReviewController.js";
+import CreateReviewUseCase from "../../application/use-cases/user/CreateReviewUseCase.js";
+import ReviewRepository from "../../infrastructure/database/repositories/ReviewRepository.js";
+import ListPsychReviewsUseCase from "../../application/use-cases/user/ListPsychReviewsUseCase.js";
+import FetchUserDashboardUseCase from "../../application/use-cases/user/FetchUserDashboardUseCase.js";
+import ClearNotificationsUseCase from "../../application/use-cases/ClearNotificationsUseCase.js";
 
-const userRepository=new UserRepository()
-const otpRepository=new RedisOtpRepository()
-const psychRepository=new PsychRepository()
-const availabilityRuleRepository=new AvailabilityRuleRepository()
-const specialDayRepository=new SpecialDayRepository()
-const quickSlotRepository=new QuickSlotRepository()
-const sessionRepository=new SessionRepository()
-const cloudinaryService=new CloudinaryService()
-const paymentProvider=new RazorpayPaymentProvider()
-const walletRepository=new WalletRepository()
-const transactionRepository=new TransactionRepository()
 
-const registerUserUseCase=new RegisterUserUseCase(userRepository,otpRepository)
-const signUpUseCase=new SignUpUserUseCase(userRepository,otpRepository)
-const loginUseCase=new LoginUserUseCase(userRepository);
-const googleAuthUseCase=new GoogleAuthUserUseCase(userRepository);
-const resendOtpSignUpUseCase=new ResendOtpSignUpUserUseCase(otpRepository);
-const resendOtpResetUseCase=new ResendOtpResetUserUseCase(otpRepository);
-const checkStatusUserUseCase=new CheckStatusUserUseCase(userRepository)
-const forgotPasswordUserUseCase=new ForgotPasswordUserUseCase(otpRepository,userRepository);
-const resetPasswordUserUseCase=new ResetPasswordUserUseCase(userRepository,otpRepository);
-const listPsychByUserUseCase=new ListPsychByUserUseCase(psychRepository,availabilityRuleRepository,specialDayRepository,quickSlotRepository,sessionRepository);
-const psychDetailsByUserUseCase=new PsychDetailsByUserUseCase(psychRepository,availabilityRuleRepository,specialDayRepository,quickSlotRepository,sessionRepository)
-const fetchProfileUseCase=new FetchUserProfileUseCase(userRepository);
-const updateProfileUseCase=new UpdateUserProfileUseCase(userRepository,cloudinaryService)
-const fetchCheckoutDataUseCase=new FetchCheckoutDataUseCase(psychRepository,availabilityRuleRepository,specialDayRepository,quickSlotRepository,sessionRepository)
-const createOrderUseCase=new CreateOrderUseCase(psychRepository,availabilityRuleRepository,specialDayRepository,quickSlotRepository,sessionRepository,paymentProvider)
-const verifyPaymentUseCase=new VerifyPaymentUseCase(paymentProvider,sessionRepository,transactionRepository,walletRepository)
-const listSessionsByUserUseCase=new SessionListingUserUseCase(sessionRepository,psychRepository)
+const userRepository = new UserRepository();
+const otpRepository = new RedisOtpRepository();
+const psychRepository = new PsychRepository();
+const availabilityRuleRepository = new AvailabilityRuleRepository();
+const specialDayRepository = new SpecialDayRepository();
+const quickSlotRepository = new QuickSlotRepository();
+const sessionRepository = new SessionRepository();
+const cloudinaryService = new CloudinaryService();
+const paymentProvider = new RazorpayPaymentProvider();
+const walletRepository = new WalletRepository();
+const transactionRepository = new TransactionRepository();
+const notificationRepository = new NotificationRepository();
+const notificationQueue = new BullMQNotificationQueue();
+const receiptService = new PdfkitReceiptService();
+const adminConfigService = new AdminConfigService();
+const complaintRepository = new ComplaintRepository();
+const reviewRepository = new ReviewRepository();
 
-const authController=new AuthController(registerUserUseCase,signUpUseCase,loginUseCase,googleAuthUseCase,resendOtpSignUpUseCase,
-    resendOtpResetUseCase,forgotPasswordUserUseCase,resetPasswordUserUseCase
+const registerUserUseCase = new RegisterUserUseCase(
+  userRepository,
+  otpRepository
 );
-const appointmentController=new AppointmentController(listPsychByUserUseCase,psychDetailsByUserUseCase,fetchCheckoutDataUseCase,createOrderUseCase,verifyPaymentUseCase)
-//const sessionController=new SessionController(listSessionsByUserUseCase)
-const userController=new UserController(fetchProfileUseCase,updateProfileUseCase)
-const checkStatusUser=new CheckStatusUser(checkStatusUserUseCase)
+const signUpUseCase = new SignUpUserUseCase(userRepository, otpRepository);
+const loginUseCase = new LoginUserUseCase(userRepository);
+const googleAuthUseCase = new GoogleAuthUserUseCase(userRepository);
+const resendOtpSignUpUseCase = new ResendOtpSignUpUserUseCase(otpRepository);
+const resendOtpResetUseCase = new ResendOtpResetUserUseCase(otpRepository);
+const checkStatusUserUseCase = new CheckStatusUserUseCase(userRepository);
+const forgotPasswordUserUseCase = new ForgotPasswordUserUseCase(
+  otpRepository,
+  userRepository
+);
+const resetPasswordUserUseCase = new ResetPasswordUserUseCase(
+  userRepository,
+  otpRepository
+);
+const listPsychByUserUseCase = new ListPsychByUserUseCase(
+  psychRepository,
+  availabilityRuleRepository,
+  specialDayRepository,
+  quickSlotRepository,
+  sessionRepository
+);
+const psychDetailsByUserUseCase = new PsychDetailsByUserUseCase(
+  psychRepository,
+  availabilityRuleRepository,
+  specialDayRepository,
+  quickSlotRepository,
+  sessionRepository
+);
+const fetchProfileUseCase = new FetchUserProfileUseCase(userRepository);
+const updateProfileUseCase = new UpdateUserProfileUseCase(
+  userRepository,
+  cloudinaryService
+);
+const fetchCheckoutDataUseCase = new FetchCheckoutDataUseCase(
+  psychRepository,
+  availabilityRuleRepository,
+  specialDayRepository,
+  quickSlotRepository,
+  sessionRepository
+);
+const createOrderUseCase = new CreateOrderUseCase(
+  psychRepository,
+  availabilityRuleRepository,
+  specialDayRepository,
+  quickSlotRepository,
+  sessionRepository,
+  paymentProvider
+);
+const verifyPaymentUseCase = new VerifyPaymentUseCase(
+  paymentProvider,
+  sessionRepository,
+  transactionRepository,
+  walletRepository,
+  userRepository,
+  notificationQueue,
+  eventBus,
+  adminConfigService,
+  psychRepository
+);
+const listSessionsByUserUseCase = new SessionListingUserUseCase(
+  sessionRepository,
+  psychRepository
+);
+const cancelSessionUseCase = new CancelSessionUserUseCase(
+  sessionRepository,
+  transactionRepository,
+  walletRepository,
+  adminConfigService
+);
+const checkSessionAccessUseCase = new CheckSessionAccessUseCase(
+  sessionRepository
+);
+const getNotificationUseCase = new GetNotificationsUseCase(
+  notificationRepository
+);
+const markNotificationsReadUseCase = new MarkNotificationsReadUseCase(
+  notificationRepository
+);
+const getUnreadNotificationCountUseCase = new GetUnreadNotificationCountUseCase(
+  notificationRepository
+);
+const transactionListUseCase = new GetTransactionListUseCase(
+  transactionRepository
+);
+const fetchWalletUseCase = new FetchWalletUseCase(walletRepository);
+const generateTransactionReceiptUseCase = new GenerateTransactionReceiptUseCase(
+  transactionRepository,
+  receiptService,
+  userRepository,
+  psychRepository
+);
+const createComplaintUseCase = new CreateComplaintUseCase(
+  complaintRepository,
+  sessionRepository,
+  userRepository,
+  psychRepository,
+  eventBus
+);
+const complaintListingByUserUseCase = new ComplaintListingByUserUseCase(
+  complaintRepository,
+  psychRepository,
+  sessionRepository
+);
+const complaintDetailsByUserUseCase = new ComplaintDetailsByUserUseCase(
+  complaintRepository,
+  psychRepository,
+  sessionRepository
+);
+const createReviewUseCase = new CreateReviewUseCase(
+  reviewRepository,
+  sessionRepository,
+  psychRepository
+);
+const listPsychReviewsUseCase = new ListPsychReviewsUseCase(reviewRepository);
+const fetchDashboardUseCase = new FetchUserDashboardUseCase(
+  sessionRepository,
+  transactionRepository,
+  complaintRepository
+);
+const clearNotficationsUseCase=new ClearNotificationsUseCase(notificationRepository)
+
+const authController = new AuthController(
+  registerUserUseCase,
+  signUpUseCase,
+  loginUseCase,
+  googleAuthUseCase,
+  resendOtpSignUpUseCase,
+  resendOtpResetUseCase,
+  forgotPasswordUserUseCase,
+  resetPasswordUserUseCase
+);
+const appointmentController = new AppointmentController(
+  listPsychByUserUseCase,
+  psychDetailsByUserUseCase,
+  fetchCheckoutDataUseCase,
+  createOrderUseCase,
+  verifyPaymentUseCase
+);
+const sessionController = new SessionController(
+  listSessionsByUserUseCase,
+  cancelSessionUseCase,
+  checkSessionAccessUseCase
+);
+const userController = new UserController(
+  fetchProfileUseCase,
+  updateProfileUseCase,
+  fetchDashboardUseCase
+);
+const notificationController = new NotificationController(
+  getNotificationUseCase,
+  markNotificationsReadUseCase,
+  getUnreadNotificationCountUseCase,
+  clearNotficationsUseCase
+);
+const financeController = new FinanceController(
+  transactionListUseCase,
+  fetchWalletUseCase,
+  generateTransactionReceiptUseCase
+);
+const complaintController = new ComplaintController(
+  createComplaintUseCase,
+  complaintListingByUserUseCase,
+  complaintDetailsByUserUseCase
+);
+const reviewController = new ReviewController(
+  createReviewUseCase,
+  listPsychReviewsUseCase
+);
+const checkStatusUser = new CheckStatusUser(checkStatusUserUseCase);
 
 const router = express.Router();
 
-router.post('/user/sign-up', (req:Request, res:Response,next:NextFunction) => authController.signUpUser(req, res,next));
-router.post('/user/forgot-password', (req:Request, res:Response,next:NextFunction) => authController.forgotPassword(req, res,next));
-router.post('/user/register',(req:Request, res:Response,next:NextFunction)=>authController.registerUser(req,res,next));
-router.post('/user/reset-password',(req:Request, res:Response,next:NextFunction)=>authController.resetPassword(req,res,next));
-router.post('/user/resend-otp-signup', (req:Request, res:Response,next:NextFunction) => authController.resendOtpSignUp(req, res,next));
-router.post('/user/resend-otp-reset', (req:Request, res:Response,next:NextFunction) => authController.resendOtpReset(req, res,next));
-router.post('/user/social',(req:Request, res:Response,next:NextFunction)=>authController.googleAuthUser(req,res,next))
-router.post('/user/login',(req:Request,res:Response,next:NextFunction)=>authController.loginUser(req,res,next));
-router.get('/user/dashboard',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             (req:Request,res:Response,next:NextFunction)=>userController.getDashboard(req,res,next));
-router.get('/user/psychologists',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             paginationMiddleware,
-                             (req:Request,res:Response,next:NextFunction)=>appointmentController.listPsychologists(req,res,next))
-router.get('/user/psychologist-details',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             (req:Request,res:Response,next:NextFunction)=>appointmentController.psychDetails(req,res,next))
-router.get('/user/checkout',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             (req:Request,res:Response,next:NextFunction)=>appointmentController.fetchCheckoutData(req,res,next))
-router.post('/user/create-order',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             (req:Request,res:Response,next:NextFunction)=>appointmentController.createOrder(req,res,next))
-router.post('/user/verify-payment',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             (req:Request,res:Response,next:NextFunction)=>appointmentController.verifyPayment(req,res,next))
-router.get('/user/profile',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             (req:Request,res:Response,next:NextFunction)=>userController.fetchProfile(req,res,next))
-// router.get('/user/sessions',verifyTokenMiddleware,
-//                              authorizeRoles("user"),
-//                              checkStatusUser.handle.bind(checkStatusUser),
-//                              (req:Request,res:Response,next:NextFunction)=>sessionController.listSessions(req,res,next))
-router.patch('/user/profile',verifyTokenMiddleware,
-                             authorizeRoles("user"),
-                             checkStatusUser.handle.bind(checkStatusUser),
-                             upload.fields([
-                                 { name: "profilePicture", maxCount: 1 },
-                               ]),
-                             (req:Request,res:Response,next:NextFunction)=>userController.updateProfile(req,res,next))
+router.post(
+  "/user/sign-up",
+  (req: Request, res: Response, next: NextFunction) =>
+    authController.signUpUser(req, res, next)
+);
+router.post(
+  "/user/forgot-password",
+  (req: Request, res: Response, next: NextFunction) =>
+    authController.forgotPassword(req, res, next)
+);
+router.post(
+  "/user/register",
+  (req: Request, res: Response, next: NextFunction) =>
+    authController.registerUser(req, res, next)
+);
+router.post(
+  "/user/reset-password",
+  (req: Request, res: Response, next: NextFunction) =>
+    authController.resetPassword(req, res, next)
+);
+router.post(
+  "/user/resend-otp-signup",
+  (req: Request, res: Response, next: NextFunction) =>
+    authController.resendOtpSignUp(req, res, next)
+);
+router.post(
+  "/user/resend-otp-reset",
+  (req: Request, res: Response, next: NextFunction) =>
+    authController.resendOtpReset(req, res, next)
+);
+router.post("/user/social", (req: Request, res: Response, next: NextFunction) =>
+  authController.googleAuthUser(req, res, next)
+);
+router.post("/user/login", (req: Request, res: Response, next: NextFunction) =>
+  authController.loginUser(req, res, next)
+);
+router.get(
+  "/user/dashboard",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.getDashboard(req, res, next)
+);
+router.get(
+  "/user/psychologists",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  paginationMiddleware,
+  (req: Request, res: Response, next: NextFunction) =>
+    appointmentController.listPsychologists(req, res, next)
+);
+router.get(
+  "/user/psychologist-details",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  (req: Request, res: Response, next: NextFunction) =>
+    appointmentController.psychDetails(req, res, next)
+);
+router.get(
+  "/user/checkout",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  (req: Request, res: Response, next: NextFunction) =>
+    appointmentController.fetchCheckoutData(req, res, next)
+);
+router.post(
+  "/user/create-order",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  (req: Request, res: Response, next: NextFunction) =>
+    appointmentController.createOrder(req, res, next)
+);
+router.post(
+  "/user/verify-payment",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  (req: Request, res: Response, next: NextFunction) =>
+    appointmentController.verifyPayment(req, res, next)
+);
+router.get(
+  "/user/profile",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.fetchProfile(req, res, next)
+);
+router.get(
+  "/user/sessions",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  paginationMiddleware,
+  (req: Request, res: Response, next: NextFunction) =>
+    sessionController.listSessions(req, res, next)
+);
+router.patch(
+  "/user/sessions/:sessionId",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  paginationMiddleware,
+  (req: Request, res: Response, next: NextFunction) =>
+    sessionController.cancelSession(req, res, next)
+);
+router.get(
+  "/user/sessions/:sessionId/access",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  (req: Request, res: Response, next: NextFunction) =>
+    sessionController.checkSessionAccess(req, res, next)
+);
+router.patch(
+  "/user/profile",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  upload.fields([{ name: "profilePicture", maxCount: 1 }]),
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.updateProfile(req, res, next)
+);
+
+/* ----------------notifications ------------------------------------------- */
+router.get(
+  "/user/notifications",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  paginationMiddleware,
+  notificationController.list.bind(notificationController)
+);
+router.patch(
+  "/user/notifications",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  notificationController.markAllRead.bind(notificationController)
+);
+router.get(
+  "/user/notifications/count",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  notificationController.getUnreadCount.bind(notificationController)
+);
+router.delete(
+  "/user/notifications",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  notificationController.clearNotifications.bind(notificationController)
+);
+
+router.get(
+  "/user/transactions",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  paginationMiddleware,
+  financeController.listTransactions.bind(financeController)
+);
+router.get(
+  "/user/wallet",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  financeController.fetchWallet.bind(financeController)
+);
+router.get(
+  "/user/transactions/:transactionId/receipt",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  financeController.generateTransactionReceipt.bind(financeController)
+);
+
+/* complaint related routes */
+router.get(
+  "/user/complaints/:complaintId/",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  complaintController.fetchComplaintDetails.bind(complaintController)
+);
+router.get(
+  "/user/complaints/",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  paginationMiddleware,
+  complaintController.listComplaints.bind(complaintController)
+);
+router.post(
+  "/user/complaints/",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  complaintController.createComplaint.bind(complaintController)
+);
+
+// Review related routes----------------------------------------
+
+router.post(
+  "/user/reviews/",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  reviewController.createReview.bind(reviewController)
+);
+router.get(
+  "/user/reviews/",
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  paginationMiddleware,
+  reviewController.listPsychReviews.bind(reviewController)
+);
 
 export default router;

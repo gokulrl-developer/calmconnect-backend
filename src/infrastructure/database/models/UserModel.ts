@@ -5,7 +5,6 @@ export interface IUserDocument extends Document {
   lastName: string;
   email: string;                                    
   password?: string;
-  isVerified: boolean;
   isBlocked: boolean;
   dob?: Date;
   gender?: 'male' | 'female' | 'others';
@@ -31,7 +30,7 @@ const UserSchema = new Schema<IUserDocument>(
     walletBalance: { type: Number, default: 0 },
     googleId: { type: String },
     isGoogleUser: { type: Boolean, default: false },
-    createdAt:  {type:Boolean,default:Date.now()}
+    createdAt:  {type:Date,default:Date.now}
   },
 );
 

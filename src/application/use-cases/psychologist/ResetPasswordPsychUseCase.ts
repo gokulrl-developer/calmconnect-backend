@@ -1,12 +1,12 @@
-import { PsychResetPasswordDTO } from "../../dtos/psych.dto";
-import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { hashPassword } from "../../../utils/passwordEncryption";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { ROLES } from "../../constants/roles.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IResetPasswordPsychUseCase from "../../interfaces/IResetPasswordPsychUseCase";
+import { PsychResetPasswordDTO } from "../../dtos/psych.dto.js";
+import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { hashPassword } from "../../../utils/passwordEncryption.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { ROLES } from "../../constants/roles.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IResetPasswordPsychUseCase from "../../interfaces/IResetPasswordPsychUseCase.js";
 
 export default class ResetPasswordPsychUseCase implements IResetPasswordPsychUseCase{
    constructor(

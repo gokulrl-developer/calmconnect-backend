@@ -1,9 +1,9 @@
-import { UpdateUserStatusDTO } from "../../dtos/admin.dto";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IUpdateUserStatusUseCase from "../../interfaces/IUpdateUserStatusUseCase";
+import { UpdateUserStatusDTO } from "../../dtos/admin.dto.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IUpdateUserStatusUseCase from "../../interfaces/IUpdateUserStatusUseCase.js";
 
 export class UpdateUserStatusUseCase implements IUpdateUserStatusUseCase {
 constructor(private readonly _userRepository: IUserRepository) {}

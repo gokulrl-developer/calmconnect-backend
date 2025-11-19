@@ -6,6 +6,7 @@ export interface AdminLoginDTO{
 export interface ListApplicationsDTO{
     page:number,
     search:string |null,
+    status?:"pending"|"accepted"|"rejected"
 }
 export interface UpdateApplicationStatusDTO{
     applicationId:string,
@@ -40,5 +41,64 @@ export interface ApplicationDetailsDTO{
 }
 
 export interface SessionListingDTO{
-  status:string
+  status:"scheduled"|"cancelled"|"ended"|"pending",
+  skip:number,
+  limit:number
+}
+
+export interface PsychDetailsByAdminDTO{
+  psychId:string;
+}
+
+export interface UserDetailsByAdminDTO{
+    userId:string
+}
+
+export interface ComplaintListingByAdminDTO{
+    skip:number;
+    limit:number;
+    status?:"pending"|"resolved";
+    search?:string;
+}
+
+export interface ComplaintDetailsByAdminDTO{
+    complaintId:string
+}
+
+export interface ComplaintResolutionDTO{
+    complaintId:string;
+    adminNotes:string;
+}
+
+export interface ComplaintSessionDetailsDTO{
+    sessionId:string;
+}
+
+export interface ComplainthIstoryDTO{
+    psychId:string;
+    skip:number;
+    limit:number
+}
+
+export interface FetchRevenueTrendsDTO{
+    fromDate:string;
+    toDate:string;
+}
+export interface FetchClientTrendsDTO{
+    fromDate:string;
+    toDate:string;
+}
+export interface FetchSessionTrendsDTO{
+    fromDate:string;
+    toDate:string;
+}
+export interface FetchTopPsychologistDTO{
+    fromDate:string;
+    toDate:string;
+    limit:number;
+}
+
+export interface FetchDashboardSummaryCardsDTO{
+    fromDate:string;
+    toDate:string;
 }

@@ -1,17 +1,14 @@
-import { UserGoogleAuthDTO } from "../../dtos/user.dto";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import { LoginResponse } from "../../interfaces/ILoginUserUseCase";
-import {  toLoginResponse, toUserDomainGoogleAuth } from "../../mappers/UserMapper";
-import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler";
-import  {IGoogleAuthUserUseCase}  from "../../interfaces/IGoogleAuthUserUseCase";
-import { getGoogleAuthCredentials } from "../../../infrastructure/external/GoogleOauthService";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { ROLES } from "../../constants/roles.constants";
-
-
-
+import { UserGoogleAuthDTO } from "../../dtos/user.dto.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import { LoginResponse } from "../../interfaces/ILoginUserUseCase.js";
+import { toLoginResponse, toUserDomainGoogleAuth } from "../../mappers/UserMapper.js";
+import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler.js";
+import { IGoogleAuthUserUseCase } from "../../interfaces/IGoogleAuthUserUseCase.js";
+import { getGoogleAuthCredentials } from "../../../infrastructure/external/GoogleOauthService.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { ROLES } from "../../constants/roles.constants.js";
 
 export default class GoogleAuthUserUseCase implements IGoogleAuthUserUseCase {
   constructor(

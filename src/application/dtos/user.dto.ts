@@ -69,11 +69,19 @@ export interface VerifyPaymentDTO {
   providerPaymentId: string; 
   signature: string;         
   userId: string;  
-  sessionId:string          
+  sessionId:string;
 }
 
 export interface SessionListingDTO{
   userId:string,
+  status:"scheduled"|"cancelled"|"ended"|"pending",
+  skip:number,
+  limit:number
+}
+
+export interface CancelSessionDTO{
+  userId:string,
+  sessionId:string
 }
 
 export interface ListPsychByUserDTO {
@@ -89,4 +97,38 @@ export interface ListPsychByUserDTO {
 export interface PsychDetailsByUserDTO {
   date?: string;
   psychId: string;
+}
+
+export interface CreateComplaintDTO{
+  userId:string;
+  sessionId:string;
+  description:string;
+}
+
+export interface ListComplaintsDTO{
+  userId:string;
+  skip:number;
+  limit:number
+}
+
+export interface ComplaintDetailsDTO{
+  complaintId:string
+}
+
+export interface CreateReviewDTO{
+  userId:string,
+  sessionId:string,
+  rating:number,
+  comment?:string, // max 300 characters
+}
+
+export interface ListPsychReviewsDTO{
+ psychId:string;
+ sort:"recent"|"top-rated";
+ skip:number;
+ limit:number;
+}
+
+export interface FetchUserDashboardDTO{
+  userId:string;
 }

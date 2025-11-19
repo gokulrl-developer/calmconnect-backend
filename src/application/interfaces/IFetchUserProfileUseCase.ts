@@ -1,4 +1,4 @@
-import { FetchUserProfileDTO } from "../dtos/user.dto";
+import { FetchUserProfileDTO } from "../dtos/user.dto.js";
 
 export interface UserProfile{
     firstName:string,

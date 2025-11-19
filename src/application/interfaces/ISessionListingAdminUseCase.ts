@@ -1,14 +1,18 @@
-import { SessionListingDTO } from "../dtos/admin.dto";
+import { SessionListingDTO } from "../dtos/admin.dto.js";
+import PaginationData from "../utils/calculatePagination.js";
 
 export interface SessionListingAdminItem {
-  user: string;
-  psych: string;
-  startTime: string;
+  userFullName: string;
+  psychFullName: string;
+  userEmail:string,
+  psychEmail:string,
+  startTime: Date;
+  endTime:Date;
   durationInMins: number;
-  status: string;
+  status: "scheduled"|"cancelled"|"ended"|"pending";
   fees: number;
   sessionId: string;
 }
 export default interface ISessionListingAdminUseCase {
-  execute(dto: SessionListingDTO): Promise<SessionListingAdminItem[]>;
+  execute(dto: SessionListingDTO): Promise<{sessions:SessionListingAdminItem[],paginationData:PaginationData}>;
 }

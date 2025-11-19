@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import SpecialDay from "../../../domain/entities/special-day.entity";
-import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
-import { SpecialDayModel, ISpecialDayDocument } from "../models/SpecialDayModel";
-import { BaseRepository } from "./BaseRepository";
+import SpecialDay from "../../../domain/entities/special-day.entity.js";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
+import { SpecialDayModel, ISpecialDayDocument } from "../models/SpecialDayModel.js";
+import { BaseRepository } from "./BaseRepository.js";
 
 export default class SpecialDayRepository
   extends BaseRepository<SpecialDay, ISpecialDayDocument>

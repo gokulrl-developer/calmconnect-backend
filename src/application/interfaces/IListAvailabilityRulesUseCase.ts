@@ -1,4 +1,4 @@
-import { ListAvailabilityRulesDTO } from "../dtos/psych.dto";
+import { ListAvailabilityRulesDTO } from "../dtos/psych.dto.js";
 
 export interface AvailabilityRuleSummary{
  weekDay:number,   // 0-6 0-sunday,6-saturday

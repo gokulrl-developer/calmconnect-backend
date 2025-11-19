@@ -1,16 +1,13 @@
-import { PsychGoogleAuthDTO } from "../../dtos/psych.dto";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import { LoginResponse } from "../../interfaces/ILoginPsychUseCase";
-import { toGoogleAuthResponse, toPsychDomainSocialAuth } from "../../mappers/PsychMapper";
-import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler";
-import { IGoogleAuthPsychUseCase } from "../../interfaces/IGoogleAuthPsychUseCase";
-import { getGoogleAuthCredentials } from "../../../infrastructure/external/GoogleOauthService";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-
-
-
+import { PsychGoogleAuthDTO } from "../../dtos/psych.dto.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import { LoginResponse } from "../../interfaces/ILoginPsychUseCase.js";
+import { toGoogleAuthResponse, toPsychDomainSocialAuth } from "../../mappers/PsychMapper.js";
+import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler.js";
+import { IGoogleAuthPsychUseCase } from "../../interfaces/IGoogleAuthPsychUseCase.js";
+import { getGoogleAuthCredentials } from "../../../infrastructure/external/GoogleOauthService.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
 
 export default class GoogleAuthPsychUseCase implements IGoogleAuthPsychUseCase {
   constructor(
@@ -29,7 +26,6 @@ export default class GoogleAuthPsychUseCase implements IGoogleAuthPsychUseCase {
       const res = await this._psychologistRepository.create(psychEntity);
       psych=res;
     }
-    
     const accessToken = generateAccessToken({id:psych.id!,role:"psychologist"});
     const refreshToken =generateRefreshToken({id:psych.id!,role:"psychologist"});  
     const result =toGoogleAuthResponse(psych,accessToken,refreshToken)

@@ -1,4 +1,4 @@
-import { PsychCheckStatusDTO } from "../dtos/psych.dto";
+import { PsychCheckStatusDTO } from "../dtos/psych.dto.js";
 
 
 export default interface ICheckStatusPsychUseCase{

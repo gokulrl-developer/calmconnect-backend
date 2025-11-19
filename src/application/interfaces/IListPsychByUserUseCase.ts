@@ -1,5 +1,5 @@
-import { ListPsychByUserDTO } from "../dtos/psych.dto";
-import PaginationData from "../utils/calculatePagination";
+import { ListPsychByUserDTO } from "../dtos/user.dto.js";
+import PaginationData from "../utils/calculatePagination.js";
 
 export interface PsychSummaryByUser{
 psychId:string,

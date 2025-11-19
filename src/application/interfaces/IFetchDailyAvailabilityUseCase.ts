@@ -1,4 +1,4 @@
-import { FetchDailyAvailabilityDTO } from "../dtos/psych.dto";
+import { FetchDailyAvailabilityDTO } from "../dtos/psych.dto.js";
 
 export interface DailyAvailabilityRule {
   startTime: string; //ISO string
@@ -28,7 +28,7 @@ export interface DailyQuickSlot {
   quickSlotId: string;
 }
 export interface DailyAvailability {
-  availabilityRule?: DailyAvailabilityRule;
+  availabilityRules: DailyAvailabilityRule[];
   specialDay?: DailySpecialDay;
   quickSlots: DailyQuickSlot[];
 }

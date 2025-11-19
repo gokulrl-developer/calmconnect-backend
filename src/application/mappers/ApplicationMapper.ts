@@ -1,6 +1,8 @@
-import { PsychApplicationDTO } from "../dtos/psych.dto"
-import { Application} from "../../domain/entities/application.entity"
-import Psychologist from "../../domain/entities/psychologist.entity"
+import { PsychApplicationDTO } from "../dtos/psych.dto.js";
+import { Application } from "../../domain/entities/application.entity.js";
+import Psychologist from "../../domain/entities/psychologist.entity.js";
+import { LatestApplicationData } from "../interfaces/IFetchLatestApplicationUseCase.js";
+
 
 export interface FileStorageReturn{
     profilePicture:string,
@@ -38,14 +40,34 @@ export const toApplicationDomainSubmit=(application:PsychApplicationDTO,psycholo
 }
 
 
-export const toApplicationStatusResponse=(application:Application|null)=>{
-    if(!application ||!application.status){
-        return {status:null}
-    }else{
-        return{
-  status:application.status
-        }}
-}
+export const toFetchLatestApplicationResponse = (
+  application: Application | null
+): LatestApplicationData | null => {
+  if (!application ) {
+    return null ;
+  }
+
+  return {
+    firstName: application.firstName,
+    lastName: application.lastName,
+    email: application.email,
+    submittedAt: application.submittedAt,
+    phone: application.phone,
+    gender: application.gender,
+    dob: application.dob,
+    profilePicture: application.profilePicture,
+    address: application.address,
+    languages: application.languages,
+    specializations: application.specializations,
+    bio: application.bio,
+    licenseUrl: application.licenseUrl,
+    resume: application.resume,
+    qualifications: application.qualifications,
+    status: application.status,
+    rejectionReason: application.rejectionReason,
+  };
+};
+
 
 export const toAdminApplicationListResponse=(application:Application)=>{
   return{  
@@ -79,3 +101,4 @@ export const toApplicationDetails=(application:Application)=>{
     status:application.status,
     }
 }
+

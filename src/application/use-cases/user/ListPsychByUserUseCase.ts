@@ -1,21 +1,22 @@
-import Psychologist from "../../../domain/entities/psychologist.entity";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
-import { ListPsychByUserDTO } from "../../dtos/user.dto";
-import IListPsychByUserUseCase from "../../interfaces/IListPsychByUserUseCase";
+import Psychologist from "../../../domain/entities/psychologist.entity.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { ListPsychByUserDTO } from "../../dtos/user.dto.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IListPsychByUserUseCase from "../../interfaces/IListPsychByUserUseCase.js";
 import {
   toPsychListByUserPersistence,
   toPsychListByUserResponse,
-} from "../../mappers/PsychMapper";
-import { calculatePagination } from "../../utils/calculatePagination";
-import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych";
+} from "../../mappers/PsychMapper.js";
+import { calculatePagination } from "../../utils/calculatePagination.js";
+import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych.js";
 
-export default class ListPsychByUserUseCase
-  implements IListPsychByUserUseCase
-{
+export default class ListPsychByUserUseCase implements IListPsychByUserUseCase {
   constructor(
     private readonly _psychRepository: IPsychRepository,
     private readonly _availabilityRuleRepository: IAvailabilityRuleRepository,
@@ -29,16 +30,24 @@ export default class ListPsychByUserUseCase
       toPsychListByUserPersistence(dto)
     );
 
-    let psychologistsBeforeDateFilter = filteredData.psychologists;
+    const psychologistsBeforeDateFilter = filteredData.psychologists;
     let psychologistsAfterDateFilter: Psychologist[] = [];
 
     if (dto.date) {
       const weekDay = new Date(dto.date).getDay();
       const selectedDate = new Date(dto.date);
 
+      const startOfToday = new Date();
+      startOfToday.setHours(0, 0, 0, 0);
+      if (startOfToday > selectedDate) {
+        throw new AppError(
+          ERROR_MESSAGES.SELECTED_DATE_PASSED,
+          AppErrorCodes.VALIDATION_ERROR
+        );
+      }
       const availabilityChecks = await Promise.all(
         psychologistsBeforeDateFilter.map(async (psych) => {
-          const [availabilityRule, specialDay, quickSlots, sessions] =
+          const [availabilityRules, specialDay, quickSlots, sessions] =
             await Promise.all([
               this._availabilityRuleRepository.findActiveByWeekDayPsych(
                 weekDay,
@@ -60,7 +69,7 @@ export default class ListPsychByUserUseCase
 
           const slotsCreated = getAvailableSlotsForDatePsych(
             specialDay,
-            availabilityRule,
+            availabilityRules,
             quickSlots,
             sessions
           );

@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import Wallet from "../../../domain/entities/wallet.entity";
-import IWalletRepository from "../../../domain/interfaces/IWalletRepository";
-import { WalletModel, IWalletDocument } from "../models/WalletModel";
-import { BaseRepository } from "./BaseRepository";
+import Wallet from "../../../domain/entities/wallet.entity.js";
+import IWalletRepository from "../../../domain/interfaces/IWalletRepository.js";
+import { WalletModel, IWalletDocument } from "../models/WalletModel.js";
+import { BaseRepository } from "./BaseRepository.js";
 
 export default class WalletRepository 
   extends BaseRepository<Wallet, IWalletDocument>
@@ -26,8 +26,15 @@ export default class WalletRepository
     return {
       ownerType: entity.ownerType,
       balance: entity.balance,
-      ownerId: entity.ownerId ? new Types.ObjectId(entity.ownerId) : undefined,
+      ownerId: entity.ownerId ? entity.ownerId : undefined,
       _id: entity.id ? new Types.ObjectId(entity.id) : undefined,
     };
+  }
+  async findByOwner(
+    ownerId: string,
+    ownerType: "platform"|"user"|"psychologist"
+  ): Promise<Wallet | null> {
+    const doc = await this.model.findOne({ ownerId, ownerType });
+    return doc ? this.toDomain(doc) : null;
   }
 }

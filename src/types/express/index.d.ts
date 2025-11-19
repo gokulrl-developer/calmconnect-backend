@@ -7,7 +7,6 @@ declare global {
         id: string;
         role: "user" | "psychologist" | "admin";
         isVerified?: boolean;
-        [key: string]: any;
       };
       pagination?: { 
         skip: number;

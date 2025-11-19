@@ -1,23 +1,23 @@
 import { Request, Response, NextFunction } from "express";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import AppError from "../../../application/error/AppError";
-import { IGoogleAuthUserUseCase } from "../../../application/interfaces/IGoogleAuthUserUseCase";
-import { ILoginUserUseCase } from "../../../application/interfaces/ILoginUserUseCase";
-import { IRegisterUserUseCase } from "../../../application/interfaces/IRegisterUserUseCase";
-import { IResendOtpSignUpUserUseCase } from "../../../application/interfaces/IResendOtpSignUpUserUseCase";
-import { ISignUpUserUseCase } from "../../../application/interfaces/ISignUpUserUseCase";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import AppError from "../../../application/error/AppError.js";
+import { IGoogleAuthUserUseCase } from "../../../application/interfaces/IGoogleAuthUserUseCase.js";
+import { ILoginUserUseCase } from "../../../application/interfaces/ILoginUserUseCase.js";
+import { IRegisterUserUseCase } from "../../../application/interfaces/IRegisterUserUseCase.js";
+import { IResendOtpSignUpUserUseCase } from "../../../application/interfaces/IResendOtpSignUpUserUseCase.js";
+import { ISignUpUserUseCase } from "../../../application/interfaces/ISignUpUserUseCase.js";
 import {
   UserForgotPasswordDTO,
   UserLoginDTO,
   UserResendOtpDTO,
   UserSignUpDTO,
-} from "../../../application/dtos/user.dto";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import { IResendOtpResetUserUseCase } from "../../../application/interfaces/IResendOtpResetUserUseCase";
-import IForgotPasswordUserUseCase from "../../../application/interfaces/IForgotPasswordUserUseCase";
-import IResetPasswordUserUseCase from "../../../application/interfaces/IResetPasswordUserUseCase";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
+} from "../../../application/dtos/user.dto.js";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import { IResendOtpResetUserUseCase } from "../../../application/interfaces/IResendOtpResetUserUseCase.js";
+import IForgotPasswordUserUseCase from "../../../application/interfaces/IForgotPasswordUserUseCase.js";
+import IResetPasswordUserUseCase from "../../../application/interfaces/IResetPasswordUserUseCase.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
 
 export default class AuthController {
   constructor(
@@ -49,12 +49,12 @@ export default class AuthController {
           AppErrorCodes.VALIDATION_ERROR
         );
       }
-      const result = await this._registerUserUseCase.execute(req.body);
+      await this._registerUserUseCase.execute(req.body);
       res
         .status(StatusCodes.CREATED)
         .json({ message: SUCCESS_MESSAGES.REGISTRATION_SUCCESSFUL });
     } catch (error) {
-      next();
+      next(error);
     }
   }
   async resetPassword(
@@ -81,12 +81,12 @@ export default class AuthController {
           AppErrorCodes.VALIDATION_ERROR
         );
       }
-      const result = await this._resetPasswordUseCase.execute(req.body);
+       await this._resetPasswordUseCase.execute(req.body);
       res
         .status(StatusCodes.CREATED)
         .json({ message: SUCCESS_MESSAGES.PASSWORD_RESET_SUCCESSFUL });
     } catch (error) {
-      next();
+      next(error);
     }
   }
 
@@ -209,11 +209,10 @@ export default class AuthController {
         path: "/",
       });
 
-      const { refreshToken, accessToken, ...user } = result;
 
       res
         .status(StatusCodes.OK)
-        .json({ user, message: SUCCESS_MESSAGES.GOOGLE_AUTH_SUCCESSFUL });
+        .json({ user:result.user, message: SUCCESS_MESSAGES.GOOGLE_AUTH_SUCCESSFUL });
     } catch (error) {
       next(error);
     }

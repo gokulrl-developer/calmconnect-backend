@@ -1,16 +1,18 @@
 import { Request, Response, NextFunction } from "express";
-import AppError from "../../../application/error/AppError";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import IFetchUserProfileUseCase from "../../../application/interfaces/IFetchUserProfileUseCase";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import IUpdateUserProfileUseCase from "../../../application/interfaces/IUpdateUserProfileUseCase";
+import AppError from "../../../application/error/AppError.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import IFetchUserProfileUseCase from "../../../application/interfaces/IFetchUserProfileUseCase.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import IUpdateUserProfileUseCase from "../../../application/interfaces/IUpdateUserProfileUseCase.js";
+import IFetchUserDashboardUseCase from "../../../application/interfaces/IFetchUserDashboardUseCase.js";
 
 export default class UserController {
   constructor(
     private readonly _fetchUserProfileUseCase: IFetchUserProfileUseCase,
-    private readonly _updateUserProfileUseCase: IUpdateUserProfileUseCase
+    private readonly _updateUserProfileUseCase: IUpdateUserProfileUseCase,
+    private readonly _fetchUserDashboardUseCase: IFetchUserDashboardUseCase
   ) {}
   async getDashboard(
     req: Request,
@@ -18,11 +20,15 @@ export default class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      if (!req.account) {
-        throw new AppError("Login to continue", AppErrorCodes.FORBIDDEN_ERROR);
-      }
-      const { id, role } = req.account;
-      res.status(StatusCodes.OK).json({ user: { id, role } });
+      const userId = req.account?.id;
+
+      const dashboardData = await this._fetchUserDashboardUseCase.execute({
+        userId: userId!,
+      });
+
+      res.status(StatusCodes.OK).json({
+        dashboard: dashboardData,
+      });
     } catch (err) {
       next(err);
     }
@@ -50,7 +56,7 @@ export default class UserController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    console.log(req.body)
+    console.log(req.body);
     try {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       const { address, firstName, lastName, gender, dob } = req.body;

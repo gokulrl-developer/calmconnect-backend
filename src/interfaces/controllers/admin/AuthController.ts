@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { ILoginAdminUseCase } from "../../../application/interfaces/ILoginAdminUseCase";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
+import { ILoginAdminUseCase } from "../../../application/interfaces/ILoginAdminUseCase.js";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 
 export default class AuthController {
   constructor(

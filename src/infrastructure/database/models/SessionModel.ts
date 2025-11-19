@@ -7,10 +7,9 @@ export interface ISessionDocument extends Document {
   endTime:Date,
   durationInMins: number;
   transactionIds: Types.ObjectId[];
-  status: "scheduled" | "completed" | "cancelled" |"available" | "pending";
+  status: "scheduled"|"cancelled"|"ended"|"pending";
   fees: number; 
   videoRoomId?: string;
-  progressNotesId?: string;
 }
 
 const SessionSchema = new Schema<ISessionDocument>({
@@ -20,10 +19,9 @@ const SessionSchema = new Schema<ISessionDocument>({
   endTime: { type: Date, required: true },
   durationInMins: { type: Number, required: true },
   transactionIds: [{ type: String, required: true }],
-  status: { type: String, enum: ["scheduled", "completed", "cancelled","available","pending"], required: true },
+  status: { type: String, enum: ["scheduled","cancelled","ended","pending"], required: true },
   fees: { type: Number, required: true },
   videoRoomId: { type: String },
-  progressNotesId: { type: String },
 });
 
 export const SessionModel = model<ISessionDocument>("Session", SessionSchema);
