@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import ISessionListingAdminUseCase from "../../../application/interfaces/ISessionListingAdminUseCase";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import ISessionListingAdminUseCase from "../../../application/interfaces/ISessionListingAdminUseCase.js";
 
 export default class SessionController {
   constructor(

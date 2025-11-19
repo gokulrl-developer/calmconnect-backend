@@ -1,19 +1,19 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import AppError from "../../../application/error/AppError";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import AppError from "../../../application/error/AppError.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
 
-import ICreateComplaintUseCase from "../../../application/interfaces/ICreateComplaintUseCase";
-import IComplaintDetailsByUserUseCase from "../../../application/interfaces/IComplaintDetailsByUserUseCase";
+import ICreateComplaintUseCase from "../../../application/interfaces/ICreateComplaintUseCase.js";
+import IComplaintDetailsByUserUseCase from "../../../application/interfaces/IComplaintDetailsByUserUseCase.js";
 
 import {
   CreateComplaintDTO,
   ListComplaintsDTO,
   ComplaintDetailsDTO,
-} from "../../../application/dtos/user.dto";
-import IComplaintListingByUserUseCase from "../../../application/interfaces/IComplaintListinByUserUseCase";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
+} from "../../../application/dtos/user.dto.js";
+import IComplaintListingByUserUseCase from "../../../application/interfaces/IComplaintListinByUserUseCase.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 
 export default class ComplaintController {
   constructor(

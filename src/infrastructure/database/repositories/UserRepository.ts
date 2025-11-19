@@ -1,8 +1,8 @@
-import { ListUsersDTO } from "../../../application/dtos/admin.dto";
-import User from "../../../domain/entities/user.entity";
-import IUserRepository, { UserTrendsEntry, UserTrendsSummary } from "../../../domain/interfaces/IUserRepository";
-import { IUserDocument, UserModel } from "../models/UserModel";
-import { BaseRepository } from "./BaseRepository";
+import { ListUsersDTO } from "../../../application/dtos/admin.dto.js";
+import User from "../../../domain/entities/user.entity.js";
+import IUserRepository, { UserTrendsEntry, UserTrendsSummary } from "../../../domain/interfaces/IUserRepository.js";
+import { IUserDocument, UserModel } from "../models/UserModel.js";
+import { BaseRepository } from "./BaseRepository.js";
 
 export default class UserRepository
   extends BaseRepository<User, IUserDocument>

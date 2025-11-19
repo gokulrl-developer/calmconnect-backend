@@ -1,6 +1,6 @@
-import { ListUsersDTO } from "../../application/dtos/admin.dto";
-import User from "../entities/user.entity";
-import IBaseRepository from "./IBaseRepository";
+import { ListUsersDTO } from "../../application/dtos/admin.dto.js";
+import User from "../entities/user.entity.js";
+import IBaseRepository from "./IBaseRepository.js";
 
 export interface UserTrendsEntry{
   label:string; //day/month...

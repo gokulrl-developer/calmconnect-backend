@@ -1,17 +1,17 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import IFetchWalletUseCase from "../../../application/interfaces/IFetchWalletUseCase";
-import IGenerateTransactionReceiptUseCase from "../../../application/interfaces/IGenerateTransactionReceiptUseCase";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import IFetchWalletUseCase from "../../../application/interfaces/IFetchWalletUseCase.js";
+import IGenerateTransactionReceiptUseCase from "../../../application/interfaces/IGenerateTransactionReceiptUseCase.js";
 import {
   GetTransactionsDTO,
   GetWalletDTO,
   GetTransactionReceiptDTO,
-} from "../../../application/dtos/shared.dto";
-import AppError from "../../../application/error/AppError";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import ITransactionListUseCase from "../../../application/interfaces/IFetchTransactionsUseCase";
-import { REGEX_EXP } from "../../constants/regex.constants";
+} from "../../../application/dtos/shared.dto.js";
+import AppError from "../../../application/error/AppError.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import ITransactionListUseCase from "../../../application/interfaces/IFetchTransactionsUseCase.js";
+import { REGEX_EXP } from "../../constants/regex.constants.js";
 
 export default class FinanceController {
   constructor(

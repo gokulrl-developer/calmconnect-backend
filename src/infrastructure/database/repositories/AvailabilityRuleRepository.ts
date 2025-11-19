@@ -1,8 +1,9 @@
 import { Types } from "mongoose";
-import AvailabilityRule from "../../../domain/entities/availability-rule.entity";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import { AvailabilityRuleModel, IAvailabilityRuleDocument } from "../models/AvailabilityRuleModel";
-import { BaseRepository } from "./BaseRepository";
+import AvailabilityRule from "../../../domain/entities/availability-rule.entity.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import { AvailabilityRuleModel, IAvailabilityRuleDocument } from "../models/AvailabilityRuleModel.js";
+import { BaseRepository } from "./BaseRepository.js";
+
 
 export default class AvailabilityRuleRepository
   extends BaseRepository<AvailabilityRule, IAvailabilityRuleDocument>

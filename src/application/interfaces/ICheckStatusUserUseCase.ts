@@ -1,4 +1,4 @@
-import { UserCheckStatusDTO } from "../dtos/user.dto";
+import { UserCheckStatusDTO } from "../dtos/user.dto.js";
 
 
 export default interface ICheckStatusUserUseCase{

@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import { Notification } from "../../../domain/entities/notification.entity";
-import { BaseRepository } from "./BaseRepository";
-import { NotificationModel, INotificationDocument } from "../models/NotificationModel";
-import { INotificationRepository } from "../../../domain/interfaces/INotificationRepository";
+import { Notification } from "../../../domain/entities/notification.entity.js";
+import { BaseRepository } from "./BaseRepository.js";
+import { NotificationModel, INotificationDocument } from "../models/NotificationModel.js";
+import { INotificationRepository } from "../../../domain/interfaces/INotificationRepository.js";
 
 export class NotificationRepository
   extends BaseRepository<Notification, INotificationDocument>

@@ -1,5 +1,5 @@
 import { Model, Document, FilterQuery, UpdateQuery } from "mongoose";
-import IBaseRepository from "../../../domain/interfaces/IBaseRepository";
+import IBaseRepository from "../../../domain/interfaces/IBaseRepository.js";
 
 export abstract class BaseRepository<TDomain, TDocument extends Document>
   implements IBaseRepository<TDomain>

@@ -1,13 +1,8 @@
-import { ChatMessage } from "../../domain/entities/chat-message.entity";
-import { GetMessagesDTO } from "../dtos/shared.dto";
-import IGetMessagesUseCase, { GetMessageResponse } from "../interfaces/IGetMessagesUseCase";
-import AppError from "../error/AppError";
-import { ERROR_MESSAGES } from "../constants/error-messages.constants";
-import { AppErrorCodes } from "../error/app-error-codes";
-import { IChatMessageRepository } from "../../domain/interfaces/IChatMessageRepository";
-import { mapDomainToGetMessagesResponse } from "../mappers/ChatMessageMapper";
-
-
+import { ChatMessage } from "../../domain/entities/chat-message.entity.js";
+import { GetMessagesDTO } from "../dtos/shared.dto.js";
+import IGetMessagesUseCase, { GetMessageResponse } from "../interfaces/IGetMessagesUseCase.js";
+import { IChatMessageRepository } from "../../domain/interfaces/IChatMessageRepository.js";
+import { mapDomainToGetMessagesResponse } from "../mappers/ChatMessageMapper.js";
 
 export default class GetMessagesUseCase implements IGetMessagesUseCase{
   constructor(private readonly _chatMessageRepo: IChatMessageRepository) {}

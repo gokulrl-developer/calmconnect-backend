@@ -1,8 +1,8 @@
-import { ListPsychDTO } from "../../../application/dtos/admin.dto";
-import Psychologist from "../../../domain/entities/psychologist.entity";
-import IPsychologistRepository, { ListPsychQueryByUser, PsychSummary, PsychTrendsEntry } from "../../../domain/interfaces/IPsychRepository";
-import { IPsychDocument, PsychModel } from "../models/PsychologistModel";
-import { BaseRepository } from "./BaseRepository";
+import { ListPsychDTO } from "../../../application/dtos/admin.dto.js";
+import Psychologist from "../../../domain/entities/psychologist.entity.js";
+import IPsychologistRepository, { ListPsychQueryByUser, PsychSummary, PsychTrendsEntry } from "../../../domain/interfaces/IPsychRepository.js";
+import { IPsychDocument, PsychModel } from "../models/PsychologistModel.js";
+import { BaseRepository } from "./BaseRepository.js";
 
 export default class PsychRepository
   extends BaseRepository<Psychologist, IPsychDocument>

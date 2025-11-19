@@ -1,6 +1,6 @@
 import express,{ NextFunction, Request, Response } from "express";
-import { RefreshTokenController } from "../controllers/RefreshController";
-import { LogoutController } from "../controllers/LogoutController";
+import { RefreshTokenController } from "../controllers/RefreshController.js";
+import { LogoutController } from "../controllers/LogoutController.js";
 
 
 const refreshController=new RefreshTokenController()

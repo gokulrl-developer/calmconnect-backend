@@ -1,14 +1,13 @@
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import ITransactionRepository from "../../../domain/interfaces/ITransactionRepository";
-import IComplaintRepository from "../../../domain/interfaces/IComplaintRepository";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import ITransactionRepository from "../../../domain/interfaces/ITransactionRepository.js";
+import IComplaintRepository from "../../../domain/interfaces/IComplaintRepository.js";
 import IFetchUserDashboardUseCase, {
   UserDashboardResponse,
-} from "../../interfaces/IFetchUserDashboardUseCase";
-import { FetchUserDashboardDTO } from "../../dtos/user.dto";
-import { mapRecentUserSessionsFromPersistence, mapUserSessionSummaryFromPersistence } from "../../mappers/SessionMapper";
-import { mapRecentUserTransactionsFromPersistence } from "../../mappers/TransactionMapper";
-import { mapRecentUserComplaintsFromPersistence } from "../../mappers/ComplaintMapper";
-
+} from "../../interfaces/IFetchUserDashboardUseCase.js";
+import { FetchUserDashboardDTO } from "../../dtos/user.dto.js";
+import { mapRecentUserSessionsFromPersistence, mapUserSessionSummaryFromPersistence } from "../../mappers/SessionMapper.js";
+import { mapRecentUserTransactionsFromPersistence } from "../../mappers/TransactionMapper.js";
+import { mapRecentUserComplaintsFromPersistence } from "../../mappers/ComplaintMapper.js";
 
 export default class FetchUserDashboardUseCase
   implements IFetchUserDashboardUseCase

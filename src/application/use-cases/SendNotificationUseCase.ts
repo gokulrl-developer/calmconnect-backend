@@ -1,7 +1,7 @@
-import { Notification } from "../../domain/entities/notification.entity";
-import { INotificationRepository } from "../../domain/interfaces/INotificationRepository";
-import ISocketService, { SendNotificationPayload } from "../../domain/interfaces/ISocketService";
-import ISendNotificationUseCase from "../interfaces/ISendNotificationUseCase";
+import { Notification } from "../../domain/entities/notification.entity.js";
+import { INotificationRepository } from "../../domain/interfaces/INotificationRepository.js";
+import ISocketService, { SendNotificationPayload } from "../../domain/interfaces/ISocketService.js";
+import ISendNotificationUseCase from "../interfaces/ISendNotificationUseCase.js";
 
 export default class SendNotificationUseCase
   implements ISendNotificationUseCase

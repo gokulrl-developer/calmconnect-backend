@@ -1,10 +1,10 @@
 import { Worker, Job } from "bullmq";
-import IORedis from "ioredis";
-import IMarkSessionOverUseCase from "../../application/interfaces/IMarkSessionOverUseCase";
-import ISendNotificationUseCase from "../../application/interfaces/ISendNotificationUseCase";
-import { SessionTaskJobMap } from "../../domain/interfaces/ISessionTaskQueue";
-import { transporter } from "../config/nodeMailerConfig";
-import { EMAIL_MESSAGES } from "../../application/constants/email-messages.constants";
+import { Redis } from "ioredis";
+import IMarkSessionOverUseCase from "../../application/interfaces/IMarkSessionOverUseCase.js";
+import ISendNotificationUseCase from "../../application/interfaces/ISendNotificationUseCase.js";
+import { SessionTaskJobMap } from "../../domain/interfaces/ISessionTaskQueue.js";
+import { transporter } from "../config/nodeMailerConfig.js";
+import { EMAIL_MESSAGES } from "../../application/constants/email-messages.constants.js";
 
 export default class BullMQSessionTaskWorker {
   private readonly queueName = "session-task-queue";
@@ -19,7 +19,7 @@ export default class BullMQSessionTaskWorker {
     private readonly _sendNotificationUseCase: ISendNotificationUseCase,
     private readonly _markSessionOverUseCase: IMarkSessionOverUseCase,
   ) {
-    const connection = new IORedis(process.env.REDIS_URL!, {
+    const connection = new Redis(process.env.REDIS_URL!, {
       maxRetriesPerRequest: null,
     });
     this.worker = new Worker<

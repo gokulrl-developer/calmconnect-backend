@@ -1,4 +1,4 @@
-import { FetchTopPsychologistDTO } from "../dtos/admin.dto";
+import { FetchTopPsychologistDTO } from "../dtos/admin.dto.js";
 
 export interface TopPsychologistResponse {
   id: string;

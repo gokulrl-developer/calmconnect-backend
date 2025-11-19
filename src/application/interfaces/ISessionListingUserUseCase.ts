@@ -1,5 +1,5 @@
-import { SessionListingDTO } from "../dtos/user.dto";
-import PaginationData from "../utils/calculatePagination";
+import { SessionListingDTO } from "../dtos/user.dto.js";
+import PaginationData from "../utils/calculatePagination.js";
 
 export interface SessionListingUserItem {
   psychFullName: string;

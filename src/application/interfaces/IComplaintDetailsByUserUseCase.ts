@@ -1,4 +1,4 @@
-import { ComplaintDetailsDTO } from "../dtos/user.dto";
+import { ComplaintDetailsDTO } from "../dtos/user.dto.js";
 
 export interface ComplaintDetailsResponse {
   psychologistFullName: string;

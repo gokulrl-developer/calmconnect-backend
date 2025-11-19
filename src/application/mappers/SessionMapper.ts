@@ -1,13 +1,25 @@
-import Session from "../../domain/entities/session.entity";
-import { PsychSessionSummaryFromPersistence, PsychSessionTrendsEntry, RecentSessionEntryFromPersistence, RecentUserSessionEntryFromPersistence, SessionTrendsEntry, SessionTrendsSummary, TopPsychologistsEntryFromPersistence, UserSessionSummaryFromPersistence } from "../../domain/interfaces/ISessionRepository";
-import { SessionTrendsEntry as ResponseSessionTrendsEntry } from "../../application/interfaces/ISessionTrendsUseCase";
-import { PsychSessionsSummary, RecentSessionEntry, PsychSessionsTrendEntry as ResponsePsychSessionTrendsEntry } from "../../application/interfaces/IFetchPsychDashboardUseCase";
-import { CreateOrderDTO } from "../dtos/user.dto";
-import { SessionDetailsInVideoCall } from "../interfaces/ICheckSessionAccessUseCase";
-import { TopPsychologistResponse } from "../interfaces/IFetchTopPsychologistsUseCase";
-import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase";
-import User from "../../domain/entities/user.entity";
-import { UserRecentSessionsEntry, UserSessionSummary } from "../interfaces/IFetchUserDashboardUseCase";
+import Session from "../../domain/entities/session.entity.js";
+import { 
+  PsychSessionSummaryFromPersistence, 
+  PsychSessionTrendsEntry, 
+  RecentSessionEntryFromPersistence, 
+  RecentUserSessionEntryFromPersistence, 
+  SessionTrendsEntry, 
+  SessionTrendsSummary, 
+  TopPsychologistsEntryFromPersistence, 
+  UserSessionSummaryFromPersistence 
+} from "../../domain/interfaces/ISessionRepository.js";
+import { SessionTrendsEntry as ResponseSessionTrendsEntry } from "../../application/interfaces/ISessionTrendsUseCase.js";
+import { 
+  PsychSessionsSummary, 
+  RecentSessionEntry, 
+  PsychSessionsTrendEntry as ResponsePsychSessionTrendsEntry 
+} from "../../application/interfaces/IFetchPsychDashboardUseCase.js";
+import { CreateOrderDTO } from "../dtos/user.dto.js";
+import { SessionDetailsInVideoCall } from "../interfaces/ICheckSessionAccessUseCase.js";
+import { TopPsychologistResponse } from "../interfaces/IFetchTopPsychologistsUseCase.js";
+import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
+import { UserRecentSessionsEntry, UserSessionSummary } from "../interfaces/IFetchUserDashboardUseCase.js";
 
 export const mapCreateOrderDTOToDomain = (
   dto: CreateOrderDTO,

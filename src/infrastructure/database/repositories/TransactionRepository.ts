@@ -1,17 +1,17 @@
 import { Types } from "mongoose";
-import Transaction from "../../../domain/entities/transaction.entity";
+import Transaction from "../../../domain/entities/transaction.entity.js";
 import {
   TransactionModel,
   ITransactionDocument,
-} from "../models/TransactionModel";
-import { BaseRepository } from "./BaseRepository";
+} from "../models/TransactionModel.js";
+import { BaseRepository } from "./BaseRepository.js";
 import ITransactionRepository, {
   PsychRevenueTrendsEntry,
   RecentUserTransactionEntryFromPersistence,
   RevenueSummary,
   RevenueSummaryByPsych,
   RevenueTrendsEntry,
-} from "../../../domain/interfaces/ITransactionRepository";
+} from "../../../domain/interfaces/ITransactionRepository.js";
 import { startOfWeek, subWeeks } from "date-fns";
 
 interface TransactionQuery {

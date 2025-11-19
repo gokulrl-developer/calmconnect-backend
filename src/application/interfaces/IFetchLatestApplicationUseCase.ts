@@ -1,4 +1,4 @@
-import { PsychApplicationStatusDTO } from "../dtos/psych.dto";
+import { PsychApplicationStatusDTO } from "../dtos/psych.dto.js";
 
 export interface LatestApplicationData{
     firstName:string,

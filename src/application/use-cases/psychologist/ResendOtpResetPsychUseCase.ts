@@ -1,13 +1,13 @@
-import { PsychResendOtpDTO } from "../../dtos/psych.dto";
-import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
-import { sendMail } from "../../../utils/nodemailHelper";
-import generateOtp from "../../../utils/OtpGenerator";
-import { EMAIL_MESSAGES } from "../../constants/email-messages.constants";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { ROLES } from "../../constants/roles.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import { IResendOtpResetPsychUseCase } from "../../interfaces/IResendOtpResetPsychUseCase";
+import { PsychResendOtpDTO } from "../../dtos/psych.dto.js";
+import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository.js";
+import { sendMail } from "../../../utils/nodemailHelper.js";
+import generateOtp from "../../../utils/OtpGenerator.js";
+import { EMAIL_MESSAGES } from "../../constants/email-messages.constants.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { ROLES } from "../../constants/roles.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import { IResendOtpResetPsychUseCase } from "../../interfaces/IResendOtpResetPsychUseCase.js";
 
 export default class ResendOtpResetPsychUseCase implements IResendOtpResetPsychUseCase {
   constructor(private readonly _otpRepository: IOtpRepository) {}

@@ -1,17 +1,16 @@
-
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IPsychDetailsByUserUseCase, { Slot } from "../../interfaces/IPsychDetailsByUserUseCase";
-import { toPsychDetailsByUserResponse } from "../../mappers/PsychMapper";
-import { PsychDetailsByUserDTO } from "../../dtos/user.dto";
-import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
-import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
-import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych";
-import { HHMMToIso } from "../../../utils/timeConverter";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IPsychDetailsByUserUseCase, { Slot } from "../../interfaces/IPsychDetailsByUserUseCase.js";
+import { toPsychDetailsByUserResponse } from "../../mappers/PsychMapper.js";
+import { PsychDetailsByUserDTO } from "../../dtos/user.dto.js";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
+import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych.js";
+import { HHMMToIso } from "../../../utils/timeConverter.js";
 
 export default class PsychDetailsByUserUseCase
   implements IPsychDetailsByUserUseCase

@@ -1,11 +1,10 @@
-import { FetchUserProfileDTO } from "../../dtos/user.dto";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IFetchUserProfileUseCase, { UserProfile } from "../../interfaces/IFetchUserProfileUseCase";
-import { toFetchUserProfileResponse } from "../../mappers/UserMapper";
-
+import { FetchUserProfileDTO } from "../../dtos/user.dto.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IFetchUserProfileUseCase, { UserProfile } from "../../interfaces/IFetchUserProfileUseCase.js";
+import { toFetchUserProfileResponse } from "../../mappers/UserMapper.js";
 
 export default class FetchUserProfileUseCase implements IFetchUserProfileUseCase {
   constructor(

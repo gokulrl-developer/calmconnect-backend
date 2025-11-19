@@ -1,16 +1,14 @@
-import { UserSignUpDTO } from "../../dtos/user.dto";
-import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import generateOtp from "../../../utils/OtpGenerator";
-import { hashPassword } from "../../../utils/passwordEncryption";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import { sendMail } from "../../../utils/nodemailHelper";
-import { ISignUpUserUseCase } from "../../interfaces/ISignUpUserUseCase";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { EMAIL_MESSAGES } from "../../constants/email-messages.constants";
-
-
+import { UserSignUpDTO } from "../../dtos/user.dto.js";
+import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import generateOtp from "../../../utils/OtpGenerator.js";
+import { hashPassword } from "../../../utils/passwordEncryption.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import { sendMail } from "../../../utils/nodemailHelper.js";
+import { ISignUpUserUseCase } from "../../interfaces/ISignUpUserUseCase.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { EMAIL_MESSAGES } from "../../constants/email-messages.constants.js";
 
 export default class SignUpUserUseCase implements ISignUpUserUseCase {
     constructor(

@@ -1,4 +1,4 @@
-import { FetchSessionTrendsDTO } from "../dtos/admin.dto";
+import { FetchSessionTrendsDTO } from "../dtos/admin.dto.js";
 
 export interface SessionTrendsEntry {
   label: string;     // day or month   

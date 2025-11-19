@@ -1,11 +1,11 @@
-import { UserResetPasswordDTO } from "../../dtos/user.dto";
-import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import { hashPassword } from "../../../utils/passwordEncryption";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IResetPasswordUserUseCase from "../../interfaces/IResetPasswordUserUseCase";
+import { UserResetPasswordDTO } from "../../dtos/user.dto.js";
+import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import { hashPassword } from "../../../utils/passwordEncryption.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IResetPasswordUserUseCase from "../../interfaces/IResetPasswordUserUseCase.js";
 
 export default class ResetPasswordUserUseCase implements IResetPasswordUserUseCase{
    constructor(

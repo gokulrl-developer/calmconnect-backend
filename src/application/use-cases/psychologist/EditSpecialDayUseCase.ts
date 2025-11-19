@@ -1,12 +1,12 @@
-import { EditSpecialDayDTO } from "../../dtos/psych.dto";
-import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
-import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
-import IEditSpecialDayUseCase from "../../interfaces/IEditSpecialDayUseCase";
-import { mapEditSpecialDayDTOToDomain } from "../../mappers/SpecialDayMapper";
-import SpecialDay from "../../../domain/entities/special-day.entity";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
+import { EditSpecialDayDTO } from "../../dtos/psych.dto.js";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
+import IEditSpecialDayUseCase from "../../interfaces/IEditSpecialDayUseCase.js";
+import { mapEditSpecialDayDTOToDomain } from "../../mappers/SpecialDayMapper.js";
+import SpecialDay from "../../../domain/entities/special-day.entity.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
 
 export default class EditSpecialDayUseCase implements IEditSpecialDayUseCase {
   constructor(

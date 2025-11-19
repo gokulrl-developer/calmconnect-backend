@@ -1,15 +1,14 @@
-import { UpdateApplicationStatusDTO } from "../../dtos/admin.dto";
-import Psychologist from "../../../domain/entities/psychologist.entity";
-import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { sendMail } from "../../../utils/nodemailHelper";
-import { EMAIL_MESSAGES } from "../../constants/email-messages.constants";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IUpdateApplicationUseCase from "../../interfaces/IUpdateApplicationUseCase";
-import { toPsychologistFromApplication } from "../../mappers/PsychMapper";
-
+import { UpdateApplicationStatusDTO } from "../../dtos/admin.dto.js";
+import Psychologist from "../../../domain/entities/psychologist.entity.js";
+import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { sendMail } from "../../../utils/nodemailHelper.js";
+import { EMAIL_MESSAGES } from "../../constants/email-messages.constants.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IUpdateApplicationUseCase from "../../interfaces/IUpdateApplicationUseCase.js";
+import { toPsychologistFromApplication } from "../../mappers/PsychMapper.js";
 
 export default class UpdateApplicationUseCase implements IUpdateApplicationUseCase {
   constructor(

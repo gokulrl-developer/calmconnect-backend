@@ -1,7 +1,7 @@
-import { adminConfig } from "../../utils/adminConfig";
-import { IEventBus } from "../interfaces/events/IEventBus";
-import INotificationHandler from "../interfaces/events/INotificationHandler";
-import ISendNotificationUseCase from "../interfaces/ISendNotificationUseCase";
+import { adminConfig } from "../../utils/adminConfig.js";
+import { IEventBus } from "../interfaces/events/IEventBus.js";
+import INotificationHandler from "../interfaces/events/INotificationHandler.js";
+import ISendNotificationUseCase from "../interfaces/ISendNotificationUseCase.js";
 
 
 export default class NotificationHandler implements INotificationHandler{

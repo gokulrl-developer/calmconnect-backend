@@ -1,10 +1,10 @@
-import { SessionListingDTO } from "../../dtos/admin.dto";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import ISessionListingAdminUseCase from "../../interfaces/ISessionListingAdminUseCase";
-import { toSessionListingAdminResponse } from "../../mappers/SessionMapper";
-import { calculatePagination } from "../../utils/calculatePagination";
+import { SessionListingDTO } from "../../dtos/admin.dto.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import ISessionListingAdminUseCase from "../../interfaces/ISessionListingAdminUseCase.js";
+import { toSessionListingAdminResponse } from "../../mappers/SessionMapper.js";
+import { calculatePagination } from "../../utils/calculatePagination.js";
 
 export default class SessionListingAdminUseCase
   implements ISessionListingAdminUseCase

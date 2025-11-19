@@ -1,6 +1,6 @@
 
-import { GetTransactionsDTO } from "../dtos/shared.dto";
-import PaginationData from "../utils/calculatePagination";
+import { GetTransactionsDTO } from "../dtos/shared.dto.js";
+import PaginationData from "../utils/calculatePagination.js";
 
 export interface TransactionListItem {
   transactionId: string;

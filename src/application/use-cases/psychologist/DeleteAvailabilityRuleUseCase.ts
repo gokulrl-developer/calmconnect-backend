@@ -1,9 +1,9 @@
-import IDeleteAvailabilityRuleUseCase from "../../interfaces/IDeleteAvailabilityRuleUseCase";
-import { DeleteAvailabilityRuleDTO } from "../../dtos/psych.dto";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
+import IDeleteAvailabilityRuleUseCase from "../../interfaces/IDeleteAvailabilityRuleUseCase.js";
+import { DeleteAvailabilityRuleDTO } from "../../dtos/psych.dto.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
 
 export default class DeleteAvailabilityRuleUseCase implements IDeleteAvailabilityRuleUseCase {
   constructor(

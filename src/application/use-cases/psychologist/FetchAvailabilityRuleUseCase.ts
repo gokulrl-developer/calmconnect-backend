@@ -1,10 +1,10 @@
-import IFetchAvailabilityRuleUseCase, { AvailabilityRuleDetails } from "../../interfaces/IFetchAvailabilityRuleUseCase";
-import { FetchAvailabilityRule } from "../../dtos/psych.dto";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import { mapDomainToRuleDetailsResponse } from "../../mappers/AvailabilityRuleMapper";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
+import IFetchAvailabilityRuleUseCase, { AvailabilityRuleDetails } from "../../interfaces/IFetchAvailabilityRuleUseCase.js";
+import { FetchAvailabilityRule } from "../../dtos/psych.dto.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import { mapDomainToRuleDetailsResponse } from "../../mappers/AvailabilityRuleMapper.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
 
 export default class FetchAvailabilityRuleUseCase implements IFetchAvailabilityRuleUseCase {
   constructor(

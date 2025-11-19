@@ -1,18 +1,18 @@
-import { EditAvaialabilityRuleDTO } from "../../dtos/psych.dto";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import IEditAvailabilityRuleUseCase from "../../interfaces/IEditAvailabilityRuleUseCase";
-import { mapEditAvailabilityRuleDTOToDomain } from "../../mappers/AvailabilityRuleMapper";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import AvailabilityRule from "../../../domain/entities/availability-rule.entity";
-import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
+import { EditAvaialabilityRuleDTO } from "../../dtos/psych.dto.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import IEditAvailabilityRuleUseCase from "../../interfaces/IEditAvailabilityRuleUseCase.js";
+import { mapEditAvailabilityRuleDTOToDomain } from "../../mappers/AvailabilityRuleMapper.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import AvailabilityRule from "../../../domain/entities/availability-rule.entity.js";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
 import {
   HHMMToIso,
   isoToHHMM,
   timeStringToMinutes,
-} from "../../../utils/timeConverter";
-import QuickSlot from "../../../domain/entities/quick-slot.entity";
+} from "../../../utils/timeConverter.js";
+import QuickSlot from "../../../domain/entities/quick-slot.entity.js";
 
 export default class EditAvailabilityRuleUseCase
   implements IEditAvailabilityRuleUseCase

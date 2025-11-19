@@ -1,14 +1,14 @@
-import { PsychForgotPasswordDTO } from "../../dtos/psych.dto";
-import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { sendMail } from "../../../utils/nodemailHelper";
-import generateOtp from "../../../utils/OtpGenerator";
-import { EMAIL_MESSAGES } from "../../constants/email-messages.constants";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { ROLES } from "../../constants/roles.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IForgotPasswordPsychUseCase from "../../interfaces/IForgotPasswordPsychUseCase";
+import { PsychForgotPasswordDTO } from "../../dtos/psych.dto.js";
+import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { sendMail } from "../../../utils/nodemailHelper.js";
+import generateOtp from "../../../utils/OtpGenerator.js";
+import { EMAIL_MESSAGES } from "../../constants/email-messages.constants.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { ROLES } from "../../constants/roles.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IForgotPasswordPsychUseCase from "../../interfaces/IForgotPasswordPsychUseCase.js";
 
 
 export default class ForgotPasswordPsychUseCase implements IForgotPasswordPsychUseCase{

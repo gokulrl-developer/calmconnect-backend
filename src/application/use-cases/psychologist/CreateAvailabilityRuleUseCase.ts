@@ -1,11 +1,11 @@
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import { timeStringToMinutes } from "../../../utils/timeConverter";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { CreateAvaialabilityRuleDTO } from "../../dtos/psych.dto";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import ICreateAvailabilityRuleUseCase from "../../interfaces/ICreateAvailabilityRuleUseCase";
-import { mapCreateAvailabilityRuleDTOToDomain } from "../../mappers/AvailabilityRuleMapper";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import { timeStringToMinutes } from "../../../utils/timeConverter.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { CreateAvaialabilityRuleDTO } from "../../dtos/psych.dto.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import ICreateAvailabilityRuleUseCase from "../../interfaces/ICreateAvailabilityRuleUseCase.js";
+import { mapCreateAvailabilityRuleDTOToDomain } from "../../mappers/AvailabilityRuleMapper.js";
 
 export default class CreateAvailabilityRuleUseCase
   implements ICreateAvailabilityRuleUseCase

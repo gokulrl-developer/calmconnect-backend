@@ -1,11 +1,12 @@
-import IComplaintListingByAdminUseCase from "../../interfaces/IComplaintListingByAdminUseCase";
-import { ComplaintListingByAdminDTO } from "../../dtos/admin.dto";
-import IComplaintRepository from "../../../domain/interfaces/IComplaintRepository";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import { mapDomainToAdminComplaintListItem } from "../../mappers/ComplaintMapper";
-import { calculatePagination } from "../../utils/calculatePagination";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
+import IComplaintListingByAdminUseCase from "../../interfaces/IComplaintListingByAdminUseCase.js";
+import { ComplaintListingByAdminDTO } from "../../dtos/admin.dto.js";
+import IComplaintRepository from "../../../domain/interfaces/IComplaintRepository.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import { mapDomainToAdminComplaintListItem } from "../../mappers/ComplaintMapper.js";
+import { calculatePagination } from "../../utils/calculatePagination.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+
 
 export default class ComplaintListingByAdminUseCase
   implements IComplaintListingByAdminUseCase

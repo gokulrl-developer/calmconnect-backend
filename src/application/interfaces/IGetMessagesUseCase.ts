@@ -1,5 +1,4 @@
-import { ChatMessage } from "../../domain/entities/chat-message.entity";
-import { GetMessagesDTO } from "../dtos/shared.dto";
+import { GetMessagesDTO } from "../dtos/shared.dto.js";
 
 export interface GetMessageResponse {
   sessionId: string;

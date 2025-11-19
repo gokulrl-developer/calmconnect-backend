@@ -1,8 +1,8 @@
-import ITransactionRepository, { RevenueTrendsEntry } from "../../../domain/interfaces/ITransactionRepository";
-import { FetchRevenueTrendsDTO } from "../../dtos/admin.dto";
-import IFetchRevenueTrendsUseCase from "../../interfaces/IFetchRevenueTrendsUseCase";
-import { toRevenueTrendsResponse } from "../../mappers/TransactionMapper";
-import { generateLabels } from "../../utils/generateLabels";
+import ITransactionRepository, { RevenueTrendsEntry } from "../../../domain/interfaces/ITransactionRepository.js";
+import { FetchRevenueTrendsDTO } from "../../dtos/admin.dto.js";
+import IFetchRevenueTrendsUseCase from "../../interfaces/IFetchRevenueTrendsUseCase.js";
+import { toRevenueTrendsResponse } from "../../mappers/TransactionMapper.js";
+import { generateLabels } from "../../utils/generateLabels.js";
 
 export default class FetchRevenueTrendsUseCase implements IFetchRevenueTrendsUseCase{
     constructor(

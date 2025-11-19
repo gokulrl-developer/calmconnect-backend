@@ -1,16 +1,13 @@
-import { UserLoginDTO } from "../../dtos/user.dto";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import { comparePasswords } from "../../../utils/passwordEncryption";
-import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { ROLES } from "../../constants/roles.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import { ILoginUserUseCase, LoginResponse } from "../../interfaces/ILoginUserUseCase";
-import { toLoginResponse } from "../../mappers/UserMapper";
-
-
-
+import { UserLoginDTO } from "../../dtos/user.dto.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import { comparePasswords } from "../../../utils/passwordEncryption.js";
+import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { ROLES } from "../../constants/roles.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import { ILoginUserUseCase, LoginResponse } from "../../interfaces/ILoginUserUseCase.js";
+import { toLoginResponse } from "../../mappers/UserMapper.js";
 
 export default class LoginUserUseCase implements ILoginUserUseCase{
   constructor(

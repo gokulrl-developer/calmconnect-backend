@@ -1,12 +1,12 @@
-import IComplaintResolutionUseCase from "../../interfaces/IComplaintResolutionUseCase";
-import { ComplaintResolutionDTO } from "../../dtos/admin.dto";
-import IComplaintRepository from "../../../domain/interfaces/IComplaintRepository";
-import AppError from "../../error/AppError";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import { mapComplaintResolutionDTOToDomain } from "../../mappers/ComplaintMapper";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { IEventBus } from "../../interfaces/events/IEventBus";
+import IComplaintResolutionUseCase from "../../interfaces/IComplaintResolutionUseCase.js";
+import { ComplaintResolutionDTO } from "../../dtos/admin.dto.js";
+import IComplaintRepository from "../../../domain/interfaces/IComplaintRepository.js";
+import AppError from "../../error/AppError.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import { mapComplaintResolutionDTOToDomain } from "../../mappers/ComplaintMapper.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { IEventBus } from "../../interfaces/events/IEventBus.js";
 
 export default class ComplaintResolutionUseCase implements IComplaintResolutionUseCase {
   constructor(

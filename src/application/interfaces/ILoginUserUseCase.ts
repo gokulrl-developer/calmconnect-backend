@@ -1,4 +1,4 @@
-import { UserLoginDTO } from "../dtos/user.dto";
+import { UserLoginDTO } from "../dtos/user.dto.js";
 
 export interface LoginResponse {
   user: {

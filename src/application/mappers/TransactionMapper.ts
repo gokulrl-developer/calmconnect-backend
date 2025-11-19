@@ -1,10 +1,20 @@
-import Transaction from "../../domain/entities/transaction.entity";
-import { TransactionListItem } from "../interfaces/IFetchTransactionsUseCase";
-import { RevenueTrendsEntry as DomainRevenueTrendsEntry, PsychRevenueTrendsEntry, RecentUserTransactionEntryFromPersistence, RevenueSummary, RevenueSummaryByPsych, RevenueTrendsEntry } from "../../domain/interfaces/ITransactionRepository";
-import { RevenueTrendsEntry as ResponseRevenueTrendsEntry } from "../../application/interfaces/IFetchRevenueTrendsUseCase";
-import { PsychRevenueSummary, RevenueTrendEntry as ResponsePsychRevenueTrendsEntry } from "../../application/interfaces/IFetchPsychDashboardUseCase";
-import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase";
-import { UserRecentTransactionsEntry } from "../interfaces/IFetchUserDashboardUseCase";
+import Transaction from "../../domain/entities/transaction.entity.js";
+import { TransactionListItem } from "../interfaces/IFetchTransactionsUseCase.js";
+import { 
+  RevenueTrendsEntry as DomainRevenueTrendsEntry, 
+  PsychRevenueTrendsEntry, 
+  RecentUserTransactionEntryFromPersistence, 
+  RevenueSummary, 
+  RevenueSummaryByPsych, 
+  RevenueTrendsEntry 
+} from "../../domain/interfaces/ITransactionRepository.js";
+import { RevenueTrendsEntry as ResponseRevenueTrendsEntry } from "../../application/interfaces/IFetchRevenueTrendsUseCase.js";
+import { 
+  PsychRevenueSummary, 
+  RevenueTrendEntry as ResponsePsychRevenueTrendsEntry 
+} from "../../application/interfaces/IFetchPsychDashboardUseCase.js";
+import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
+import { UserRecentTransactionsEntry } from "../interfaces/IFetchUserDashboardUseCase.js";
 
 
 export const toDomainBookingDebit = (

@@ -1,4 +1,4 @@
-import { FetchDashboardSummaryCardsDTO } from "../dtos/admin.dto";
+import { FetchDashboardSummaryCardsDTO } from "../dtos/admin.dto.js";
 
 export interface SummaryCardItem{
     totalValue:number; // all time total

@@ -1,13 +1,13 @@
-import AvailabilityRule from "../../domain/entities/availability-rule.entity";
-import QuickSlot from "../../domain/entities/quick-slot.entity";
-import Session from "../../domain/entities/session.entity";
-import SpecialDay from "../../domain/entities/special-day.entity";
-import { isoToHHMM } from "../../utils/timeConverter";
-import { ERROR_MESSAGES } from "../constants/error-messages.constants";
-import { AppErrorCodes } from "../error/app-error-codes";
-import AppError from "../error/AppError";
-import { filterUnbookedSlots } from "./filterUnbookedSlots";
-import { Availability, generateSlots } from "./generateSlots";
+import AvailabilityRule from "../../domain/entities/availability-rule.entity.js";
+import QuickSlot from "../../domain/entities/quick-slot.entity.js";
+import Session from "../../domain/entities/session.entity.js";
+import SpecialDay from "../../domain/entities/special-day.entity.js";
+import { isoToHHMM } from "../../utils/timeConverter.js";
+import { ERROR_MESSAGES } from "../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../error/app-error-codes.js";
+import AppError from "../error/AppError.js";
+import { filterUnbookedSlots } from "./filterUnbookedSlots.js";
+import { Availability, generateSlots } from "./generateSlots.js";
 
 export function getAvailableSlotsForDatePsych(
   specialDay: SpecialDay | null,

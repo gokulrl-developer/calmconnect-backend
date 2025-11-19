@@ -1,4 +1,4 @@
-import { EventMap } from "./EventMap";
+import { EventMap } from "./EventMap.js";
 
 export interface IEventBus {
   subscribe<K extends keyof EventMap>(

@@ -1,23 +1,23 @@
 import { Request, Response, NextFunction } from "express";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import AppError from "../../../application/error/AppError";
-import { IGoogleAuthPsychUseCase } from "../../../application/interfaces/IGoogleAuthPsychUseCase";
-import { ILoginPsychUseCase } from "../../../application/interfaces/ILoginPsychUseCase";
-import { IRegisterPsychUseCase } from "../../../application/interfaces/IRegisterPsychUseCase";
-import { IResendOtpSignUpPsychUseCase } from "../../../application/interfaces/IResendOtpSignUpPsychUseCase";
-import { ISignUpPsychUseCase } from "../../../application/interfaces/ISignUpPsychUseCase";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import AppError from "../../../application/error/AppError.js";
+import { IGoogleAuthPsychUseCase } from "../../../application/interfaces/IGoogleAuthPsychUseCase.js";
+import { ILoginPsychUseCase } from "../../../application/interfaces/ILoginPsychUseCase.js";
+import { IRegisterPsychUseCase } from "../../../application/interfaces/IRegisterPsychUseCase.js";
+import { IResendOtpSignUpPsychUseCase } from "../../../application/interfaces/IResendOtpSignUpPsychUseCase.js";
+import { ISignUpPsychUseCase } from "../../../application/interfaces/ISignUpPsychUseCase.js";
 import {
   PsychForgotPasswordDTO,
   PsychLoginDTO,
   PsychResendOtpDTO,
   PsychSignUpDTO,
-} from "../../../application/dtos/psych.dto";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import { IResendOtpResetPsychUseCase } from "../../../application/interfaces/IResendOtpResetPsychUseCase";
-import IForgotPasswordPsychUseCase from "../../../application/interfaces/IForgotPasswordPsychUseCase";
-import IResetPasswordPsychUseCase from "../../../application/interfaces/IResetPasswordPsychUseCase";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
+} from "../../../application/dtos/psych.dto.js";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import { IResendOtpResetPsychUseCase } from "../../../application/interfaces/IResendOtpResetPsychUseCase.js";
+import IForgotPasswordPsychUseCase from "../../../application/interfaces/IForgotPasswordPsychUseCase.js";
+import IResetPasswordPsychUseCase from "../../../application/interfaces/IResetPasswordPsychUseCase.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
 
 export default class AuthController {
   constructor(

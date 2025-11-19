@@ -1,12 +1,12 @@
-import IComplaintDetailsByUserUseCase from "../../interfaces/IComplaintDetailsByUserUseCase";
-import { ComplaintDetailsDTO } from "../../dtos/user.dto";
-import IComplaintRepository from "../../../domain/interfaces/IComplaintRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import { mapDomainToUserComplaintDetails } from "../../mappers/ComplaintMapper";
-import AppError from "../../error/AppError";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
+import IComplaintDetailsByUserUseCase from "../../interfaces/IComplaintDetailsByUserUseCase.js";
+import { ComplaintDetailsDTO } from "../../dtos/user.dto.js";
+import IComplaintRepository from "../../../domain/interfaces/IComplaintRepository.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import { mapDomainToUserComplaintDetails } from "../../mappers/ComplaintMapper.js";
+import AppError from "../../error/AppError.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
 
 export default class ComplaintDetailsByUserUseCase implements IComplaintDetailsByUserUseCase {
   constructor(

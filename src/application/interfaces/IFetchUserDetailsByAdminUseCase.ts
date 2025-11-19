@@ -1,4 +1,4 @@
-import { UserDetailsByAdminDTO } from "../dtos/admin.dto";
+import { UserDetailsByAdminDTO } from "../dtos/admin.dto.js";
 
 export interface AdminUserDetails {
   firstName: string;

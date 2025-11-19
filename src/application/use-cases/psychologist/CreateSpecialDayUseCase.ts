@@ -1,11 +1,11 @@
-import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
-import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { CreateSpecialDayDTO } from "../../dtos/psych.dto";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import ICreateSpecialDayUseCase from "../../interfaces/ICreateSpecialDayUseCase";
-import { mapCreateSpecialDayDTOToDomain } from "../../mappers/SpecialDayMapper";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { CreateSpecialDayDTO } from "../../dtos/psych.dto.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import ICreateSpecialDayUseCase from "../../interfaces/ICreateSpecialDayUseCase.js";
+import { mapCreateSpecialDayDTOToDomain } from "../../mappers/SpecialDayMapper.js";
 
 
 export default class CreateSpecialDayUseCase implements ICreateSpecialDayUseCase{

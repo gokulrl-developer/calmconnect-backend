@@ -1,8 +1,8 @@
-import { ERROR_MESSAGES } from "../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../application/error/app-error-codes";
-import AppError from "../../application/error/AppError";
-import { IFileStorageService } from "../../domain/interfaces/IFileStorageService";
-import cloudinary from "../config/cloudinary";
+import { ERROR_MESSAGES } from "../../application/constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../application/error/app-error-codes.js";
+import AppError from "../../application/error/AppError.js";
+import { IFileStorageService } from "../../domain/interfaces/IFileStorageService.js";
+import cloudinary from "../config/cloudinary.js";
 import { UploadApiResponse } from "cloudinary";
 
 export default class CloudinaryService implements IFileStorageService{

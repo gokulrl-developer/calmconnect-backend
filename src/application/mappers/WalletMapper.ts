@@ -1,4 +1,4 @@
-import Wallet from "../../domain/entities/wallet.entity";
+import Wallet from "../../domain/entities/wallet.entity.js";
 
 export const toWalletDomain = (
   ownerType: "user" | "psychologist" | "platform",

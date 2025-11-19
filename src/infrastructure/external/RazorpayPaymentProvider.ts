@@ -1,6 +1,6 @@
 import Razorpay from "razorpay";
 import crypto from "crypto";
-import IPaymentProvider, { CreatePaymentOrder, PaymentOrder, PaymentVerification, VerifyPayment } from "../../domain/interfaces/IPaymentProvider";
+import IPaymentProvider, { CreatePaymentOrder, PaymentOrder, PaymentVerification, VerifyPayment } from "../../domain/interfaces/IPaymentProvider.js";
 
 export default class RazorpayPaymentProvider implements IPaymentProvider {
   private razorpay: Razorpay;

@@ -1,5 +1,5 @@
-import { ListPsychReviewsDTO } from "../dtos/user.dto";
-import PaginationData from "../utils/calculatePagination";
+import { ListPsychReviewsDTO } from "../dtos/user.dto.js";
+import PaginationData from "../utils/calculatePagination.js";
 
 export interface ListPsychReviewsItem {
   reviewId: string;

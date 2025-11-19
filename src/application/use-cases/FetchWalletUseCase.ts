@@ -1,12 +1,12 @@
 import IFetchWalletUseCase, {
   WalletResponse,
-} from "../interfaces/IFetchWalletUseCase";
-import { GetWalletDTO } from "../dtos/shared.dto";
-import { toFetchWalletResponse, toWalletDomain } from "../mappers/WalletMapper";
-import IWalletRepository from "../../domain/interfaces/IWalletRepository";
-import AppError from "../error/AppError";
-import { ERROR_MESSAGES } from "../constants/error-messages.constants";
-import { AppErrorCodes } from "../error/app-error-codes";
+} from "../interfaces/IFetchWalletUseCase.js";
+import { GetWalletDTO } from "../dtos/shared.dto.js";
+import { toFetchWalletResponse, toWalletDomain } from "../mappers/WalletMapper.js";
+import IWalletRepository from "../../domain/interfaces/IWalletRepository.js";
+import AppError from "../error/AppError.js";
+import { ERROR_MESSAGES } from "../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../error/app-error-codes.js";
 
 export default class FetchWalletUseCase implements IFetchWalletUseCase {
   constructor(

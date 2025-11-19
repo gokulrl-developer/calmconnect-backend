@@ -1,13 +1,14 @@
-import IComplaintDetailsByAdminUseCase from "../../interfaces/IComplaintDetailsByAdminUseCase";
-import { ComplaintDetailsByAdminDTO } from "../../dtos/admin.dto";
-import IComplaintRepository from "../../../domain/interfaces/IComplaintRepository";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import { mapDomainToAdminComplaintDetails } from "../../mappers/ComplaintMapper";
-import AppError from "../../error/AppError";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
+import IComplaintDetailsByAdminUseCase from "../../interfaces/IComplaintDetailsByAdminUseCase.js";
+import { ComplaintDetailsByAdminDTO } from "../../dtos/admin.dto.js";
+import IComplaintRepository from "../../../domain/interfaces/IComplaintRepository.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import { mapDomainToAdminComplaintDetails } from "../../mappers/ComplaintMapper.js";
+import AppError from "../../error/AppError.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+
 
 export default class ComplaintDetailsByAdminUseCase
   implements IComplaintDetailsByAdminUseCase

@@ -1,5 +1,5 @@
-import { SessionListingDTO } from "../dtos/admin.dto";
-import PaginationData from "../utils/calculatePagination";
+import { SessionListingDTO } from "../dtos/admin.dto.js";
+import PaginationData from "../utils/calculatePagination.js";
 
 export interface SessionListingAdminItem {
   userFullName: string;

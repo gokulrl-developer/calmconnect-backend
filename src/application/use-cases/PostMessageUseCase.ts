@@ -1,14 +1,13 @@
-import { PostMessageDTO } from "../dtos/shared.dto";
-import IPostMessageUseCase from "../interfaces/IPostMessageUseCase";
-import IUserRepository from "../../domain/interfaces/IUserRepository";
-import IPsychRepository from "../../domain/interfaces/IPsychRepository";
-import { ChatMessage } from "../../domain/entities/chat-message.entity";
-import AppError from "../error/AppError";
-import { ERROR_MESSAGES } from "../constants/error-messages.constants";
-import { AppErrorCodes } from "../error/app-error-codes";
-import { IChatMessageRepository } from "../../domain/interfaces/IChatMessageRepository";
-import { mapDomainToGetMessagesResponse, mapPostMessageDTOToDomain } from "../mappers/ChatMessageMapper";
-import { GetMessageResponse } from "../interfaces/IGetMessagesUseCase";
+import { PostMessageDTO } from "../dtos/shared.dto.js";
+import IPostMessageUseCase from "../interfaces/IPostMessageUseCase.js";
+import IUserRepository from "../../domain/interfaces/IUserRepository.js";
+import IPsychRepository from "../../domain/interfaces/IPsychRepository.js";
+import AppError from "../error/AppError.js";
+import { ERROR_MESSAGES } from "../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../error/app-error-codes.js";
+import { IChatMessageRepository } from "../../domain/interfaces/IChatMessageRepository.js";
+import { mapDomainToGetMessagesResponse, mapPostMessageDTOToDomain } from "../mappers/ChatMessageMapper.js";
+import { GetMessageResponse } from "../interfaces/IGetMessagesUseCase.js";
 
 export default class PostMessageUseCase implements IPostMessageUseCase {
   constructor(

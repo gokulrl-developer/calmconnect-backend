@@ -1,5 +1,5 @@
-import { ListComplaintsDTO } from "../dtos/user.dto";
-import PaginationData from "../utils/calculatePagination";
+import { ListComplaintsDTO } from "../dtos/user.dto.js";
+import PaginationData from "../utils/calculatePagination.js";
 
 export interface ComplaintListByUserItem{
     complaintId:string;

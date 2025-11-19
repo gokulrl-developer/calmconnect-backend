@@ -1,5 +1,5 @@
-import Review from "../entities/review.entity";
-import IBaseRepository from "./IBaseRepository";
+import Review from "../entities/review.entity.js";
+import IBaseRepository from "./IBaseRepository.js";
 
 export interface ListPsychReviewsFilter {
   psychId: string;

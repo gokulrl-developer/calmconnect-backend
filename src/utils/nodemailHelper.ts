@@ -1,4 +1,4 @@
-import { transporter } from "../infrastructure/config/nodeMailerConfig";
+import { transporter } from "../infrastructure/config/nodeMailerConfig.js";
 
 
 transporter.verify((error, success) => {

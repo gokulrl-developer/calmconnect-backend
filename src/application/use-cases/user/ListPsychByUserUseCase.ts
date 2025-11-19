@@ -1,20 +1,20 @@
-import Psychologist from "../../../domain/entities/psychologist.entity";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { ListPsychByUserDTO } from "../../dtos/user.dto";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IListPsychByUserUseCase from "../../interfaces/IListPsychByUserUseCase";
+import Psychologist from "../../../domain/entities/psychologist.entity.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { ListPsychByUserDTO } from "../../dtos/user.dto.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IListPsychByUserUseCase from "../../interfaces/IListPsychByUserUseCase.js";
 import {
   toPsychListByUserPersistence,
   toPsychListByUserResponse,
-} from "../../mappers/PsychMapper";
-import { calculatePagination } from "../../utils/calculatePagination";
-import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych";
+} from "../../mappers/PsychMapper.js";
+import { calculatePagination } from "../../utils/calculatePagination.js";
+import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych.js";
 
 export default class ListPsychByUserUseCase implements IListPsychByUserUseCase {
   constructor(

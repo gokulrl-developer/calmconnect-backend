@@ -1,12 +1,12 @@
-import ICreateReviewUseCase from "../../interfaces/ICreateReviewUseCase";
-import { CreateReviewDTO } from "../../dtos/user.dto";
-import IReviewRepository from "../../../domain/interfaces/IReviewRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { mapCreateReviewDTOToDomain } from "../../mappers/ReviewMapper";
-import AppError from "../../error/AppError";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
+import ICreateReviewUseCase from "../../interfaces/ICreateReviewUseCase.js";
+import { CreateReviewDTO } from "../../dtos/user.dto.js";
+import IReviewRepository from "../../../domain/interfaces/IReviewRepository.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { mapCreateReviewDTOToDomain } from "../../mappers/ReviewMapper.js";
+import AppError from "../../error/AppError.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
 
 export default class CreateReviewUseCase implements ICreateReviewUseCase {
   constructor(

@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import IApplicationListUseCase from "../../../application/interfaces/IApplicationListUseCase";
-import IUpdateApplicationUseCase from "../../../application/interfaces/IUpdateApplicationUseCase";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import IApplicationListUseCase from "../../../application/interfaces/IApplicationListUseCase.js";
+import IUpdateApplicationUseCase from "../../../application/interfaces/IUpdateApplicationUseCase.js";
 import {
   ListApplicationsDTO,
   UpdateApplicationStatusDTO,
-} from "../../../application/dtos/admin.dto";
-import AppError from "../../../application/error/AppError";
-import IApplicationDetailsUseCase from "../../../application/interfaces/IApplicationDetailsUseCase";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
+} from "../../../application/dtos/admin.dto.js";
+import AppError from "../../../application/error/AppError.js";
+import IApplicationDetailsUseCase from "../../../application/interfaces/IApplicationDetailsUseCase.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
 
 export default class ApplicationController {
   constructor(

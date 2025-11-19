@@ -1,4 +1,4 @@
-import { FetchUserDashboardDTO } from "../dtos/user.dto";
+import { FetchUserDashboardDTO } from "../dtos/user.dto.js";
 export interface UserSessionSummary{
     totalSessions:number;
     completedSessions:number;

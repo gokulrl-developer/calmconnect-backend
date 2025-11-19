@@ -1,5 +1,5 @@
-import Session from "../entities/session.entity";
-import IBaseRepository from "./IBaseRepository";
+import Session from "../entities/session.entity.js";
+import IBaseRepository from "./IBaseRepository.js";
 
 export interface SessionTrendsEntry {
   label: string; //day/month

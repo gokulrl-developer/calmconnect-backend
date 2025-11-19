@@ -1,4 +1,4 @@
-import IAdminConfigService, { AdminData } from "../../domain/interfaces/IAdminConfigService";
+import IAdminConfigService, { AdminData } from "../../domain/interfaces/IAdminConfigService.js";
 
 export default class AdminConfigService implements IAdminConfigService {
   getAdminData(): AdminData {

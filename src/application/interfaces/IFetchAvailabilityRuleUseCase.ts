@@ -1,4 +1,4 @@
-import { FetchAvailabilityRule } from "../dtos/psych.dto";
+import { FetchAvailabilityRule } from "../dtos/psych.dto.js";
 
 export interface AvailabilityRuleDetails{
     weekDay:number,

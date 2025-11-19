@@ -1,24 +1,19 @@
-import { VerifyPaymentDTO } from "../../dtos/user.dto";
-import IPaymentProvider from "../../../domain/interfaces/IPaymentProvider";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import ITransactionRepository from "../../../domain/interfaces/ITransactionRepository";
-import IWalletRepository from "../../../domain/interfaces/IWalletRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IVerifyPaymentUseCase, {
-  VerifyPaymentResponse,
-} from "../../interfaces/IVerifyPaymentUseCase";
-import {
-  toDomainBookingCredit,
-  toDomainBookingDebit,
-} from "../../mappers/TransactionMapper";
-import { toWalletDomain } from "../../mappers/WalletMapper";
-import { IEventBus } from "../../interfaces/events/IEventBus";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import { ISessionTaskQueue } from "../../../domain/interfaces/ISessionTaskQueue";
-import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
+import { VerifyPaymentDTO } from "../../dtos/user.dto.js";
+import IPaymentProvider from "../../../domain/interfaces/IPaymentProvider.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import ITransactionRepository from "../../../domain/interfaces/ITransactionRepository.js";
+import IWalletRepository from "../../../domain/interfaces/IWalletRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IVerifyPaymentUseCase, { VerifyPaymentResponse } from "../../interfaces/IVerifyPaymentUseCase.js";
+import { toDomainBookingCredit, toDomainBookingDebit } from "../../mappers/TransactionMapper.js";
+import { toWalletDomain } from "../../mappers/WalletMapper.js";
+import { IEventBus } from "../../interfaces/events/IEventBus.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import { ISessionTaskQueue } from "../../../domain/interfaces/ISessionTaskQueue.js";
+import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
 
 export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
   constructor(

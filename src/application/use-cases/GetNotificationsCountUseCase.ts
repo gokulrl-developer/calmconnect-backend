@@ -1,6 +1,6 @@
-import { INotificationRepository } from "../../domain/interfaces/INotificationRepository";
-import { GetUnreadNotificationsCountDTO } from "../dtos/shared.dto";
-import IGetUnreadNotificationsCountUseCase from "../interfaces/IGetUnreadNotificationsCountUseCase";
+import { INotificationRepository } from "../../domain/interfaces/INotificationRepository.js";
+import { GetUnreadNotificationsCountDTO } from "../dtos/shared.dto.js";
+import IGetUnreadNotificationsCountUseCase from "../interfaces/IGetUnreadNotificationsCountUseCase.js";
 
 export default class GetUnreadNotificationCountUseCase implements IGetUnreadNotificationsCountUseCase{
     constructor(

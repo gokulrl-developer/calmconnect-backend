@@ -1,10 +1,10 @@
-import { ListComplaintsDTO } from "../../dtos/user.dto";
-import IComplaintRepository from "../../../domain/interfaces/IComplaintRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import { mapDomainToUserComplaintListItem } from "../../mappers/ComplaintMapper";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import IComplaintListingByUserUseCase from "../../interfaces/IComplaintListinByUserUseCase";
-import { calculatePagination } from "../../utils/calculatePagination";
+import { ListComplaintsDTO } from "../../dtos/user.dto.js";
+import IComplaintRepository from "../../../domain/interfaces/IComplaintRepository.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import { mapDomainToUserComplaintListItem } from "../../mappers/ComplaintMapper.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import IComplaintListingByUserUseCase from "../../interfaces/IComplaintListinByUserUseCase.js";
+import { calculatePagination } from "../../utils/calculatePagination.js";
 
 export default class ComplaintListingByUserUseCase implements IComplaintListingByUserUseCase {
   constructor(

@@ -1,13 +1,13 @@
-import Psychologist from "../../../domain/entities/psychologist.entity";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { PsychDetailsByAdminDTO } from "../../dtos/admin.dto";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
+import Psychologist from "../../../domain/entities/psychologist.entity.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { PsychDetailsByAdminDTO } from "../../dtos/admin.dto.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
 import IFetchpsychDetailsByAdminUseCase, {
   AdminPsychDetailsResponse,
-} from "../../interfaces/IFetchPsychDetailsByAdminUseCase";
-import { mapDomainToDetailsResponseByAdmin } from "../../mappers/PsychMapper";
+} from "../../interfaces/IFetchPsychDetailsByAdminUseCase.js";
+import { mapDomainToDetailsResponseByAdmin } from "../../mappers/PsychMapper.js";
 
 export class FetchPsychDetailsByAdminUseCase
   implements IFetchpsychDetailsByAdminUseCase

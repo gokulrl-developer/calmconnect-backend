@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import Session from "../../../domain/entities/session.entity";
+import Session from "../../../domain/entities/session.entity.js";
 import ISessionRepository, {
   PsychSessionSummaryFromPersistence,
   PsychSessionTrendsEntry,
@@ -9,9 +9,9 @@ import ISessionRepository, {
   SessionTrendsSummary,
   TopPsychologistsEntryFromPersistence,
   UserSessionSummaryFromPersistence,
-} from "../../../domain/interfaces/ISessionRepository";
-import { SessionModel, ISessionDocument } from "../models/SessionModel";
-import { BaseRepository } from "./BaseRepository";
+} from "../../../domain/interfaces/ISessionRepository.js";
+import { SessionModel, ISessionDocument } from "../models/SessionModel.js";
+import { BaseRepository } from "./BaseRepository.js";
 import { startOfWeek, subWeeks } from "date-fns";
 
 export default class SessionRepository

@@ -1,14 +1,13 @@
-import { UserForgotPasswordDTO } from "../../dtos/user.dto";
-import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import { sendMail } from "../../../utils/nodemailHelper";
-import generateOtp from "../../../utils/OtpGenerator";
-import { EMAIL_MESSAGES } from "../../constants/email-messages.constants";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IForgotPasswordUserUseCase from "../../interfaces/IForgotPasswordUserUseCase";
-
+import { UserForgotPasswordDTO } from "../../dtos/user.dto.js";
+import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import { sendMail } from "../../../utils/nodemailHelper.js";
+import generateOtp from "../../../utils/OtpGenerator.js";
+import { EMAIL_MESSAGES } from "../../constants/email-messages.constants.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IForgotPasswordUserUseCase from "../../interfaces/IForgotPasswordUserUseCase.js";
 
 export default class ForgotPasswordUserUseCase implements IForgotPasswordUserUseCase{
     constructor(

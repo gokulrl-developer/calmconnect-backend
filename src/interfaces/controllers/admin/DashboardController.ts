@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import AppError from "../../../application/error/AppError";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import { REGEX_EXP } from "../../constants/regex.constants";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import AppError from "../../../application/error/AppError.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import { REGEX_EXP } from "../../constants/regex.constants.js";
 
-import IFetchRevenueTrendsUseCase from "../../../application/interfaces/IFetchRevenueTrendsUseCase";
+import IFetchRevenueTrendsUseCase from "../../../application/interfaces/IFetchRevenueTrendsUseCase.js";
 
 import {
   FetchRevenueTrendsDTO,
@@ -13,11 +13,11 @@ import {
   FetchClientTrendsDTO,
   FetchTopPsychologistDTO,
   FetchDashboardSummaryCardsDTO,
-} from "../../../application/dtos/admin.dto";
-import IFetchSessionTrendsUseCase from "../../../application/interfaces/ISessionTrendsUseCase";
-import IFetchClientsTrendsUseCase from "../../../application/interfaces/IFetchClientTrendsUseCase";
-import IFetchTopPsychologistUseCase from "../../../application/interfaces/IFetchTopPsychologistsUseCase";
-import IFetchDashboardSummaryCardsAdminUseCase from "../../../application/interfaces/IFetchDashboardSummaryCardsAdminUseCase";
+} from "../../../application/dtos/admin.dto.js";
+import IFetchSessionTrendsUseCase from "../../../application/interfaces/ISessionTrendsUseCase.js";
+import IFetchClientsTrendsUseCase from "../../../application/interfaces/IFetchClientTrendsUseCase.js";
+import IFetchTopPsychologistUseCase from "../../../application/interfaces/IFetchTopPsychologistsUseCase.js";
+import IFetchDashboardSummaryCardsAdminUseCase from "../../../application/interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
 
 export default class DashboardController {
   constructor(
@@ -28,7 +28,7 @@ export default class DashboardController {
     private _fetchDashboardSummaryCardsUseCase: IFetchDashboardSummaryCardsAdminUseCase
   ) {}
 
-  // 🧾 Fetch Revenue Trends
+  // Fetch Revenue Trends
   async fetchRevenueTrends(
     req: Request,
     res: Response,

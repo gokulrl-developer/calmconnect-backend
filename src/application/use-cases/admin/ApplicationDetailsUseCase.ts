@@ -1,10 +1,10 @@
-import { ApplicationDetailsDTO } from "../../dtos/admin.dto";
-import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IApplicationDetailsUseCase from "../../interfaces/IApplicationDetailsUseCase";
-import { toApplicationDetails } from "../../mappers/ApplicationMapper";
+import { ApplicationDetailsDTO } from "../../dtos/admin.dto.js";
+import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IApplicationDetailsUseCase from "../../interfaces/IApplicationDetailsUseCase.js";
+import { toApplicationDetails } from "../../mappers/ApplicationMapper.js";
 
 export default class ApplicationDetailsUseCase implements IApplicationDetailsUseCase{
 constructor(

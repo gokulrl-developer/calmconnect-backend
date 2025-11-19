@@ -1,10 +1,10 @@
 import {
   CreateAvaialabilityRuleDTO,
   EditAvaialabilityRuleDTO,
-} from "../dtos/psych.dto";
-import AvailabilityRule from "../../domain/entities/availability-rule.entity";
-import { HHMMToIso } from "../../utils/timeConverter";
-import { AvailabilityRuleSummary } from "../interfaces/IListAvailabilityRulesUseCase";
+} from "../dtos/psych.dto.js";
+import AvailabilityRule from "../../domain/entities/availability-rule.entity.js";
+import { HHMMToIso } from "../../utils/timeConverter.js";
+import { AvailabilityRuleSummary } from "../interfaces/IListAvailabilityRulesUseCase.js";
 
 export const mapCreateAvailabilityRuleDTOToDomain = (
   dto: CreateAvaialabilityRuleDTO

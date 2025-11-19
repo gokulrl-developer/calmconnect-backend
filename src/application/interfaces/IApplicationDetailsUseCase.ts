@@ -1,4 +1,4 @@
-import { ApplicationDetailsDTO } from "../dtos/admin.dto"
+import { ApplicationDetailsDTO } from "../dtos/admin.dto.js"
 
 export interface ApplicationDetails{
     firstName:string,

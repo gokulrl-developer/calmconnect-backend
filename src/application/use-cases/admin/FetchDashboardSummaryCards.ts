@@ -1,14 +1,13 @@
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import ITransactionRepository from "../../../domain/interfaces/ITransactionRepository";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import { FetchDashboardSummaryCardsDTO } from "../../dtos/admin.dto";
-import IFetchDashboardSummaryCardsAdminUseCase, { DashboardSummaryCardResponse } from "../../interfaces/IFetchDashboardSummaryCardsAdminUseCase";
-import { mapPsychSummaryToCardItem } from "../../mappers/PsychMapper";
-import { mapSessionTrendsSummaryToCardItem } from "../../mappers/SessionMapper";
-import { mapRevenueSummaryToCardItem } from "../../mappers/TransactionMapper";
-import { mapUserSummaryToCardItem } from "../../mappers/UserMapper";
-
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import ITransactionRepository from "../../../domain/interfaces/ITransactionRepository.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import { FetchDashboardSummaryCardsDTO } from "../../dtos/admin.dto.js";
+import IFetchDashboardSummaryCardsAdminUseCase, { DashboardSummaryCardResponse } from "../../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
+import { mapPsychSummaryToCardItem } from "../../mappers/PsychMapper.js";
+import { mapSessionTrendsSummaryToCardItem } from "../../mappers/SessionMapper.js";
+import { mapRevenueSummaryToCardItem } from "../../mappers/TransactionMapper.js";
+import { mapUserSummaryToCardItem } from "../../mappers/UserMapper.js";
 
 export default class FetchDashboardSummaryCardsUseCase implements IFetchDashboardSummaryCardsAdminUseCase {
   constructor(

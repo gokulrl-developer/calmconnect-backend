@@ -1,18 +1,16 @@
-import { FetchCheckoutDataDTO } from "../../dtos/user.dto";
-import Psychologist from "../../../domain/entities/psychologist.entity";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { HHMMToIso, isoToHHMM } from "../../../utils/timeConverter";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IFetchCheckoutDataUseCase, {
-  CheckoutData,
-} from "../../interfaces/IFetchCheckoutDataUseCase";
-import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
-import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych";
+import { FetchCheckoutDataDTO } from "../../dtos/user.dto.js";
+import Psychologist from "../../../domain/entities/psychologist.entity.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { HHMMToIso, isoToHHMM } from "../../../utils/timeConverter.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IFetchCheckoutDataUseCase, { CheckoutData } from "../../interfaces/IFetchCheckoutDataUseCase.js";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych.js";
 
 export default class FetchCheckoutDataUseCase
   implements IFetchCheckoutDataUseCase

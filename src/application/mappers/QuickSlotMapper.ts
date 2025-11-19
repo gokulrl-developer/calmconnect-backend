@@ -1,5 +1,5 @@
-import QuickSlot from "../../domain/entities/quick-slot.entity";
-import { CreateQuickSlotDTO, EditQuickSlotDTO } from "../dtos/psych.dto";
+import QuickSlot from "../../domain/entities/quick-slot.entity.js";
+import { CreateQuickSlotDTO, EditQuickSlotDTO } from "../dtos/psych.dto.js";
 
 export const mapCreateQuickSlotDTOToDomain=(dto:CreateQuickSlotDTO)=>{
     return new QuickSlot(

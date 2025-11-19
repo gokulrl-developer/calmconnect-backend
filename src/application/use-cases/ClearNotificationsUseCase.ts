@@ -1,6 +1,6 @@
-import { INotificationRepository } from "../../domain/interfaces/INotificationRepository";
-import { ClearNotificationsDTO } from "../dtos/shared.dto";
-import IClearNotificationsUseCase from "../interfaces/IClearNotificationsUseCase";
+import { INotificationRepository } from "../../domain/interfaces/INotificationRepository.js";
+import { ClearNotificationsDTO } from "../dtos/shared.dto.js";
+import IClearNotificationsUseCase from "../interfaces/IClearNotificationsUseCase.js";
 
 export default class ClearNotificationsUseCase implements IClearNotificationsUseCase{
   constructor(

@@ -1,8 +1,7 @@
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import { FetchTopPsychologistDTO } from "../../dtos/admin.dto";
-import  IFetchTopPsychologistsUseCase, { TopPsychologistResponse } from "../../interfaces/IFetchTopPsychologistsUseCase";
-import { toTopPsychResponse } from "../../mappers/SessionMapper";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import { FetchTopPsychologistDTO } from "../../dtos/admin.dto.js";
+import IFetchTopPsychologistsUseCase, { TopPsychologistResponse } from "../../interfaces/IFetchTopPsychologistsUseCase.js";
+import { toTopPsychResponse } from "../../mappers/SessionMapper.js";
 
 export default class FetchTopPsychologistsUseCase implements IFetchTopPsychologistsUseCase {
   constructor(
