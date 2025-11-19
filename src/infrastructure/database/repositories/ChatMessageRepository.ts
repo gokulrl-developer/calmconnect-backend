@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import { ChatMessage } from "../../../domain/entities/chat-message.entity";
-import { BaseRepository } from "./BaseRepository";
-import { ChatModel, IChatMessageDocument } from "../models/ChatMessageModel";
-import { IChatMessageRepository } from "../../../domain/interfaces/IChatMessageRepository";
+import { ChatMessage } from "../../../domain/entities/chat-message.entity.js";
+import { BaseRepository } from "./BaseRepository.js";
+import { ChatModel, IChatMessageDocument } from "../models/ChatMessageModel.js";
+import { IChatMessageRepository } from "../../../domain/interfaces/IChatMessageRepository.js";
 
 
 export class ChatMessageRepository

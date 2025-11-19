@@ -1,8 +1,8 @@
-import { FetchSessionTrendsDTO } from "../../dtos/admin.dto";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository"; 
-import IFetchSessionTrendsUseCase, { SessionTrendsEntry } from "../../interfaces/ISessionTrendsUseCase";
-import { toSessionTrendsResponse } from "../../mappers/SessionMapper";
-import { generateLabels } from "../../utils/generateLabels";
+import { FetchSessionTrendsDTO } from "../../dtos/admin.dto.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js"; 
+import IFetchSessionTrendsUseCase, { SessionTrendsEntry } from "../../interfaces/ISessionTrendsUseCase.js";
+import { toSessionTrendsResponse } from "../../mappers/SessionMapper.js";
+import { generateLabels } from "../../utils/generateLabels.js";
 
 export default class FetchSessionTrendsUseCase implements IFetchSessionTrendsUseCase {
   constructor(

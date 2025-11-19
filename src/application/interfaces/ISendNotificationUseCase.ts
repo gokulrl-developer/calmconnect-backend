@@ -1,4 +1,4 @@
-import { Notification } from "../../domain/entities/notification.entity";
+import { Notification } from "../../domain/entities/notification.entity.js";
 
 export interface SendNotificationPayload {
     recipientType:"admin"|"user"|"psychologist",

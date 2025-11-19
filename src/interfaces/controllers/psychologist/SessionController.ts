@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import ISessionListingPsychUseCase from "../../../application/interfaces/ISessionListingPsychUseCase";
-import AppError from "../../../application/error/AppError";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import ICancelSessionPsychUseCase from "../../../application/interfaces/ICancelSessionPsychUseCase";
-import ICheckSessionAccessUseCase from "../../../application/interfaces/ICheckSessionAccessUseCase";
-import { CheckSessionAccessDTO } from "../../../application/dtos/shared.dto";
-import IGetMessagesUseCase from "../../../application/interfaces/IGetMessagesUseCase";
-import IPostMessageUseCase from "../../../application/interfaces/IPostMessageUseCase";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import ISessionListingPsychUseCase from "../../../application/interfaces/ISessionListingPsychUseCase.js";
+import AppError from "../../../application/error/AppError.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import ICancelSessionPsychUseCase from "../../../application/interfaces/ICancelSessionPsychUseCase.js";
+import ICheckSessionAccessUseCase from "../../../application/interfaces/ICheckSessionAccessUseCase.js";
+import { CheckSessionAccessDTO } from "../../../application/dtos/shared.dto.js";
+import IGetMessagesUseCase from "../../../application/interfaces/IGetMessagesUseCase.js";
+import IPostMessageUseCase from "../../../application/interfaces/IPostMessageUseCase.js";
 
 export default class SessionController {
   constructor(

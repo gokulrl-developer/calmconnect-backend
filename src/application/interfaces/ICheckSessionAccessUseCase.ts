@@ -1,4 +1,4 @@
-import { CheckSessionAccessDTO } from "../dtos/shared.dto"
+import { CheckSessionAccessDTO } from "../dtos/shared.dto.js"
 
 export interface SessionAccessPayload{
     allowed:boolean,

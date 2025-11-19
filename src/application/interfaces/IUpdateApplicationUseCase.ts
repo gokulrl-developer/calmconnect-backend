@@ -1,4 +1,4 @@
-import { UpdateApplicationStatusDTO } from "../dtos/admin.dto";
+import { UpdateApplicationStatusDTO } from "../dtos/admin.dto.js";
 
 
 export default interface IUpdateApplicationUseCase{

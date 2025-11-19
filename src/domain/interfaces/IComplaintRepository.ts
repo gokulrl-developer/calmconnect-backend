@@ -1,5 +1,5 @@
-import Complaint from "../entities/complaint.entity";
-import IBaseRepository from "./IBaseRepository";
+import Complaint from "../entities/complaint.entity.js";
+import IBaseRepository from "./IBaseRepository.js";
 
 export interface ComplaintHistoryFilter{
     psychId:string;

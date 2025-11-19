@@ -1,21 +1,21 @@
-import Session from "../../../domain/entities/session.entity";
-import Psychologist from "../../../domain/entities/psychologist.entity";
+import Session from "../../../domain/entities/session.entity.js";
+import Psychologist from "../../../domain/entities/psychologist.entity.js";
 import ICreateOrderUseCase, {
   CreateOrderResponse,
-} from "../../interfaces/ICreateOrderUseCase";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import { HHMMToIso } from "../../../utils/timeConverter";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import { CreateOrderDTO } from "../../dtos/user.dto";
-import IPaymentProvider from "../../../domain/interfaces/IPaymentProvider";
-import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
-import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
-import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych";
-import { mapCreateOrderDTOToDomain } from "../../mappers/SessionMapper";
+} from "../../interfaces/ICreateOrderUseCase.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import { HHMMToIso } from "../../../utils/timeConverter.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import { CreateOrderDTO } from "../../dtos/user.dto.js";
+import IPaymentProvider from "../../../domain/interfaces/IPaymentProvider.js";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
+import { getAvailableSlotsForDatePsych } from "../../utils/getAvailableSlotForDatePsych.js";
+import { mapCreateOrderDTOToDomain } from "../../mappers/SessionMapper.js";
 
 export default class CreateOrderUseCase implements ICreateOrderUseCase {
   constructor(

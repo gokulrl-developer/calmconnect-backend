@@ -1,14 +1,15 @@
 import IPsychRepository, {
   PsychTrendsEntry,
-} from "../../../domain/interfaces/IPsychRepository";
+} from "../../../domain/interfaces/IPsychRepository.js";
 import IUserRepository, {
   UserTrendsEntry,
-} from "../../../domain/interfaces/IUserRepository";
-import { FetchClientTrendsDTO } from "../../dtos/admin.dto";
+} from "../../../domain/interfaces/IUserRepository.js";
+import { FetchClientTrendsDTO } from "../../dtos/admin.dto.js";
 import IFetchClientsTrendsUseCase, {
   ClientTrendsEntry,
-} from "../../interfaces/IFetchClientTrendsUseCase";
-import { generateLabels } from "../../utils/generateLabels";
+} from "../../interfaces/IFetchClientTrendsUseCase.js";
+import { generateLabels } from "../../utils/generateLabels.js";
+
 
 export default class FetchClientsTrendsUseCase
   implements IFetchClientsTrendsUseCase

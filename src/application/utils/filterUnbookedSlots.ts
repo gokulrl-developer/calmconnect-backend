@@ -1,6 +1,6 @@
-import { HHMMToIso } from "../../utils/timeConverter";
-import { Slot } from "./generateSlots";
-import Session from "../../domain/entities/session.entity";
+import { HHMMToIso } from "../../utils/timeConverter.js";
+import { Slot } from "./generateSlots.js";
+import Session from "../../domain/entities/session.entity.js";
 
 const isOverlapping = (
   slotStart: Date,

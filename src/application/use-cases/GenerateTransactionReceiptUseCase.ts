@@ -1,13 +1,13 @@
-import IGenerateTransactionReceiptUseCase from "../interfaces/IGenerateTransactionReceiptUseCase";
-import { GetTransactionReceiptDTO } from "../dtos/shared.dto";
-import ITransactionRepository from "../../domain/interfaces/ITransactionRepository";
-import { IReceiptService, RecipientData, SourceData } from "../../domain/interfaces/IReceiptService";
-import IWalletRepository from "../../domain/interfaces/IWalletRepository";
-import AppError from "../error/AppError";
-import { ERROR_MESSAGES } from "../constants/error-messages.constants";
-import { AppErrorCodes } from "../error/app-error-codes";
-import IUserRepository from "../../domain/interfaces/IUserRepository";
-import IPsychRepository from "../../domain/interfaces/IPsychRepository";
+import IGenerateTransactionReceiptUseCase from "../interfaces/IGenerateTransactionReceiptUseCase.js";
+import { GetTransactionReceiptDTO } from "../dtos/shared.dto.js";
+import ITransactionRepository from "../../domain/interfaces/ITransactionRepository.js";
+import { IReceiptService, RecipientData, SourceData } from "../../domain/interfaces/IReceiptService.js";
+import AppError from "../error/AppError.js";
+import { ERROR_MESSAGES } from "../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../error/app-error-codes.js";
+import IUserRepository from "../../domain/interfaces/IUserRepository.js";
+import IPsychRepository from "../../domain/interfaces/IPsychRepository.js";
+
 
 export default class GenerateTransactionReceiptUseCase
   implements IGenerateTransactionReceiptUseCase

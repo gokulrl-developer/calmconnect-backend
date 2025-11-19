@@ -1,4 +1,4 @@
-import { CreateOrderDTO } from "../dtos/user.dto";
+import { CreateOrderDTO } from "../dtos/user.dto.js";
 
 export interface CreateOrderResponse {
   providerOrderId: string;  

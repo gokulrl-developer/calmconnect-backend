@@ -1,6 +1,6 @@
 import PDFDocument from "pdfkit";
-import { IReceiptService, SourceData, RecipientData } from "../../domain/interfaces/IReceiptService";
-import Transaction from "../../domain/entities/transaction.entity";
+import { IReceiptService, SourceData, RecipientData } from "../../domain/interfaces/IReceiptService.js";
+import Transaction from "../../domain/entities/transaction.entity.js";
 
 export class PdfkitReceiptService implements IReceiptService {
   async generateTransactionReceipt(

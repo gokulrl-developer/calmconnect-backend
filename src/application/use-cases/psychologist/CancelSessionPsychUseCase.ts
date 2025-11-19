@@ -1,17 +1,17 @@
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import ITransactionRepository from "../../../domain/interfaces/ITransactionRepository";
-import IWalletRepository from "../../../domain/interfaces/IWalletRepository";
-import Wallet from "../../../domain/entities/wallet.entity";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import ITransactionRepository from "../../../domain/interfaces/ITransactionRepository.js";
+import IWalletRepository from "../../../domain/interfaces/IWalletRepository.js";
+import Wallet from "../../../domain/entities/wallet.entity.js";
 import {
   toDomainRefundDebit,
   toDomainRefundCredit,
-} from "../../mappers/TransactionMapper";
-import { CancelSessionDTO } from "../../dtos/psych.dto";
-import AppError from "../../error/AppError";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService";
-import { toWalletDomain } from "../../mappers/WalletMapper";
+} from "../../mappers/TransactionMapper.js";
+import { CancelSessionDTO } from "../../dtos/psych.dto.js";
+import AppError from "../../error/AppError.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService.js";
+import { toWalletDomain } from "../../mappers/WalletMapper.js";
 
 export default class CancelSessionPsychUseCase {
   constructor(

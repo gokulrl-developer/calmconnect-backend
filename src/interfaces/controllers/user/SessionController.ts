@@ -1,13 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import ISessionListingUserUseCase from "../../../application/interfaces/ISessionListingUserUseCase";
-import AppError from "../../../application/error/AppError";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import ICancelSessionUserUseCase from "../../../application/interfaces/ICancelSessionUserUseCase";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import ICheckSessionAccessUseCase from "../../../application/interfaces/ICheckSessionAccessUseCase";
-import { CheckSessionAccessDTO } from "../../../application/dtos/shared.dto";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import ISessionListingUserUseCase from "../../../application/interfaces/ISessionListingUserUseCase.js";
+import AppError from "../../../application/error/AppError.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import ICancelSessionUserUseCase from "../../../application/interfaces/ICancelSessionUserUseCase.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import ICheckSessionAccessUseCase from "../../../application/interfaces/ICheckSessionAccessUseCase.js";
 
 export default class SessionController {
   constructor(

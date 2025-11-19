@@ -1,8 +1,8 @@
-import Review from "../../domain/entities/review.entity";
-import Session from "../../domain/entities/session.entity";
-import { RatingSummaryFromPersistence } from "../../domain/interfaces/IReviewRepository";
-import { CreateReviewDTO } from "../dtos/user.dto";
-import { PsychRatingSummary } from "../interfaces/IFetchPsychDashboardUseCase";
+import Review from "../../domain/entities/review.entity.js";
+import Session from "../../domain/entities/session.entity.js";
+import { RatingSummaryFromPersistence } from "../../domain/interfaces/IReviewRepository.js";
+import { CreateReviewDTO } from "../dtos/user.dto.js";
+import { PsychRatingSummary } from "../interfaces/IFetchPsychDashboardUseCase.js";
 
 export const mapCreateReviewDTOToDomain = (
   dto: CreateReviewDTO,

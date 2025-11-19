@@ -1,16 +1,17 @@
-import Complaint from "../../domain/entities/complaint.entity";
-import User from "../../domain/entities/user.entity";
-import Psychologist from "../../domain/entities/psychologist.entity";
-import Session from "../../domain/entities/session.entity";
-import { CreateComplaintDTO } from "../dtos/user.dto";
-import { ComplaintResolutionDTO } from "../dtos/admin.dto";
-import { ComplaintListByAdminItem } from "../interfaces/IComplaintListingByAdminUseCase";
-import { ComplaintDetailsResponse as AdminComplaintDetailsResponse } from "../interfaces/IComplaintDetailsByAdminUseCase";
-import { ComplaintDetailsResponse as UserComplaintDetailsResponse } from "../interfaces/IComplaintDetailsByUserUseCase";
-import { ComplaintListByUserItem } from "../interfaces/IComplaintListinByUserUseCase";
-import { createFullName } from "../../utils/createFullName";
-import { UserRecentComplaintsEntryFromPersistence } from "../../domain/interfaces/IComplaintRepository";
-import { UserRecentComplaintsEntry } from "../interfaces/IFetchUserDashboardUseCase";
+import Complaint from "../../domain/entities/complaint.entity.js";
+import User from "../../domain/entities/user.entity.js";
+import Psychologist from "../../domain/entities/psychologist.entity.js";
+import Session from "../../domain/entities/session.entity.js";
+import { CreateComplaintDTO } from "../dtos/user.dto.js";
+import { ComplaintResolutionDTO } from "../dtos/admin.dto.js";
+import { ComplaintListByAdminItem } from "../interfaces/IComplaintListingByAdminUseCase.js";
+import { ComplaintDetailsResponse as AdminComplaintDetailsResponse } from "../interfaces/IComplaintDetailsByAdminUseCase.js";
+import { ComplaintDetailsResponse as UserComplaintDetailsResponse } from "../interfaces/IComplaintDetailsByUserUseCase.js";
+import { ComplaintListByUserItem } from "../interfaces/IComplaintListinByUserUseCase.js";
+import { createFullName } from "../../utils/createFullName.js";
+import { UserRecentComplaintsEntryFromPersistence } from "../../domain/interfaces/IComplaintRepository.js";
+import { UserRecentComplaintsEntry } from "../interfaces/IFetchUserDashboardUseCase.js";
+
 
 export const mapCreateComplaintDTOToDomain = (
   dto: CreateComplaintDTO,

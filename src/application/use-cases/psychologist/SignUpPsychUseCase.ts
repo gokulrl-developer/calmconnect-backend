@@ -1,16 +1,14 @@
-import { PsychSignUpDTO } from "../../dtos/psych.dto";
-import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import generateOtp from "../../../utils/OtpGenerator";
-import { hashPassword } from "../../../utils/passwordEncryption";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import { sendMail } from "../../../utils/nodemailHelper";
-import { ISignUpPsychUseCase } from "../../interfaces/ISignUpPsychUseCase";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { EMAIL_MESSAGES } from "../../constants/email-messages.constants";
-
-
+import { PsychSignUpDTO } from "../../dtos/psych.dto.js";
+import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import generateOtp from "../../../utils/OtpGenerator.js";
+import { hashPassword } from "../../../utils/passwordEncryption.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import { sendMail } from "../../../utils/nodemailHelper.js";
+import { ISignUpPsychUseCase } from "../../interfaces/ISignUpPsychUseCase.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { EMAIL_MESSAGES } from "../../constants/email-messages.constants.js";
 
 export default class SignUpPsychUseCase implements ISignUpPsychUseCase{
     constructor(

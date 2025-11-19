@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import AppError from "../../../application/error/AppError";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import ICreateReviewUseCase from "../../../application/interfaces/ICreateReviewUseCase";
-import IListPsychReviewsUseCase from "../../../application/interfaces/IListPsychReviewsUseCase";
-import { CreateReviewDTO, ListPsychReviewsDTO } from "../../../application/dtos/user.dto";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import AppError from "../../../application/error/AppError.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import ICreateReviewUseCase from "../../../application/interfaces/ICreateReviewUseCase.js";
+import IListPsychReviewsUseCase from "../../../application/interfaces/IListPsychReviewsUseCase.js";
+import { CreateReviewDTO, ListPsychReviewsDTO } from "../../../application/dtos/user.dto.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 
 export default class ReviewController {
   constructor(

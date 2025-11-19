@@ -1,7 +1,7 @@
-import { ListApplicationsDTO } from "../../dtos/admin.dto";
-import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
-import IApplicationListUseCase, { ApplicationListResponse } from "../../interfaces/IApplicationListUseCase";
-import { toAdminApplicationListResponse } from "../../mappers/ApplicationMapper";
+import { ListApplicationsDTO } from "../../dtos/admin.dto.js";
+import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository.js";
+import IApplicationListUseCase, { ApplicationListResponse } from "../../interfaces/IApplicationListUseCase.js";
+import { toAdminApplicationListResponse } from "../../mappers/ApplicationMapper.js";
 
 
 export default class ApplicationListUseCase implements IApplicationListUseCase {

@@ -1,8 +1,7 @@
-import { PsychApplicationStatusDTO } from "../../dtos/psych.dto";
-import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
-import IFetchLatestApplicationUseCase from "../../interfaces/IFetchLatestApplicationUseCase";
-import { toFetchLatestApplicationResponse } from "../../mappers/ApplicationMapper";
-
+import { PsychApplicationStatusDTO } from "../../dtos/psych.dto.js";
+import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository.js";
+import IFetchLatestApplicationUseCase from "../../interfaces/IFetchLatestApplicationUseCase.js";
+import { toFetchLatestApplicationResponse } from "../../mappers/ApplicationMapper.js";
 
 export default class FetchLatestApplicationUseCase implements IFetchLatestApplicationUseCase{
   constructor(

@@ -1,5 +1,5 @@
-import { IOtpRepository, Otp, TempAccount } from "../../../domain/interfaces/IOtpRepository";
-import redisClient from "../../config/redisClient";
+import { IOtpRepository, Otp, TempAccount } from "../../../domain/interfaces/IOtpRepository.js";
+import redisClient from "../../config/redisClient.js";
 
 export default class RedisOtpRepository implements IOtpRepository {
   private redis = redisClient;

@@ -1,17 +1,17 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import AppError from "../../../application/error/AppError";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import IComplaintDetailsByAdminUseCase from "../../../application/interfaces/IComplaintDetailsByAdminUseCase";
-import IComplaintListingByAdminUseCase from "../../../application/interfaces/IComplaintListingByAdminUseCase";
-import IComplaintResolutionUseCase from "../../../application/interfaces/IComplaintResolutionUseCase";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import AppError from "../../../application/error/AppError.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import IComplaintDetailsByAdminUseCase from "../../../application/interfaces/IComplaintDetailsByAdminUseCase.js";
+import IComplaintListingByAdminUseCase from "../../../application/interfaces/IComplaintListingByAdminUseCase.js";
+import IComplaintResolutionUseCase from "../../../application/interfaces/IComplaintResolutionUseCase.js";
 import {
   ComplaintDetailsByAdminDTO,
   ComplaintResolutionDTO,
-} from "../../../application/dtos/admin.dto";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import IComplaintHistoryByPsychUseCase from "../../../application/interfaces/IComplaintHistoryByPsychUseCase";
+} from "../../../application/dtos/admin.dto.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import IComplaintHistoryByPsychUseCase from "../../../application/interfaces/IComplaintHistoryByPsychUseCase.js";
 
 export default class ComplaintController {
   constructor(

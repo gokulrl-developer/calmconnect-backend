@@ -1,13 +1,11 @@
-import { PsychRegisterDTO } from "../../dtos/psych.dto";
-import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import { IRegisterPsychUseCase } from "../../interfaces/IRegisterPsychUseCase";
-import { toPsychDomainRegister } from "../../mappers/PsychMapper";
-
-
+import { PsychRegisterDTO } from "../../dtos/psych.dto.js";
+import { IOtpRepository } from "../../../domain/interfaces/IOtpRepository.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import { IRegisterPsychUseCase } from "../../interfaces/IRegisterPsychUseCase.js";
+import { toPsychDomainRegister } from "../../mappers/PsychMapper.js";
 
 export default class RegisterPsychUseCase implements IRegisterPsychUseCase {
     constructor(

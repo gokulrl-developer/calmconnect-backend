@@ -2,17 +2,17 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { Queue } from "bullmq";
-import IORedis from "ioredis";
+import { Redis } from "ioredis";
 import type {
   ISessionTaskQueue,
   SessionTaskJobMap,
-} from "../../domain/interfaces/ISessionTaskQueue";
+} from "../../domain/interfaces/ISessionTaskQueue.js";
 
 export default class BullMQSessionTaskQueue implements ISessionTaskQueue {
   private queue: Queue;
 
   constructor() {
-    const connection = new IORedis(process.env.REDIS_URL!);
+    const connection = new Redis(process.env.REDIS_URL!);
     this.queue = new Queue("session-task-queue", { connection });
   }
   async add<JobName extends keyof SessionTaskJobMap>(

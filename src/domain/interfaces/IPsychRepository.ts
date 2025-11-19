@@ -1,6 +1,6 @@
-import { ListPsychDTO } from "../../application/dtos/admin.dto";
-import  Psychologist  from "../entities/psychologist.entity";
-import IBaseRepository from "./IBaseRepository";
+import { ListPsychDTO } from "../../application/dtos/admin.dto.js";
+import  Psychologist  from "../entities/psychologist.entity.js";
+import IBaseRepository from "./IBaseRepository.js";
 
 
 export default interface IPsychRepository extends IBaseRepository<Psychologist>{

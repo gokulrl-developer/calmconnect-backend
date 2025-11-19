@@ -1,10 +1,10 @@
-import IDeleteSpecialDayUseCase from "../../interfaces/IDeleteSpecialDayUseCase";
-import { DeleteSpecialDayDTO } from "../../dtos/psych.dto";
-import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
+import IDeleteSpecialDayUseCase from "../../interfaces/IDeleteSpecialDayUseCase.js";
+import { DeleteSpecialDayDTO } from "../../dtos/psych.dto.js";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
 
 export default class DeleteSpecialDayUseCase implements IDeleteSpecialDayUseCase {
   constructor(

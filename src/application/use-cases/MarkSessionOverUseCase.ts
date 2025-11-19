@@ -1,13 +1,11 @@
-import ISessionRepository from "../../domain/interfaces/ISessionRepository";
-import ITransactionRepository from "../../domain/interfaces/ITransactionRepository";
-import IWalletRepository from "../../domain/interfaces/IWalletRepository";
-import { adminConfig } from "../../utils/adminConfig";
-import { ERROR_MESSAGES } from "../constants/error-messages.constants";
-import IMarkSessionOverUseCase, {
-  MarkSessionOverPayload,
-} from "../interfaces/IMarkSessionOverUseCase";
-import { toDomainPayoutCredit, toDomainPayoutDebit } from "../mappers/TransactionMapper";
-import { toWalletDomain } from "../mappers/WalletMapper";
+import ISessionRepository from "../../domain/interfaces/ISessionRepository.js";
+import ITransactionRepository from "../../domain/interfaces/ITransactionRepository.js";
+import IWalletRepository from "../../domain/interfaces/IWalletRepository.js";
+import { adminConfig } from "../../utils/adminConfig.js";
+import { ERROR_MESSAGES } from "../constants/error-messages.constants.js";
+import IMarkSessionOverUseCase, { MarkSessionOverPayload } from "../interfaces/IMarkSessionOverUseCase.js";
+import { toDomainPayoutCredit, toDomainPayoutDebit } from "../mappers/TransactionMapper.js";
+import { toWalletDomain } from "../mappers/WalletMapper.js";
 
 export default class MarkSessionOverUseCase implements IMarkSessionOverUseCase {
   constructor(

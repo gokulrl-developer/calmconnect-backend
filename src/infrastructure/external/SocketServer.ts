@@ -1,21 +1,22 @@
 import { Server as IOServer, Socket } from "socket.io";
 import { Server as HttpServer } from "http";
-import AppError from "../../application/error/AppError";
-import { ERROR_MESSAGES } from "../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../application/error/app-error-codes";
-import { verifyAccessToken } from "../../utils/tokenHandler";
+import AppError from "../../application/error/AppError.js";
+import { ERROR_MESSAGES } from "../../application/constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../application/error/app-error-codes.js";
+import { verifyAccessToken } from "../../utils/tokenHandler.js";
 
-import ICheckSessionAccessUseCase from "../../application/interfaces/ICheckSessionAccessUseCase";
-import IPostMessageUseCase from "../../application/interfaces/IPostMessageUseCase";
-import IGetMessagesUseCase from "../../application/interfaces/IGetMessagesUseCase";
-import ICheckStatusPsychUseCase from "../../application/interfaces/ICheckStatusPsychUseCase";
-import ICheckStatusUserUseCase from "../../application/interfaces/ICheckStatusUserUseCase";
+import ICheckSessionAccessUseCase from "../../application/interfaces/ICheckSessionAccessUseCase.js";
+import IPostMessageUseCase from "../../application/interfaces/IPostMessageUseCase.js";
+import IGetMessagesUseCase from "../../application/interfaces/IGetMessagesUseCase.js";
+import ICheckStatusPsychUseCase from "../../application/interfaces/ICheckStatusPsychUseCase.js";
+import ICheckStatusUserUseCase from "../../application/interfaces/ICheckStatusUserUseCase.js";
 import {
   CheckSessionAccessDTO,
   PostMessageDTO,
-} from "../../application/dtos/shared.dto";
-import { SendNotificationPayload } from "../../domain/interfaces/ISocketService";
-import ISocketService from "../../domain/interfaces/ISocketService";
+} from "../../application/dtos/shared.dto.js";
+import { SendNotificationPayload } from "../../domain/interfaces/ISocketService.js";
+import ISocketService from "../../domain/interfaces/ISocketService.js";
+
 
 export interface SignalPayload {
   sessionId: string;

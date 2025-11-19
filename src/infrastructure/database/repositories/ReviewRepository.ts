@@ -1,8 +1,8 @@
 import { Types, Document } from "mongoose";
-import Review from "../../../domain/entities/review.entity";
-import IReviewRepository, { ListPsychReviewsFilter, RatingSummaryFromPersistence } from "../../../domain/interfaces/IReviewRepository";
-import { ReviewModel, IReviewDocument } from "../models/ReviewModel";
-import { BaseRepository } from "./BaseRepository";
+import Review from "../../../domain/entities/review.entity.js";
+import IReviewRepository, { ListPsychReviewsFilter, RatingSummaryFromPersistence } from "../../../domain/interfaces/IReviewRepository.js";
+import { ReviewModel, IReviewDocument } from "../models/ReviewModel.js";
+import { BaseRepository } from "./BaseRepository.js";
 import { SortOrder } from "mongoose";
 
 export default class ReviewRepository

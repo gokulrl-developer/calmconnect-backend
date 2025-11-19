@@ -1,22 +1,22 @@
 import { Request, Response, NextFunction } from "express";
-import ICreateAvailabilityRuleUseCase from "../../../application/interfaces/ICreateAvailabilityRuleUseCase";
-import IEditAvailabilityRuleUseCase from "../../../application/interfaces/IEditAvailabilityRuleUseCase";
-import IDeleteAvailabilityRuleUseCase from "../../../application/interfaces/IDeleteAvailabilityRuleUseCase";
-import ICreateSpecialDayUseCase from "../../../application/interfaces/ICreateSpecialDayUseCase";
-import IEditSpecialDayUseCase from "../../../application/interfaces/IEditSpecialDayUseCase";
-import IDeleteSpecialDayUseCase from "../../../application/interfaces/IDeleteSpecialDayUseCase";
-import ICreateQuickSlotUseCase from "../../../application/interfaces/ICreateQuickSlotUseCase";
-import IEditQuickSlotUseCase from "../../../application/interfaces/IEditQuickSlotUseCase";
-import IDeleteQuickSlotUseCase from "../../../application/interfaces/IDeleteQuickSlotUseCase";
-import IFetchAvailabilityRuleUseCase from "../../../application/interfaces/IFetchAvailabilityRuleUseCase";
-import IFetchDailyAvailabilityUseCase from "../../../application/interfaces/IFetchDailyAvailabilityUseCase";
-import IListAvailabilityRulesUseCase from "../../../application/interfaces/IListAvailabilityRulesUseCase";
-import AppError from "../../../application/error/AppError";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import { REGEX_EXP } from "../../constants/regex.constants";
+import ICreateAvailabilityRuleUseCase from "../../../application/interfaces/ICreateAvailabilityRuleUseCase.js";
+import IEditAvailabilityRuleUseCase from "../../../application/interfaces/IEditAvailabilityRuleUseCase.js";
+import IDeleteAvailabilityRuleUseCase from "../../../application/interfaces/IDeleteAvailabilityRuleUseCase.js";
+import ICreateSpecialDayUseCase from "../../../application/interfaces/ICreateSpecialDayUseCase.js";
+import IEditSpecialDayUseCase from "../../../application/interfaces/IEditSpecialDayUseCase.js";
+import IDeleteSpecialDayUseCase from "../../../application/interfaces/IDeleteSpecialDayUseCase.js";
+import ICreateQuickSlotUseCase from "../../../application/interfaces/ICreateQuickSlotUseCase.js";
+import IEditQuickSlotUseCase from "../../../application/interfaces/IEditQuickSlotUseCase.js";
+import IDeleteQuickSlotUseCase from "../../../application/interfaces/IDeleteQuickSlotUseCase.js";
+import IFetchAvailabilityRuleUseCase from "../../../application/interfaces/IFetchAvailabilityRuleUseCase.js";
+import IFetchDailyAvailabilityUseCase from "../../../application/interfaces/IFetchDailyAvailabilityUseCase.js";
+import IListAvailabilityRulesUseCase from "../../../application/interfaces/IListAvailabilityRulesUseCase.js";
+import AppError from "../../../application/error/AppError.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import { REGEX_EXP } from "../../constants/regex.constants.js";
 
 export default class AvailabilityController {
   constructor(

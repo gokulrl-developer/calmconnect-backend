@@ -1,5 +1,5 @@
-import { GetNotificationsDTO } from "../dtos/shared.dto";
-import PaginationData from "../utils/calculatePagination";
+import { GetNotificationsDTO } from "../dtos/shared.dto.js";
+import PaginationData from "../utils/calculatePagination.js";
 
 export interface NotificationListingItem{
     title: string,

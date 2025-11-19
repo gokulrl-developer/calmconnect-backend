@@ -1,4 +1,4 @@
-import { PsychSignUpDTO } from "../dtos/psych.dto";
+import { PsychSignUpDTO } from "../dtos/psych.dto.js";
 
 export interface ISignUpPsychUseCase {
   execute(

@@ -1,7 +1,7 @@
-import IListAvailabilityRulesUseCase, { AvailabilityRuleSummary } from "../../interfaces/IListAvailabilityRulesUseCase";
-import { ListAvailabilityRulesDTO } from "../../dtos/psych.dto";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import { mapAvailabilityRulesToSummaries } from "../../mappers/AvailabilityRuleMapper";
+import IListAvailabilityRulesUseCase, { AvailabilityRuleSummary } from "../../interfaces/IListAvailabilityRulesUseCase.js";
+import { ListAvailabilityRulesDTO } from "../../dtos/psych.dto.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import { mapAvailabilityRulesToSummaries } from "../../mappers/AvailabilityRuleMapper.js";
 
 export default class ListAvailabilityRulesUseCase implements IListAvailabilityRulesUseCase {
   constructor(

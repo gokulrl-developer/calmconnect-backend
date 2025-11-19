@@ -1,13 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import IGetNotificationsUseCase from "../../../application/interfaces/IGetNotificationsUseCase";
-import AppError from "../../../application/error/AppError";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import IMarkNotificationReadUseCase from "../../../application/interfaces/IMarkNotificationsReadUseCase";
-import IGetUnreadNotificationsCountUseCase from "../../../application/interfaces/IGetUnreadNotificationsCountUseCase";
-import IClearNotificationsUseCase from "../../../application/interfaces/IClearNotificationsUseCase";
+import IGetNotificationsUseCase from "../../../application/interfaces/IGetNotificationsUseCase.js";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import IMarkNotificationReadUseCase from "../../../application/interfaces/IMarkNotificationsReadUseCase.js";
+import IGetUnreadNotificationsCountUseCase from "../../../application/interfaces/IGetUnreadNotificationsCountUseCase.js";
+import IClearNotificationsUseCase from "../../../application/interfaces/IClearNotificationsUseCase.js";
 
 export default class NotificationController {
   constructor(

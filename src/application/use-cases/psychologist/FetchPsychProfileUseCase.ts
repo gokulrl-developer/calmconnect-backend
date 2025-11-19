@@ -1,10 +1,10 @@
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import IFetchPsychProfileUseCase, { PsychProfile } from "../../interfaces/IFetchPsychProfileUseCase";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import { FetchPsychProfileDTO } from "../../dtos/psych.dto";
-import { toFetchPsychProfileResponse } from "../../mappers/PsychMapper";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import IFetchPsychProfileUseCase, { PsychProfile } from "../../interfaces/IFetchPsychProfileUseCase.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import { FetchPsychProfileDTO } from "../../dtos/psych.dto.js";
+import { toFetchPsychProfileResponse } from "../../mappers/PsychMapper.js";
 
 export default class FetchPsychProfileUseCase implements IFetchPsychProfileUseCase {
     constructor(

@@ -1,14 +1,12 @@
-import { AdminLoginDTO } from "../../dtos/admin.dto";
-import { adminConfig } from "../../../utils/adminConfig";
-import { comparePasswords } from "../../../utils/passwordEncryption";
-import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { ROLES } from "../../constants/roles.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import { ILoginAdminUseCase } from "../../interfaces/ILoginAdminUseCase";
-
-
+import { AdminLoginDTO } from "../../dtos/admin.dto.js";
+import { adminConfig } from "../../../utils/adminConfig.js";
+import { comparePasswords } from "../../../utils/passwordEncryption.js";
+import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenHandler.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { ROLES } from "../../constants/roles.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import { ILoginAdminUseCase } from "../../interfaces/ILoginAdminUseCase.js";
 
 export interface AdminLoginResponse {
  accessToken:string,

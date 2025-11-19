@@ -1,7 +1,7 @@
-import { ListPsychDTO } from "../../dtos/admin.dto";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import IPsychListUseCase from "../../interfaces/IPsychListUseCase";
-import { toAdminPsychListResponse } from "../../mappers/PsychMapper";
+import { ListPsychDTO } from "../../dtos/admin.dto.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import IPsychListUseCase from "../../interfaces/IPsychListUseCase.js";
+import { toAdminPsychListResponse } from "../../mappers/PsychMapper.js";
 
 export class PsychListUseCase implements IPsychListUseCase {
 constructor(private readonly _psychRepository: IPsychRepository) {}

@@ -1,9 +1,8 @@
-import ITransactionRepository from "../../domain/interfaces/ITransactionRepository";
-import IWalletRepository from "../../domain/interfaces/IWalletRepository";
-import { GetTransactionsDTO } from "../dtos/shared.dto";
-import ITransactionListUseCase, { TransactionListResponse } from "../interfaces/IFetchTransactionsUseCase";
-import { toTransactionListItem } from "../mappers/TransactionMapper";
-import { calculatePagination } from "../utils/calculatePagination";
+import ITransactionRepository from "../../domain/interfaces/ITransactionRepository.js";
+import { GetTransactionsDTO } from "../dtos/shared.dto.js";
+import ITransactionListUseCase, { TransactionListResponse } from "../interfaces/IFetchTransactionsUseCase.js";
+import { toTransactionListItem } from "../mappers/TransactionMapper.js";
+import { calculatePagination } from "../utils/calculatePagination.js";
 
 export default class GetTransactionListUseCase
   implements ITransactionListUseCase

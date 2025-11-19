@@ -1,16 +1,15 @@
-import { PsychApplicationDTO } from "../../dtos/psych.dto";
-import Psychologist from "../../../domain/entities/psychologist.entity";
-import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
-import { IFileStorageService } from "../../../domain/interfaces/IFileStorageService";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import ICreateApplicationUseCase from "../../interfaces/ICreateApplicationUseCase";
-import { toApplicationDomainSubmit } from "../../mappers/ApplicationMapper";
-import { IEventBus } from "../../interfaces/events/IEventBus";
-import { adminConfig } from "../../../utils/adminConfig";
-
+import { PsychApplicationDTO } from "../../dtos/psych.dto.js";
+import Psychologist from "../../../domain/entities/psychologist.entity.js";
+import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository.js";
+import { IFileStorageService } from "../../../domain/interfaces/IFileStorageService.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import ICreateApplicationUseCase from "../../interfaces/ICreateApplicationUseCase.js";
+import { toApplicationDomainSubmit } from "../../mappers/ApplicationMapper.js";
+import { IEventBus } from "../../interfaces/events/IEventBus.js";
+import { adminConfig } from "../../../utils/adminConfig.js";
 
 export default class CreateApplicationUseCase implements ICreateApplicationUseCase{
   constructor(

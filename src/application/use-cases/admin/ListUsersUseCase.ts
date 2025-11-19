@@ -1,7 +1,7 @@
-import { ListUsersDTO } from "../../dtos/admin.dto";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import IUserListUseCase from "../../interfaces/IUserListUseCase";
-import { toAdminUserListResponse } from "../../mappers/UserMapper";
+import { ListUsersDTO } from "../../dtos/admin.dto.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import IUserListUseCase from "../../interfaces/IUserListUseCase.js";
+import { toAdminUserListResponse } from "../../mappers/UserMapper.js";
 
 export class UserListUseCase implements IUserListUseCase {
 constructor(private readonly _userRepository: IUserRepository) {}

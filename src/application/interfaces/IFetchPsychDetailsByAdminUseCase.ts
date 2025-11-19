@@ -1,4 +1,4 @@
-import { PsychDetailsByAdminDTO } from "../dtos/admin.dto";
+import { PsychDetailsByAdminDTO } from "../dtos/admin.dto.js";
 
 export interface AdminPsychDetailsResponse {
   firstName: string;

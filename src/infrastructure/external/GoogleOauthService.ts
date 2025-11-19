@@ -1,8 +1,8 @@
 import axios from "axios";
 import qs from "querystring";
-import AppError from "../../application/error/AppError";
-import { AppErrorCodes } from "../../application/error/app-error-codes";
-import { ERROR_MESSAGES } from "../../application/constants/error-messages.constants";
+import AppError from "../../application/error/AppError.js";
+import { AppErrorCodes } from "../../application/error/app-error-codes.js";
+import { ERROR_MESSAGES } from "../../application/constants/error-messages.constants.js";
 
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const GOOGLE_USER_INFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";

@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import Wallet from "../../../domain/entities/wallet.entity";
-import IWalletRepository from "../../../domain/interfaces/IWalletRepository";
-import { WalletModel, IWalletDocument } from "../models/WalletModel";
-import { BaseRepository } from "./BaseRepository";
+import Wallet from "../../../domain/entities/wallet.entity.js";
+import IWalletRepository from "../../../domain/interfaces/IWalletRepository.js";
+import { WalletModel, IWalletDocument } from "../models/WalletModel.js";
+import { BaseRepository } from "./BaseRepository.js";
 
 export default class WalletRepository 
   extends BaseRepository<Wallet, IWalletDocument>

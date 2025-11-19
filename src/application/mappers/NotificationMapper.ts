@@ -1,6 +1,6 @@
-import { Notification } from "../../domain/entities/notification.entity";
-import { SendNotificationPayload } from "../../domain/interfaces/ISocketService";
-import { NotificationListingItem } from "../interfaces/IGetNotificationsUseCase";
+import { Notification } from "../../domain/entities/notification.entity.js";
+import { SendNotificationPayload } from "../../domain/interfaces/ISocketService.js";
+import { NotificationListingItem } from "../interfaces/IGetNotificationsUseCase.js";
 
 export const toSendNotificationPayload = (notification: Notification): SendNotificationPayload => {
   return {

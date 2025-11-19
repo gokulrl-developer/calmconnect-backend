@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import IPsychListUseCase from "../../../application/interfaces/IPsychListUseCase";
-import IUpdatePsychStatusUseCase from "../../../application/interfaces/IUpdatePsychStatusUseCase";
-import { ListPsychDTO, UpdatePsychStatusDTO } from "../../../application/dtos/admin.dto";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import IFetchpsychDetailsByAdminUseCase from "../../../application/interfaces/IFetchPsychDetailsByAdminUseCase";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import IPsychListUseCase from "../../../application/interfaces/IPsychListUseCase.js";
+import IUpdatePsychStatusUseCase from "../../../application/interfaces/IUpdatePsychStatusUseCase.js";
+import { ListPsychDTO, UpdatePsychStatusDTO } from "../../../application/dtos/admin.dto.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import IFetchpsychDetailsByAdminUseCase from "../../../application/interfaces/IFetchPsychDetailsByAdminUseCase.js";
 
 export default class PsychController {
   constructor(

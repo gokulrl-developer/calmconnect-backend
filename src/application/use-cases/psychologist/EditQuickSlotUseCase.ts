@@ -1,14 +1,14 @@
-import { EditQuickSlotDTO } from "../../dtos/psych.dto";
-import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
-import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import QuickSlot from "../../../domain/entities/quick-slot.entity";
-import IEditQuickSlotUseCase from "../../interfaces/IEditQuickSlotUseCase";
-import { mapEditQuickSlotDTOToDomain } from "../../mappers/QuickSlotMapper";
-import { timeStringToMinutes } from "../../../utils/timeConverter";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
+import { EditQuickSlotDTO } from "../../dtos/psych.dto.js";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import QuickSlot from "../../../domain/entities/quick-slot.entity.js";
+import IEditQuickSlotUseCase from "../../interfaces/IEditQuickSlotUseCase.js";
+import { mapEditQuickSlotDTOToDomain } from "../../mappers/QuickSlotMapper.js";
+import { timeStringToMinutes } from "../../../utils/timeConverter.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
 
 export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
   constructor(

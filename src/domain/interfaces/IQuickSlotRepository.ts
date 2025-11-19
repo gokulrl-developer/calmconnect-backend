@@ -1,5 +1,5 @@
-import QuickSlot from "../entities/quick-slot.entity";
-import IBaseRepository from "./IBaseRepository";
+import QuickSlot from "../entities/quick-slot.entity.js";
+import IBaseRepository from "./IBaseRepository.js";
 
 
 export default interface IQuickSlotRepository extends IBaseRepository<QuickSlot>{

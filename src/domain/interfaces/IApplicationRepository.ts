@@ -1,5 +1,5 @@
-import { Application } from "../entities/application.entity";
-import IBaseRepository from "./IBaseRepository";
+import { Application } from "../entities/application.entity.js";
+import IBaseRepository from "./IBaseRepository.js";
 
 
 export default interface IApplicationRepository extends IBaseRepository<Application>{

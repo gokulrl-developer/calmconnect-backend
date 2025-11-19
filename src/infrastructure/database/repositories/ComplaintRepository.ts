@@ -1,8 +1,8 @@
 import { Types, PipelineStage, Document } from "mongoose";
-import Complaint from "../../../domain/entities/complaint.entity";
-import IComplaintRepository, { ComplaintHistoryFilter, UserRecentComplaintsEntryFromPersistence } from "../../../domain/interfaces/IComplaintRepository";
-import { ComplaintModel, IComplaintDocument } from "../models/ComplaintModel";
-import { BaseRepository } from "./BaseRepository";
+import Complaint from "../../../domain/entities/complaint.entity.js";
+import IComplaintRepository, { ComplaintHistoryFilter, UserRecentComplaintsEntryFromPersistence } from "../../../domain/interfaces/IComplaintRepository.js";
+import { ComplaintModel, IComplaintDocument } from "../models/ComplaintModel.js";
+import { BaseRepository } from "./BaseRepository.js";
 
 interface ComplaintSearchFilter {
   status?: "resolved" | "pending";

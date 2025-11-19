@@ -1,11 +1,11 @@
-import IReviewRepository from "../../../domain/interfaces/IReviewRepository";
-import ISessionRepository from "../../../domain/interfaces/ISessionRepository";
-import ITransactionRepository from "../../../domain/interfaces/ITransactionRepository";
-import { FetchPsychDashboardDTO } from "../../dtos/psych.dto";
-import IFetchPsychDashboardUseCase, { PsychologistDashboardResponse } from "../../interfaces/IFetchPsychDashboardUseCase";
-import { mapRatingSummaryToResponse } from "../../mappers/ReviewMapper";
-import { mapPsychSessionTrendsToResponse, mapRecentSessionsToResponse, mapSessionSummaryToResponse } from "../../mappers/SessionMapper";
-import { mapPsychRevenueTrendsToResponse, mapRevenueSummaryToResponse } from "../../mappers/TransactionMapper";
+import IReviewRepository from "../../../domain/interfaces/IReviewRepository.js";
+import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js";
+import ITransactionRepository from "../../../domain/interfaces/ITransactionRepository.js";
+import { FetchPsychDashboardDTO } from "../../dtos/psych.dto.js";
+import IFetchPsychDashboardUseCase, { PsychologistDashboardResponse } from "../../interfaces/IFetchPsychDashboardUseCase.js";
+import { mapRatingSummaryToResponse } from "../../mappers/ReviewMapper.js";
+import { mapPsychSessionTrendsToResponse, mapRecentSessionsToResponse, mapSessionSummaryToResponse } from "../../mappers/SessionMapper.js";
+import { mapPsychRevenueTrendsToResponse, mapRevenueSummaryToResponse } from "../../mappers/TransactionMapper.js";
 
 export default class FetchPsychDashboardUseCase implements IFetchPsychDashboardUseCase {
   constructor(

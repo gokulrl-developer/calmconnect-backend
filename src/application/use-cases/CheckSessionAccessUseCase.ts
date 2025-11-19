@@ -1,7 +1,7 @@
-import ISessionRepository from "../../domain/interfaces/ISessionRepository";
-import { CheckSessionAccessDTO } from "../dtos/shared.dto";
-import ICheckSessionAccessUseCase, { SessionAccessPayload } from "../interfaces/ICheckSessionAccessUseCase";
-import { toSessionDetailsInVideoCall } from "../mappers/SessionMapper";
+import ISessionRepository from "../../domain/interfaces/ISessionRepository.js";
+import { CheckSessionAccessDTO } from "../dtos/shared.dto.js";
+import ICheckSessionAccessUseCase, { SessionAccessPayload } from "../interfaces/ICheckSessionAccessUseCase.js";
+import { toSessionDetailsInVideoCall } from "../mappers/SessionMapper.js";
 
 
 export default class CheckSessionAccessUseCase implements ICheckSessionAccessUseCase {

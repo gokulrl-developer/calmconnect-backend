@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import IUserListUseCase from "../../../application/interfaces/IUserListUseCase";
-import IUpdateUserStatusUseCase from "../../../application/interfaces/IUpdateUserStatusUseCase";
-import { ListUsersDTO, UpdateUserStatusDTO } from "../../../application/dtos/admin.dto";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import IFetchUserDetailsByAdminUseCase, { AdminUserDetails } from "../../../application/interfaces/IFetchUserDetailsByAdminUseCase";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import IUserListUseCase from "../../../application/interfaces/IUserListUseCase.js";
+import IUpdateUserStatusUseCase from "../../../application/interfaces/IUpdateUserStatusUseCase.js";
+import { ListUsersDTO, UpdateUserStatusDTO } from "../../../application/dtos/admin.dto.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import IFetchUserDetailsByAdminUseCase, { AdminUserDetails } from "../../../application/interfaces/IFetchUserDetailsByAdminUseCase.js";
 
 export default class UserController {
   constructor(

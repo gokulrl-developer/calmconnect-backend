@@ -1,4 +1,4 @@
-import Transaction from "../entities/transaction.entity";
+import Transaction from "../entities/transaction.entity.js";
 
 export interface SourceData{
   name?:string,

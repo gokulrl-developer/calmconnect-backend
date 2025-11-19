@@ -1,4 +1,4 @@
-import { GetWalletDTO } from "../dtos/shared.dto";
+import { GetWalletDTO } from "../dtos/shared.dto.js";
 
 
 export interface WalletResponse {

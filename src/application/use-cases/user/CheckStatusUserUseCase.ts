@@ -1,10 +1,9 @@
-import { UserCheckStatusDTO } from "../../dtos/user.dto";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import ICheckStatusUserUseCase from "../../interfaces/ICheckStatusUserUseCase";
-
+import { UserCheckStatusDTO } from "../../dtos/user.dto.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import ICheckStatusUserUseCase from "../../interfaces/ICheckStatusUserUseCase.js";
 
 export class CheckStatusUserUseCase implements ICheckStatusUserUseCase {
   constructor(

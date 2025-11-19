@@ -1,4 +1,4 @@
-import { FetchPsychDashboardDTO } from "../dtos/psych.dto";
+import { FetchPsychDashboardDTO } from "../dtos/psych.dto.js";
 
 export interface DashboardSummary {
   sessionSummary: PsychSessionsSummary;

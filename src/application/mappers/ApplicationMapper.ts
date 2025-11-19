@@ -1,7 +1,8 @@
-import { PsychApplicationDTO } from "../dtos/psych.dto"
-import { Application} from "../../domain/entities/application.entity"
-import Psychologist from "../../domain/entities/psychologist.entity"
-import { LatestApplicationData } from "../interfaces/IFetchLatestApplicationUseCase"
+import { PsychApplicationDTO } from "../dtos/psych.dto.js";
+import { Application } from "../../domain/entities/application.entity.js";
+import Psychologist from "../../domain/entities/psychologist.entity.js";
+import { LatestApplicationData } from "../interfaces/IFetchLatestApplicationUseCase.js";
+
 
 export interface FileStorageReturn{
     profilePicture:string,

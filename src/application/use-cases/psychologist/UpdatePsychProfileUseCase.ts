@@ -1,12 +1,12 @@
-import { UpdatePsychProfileDTO } from "../../dtos/psych.dto";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { IFileStorageService } from "../../../domain/interfaces/IFileStorageService";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IUpdatePsychProfileUseCase from "../../interfaces/IUpdatePsychProfileUseCase";
-import Psychologist from "../../../domain/entities/psychologist.entity";
-import { toPsychDomainFromUpdateDTO } from "../../mappers/PsychMapper";
+import { UpdatePsychProfileDTO } from "../../dtos/psych.dto.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { IFileStorageService } from "../../../domain/interfaces/IFileStorageService.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IUpdatePsychProfileUseCase from "../../interfaces/IUpdatePsychProfileUseCase.js";
+import Psychologist from "../../../domain/entities/psychologist.entity.js";
+import { toPsychDomainFromUpdateDTO } from "../../mappers/PsychMapper.js";
 
 export default class UpdatePsychProfileUseCase implements IUpdatePsychProfileUseCase {
     constructor(

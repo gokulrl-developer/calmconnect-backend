@@ -1,12 +1,11 @@
-import User from "../../../domain/entities/user.entity";
-import IUserRepository from "../../../domain/interfaces/IUserRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { UserDetailsByAdminDTO } from "../../dtos/admin.dto";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IFetchUserDetailsByAdminUseCase, { AdminUserDetails } from "../../interfaces/IFetchUserDetailsByAdminUseCase";
-import { mapDomainToDetailsResponseByAdmin } from "../../mappers/UserMapper";
-
+import User from "../../../domain/entities/user.entity.js";
+import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { UserDetailsByAdminDTO } from "../../dtos/admin.dto.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IFetchUserDetailsByAdminUseCase, { AdminUserDetails } from "../../interfaces/IFetchUserDetailsByAdminUseCase.js";
+import { mapDomainToDetailsResponseByAdmin } from "../../mappers/UserMapper.js";
 
 export class FetchUserDetailsByAdminUseCase
   implements IFetchUserDetailsByAdminUseCase

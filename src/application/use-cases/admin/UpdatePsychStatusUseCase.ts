@@ -1,9 +1,9 @@
-import { UpdatePsychStatusDTO } from "../../dtos/admin.dto";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import IUpdatePsychStatusUseCase from "../../interfaces/IUpdatePsychStatusUseCase";
+import { UpdatePsychStatusDTO } from "../../dtos/admin.dto.js";
+import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import IUpdatePsychStatusUseCase from "../../interfaces/IUpdatePsychStatusUseCase.js";
 
 export class UpdatePsychUseCase implements IUpdatePsychStatusUseCase {
   constructor(private readonly _psychRepository: IPsychRepository) {}

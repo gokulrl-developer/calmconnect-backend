@@ -1,9 +1,8 @@
-import { Notification } from "../../domain/entities/notification.entity";
-import { INotificationRepository } from "../../domain/interfaces/INotificationRepository";
-import { GetNotificationsDTO } from "../dtos/shared.dto";
-import IGetNotificationsUseCase, { NotificationListingItem } from "../interfaces/IGetNotificationsUseCase";
-import { toNotificationListingItem } from "../mappers/NotificationMapper";
-import { calculatePagination } from "../utils/calculatePagination";
+import { INotificationRepository } from "../../domain/interfaces/INotificationRepository.js";
+import { GetNotificationsDTO } from "../dtos/shared.dto.js";
+import IGetNotificationsUseCase, { NotificationListingItem } from "../interfaces/IGetNotificationsUseCase.js";
+import { toNotificationListingItem } from "../mappers/NotificationMapper.js";
+import { calculatePagination } from "../utils/calculatePagination.js";
 
 export default class GetNotificationsUseCase
   implements IGetNotificationsUseCase

@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import AppError from "../../../application/error/AppError";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import IFetchUserProfileUseCase from "../../../application/interfaces/IFetchUserProfileUseCase";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import IUpdateUserProfileUseCase from "../../../application/interfaces/IUpdateUserProfileUseCase";
-import IFetchUserDashboardUseCase from "../../../application/interfaces/IFetchUserDashboardUseCase";
+import AppError from "../../../application/error/AppError.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import IFetchUserProfileUseCase from "../../../application/interfaces/IFetchUserProfileUseCase.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import IUpdateUserProfileUseCase from "../../../application/interfaces/IUpdateUserProfileUseCase.js";
+import IFetchUserDashboardUseCase from "../../../application/interfaces/IFetchUserDashboardUseCase.js";
 
 export default class UserController {
   constructor(

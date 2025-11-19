@@ -1,5 +1,5 @@
-import { ChatMessage } from "../../domain/entities/chat-message.entity";
-import { PostMessageDTO } from "../dtos/shared.dto";
+import { ChatMessage } from "../../domain/entities/chat-message.entity.js";
+import { PostMessageDTO } from "../dtos/shared.dto.js";
 
 export const mapDomainToGetMessagesResponse=(message:ChatMessage)=>{
     return{

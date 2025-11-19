@@ -1,14 +1,14 @@
-import { PsychSignUpDTO, UpdatePsychProfileDTO } from "../dtos/psych.dto";
-import { Application } from "../../domain/entities/application.entity";
-import Psychologist from "../../domain/entities/psychologist.entity";
-import { PsychProfile } from "../interfaces/IFetchPsychProfileUseCase";
-import { ListPsychByUserDTO } from "../dtos/user.dto";
+import { PsychSignUpDTO, UpdatePsychProfileDTO } from "../dtos/psych.dto.js";
+import { Application } from "../../domain/entities/application.entity.js";
+import Psychologist from "../../domain/entities/psychologist.entity.js";
+import { PsychProfile } from "../interfaces/IFetchPsychProfileUseCase.js";
+import { ListPsychByUserDTO } from "../dtos/user.dto.js";
 import {
   ListPsychQueryByUser,
   PsychSummary,
-} from "../../domain/interfaces/IPsychRepository";
-import { Slot } from "../utils/generateSlots";
-import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase";
+} from "../../domain/interfaces/IPsychRepository.js";
+import { Slot } from "../utils/generateSlots.js";
+import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
 
 export const toPsychDomainRegister = (psych: PsychSignUpDTO): Psychologist => {
   return new Psychologist(

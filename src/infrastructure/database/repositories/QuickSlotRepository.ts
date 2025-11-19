@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import QuickSlot from "../../../domain/entities/quick-slot.entity";
-import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
-import { QuickSlotModel, IQuickSlotDocument } from "../models/QuickSlotModel";
-import { BaseRepository } from "./BaseRepository";
+import QuickSlot from "../../../domain/entities/quick-slot.entity.js";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
+import { QuickSlotModel, IQuickSlotDocument } from "../models/QuickSlotModel.js";
+import { BaseRepository } from "./BaseRepository.js";
 
 export default class QuickSlotRepository
   extends BaseRepository<QuickSlot, IQuickSlotDocument>

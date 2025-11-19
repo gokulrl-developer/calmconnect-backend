@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import { Application } from "../../../domain/entities/application.entity";
-import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository";
-import { IApplicationDocument, ApplicationModel } from "../models/ApplicationModel";
-import { BaseRepository } from "./BaseRepository";
+import { Application } from "../../../domain/entities/application.entity.js";
+import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository.js";
+import { IApplicationDocument, ApplicationModel } from "../models/ApplicationModel.js";
+import { BaseRepository } from "./BaseRepository.js";
 
 export default class ApplicationRepository
   extends BaseRepository<Application, IApplicationDocument>

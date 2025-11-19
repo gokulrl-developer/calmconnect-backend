@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "../../../utils/http-statuscodes";
-import ICreateApplicationUseCase from "../../../application/interfaces/ICreateApplicationUseCase";
-import IApplicationStatusUseCase from "../../../application/interfaces/IFetchLatestApplicationUseCase";
-import AppError from "../../../application/error/AppError";
-import { AppErrorCodes } from "../../../application/error/app-error-codes";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
-import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants";
-import IFetchLatestApplicationUseCase from "../../../application/interfaces/IFetchLatestApplicationUseCase";
+import { StatusCodes } from "../../../utils/http-statuscodes.js";
+import ICreateApplicationUseCase from "../../../application/interfaces/ICreateApplicationUseCase.js";
+import IApplicationStatusUseCase from "../../../application/interfaces/IFetchLatestApplicationUseCase.js";
+import AppError from "../../../application/error/AppError.js";
+import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
+import IFetchLatestApplicationUseCase from "../../../application/interfaces/IFetchLatestApplicationUseCase.js";
 
 export default class ApplicationController {
   constructor(

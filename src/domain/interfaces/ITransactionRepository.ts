@@ -1,5 +1,5 @@
-import Transaction from "../entities/transaction.entity";
-import IBaseRepository from "./IBaseRepository";
+import Transaction from "../entities/transaction.entity.js";
+import IBaseRepository from "./IBaseRepository.js";
 
 export interface RevenueTrendsEntry {
   label: string; //month,day

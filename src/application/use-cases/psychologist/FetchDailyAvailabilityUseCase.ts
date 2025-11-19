@@ -1,17 +1,17 @@
-import IFetchDailyAvailabilityUseCase, { DailyAvailability } from "../../interfaces/IFetchDailyAvailabilityUseCase";
-import { FetchDailyAvailabilityDTO } from "../../dtos/psych.dto";
-import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository";
-import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository";
-import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository";
-import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
-import { AppErrorCodes } from "../../error/app-error-codes";
-import AppError from "../../error/AppError";
-import { mapDomainToDailyAvailabilityRule } from "../../mappers/AvailabilityRuleMapper";
-import AvailabilityRule from "../../../domain/entities/availability-rule.entity";
-import SpecialDay from "../../../domain/entities/special-day.entity";
-import QuickSlot from "../../../domain/entities/quick-slot.entity";
-import { mapDomainToDailySpecialDay } from "../../mappers/SpecialDayMapper";
-import { mapDomainToDailyQuickSlot } from "../../mappers/QuickSlotMapper";
+import IFetchDailyAvailabilityUseCase, { DailyAvailability } from "../../interfaces/IFetchDailyAvailabilityUseCase.js";
+import { FetchDailyAvailabilityDTO } from "../../dtos/psych.dto.js";
+import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
+import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
+import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
+import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../../error/app-error-codes.js";
+import AppError from "../../error/AppError.js";
+import { mapDomainToDailyAvailabilityRule } from "../../mappers/AvailabilityRuleMapper.js";
+import AvailabilityRule from "../../../domain/entities/availability-rule.entity.js";
+import SpecialDay from "../../../domain/entities/special-day.entity.js";
+import QuickSlot from "../../../domain/entities/quick-slot.entity.js";
+import { mapDomainToDailySpecialDay } from "../../mappers/SpecialDayMapper.js";
+import { mapDomainToDailyQuickSlot } from "../../mappers/QuickSlotMapper.js";
 
 export default class FetchDailyAvailabilityUseCase implements IFetchDailyAvailabilityUseCase {
   constructor(

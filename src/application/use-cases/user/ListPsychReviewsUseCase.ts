@@ -1,11 +1,10 @@
 import IListPsychReviewsUseCase, {
   ListPsychReviewsResponse,
-} from "../../interfaces/IListPsychReviewsUseCase";
-import { ListPsychReviewsDTO } from "../../dtos/user.dto";
-import IReviewRepository from "../../../domain/interfaces/IReviewRepository";
-import { mapDomainToListPsychReviewsResponse } from "../../mappers/ReviewMapper";
-import { calculatePagination } from "../../utils/calculatePagination";
-import PaginationData from "../../utils/calculatePagination";
+} from "../../interfaces/IListPsychReviewsUseCase.js";
+import { ListPsychReviewsDTO } from "../../dtos/user.dto.js";
+import IReviewRepository from "../../../domain/interfaces/IReviewRepository.js";
+import { mapDomainToListPsychReviewsResponse } from "../../mappers/ReviewMapper.js";
+import PaginationData, { calculatePagination } from "../../utils/calculatePagination.js";
 
 export default class ListPsychReviewsUseCase
   implements IListPsychReviewsUseCase

@@ -1,6 +1,6 @@
 import jwt, { SignOptions } from "jsonwebtoken";
-import { IAccessTokenPayload } from "../infrastructure/config/jwtConfig";
-import { jwtConfig } from "../infrastructure/config/jwtConfig";
+import { IAccessTokenPayload } from "../infrastructure/config/jwtConfig.js";
+import { jwtConfig } from "../infrastructure/config/jwtConfig.js";
 
 export function generateAccessToken(payload: IAccessTokenPayload): string {
   const options: SignOptions = { expiresIn: jwtConfig.accessTokenExpiry };
