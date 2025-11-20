@@ -54,3 +54,12 @@ Thumbs.db
 # Misc
 # ─────────────────────────────
 *.tgz
+
+# ─────────────────────────────
+# Docker
+# ─────────────────────────────
+docker-compose.override.yml
+docker-compose.dev.yml
+docker-compose.prod.yml
+*.env.dev
+*.env.prod
