@@ -1,7 +1,8 @@
-import cors, { CorsOptions } from "cors";
+import { CorsOptions } from "cors";
 
+const allowedOrigins = process.env.FRONTEND_BASE_URL!.split(",");
 const corsOptions: CorsOptions = {
-  origin: process.env.FRONTEND_BASE_URL,
+  origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE","PATCH","OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true 
