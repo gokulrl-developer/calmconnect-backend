@@ -21,6 +21,7 @@ import MarkSessionOverUseCase from "./application/use-cases/MarkSessionOverUseCa
 import TransactionRepository from "./infrastructure/database/repositories/TransactionRepository.js";
 import WalletRepository from "./infrastructure/database/repositories/WalletRepository.js";
 import app from "./app.js";
+import BullMQSessionTaskWorker from "./infrastructure/external/BullMQSessionTaskWorker.js";
 
 const PORT = process.env.PORT || 5000;
 
@@ -74,6 +75,7 @@ const startServer = async () => {
     const notificationHandler = new NotificationHandler(
       sendNotificationUseCase
     );
+    new BullMQSessionTaskWorker(sendNotificationUseCase,markSessionOverUseCase)
     notificationHandler.subscribe(eventBus);
     socketServer.initialize();
     httpServer.listen(PORT, () => {

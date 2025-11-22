@@ -1,5 +1,5 @@
 import { Worker, Job } from "bullmq";
-import { Redis } from "ioredis";
+import  {Redis}  from "ioredis";
 import IMarkSessionOverUseCase from "../../application/interfaces/IMarkSessionOverUseCase.js";
 import ISendNotificationUseCase from "../../application/interfaces/ISendNotificationUseCase.js";
 import { SessionTaskJobMap } from "../../domain/interfaces/ISessionTaskQueue.js";
@@ -19,14 +19,16 @@ export default class BullMQSessionTaskWorker {
     private readonly _sendNotificationUseCase: ISendNotificationUseCase,
     private readonly _markSessionOverUseCase: IMarkSessionOverUseCase,
   ) {
-    const connection = new Redis(process.env.REDIS_URL!, {
+     const connection = new Redis(process.env.REDIS_URL!, {
       maxRetriesPerRequest: null,
     });
     this.worker = new Worker<
       SessionTaskJobMap[keyof SessionTaskJobMap],
       void,
       keyof SessionTaskJobMap
-    >(this.queueName, this.processJob.bind(this), { connection: connection });
+    >(this.queueName, this.processJob.bind(this),  {
+        connection
+      });
 
     this.registerEvents();
   }
@@ -35,8 +37,9 @@ export default class BullMQSessionTaskWorker {
     job: Job<SessionTaskJobMap[JobName], void, JobName>
   ): Promise<void> {
     try {
+      console.log("job processing reached")  
       const data = job.data;
-
+     console.log("process",data)
       switch (job.name) {
         case "session-reminder.30min":
         case "session-reminder.5min": {
@@ -100,19 +103,32 @@ export default class BullMQSessionTaskWorker {
   }
 
   private registerEvents(): void {
-    this.worker.on("completed", (job) => {
-      console.log(`Job completed: ${job.name}, id: ${job.id}`);
-    });
+  this.worker.on("ready", () => {
+    console.log("Worker is mounted and ready to process jobs");
+  });
 
-    this.worker.on("failed", (job, err) => {
-      console.error(
-        `Job failed: ${job?.name ?? ""}, id: ${job?.id ?? ""}`,
-        err
-      );
-    });
-  }
+  this.worker.on("active", (job) => {
+    console.log("Job started:", job.name, job.id);
+  });
+
+  this.worker.on("completed", (job) => {
+    console.log(`Job completed: ${job.name}, id: ${job.id}`);
+  });
+
+  this.worker.on("failed", (job, err) => {
+    console.error(
+      `Job failed: ${job?.name ?? ""}, id: ${job?.id ?? ""}`,
+      err
+    );
+  });
+
+  this.worker.on("error", (err) => {
+    console.error("Worker error:", err);
+  });
+}
 
   public async close(): Promise<void> {
     await this.worker.close();
   }
+  
 }

@@ -63,3 +63,4 @@ docker-compose.dev.yml
 docker-compose.prod.yml
 *.env.dev
 *.env.prod
+.vercel
