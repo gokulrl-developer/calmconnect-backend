@@ -14,12 +14,14 @@ export default class CreateAvailabilityRuleUseCase
     private readonly _availabilityRuleRepository: IAvailabilityRuleRepository
   ) {}
   async execute(dto: CreateAvaialabilityRuleDTO) {
+    console.log("use case dto",dto)
     const avaialbilityRule = mapCreateAvailabilityRuleDTOToDomain(dto);
     const weekDayAvailabilityRules =
       await this._availabilityRuleRepository.findActiveByWeekDayPsych(
         dto.weekDay,
         dto.psychId
       );
+      console.log("use case fetched rules",weekDayAvailabilityRules)
       const currentRuleStartMinutes=timeStringToMinutes(dto.startTime);
       const currentRuleEndMinutes=timeStringToMinutes(dto.endTime);
     for (const availabilityRule of weekDayAvailabilityRules) {
@@ -30,11 +32,15 @@ export default class CreateAvailabilityRuleUseCase
         ((currentRuleStartMinutes > ruleStartMinutes &&
           currentRuleStartMinutes < ruleEndMinutes) ||
           (currentRuleEndMinutes < ruleEndMinutes &&
-            currentRuleEndMinutes > ruleStartMinutes))
+            currentRuleEndMinutes > ruleStartMinutes)||
+          (ruleStartMinutes > currentRuleStartMinutes &&
+          ruleStartMinutes < currentRuleEndMinutes)||
+          (ruleEndMinutes < currentRuleEndMinutes &&
+            ruleEndMinutes > currentRuleStartMinutes) )
       ) {
         throw new AppError(
           ERROR_MESSAGES.CONFLICTING_AVAILABILITY_RULE,
-          AppErrorCodes.CONFLICT
+          AppErrorCodes.OVERLAPPING_AVAILABILITY_RULE
         );
       }
     }
