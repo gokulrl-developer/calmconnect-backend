@@ -183,13 +183,13 @@ export default class AvailabilityController {
     const psychId = req.account?.id;
     const { quickSlotId } = req.params;
     const { startTime, endTime, durationInMins, bufferTimeInMins, status } = req.body;
-
+   
     if (!quickSlotId || typeof quickSlotId !== "string")
       throw new AppError(ERROR_MESSAGES.DATA_INSUFFICIANT, AppErrorCodes.VALIDATION_ERROR);
     if (status && !["active", "inactive"].includes(status))
       throw new AppError(ERROR_MESSAGES.INVALID_FIELDS, AppErrorCodes.VALIDATION_ERROR);
 
-    await this._editQuickSlotUseCase.execute({ psychId: psychId!, quickSlotId, startTime, endTime, durationInMins, bufferTimeInMins, status });
+    await this._editQuickSlotUseCase.execute({ psychId: psychId!, quickSlotId, startTime:startTime?new Date(startTime):undefined,endTime:endTime?new Date(endTime):undefined, durationInMins, bufferTimeInMins, status });
 
     res.status(StatusCodes.OK).json({ message: SUCCESS_MESSAGES.QUICK_SLOT_EDITED });
   } catch (error) {

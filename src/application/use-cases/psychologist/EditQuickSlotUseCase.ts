@@ -21,6 +21,7 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
     const existingQuickSlot = await this._quickSlotRepo.findById(
       dto.quickSlotId
     );
+    console.log(existingQuickSlot)
     if (!existingQuickSlot) {
       throw new AppError(
         ERROR_MESSAGES.QUICK_SLOT_NOT_FOUND,
@@ -37,7 +38,7 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
 
     const startTime = dto.startTime ?? existingQuickSlot.startTime!;
     const endTime = dto.endTime ?? existingQuickSlot.endTime!;
-
+          console.log("usecase",startTime,endTime)
     const overlappingQuickSlots =
       await this._quickSlotRepo.findOverlappingActiveByTimeRangePsych(
         startTime,

@@ -16,9 +16,9 @@ export default class QuickSlotRepository
     const slot = doc.toObject();
     return new QuickSlot(
       slot.psychologist.toString(),
-      slot.date,
-      slot.startTime,
-      slot.endTime,
+      new Date(slot.date),
+      new Date(slot.startTime),
+      new Date(slot.endTime),
       slot.durationInMins,
       slot.bufferTimeInMins ?? 0,
       slot.status ?? "active",
