@@ -18,8 +18,8 @@ export const mapEditQuickSlotDTOToDomain=(dto:EditQuickSlotDTO,quickSlot:QuickSl
     return new QuickSlot(
        dto.psychId,
        quickSlot.date,
-       dto.startTime?new Date(dto.startTime):quickSlot.startTime,
-       dto.endTime?new Date(dto.endTime):quickSlot.endTime,
+       dto.startTime?dto.startTime:quickSlot.startTime,
+       dto.endTime?dto.endTime:quickSlot.endTime,
        dto.durationInMins??quickSlot.durationInMins,
        dto.bufferTimeInMins??quickSlot.bufferTimeInMins,
        dto.status??quickSlot.status,
