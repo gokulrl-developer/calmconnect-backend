@@ -1,13 +1,14 @@
-import { Request, Response} from "express";
+import { NextFunction, Request, Response} from "express";
 import { AppErrorCodes } from "../application/error/app-error-codes.js";
 import AppError from "../application/error/AppError.js";
 import { StatusCodes } from "./http-statuscodes.js";
 export const errorHandler = (
   err:AppError | Error | { code?: string; message?: string },
-  req: Request,
+  _req: Request,
   res: Response,
+  _next:NextFunction
 ) => {
-  console.log(err)
+  console.log("error message and error object",err?.message,err)
   if (err instanceof AppError) {
     const statusCode = errorToHttpStatus(err.code);
     if (statusCode >= 400 && statusCode < 500) {
@@ -28,7 +29,7 @@ export const errorHandler = (
 
   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
     code: "INTERNAL_SERVER_ERROR",
-    message: err.message || "Internal server error",
+    message: "Internal server error",
     success: false,
   });
 };
