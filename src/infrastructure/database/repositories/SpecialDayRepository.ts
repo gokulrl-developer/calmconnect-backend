@@ -61,7 +61,20 @@ export default class SpecialDayRepository
     const overlapping = await this.model.findOne({
       psychologist: new Types.ObjectId(psychId),
       status:"active",
-      $and: [{ startTime: { $lte: endTime } }, { endTime: { $gte: startTime } }],
+      $nor: [
+        {
+          $and: [
+            { startTime: { $lte: startTime } },
+            { endTime: { $lte: startTime } },
+          ],
+        },
+        {
+          $and: [
+            { startTime: { $gte: endTime } },
+            { endTime: { $gte: endTime } },
+          ],
+        },
+      ],
       });
 
     return overlapping ? this.toDomain(overlapping) : null;

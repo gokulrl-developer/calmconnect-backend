@@ -29,14 +29,10 @@ export default class CreateAvailabilityRuleUseCase
       const ruleEndMinutes = timeStringToMinutes(availabilityRule.endTime);
 
       if (
-        ((currentRuleStartMinutes > ruleStartMinutes &&
-          currentRuleStartMinutes < ruleEndMinutes) ||
-          (currentRuleEndMinutes < ruleEndMinutes &&
-            currentRuleEndMinutes > ruleStartMinutes)||
-          (ruleStartMinutes > currentRuleStartMinutes &&
-          ruleStartMinutes < currentRuleEndMinutes)||
-          (ruleEndMinutes < currentRuleEndMinutes &&
-            ruleEndMinutes > currentRuleStartMinutes) )
+        !((currentRuleStartMinutes >= ruleStartMinutes &&
+          currentRuleStartMinutes >= ruleEndMinutes) ||
+          (currentRuleEndMinutes <= ruleEndMinutes &&
+            currentRuleEndMinutes <= ruleStartMinutes))
       ) {
         throw new AppError(
           ERROR_MESSAGES.CONFLICTING_AVAILABILITY_RULE,
