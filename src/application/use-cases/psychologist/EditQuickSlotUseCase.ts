@@ -89,10 +89,10 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
 
       if (
         specialDay === null &&
-        ((slotStartMinutes > ruleStartMinutes &&
-          slotStartMinutes < ruleEndMinutes) ||
-          (slotEndMinutes < ruleEndMinutes &&
-            slotEndMinutes > ruleStartMinutes))
+         !((slotStartMinutes >= ruleStartMinutes &&
+          slotStartMinutes >= ruleEndMinutes) ||
+          (slotEndMinutes <= ruleEndMinutes &&
+            slotEndMinutes <= ruleStartMinutes))
       ) {
         throw new AppError(
           ERROR_MESSAGES.CONFLICTING_AVAILABILITY_RULE,

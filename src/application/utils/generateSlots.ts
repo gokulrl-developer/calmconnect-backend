@@ -51,6 +51,5 @@ export const generateSlots = (availability: Availability | null): Slot[] => {
 
     current = new Date(current.getTime() + (durationInMins + bufferTimeInMins) * 60000);
   }
-
   return result;
 };
