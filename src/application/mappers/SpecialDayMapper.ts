@@ -22,8 +22,8 @@ export const mapEditSpecialDayDTOToDomain=(dto:EditSpecialDayDTO,specialDay:Spec
         dto.type??specialDay.type,
         (dto.type==="override"?(dto.startTime?new Date(dto.startTime):specialDay.startTime):undefined),
         (dto.type==="override"?(dto.endTime?new Date(dto.endTime):specialDay.endTime):undefined),
-        (dto.type==="override"?(dto.durationInMins?dto.durationInMins:specialDay.durationInMins):undefined),
-        (dto.type==="override"?(dto.bufferTimeInMins?dto.bufferTimeInMins:(specialDay.bufferTimeInMins??0)):undefined),
+        (dto.type==="override"?(dto.durationInMins??specialDay.durationInMins):undefined),
+        (dto.type==="override"?(dto.bufferTimeInMins??(specialDay.bufferTimeInMins??0)):undefined),
         dto.status??specialDay.status,
         dto.specialDayId
     )

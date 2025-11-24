@@ -6,6 +6,7 @@ import {
   IQuickSlotDocument,
 } from "../models/QuickSlotModel.js";
 import { BaseRepository } from "./BaseRepository.js";
+import { endOfDay, startOfDay } from "date-fns";
 
 export default class QuickSlotRepository
   extends BaseRepository<QuickSlot, IQuickSlotDocument>
@@ -51,16 +52,21 @@ export default class QuickSlotRepository
   }
 
   async findActiveByDatePsych(
-    date: Date,
-    psychId: string
-  ): Promise<QuickSlot[]> {
-    const slots = await this.model.find({
-      psychologist: new Types.ObjectId(psychId),
-      date,
-      status: "active",
-    });
-    return slots.map((slot) => this.toDomain(slot));
-  }
+  date: Date,
+  psychId: string
+): Promise<QuickSlot[]> {
+
+  const dayStart = startOfDay(date); 
+  const dayEnd = endOfDay(date);     
+
+  const slots = await this.model.find({
+    psychologist: new Types.ObjectId(psychId),
+    status: "active",
+    date: { $gte: dayStart, $lte: dayEnd }
+  });
+
+  return slots.map((slot) => this.toDomain(slot));
+}
 
   async findOverlappingActiveByTimeRangePsych(
     startTime: Date,

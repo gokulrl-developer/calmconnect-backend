@@ -44,14 +44,24 @@ export default class SpecialDayRepository
     return persistenceObj;
   }
 
-  async findActiveByDatePsych(date: Date, psychId: string): Promise<SpecialDay | null> {
-    const specialDay = await this.model.findOne({
-      psychologist: new Types.ObjectId(psychId),
-      date,
-      status:"active"
-    });
-    return specialDay ? this.toDomain(specialDay) : null;
-  }
+  async findActiveByDatePsych(date: Date, psychId: string) {
+  const start = new Date(date);
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date(date);
+  end.setHours(23, 59, 59, 999);
+
+  const specialDay = await this.model.findOne({
+    psychologist: new Types.ObjectId(psychId),
+    status: "active",
+    date: {
+      $gte: start,
+      $lte: end
+    }
+  });
+
+  return specialDay ? this.toDomain(specialDay) : null;
+}
 
   async findOverlappingActiveByTimeRangePsych(
     startTime: Date,

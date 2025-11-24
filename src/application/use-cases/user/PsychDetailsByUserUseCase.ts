@@ -25,7 +25,7 @@ private readonly _availabilityRuleRepository: IAvailabilityRuleRepository,
 
   async execute(dto: PsychDetailsByUserDTO) {
     const psychologist = await this._psychRepository.findById(dto.psychId);
-
+    
     if (!psychologist) {
       throw new AppError(
         ERROR_MESSAGES.PSYCHOLOGIST_NOT_FOUND,
@@ -34,7 +34,8 @@ private readonly _availabilityRuleRepository: IAvailabilityRuleRepository,
     }
     
     const selectedDate = dto.date ? new Date(dto.date) : new Date();
-     const startOfToday = new Date();
+    const startOfToday = new Date();
+    console.log("usecase",selectedDate,dto)
     startOfToday.setHours(0, 0, 0, 0);
     if(startOfToday>selectedDate){
       throw new AppError(ERROR_MESSAGES.SELECTED_DATE_PASSED,AppErrorCodes.VALIDATION_ERROR)
