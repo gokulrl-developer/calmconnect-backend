@@ -1,4 +1,3 @@
-import Session from "../../../domain/entities/session.entity.js";
 import Psychologist from "../../../domain/entities/psychologist.entity.js";
 import ICreateOrderUseCase, {
   CreateOrderResponse,

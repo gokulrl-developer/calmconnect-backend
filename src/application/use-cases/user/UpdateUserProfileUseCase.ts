@@ -14,7 +14,7 @@ export default class UpdateUserProfileUseCase implements IUpdateUserProfileUseCa
     ) {}
 
     async execute(dto: UpdateUserProfileDTO): Promise<void> {
-        const { userId, profilePicture, address } = dto;
+        const { userId, profilePicture} = dto;
 
         let profilePictureUrl: string | undefined = undefined;
         if (profilePicture && !(typeof profilePicture === "string")) {

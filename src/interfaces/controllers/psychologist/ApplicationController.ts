@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "../../../utils/http-statuscodes.js";
 import ICreateApplicationUseCase from "../../../application/interfaces/ICreateApplicationUseCase.js";
-import IApplicationStatusUseCase from "../../../application/interfaces/IFetchLatestApplicationUseCase.js";
 import AppError from "../../../application/error/AppError.js";
 import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
@@ -11,7 +10,7 @@ import IFetchLatestApplicationUseCase from "../../../application/interfaces/IFet
 export default class ApplicationController {
   constructor(
     private readonly _createApplicationUseCase: ICreateApplicationUseCase,
-    private readonly _fetchLatestApplicationUseCase: IFetchLatestApplicationUseCase,
+    private readonly _fetchLatestApplicationUseCase: IFetchLatestApplicationUseCase
   ) {}
 
   async createApplication(
@@ -20,6 +19,12 @@ export default class ApplicationController {
     next: NextFunction
   ): Promise<void> {
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       if (
         !req.body.submittedAt ||
@@ -94,19 +99,30 @@ export default class ApplicationController {
           AppErrorCodes.VALIDATION_ERROR
         );
       }
-      if ((!req.body.license || typeof req.body.license !=="string") &&(!files?.license || !(files.license?.[0].buffer instanceof Buffer))) {
+      if (
+        (!req.body.license || typeof req.body.license !== "string") &&
+        (!files?.license || !(files.license?.[0].buffer instanceof Buffer))
+      ) {
         throw new AppError(
           ERROR_MESSAGES.LICENSE_REQUIRED,
           AppErrorCodes.VALIDATION_ERROR
         );
       }
-      if ((!req.body.profilePicture || typeof req.body.profilePicture !== "string") &&(!files?.profilePicture || !(files.profilePicture?.[0].buffer instanceof Buffer))) {
+      if (
+        (!req.body.profilePicture ||
+          typeof req.body.profilePicture !== "string") &&
+        (!files?.profilePicture ||
+          !(files.profilePicture?.[0].buffer instanceof Buffer))
+      ) {
         throw new AppError(
           ERROR_MESSAGES.PROFILE_PICTURE_REQUIRED,
           AppErrorCodes.VALIDATION_ERROR
         );
       }
-      if ((!req.body.resume || typeof req.body.resume !=="string") &&(!files?.resume || !(files.resume?.[0].buffer instanceof Buffer))) {
+      if (
+        (!req.body.resume || typeof req.body.resume !== "string") &&
+        (!files?.resume || !(files.resume?.[0].buffer instanceof Buffer))
+      ) {
         throw new AppError(
           ERROR_MESSAGES.RESUME_REQUIRED,
           AppErrorCodes.VALIDATION_ERROR
@@ -114,10 +130,14 @@ export default class ApplicationController {
       }
       await this._createApplicationUseCase.execute({
         ...req.body,
-        psychId: req?.account?.id,
-        license: req.body.license? req.body.license:files?.license?.[0].buffer,
-        profilePicture: req.body.profilePicture?req.body.profilePicture:files?.profilePicture?.[0].buffer,
-        resume: req.body.resume?req.body.resume:files?.resume?.[0].buffer,
+        psychId: req.account.id,
+        license: req.body.license
+          ? req.body.license
+          : files?.license?.[0].buffer,
+        profilePicture: req.body.profilePicture
+          ? req.body.profilePicture
+          : files?.profilePicture?.[0].buffer,
+        resume: req.body.resume ? req.body.resume : files?.resume?.[0].buffer,
       });
       res.status(StatusCodes.CREATED).json({
         message: SUCCESS_MESSAGES.SUBMISSION_SUCCESSFUL,
@@ -133,16 +153,25 @@ export default class ApplicationController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const psychId = req?.account?.id;
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      const psychId = req.account.id;
 
-      const applicationData = await this._fetchLatestApplicationUseCase.execute({
-        psychId: psychId!,
-      });
+      const applicationData = await this._fetchLatestApplicationUseCase.execute(
+        {
+          psychId: psychId!,
+        }
+      );
 
-      res.status(StatusCodes.OK).json({ application:applicationData.application, psych: req.account });
+      res
+        .status(StatusCodes.OK)
+        .json({ application: applicationData.application, psych: req.account });
     } catch (error) {
       next(error);
     }
   }
- 
 }

@@ -21,7 +21,7 @@ export const errorHandler = (
       console.error("Custom Error:", err.message, err.code);
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         code: "INTERNAL_SERVER_ERROR",
-        message: "Internal server error",
+        message: err.message||"Internal server error",
         success: false,
       });
     }
@@ -76,6 +76,8 @@ const errorToHttpStatus = (code: string): number => {
 
     case AppErrorCodes.INTERNAL_ERROR:
       return StatusCodes.INTERNAL_SERVER_ERROR;
+      case AppErrorCodes.COMPLAINT_UPDATION_FAILED:
+        return StatusCodes.INTERNAL_SERVER_ERROR
 
     default:
       return StatusCodes.INTERNAL_SERVER_ERROR;

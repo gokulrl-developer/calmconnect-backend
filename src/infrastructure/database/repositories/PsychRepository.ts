@@ -1,3 +1,4 @@
+import { FilterQuery, PipelineStage } from "mongoose";
 import { ListPsychDTO } from "../../../application/dtos/admin.dto.js";
 import Psychologist from "../../../domain/entities/psychologist.entity.js";
 import IPsychologistRepository, { ListPsychQueryByUser, PsychSummary, PsychTrendsEntry } from "../../../domain/interfaces/IPsychRepository.js";
@@ -80,7 +81,7 @@ export default class PsychRepository
     const limit = 10;
     const skip = (page - 1) * limit;
 
-    const query: any = { isVerified: true };
+    const query:AdminPsychListQuery= { isVerified: true };
 
     if (search) {
       query.$or = [
@@ -109,7 +110,7 @@ export default class PsychRepository
     limit = 10,
   } = query;
 
-  const match: any = { isVerified: true };
+  const match:PsychListQueryByUser = { isVerified: true };
 
   if (gender) match.gender = gender;
   if (specialization) match.specializations = specialization;
@@ -124,10 +125,10 @@ export default class PsychRepository
     ];
   }
 
-  const basePipeline: any[] = [{ $match: match }];
+  const basePipeline: PipelineStage[] = [{ $match: match }];
 
   if (sort) {
-    const sortMap: Record<string, any> = {
+    const sortMap: Record<string,  Record<string, 1 | -1>> = {
       "a-z": { firstName: 1 },
       "z-a": { firstName: -1 },
       rating: { avgRating: -1 },
@@ -186,6 +187,8 @@ export default class PsychRepository
       psychologists: r.psychologists,
     }));
   }
+
+  
 async fetchPsychSummary(fromDate: Date, toDate: Date): Promise<PsychSummary> {
   const totalValuePromise = this.model.countDocuments({ isVerified: true }).exec();
 
@@ -197,4 +200,29 @@ async fetchPsychSummary(fromDate: Date, toDate: Date): Promise<PsychSummary> {
 
   return { totalValue, addedValue };
 }
+}
+
+interface AdminPsychListQuery extends FilterQuery<Psychologist> {
+  isVerified: boolean;
+  isBlocked?: boolean;
+  $or?: Array<{
+    firstName?: { $regex: string; $options: string };
+    lastName?: { $regex: string; $options: string };
+    email?: { $regex: string; $options: string };
+  }>;
+}
+
+interface PsychListQueryByUser extends FilterQuery<Psychologist> {
+  isVerified: boolean;
+  gender?: string;
+  specializations?: string;
+  $or?: Array<{
+    firstName?: RegExp;
+    lastName?: RegExp;
+    specializations?: RegExp;
+    languages?: RegExp;
+  }>;
+  skip?: number;
+  limit?: number;
+  sort?: "a-z" | "z-a" | "rating" | "price";
 }

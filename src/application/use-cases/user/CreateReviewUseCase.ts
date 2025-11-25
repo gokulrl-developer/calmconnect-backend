@@ -35,7 +35,7 @@ export default class CreateReviewUseCase implements ICreateReviewUseCase {
 
     const existingReviews = await this._reviewRepository.findAll({
       sessionId: dto.sessionId,
-    } as any);
+    });
     if (existingReviews.length > 0) {
       throw new AppError(
         ERROR_MESSAGES.REVIEW_ALREADY_EXISTS,
@@ -48,7 +48,7 @@ export default class CreateReviewUseCase implements ICreateReviewUseCase {
 
     const allReviews = await this._reviewRepository.findAll({
       psychologist: session.psychologist,
-    } as any);
+    });
 
     const avgRating =
       allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length;

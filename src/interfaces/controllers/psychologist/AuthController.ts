@@ -50,12 +50,12 @@ export default class AuthController {
         );
       }
 
-      const result = await this._registerPsychUseCase.execute(req.body);
+      await this._registerPsychUseCase.execute(req.body);
       res
         .status(StatusCodes.CREATED)
         .json({ message: SUCCESS_MESSAGES.REGISTRATION_SUCCESSFUL });
     } catch (error) {
-      next();
+      next(error);
     }
   }
 
@@ -83,12 +83,12 @@ export default class AuthController {
           AppErrorCodes.VALIDATION_ERROR
         );
       }
-      const result = await this._resetPasswordUseCase.execute(req.body);
+      await this._resetPasswordUseCase.execute(req.body);
       res
         .status(StatusCodes.CREATED)
         .json({ message: SUCCESS_MESSAGES.PASSWORD_RESET_SUCCESSFUL });
     } catch (error) {
-      next();
+      next(error);
     }
   }
 
@@ -173,7 +173,7 @@ export default class AuthController {
         path: "/",
       });
 
-      const { refreshToken, accessToken, ...Psych } = result;
+      const { refreshToken:_refreshToken, accessToken:_accessToken, ...Psych } = result;
 
       res
         .status(StatusCodes.OK)

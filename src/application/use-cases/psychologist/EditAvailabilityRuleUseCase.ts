@@ -9,7 +9,6 @@ import AvailabilityRule from "../../../domain/entities/availability-rule.entity.
 import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
 import {
   HHMMToIso,
-  isoToHHMM,
   timeStringToMinutes,
 } from "../../../utils/timeConverter.js";
 import QuickSlot from "../../../domain/entities/quick-slot.entity.js";

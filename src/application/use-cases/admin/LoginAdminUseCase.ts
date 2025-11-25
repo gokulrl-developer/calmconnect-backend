@@ -18,7 +18,7 @@ export default class LoginAdminUseCase implements ILoginAdminUseCase{
   ){}
  
  async execute(dto:AdminLoginDTO):Promise<AdminLoginResponse>{
-       const {email,password}=dto;
+       const {email}=dto;
 
     const {adminEmail,adminHashedPassword,adminId}=adminConfig;
     if(adminEmail !==email){

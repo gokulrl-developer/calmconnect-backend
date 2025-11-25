@@ -19,6 +19,18 @@ export default class NotificationController {
 
   async list(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      if (!req.pagination) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       const recipientId = req?.account?.id;
       const skip = req.pagination!.skip;
       const limit = req.pagination!.limit;
@@ -49,8 +61,14 @@ export default class NotificationController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const accountId = req?.account?.id;
-      const recipientType = req?.account?.role;
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      const accountId = req.account.id;
+      const recipientType = req.account.role;
 
       await this._markNotificationReadUseCase.execute({
         recipientType: recipientType!,
@@ -70,14 +88,20 @@ export default class NotificationController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const accountId = req?.account?.id;
-      const recipientType = req?.account?.role;
-      const count = await this._getUnreadCountUseCase.execute({
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      const accountId = req.account.id;
+      const recipientType = req.account.role;
+      const count=await this._getUnreadCountUseCase.execute({
         recipientType: recipientType!,
         recipientId: accountId!,
       });
 
-      res.status(StatusCodes.OK).json({
+    res.status(StatusCodes.OK).json({
         count,
         message: SUCCESS_MESSAGES.NOTIFICATION_COUNT_FETCHED,
       });
@@ -91,10 +115,16 @@ export default class NotificationController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const accountId = req?.account?.id;
-      const recipientType = req?.account?.role;
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      const accountId = req.account.id;
+      const recipientType = req.account.role;
 
-      const count = await this._clearNotificationsUseCase.execute({
+     await this._clearNotificationsUseCase.execute({
         recipientType: recipientType!,
         recipientId: accountId!,
       });

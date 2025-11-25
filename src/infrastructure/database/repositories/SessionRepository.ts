@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { FilterQuery, Types } from "mongoose";
 import Session from "../../../domain/entities/session.entity.js";
 import ISessionRepository, {
   PsychSessionSummaryFromPersistence,
@@ -102,7 +102,9 @@ export default class SessionRepository
     skip: number,
     limit: number
   ): Promise<{ sessions: Session[]; totalItems: number }> {
-    const filter: any = { user: new Types.ObjectId(userId) };
+    type SessionFilter = FilterQuery<Session>;
+
+    const filter: SessionFilter = { user: new Types.ObjectId(userId) };
     if (status) {
       filter.status = status;
     }
@@ -123,7 +125,9 @@ export default class SessionRepository
     skip: number,
     limit: number
   ): Promise<{ sessions: Session[]; totalItems: number }> {
-    const filter: any = { psychologist: new Types.ObjectId(psychId) };
+    type SessionFilter = FilterQuery<Session>;
+
+    const filter: SessionFilter = { psychologist: new Types.ObjectId(psychId) };
     if (status) {
       filter.status = status;
     }
@@ -143,7 +147,8 @@ export default class SessionRepository
     skip: number,
     limit: number
   ): Promise<{ sessions: Session[]; totalItems: number }> {
-    const filter: any = {};
+    type SessionFilter = FilterQuery<Session>;
+    const filter: SessionFilter = {};
     if (status) {
       filter.status = status;
     }

@@ -29,7 +29,7 @@ export default class CancelSessionPsychUseCase {
         AppErrorCodes.NOT_FOUND
       );
 
-    const { email: adminEmail, adminId } =
+    const { adminId } =
       this._adminConfigService.getAdminData();
     let platformWallet = await this._walletRepository.findOne({
       ownerType: "platform",

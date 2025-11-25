@@ -5,7 +5,6 @@ import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../error/app-error-codes.js";
 import AppError from "../../error/AppError.js";
 import IUpdatePsychProfileUseCase from "../../interfaces/IUpdatePsychProfileUseCase.js";
-import Psychologist from "../../../domain/entities/psychologist.entity.js";
 import { toPsychDomainFromUpdateDTO } from "../../mappers/PsychMapper.js";
 
 export default class UpdatePsychProfileUseCase implements IUpdatePsychProfileUseCase {

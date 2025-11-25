@@ -21,7 +21,19 @@ export default class SessionController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const userId = req.account?.id;
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      if (!req.pagination) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      const userId = req.account.id;
       const result = await this._listSessionsByUserUseCase.execute({
         userId: userId!,
         status: req.query.status as
@@ -29,8 +41,8 @@ export default class SessionController {
           | "cancelled"
           | "ended"
           | "pending",
-        skip: req.pagination?.skip!,
-        limit: req.pagination?.limit!,
+        skip: req.pagination.skip!,
+        limit: req.pagination.limit!,
       });
 
       res.status(StatusCodes.OK).json({ ...result });
@@ -44,7 +56,13 @@ export default class SessionController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const userId = req.account?.id;
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      const userId = req.account.id;
       const { sessionId } = req.params;
 
       if (!sessionId) {
@@ -72,8 +90,14 @@ export default class SessionController {
     next: NextFunction
   ): Promise<void> {
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       const { sessionId } = req.params;
-      const id = req.account?.id;
+      const id = req.account.id;
 
       if (!sessionId) {
         console.warn(

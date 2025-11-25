@@ -24,13 +24,6 @@ export interface SignalPayload {
   data: RTCSessionDescriptionInit | RTCIceCandidateInit;
 }
 
-interface SocketErrorPayload {
-  event: string;
-  message: string;
-  code: string;
-  status?: number;
-  retryable?: boolean;
-}
 
 export default class SocketServer implements ISocketService {
   private _io: IOServer;

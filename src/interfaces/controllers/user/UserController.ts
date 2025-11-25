@@ -20,7 +20,13 @@ export default class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const userId = req.account?.id;
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      const userId = req.account.id;
 
       const dashboardData = await this._fetchUserDashboardUseCase.execute({
         userId: userId!,
@@ -40,7 +46,13 @@ export default class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const userId = req?.account?.id;
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      const userId = req.account.id;
       const userProfile = await this._fetchUserProfileUseCase.execute({
         userId: userId!,
       });
@@ -56,8 +68,13 @@ export default class UserController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    console.log(req.body);
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       const { address, firstName, lastName, gender, dob } = req.body;
       if (address !== undefined) {
@@ -97,7 +114,6 @@ export default class UserController {
         }
       }
 
-      let parsedDob: Date | undefined;
       if (dob !== undefined) {
         const date = new Date(dob);
         if (isNaN(date.getTime())) {
@@ -106,7 +122,6 @@ export default class UserController {
             AppErrorCodes.VALIDATION_ERROR
           );
         }
-        parsedDob = date;
       }
 
       let profilePicture: string | Buffer | undefined;
@@ -122,7 +137,7 @@ export default class UserController {
       }
 
       await this._updateUserProfileUseCase.execute({
-        userId: req?.account?.id!,
+        userId: req.account.id!,
         ...req.body,
         profilePicture,
       });
