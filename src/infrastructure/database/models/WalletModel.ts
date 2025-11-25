@@ -1,4 +1,4 @@
-import { model, Schema, Document, Types } from "mongoose";
+import { model, Schema, Document } from "mongoose";
 
 export interface IWalletDocument extends Document {
   ownerType: "user" | "psychologist" | "platform";

@@ -61,10 +61,10 @@ export default class MarkSessionOverUseCase implements IMarkSessionOverUseCase {
           session.id!
         );
     
-        const creditTransaction = await this._transactionRepo.create(
+        await this._transactionRepo.create(
           transactionCredit
         );
-        const debitTransaction = await this._transactionRepo.create(
+        await this._transactionRepo.create(
           transactionDebit
         );
     return;

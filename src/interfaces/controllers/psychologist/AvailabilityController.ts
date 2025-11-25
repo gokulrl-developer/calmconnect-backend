@@ -36,7 +36,10 @@ export default class AvailabilityController {
 
   async createAvailabilityRule(req: Request, res: Response, next: NextFunction) {
     try {
-      const psychId = req.account?.id;
+      if(!req.account){
+            throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+           }
+      const psychId = req.account.id;
       const { weekDay, startTime, endTime, durationInMins, bufferTimeInMins } = req.body;
 
       if (psychId === undefined) throw new AppError(ERROR_MESSAGES.UNAUTHORISED_ACTION, AppErrorCodes.FORBIDDEN_ERROR);
@@ -56,7 +59,10 @@ export default class AvailabilityController {
 
  async editAvailabilityRule(req: Request, res: Response, next: NextFunction) {
   try {
-    const psychId = req.account?.id;
+    if(!req.account){
+          throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+         }
+    const psychId = req.account.id;
     const { availabilityRuleId } = req.params; 
     const { startTime, endTime, durationInMins, bufferTimeInMins, status } = req.body;
 
@@ -92,7 +98,10 @@ export default class AvailabilityController {
 
  async deleteAvailabilityRule(req: Request, res: Response, next: NextFunction) {
   try {
-    const psychId = req.account?.id;
+    if(!req.account){
+          throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+         }
+    const psychId = req.account.id;
     const { availabilityRuleId } = req.params; 
 
     if (!availabilityRuleId || typeof availabilityRuleId !== "string")
@@ -109,7 +118,10 @@ export default class AvailabilityController {
 
   async createSpecialDay(req: Request, res: Response, next: NextFunction) {
     try {
-      const psychId = req.account?.id;
+      if(!req.account){
+            throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+           }
+      const psychId = req.account.id;
       const { date, type, startTime, endTime, durationInMins, bufferTimeInMins } = req.body;
 
       if (!date || typeof date !== "string" || !REGEX_EXP.ISO_DATE.test(date)) throw new AppError(ERROR_MESSAGES.DATE_REQUIRED, AppErrorCodes.VALIDATION_ERROR);
@@ -125,7 +137,10 @@ export default class AvailabilityController {
 
  async editSpecialDay(req: Request, res: Response, next: NextFunction) {
   try {
-    const psychId = req.account?.id;
+    if(!req.account){
+          throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+         }
+    const psychId = req.account.id;
     const { specialDayId } = req.params;
     const { type, startTime, endTime, durationInMins, bufferTimeInMins, status } = req.body;
 
@@ -147,7 +162,10 @@ export default class AvailabilityController {
 
  async deleteSpecialDay(req: Request, res: Response, next: NextFunction) {
   try {
-    const psychId = req.account?.id;
+    if(!req.account){
+          throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+         }
+    const psychId = req.account.id;
     const { specialDayId } = req.params;
 
     if (!specialDayId || typeof specialDayId !== "string")
@@ -165,7 +183,10 @@ export default class AvailabilityController {
 
   async createQuickSlot(req: Request, res: Response, next: NextFunction) {
     try {
-      const psychId = req.account?.id;
+      if(!req.account){
+            throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+           }
+      const psychId = req.account.id;
       const { date, startTime, endTime, durationInMins, bufferTimeInMins } = req.body;
 
       if (!date || typeof date !== "string" || !REGEX_EXP.ISO_DATE.test(date)) throw new AppError(ERROR_MESSAGES.DATE_REQUIRED, AppErrorCodes.VALIDATION_ERROR);
@@ -180,7 +201,10 @@ export default class AvailabilityController {
 
  async editQuickSlot(req: Request, res: Response, next: NextFunction) {
   try {
-    const psychId = req.account?.id;
+    if(!req.account){
+          throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+         }
+    const psychId = req.account.id;
     const { quickSlotId } = req.params;
     const { startTime, endTime, durationInMins, bufferTimeInMins, status } = req.body;
    
@@ -199,7 +223,10 @@ export default class AvailabilityController {
 
  async deleteQuickSlot(req: Request, res: Response, next: NextFunction) {
   try {
-    const psychId = req.account?.id;
+    if(!req.account){
+          throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+         }
+    const psychId = req.account.id;
     const { quickSlotId } = req.params;
 
     if (!quickSlotId || typeof quickSlotId !== "string")
@@ -215,7 +242,10 @@ export default class AvailabilityController {
 
   async fetchAvailabilityRule(req: Request, res: Response, next: NextFunction) {
     try {
-      const psychId = req.account?.id;
+      if(!req.account){
+            throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+           }
+      const psychId = req.account.id;
       const { availabilityRuleId } = req.query;
 
       if (!availabilityRuleId || typeof availabilityRuleId !== "string") throw new AppError(ERROR_MESSAGES.AVAILABILITY_RULE_ID_REQUIRED, AppErrorCodes.VALIDATION_ERROR);
@@ -230,7 +260,10 @@ export default class AvailabilityController {
 
   async fetchDailyAvailability(req: Request, res: Response, next: NextFunction) {
     try {
-      const psychId = req.account?.id;
+      if(!req.account){
+            throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+           }
+      const psychId = req.account.id;
       const { date } = req.query;
 
       if (!date || typeof date !== "string" || !REGEX_EXP.ISO_DATE.test(date)) throw new AppError(ERROR_MESSAGES.DATE_REQUIRED, AppErrorCodes.VALIDATION_ERROR);
@@ -245,7 +278,10 @@ export default class AvailabilityController {
 
   async listAvailabilityRules(req: Request, res: Response, next: NextFunction) {
     try {
-      const psychId = req.account?.id;
+      if(!req.account){
+            throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+           }
+      const psychId = req.account.id;
 
       const summaries = await this._listAvailabilityRuleUseCase.execute({ psychId: psychId! });
 

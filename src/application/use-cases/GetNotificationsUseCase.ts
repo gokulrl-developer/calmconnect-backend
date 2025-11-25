@@ -1,6 +1,6 @@
 import { INotificationRepository } from "../../domain/interfaces/INotificationRepository.js";
 import { GetNotificationsDTO } from "../dtos/shared.dto.js";
-import IGetNotificationsUseCase, { NotificationListingItem } from "../interfaces/IGetNotificationsUseCase.js";
+import IGetNotificationsUseCase from "../interfaces/IGetNotificationsUseCase.js";
 import { toNotificationListingItem } from "../mappers/NotificationMapper.js";
 import { calculatePagination } from "../utils/calculatePagination.js";
 

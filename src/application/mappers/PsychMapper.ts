@@ -9,6 +9,7 @@ import {
 } from "../../domain/interfaces/IPsychRepository.js";
 import { Slot } from "../utils/generateSlots.js";
 import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
+import { AdminPsychListResponseItem } from "../interfaces/IPsychListUseCase.js";
 
 export const toPsychDomainRegister = (psych: PsychSignUpDTO): Psychologist => {
   return new Psychologist(
@@ -140,9 +141,9 @@ export const toCheckStatusResponse = (psych: Psychologist) => {
   };
 };
 
-export const toAdminPsychListResponse = (psych: Psychologist) => {
+export const toAdminPsychListResponse = (psych: Psychologist):AdminPsychListResponseItem => {
   return {
-    id: psych.id,
+    id: psych.id!,
     firstName: psych.firstName,
     lastName: psych.lastName,
     email: psych.email,

@@ -51,7 +51,7 @@ export default class CreateApplicationUseCase implements ICreateApplicationUseCa
       profilePicture=dto.profilePicture
     }
      const applicationEntity=toApplicationDomainSubmit(dto,psychologist,{licenseUrl,resume,profilePicture});
-    const result= await this._applicationRepository.create(applicationEntity);
+    await this._applicationRepository.create(applicationEntity);
     
     await this._eventBus.emit('application.created', {
       adminId:adminConfig.adminId,

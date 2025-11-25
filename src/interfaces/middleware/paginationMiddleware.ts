@@ -1,15 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 
-export interface PaginationRequest extends Request {
-  pagination?: {
-    page: number;
-    limit: number;
-    skip: number;
-  };
-}
 
 export function paginationMiddleware(
-  req: PaginationRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) {
@@ -17,7 +10,9 @@ export function paginationMiddleware(
   const limit = Math.max(1, Math.min(100, parseInt(req.query.limit as string) || 10)); 
 
   const skip = (page - 1) * limit;
-  req.pagination = { page, limit, skip };
+  
+    req.pagination={page,limit,skip};
+  
 
   next();
 }

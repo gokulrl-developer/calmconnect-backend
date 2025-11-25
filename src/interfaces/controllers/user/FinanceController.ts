@@ -26,6 +26,18 @@ export default class FinanceController {
     next: NextFunction
   ): Promise<void> {
     const { type, date, referenceType } = req.query;
+    if (!req.account) {
+      throw new AppError(
+        ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+        AppErrorCodes.INTERNAL_ERROR
+      );
+    }
+    if (!req.pagination) {
+      throw new AppError(
+        ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+        AppErrorCodes.INTERNAL_ERROR
+      );
+    }
     if (
       type &&
       (typeof type !== "string" || ["debit", "credit"].includes(type) === false)
@@ -58,9 +70,9 @@ export default class FinanceController {
     try {
       const dto: GetTransactionsDTO = {
         ownerType: "user",
-        ownerId: req.account?.id!,
-        skip: req.pagination?.skip,
-        limit: req.pagination?.limit,
+        ownerId: req.account.id!,
+        skip: req.pagination.skip,
+        limit: req.pagination.limit,
         type: type as "debit" | "credit",
         date: date,
         referenceType: referenceType as
@@ -82,9 +94,15 @@ export default class FinanceController {
     next: NextFunction
   ): Promise<void> {
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       const dto: GetWalletDTO = {
         ownerType: "user",
-        ownerId: req.account?.id!,
+        ownerId: req.account.id!,
       };
 
       const wallet = await this._fetchWalletUseCase.execute(dto);
@@ -100,6 +118,12 @@ export default class FinanceController {
     next: NextFunction
   ): Promise<void> {
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       const transactionId = req.params.transactionId;
       if (!transactionId) {
         throw new AppError(
@@ -110,13 +134,12 @@ export default class FinanceController {
 
       const dto: GetTransactionReceiptDTO = {
         ownerType: "user",
-        ownerId: req.account?.id!,
+        ownerId: req.account.id!,
         transactionId,
       };
 
-      const pdfBuffer = await this._generateTransactionReceiptUseCase.execute(
-        dto
-      );
+      const pdfBuffer =
+        await this._generateTransactionReceiptUseCase.execute(dto);
 
       res
         .status(StatusCodes.OK)

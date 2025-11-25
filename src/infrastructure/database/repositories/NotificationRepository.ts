@@ -47,7 +47,7 @@ export class NotificationRepository
   skip = 0,
   limit = 50
 ) {
-  const query: any = { recipientType,recipientId:recipientId}; 
+  const query= { recipientType,recipientId:recipientId}; 
 
   const docs = await this.model
     .find(query)

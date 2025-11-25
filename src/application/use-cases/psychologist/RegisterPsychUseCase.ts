@@ -19,7 +19,7 @@ export default class RegisterPsychUseCase implements IRegisterPsychUseCase {
        throw new AppError(ERROR_MESSAGES.INVALID_OTP,AppErrorCodes.INVALID_CREDENTIALS);
       }
 
-      const{otp,...psych}=tempPsych;
+      const{otp:_otp,...psych}=tempPsych;
       const PsychEntity = toPsychDomainRegister(psych); 
 
       await this._PsychRepository.create(PsychEntity);

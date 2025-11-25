@@ -34,7 +34,7 @@ export default class SignUpPsychUseCase implements ISignUpPsychUseCase{
         dto.password= await hashPassword(dto.password)
      
         await this._otpRepostitory.storeTempAccount(email,{...dto,otp})
-        const result=await sendMail(
+        await sendMail(
             email,
             EMAIL_MESSAGES.OTP_SUBJECT,
             EMAIL_MESSAGES.OTP_BODY(otp)

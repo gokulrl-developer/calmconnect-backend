@@ -1,5 +1,4 @@
 import { UpdateApplicationStatusDTO } from "../../dtos/admin.dto.js";
-import Psychologist from "../../../domain/entities/psychologist.entity.js";
 import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository.js";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
 import { sendMail } from "../../../utils/nodemailHelper.js";

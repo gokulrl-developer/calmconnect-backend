@@ -32,9 +32,14 @@ export default class ComplaintController {
     next: NextFunction
   ): Promise<void> {
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       const { sessionId, description } = req.body;
-      const userId = req.account?.id; 
-
+      const userId = req.account.id;
 
       if (!sessionId || typeof sessionId !== "string") {
         throw new AppError(
@@ -50,7 +55,11 @@ export default class ComplaintController {
         );
       }
 
-      const dto: CreateComplaintDTO = { userId:userId!, sessionId, description };
+      const dto: CreateComplaintDTO = {
+        userId: userId!,
+        sessionId,
+        description,
+      };
       await this._createComplaintUseCase.execute(dto);
 
       res
@@ -61,20 +70,30 @@ export default class ComplaintController {
     }
   }
 
- 
   async listComplaints(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const userId = req.account?.id;
-      
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      if (!req.pagination) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      const userId = req.account.id;
 
       const dto: ListComplaintsDTO = {
-        userId:userId!,
-        skip: req.pagination?.skip!,
-        limit: req.pagination?.limit!,
+        userId: userId!,
+        skip: req.pagination.skip!,
+        limit: req.pagination.limit!,
       };
 
       const result = await this._complaintListingByUserUseCase.execute(dto);
@@ -84,7 +103,6 @@ export default class ComplaintController {
     }
   }
 
-  
   async fetchComplaintDetails(
     req: Request,
     res: Response,

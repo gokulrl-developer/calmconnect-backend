@@ -27,10 +27,13 @@ export default class ComplaintResolutionUseCase implements IComplaintResolutionU
 
     const updatedComplaint = mapComplaintResolutionDTOToDomain(dto, existingComplaint);
     const complaint=await this._complaintRepository.update(dto.complaintId, updatedComplaint);
-    const psychologist=await this._psychRepository.findById(complaint?.psychologist!)
+    if(!complaint){
+      throw new AppError(ERROR_MESSAGES.COMPLAINT_UPDATION_FAILED,AppErrorCodes.COMPLAINT_UPDATION_FAILED)
+    }
+    const psychologist=await this._psychRepository.findById(complaint.psychologist!)
     await this._eventBus.emit("complaint.resolved",{
       complaintId:dto.complaintId,
-      userId:complaint?.user!,
+      userId:complaint.user!,
       psychologistFullName:psychologist?`${psychologist.firstName} ${psychologist.lastName}`:"N/A"
     })
   }

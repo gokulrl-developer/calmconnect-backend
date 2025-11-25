@@ -1,3 +1,4 @@
+import { FilterQuery } from "mongoose";
 import { ListUsersDTO } from "../../../application/dtos/admin.dto.js";
 import User from "../../../domain/entities/user.entity.js";
 import IUserRepository, { UserTrendsEntry, UserTrendsSummary } from "../../../domain/interfaces/IUserRepository.js";
@@ -59,8 +60,8 @@ export default class UserRepository
     const { page, search, filter } = dto;
     const limit = 10;
     const skip = (page - 1) * limit;
-
-    const query: any = {};
+   type UserFilter=FilterQuery<User>
+    const query: UserFilter = {};
     
     if (search) {
       query.$or = [

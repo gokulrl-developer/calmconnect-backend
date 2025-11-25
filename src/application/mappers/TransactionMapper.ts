@@ -6,7 +6,6 @@ import {
   RecentUserTransactionEntryFromPersistence, 
   RevenueSummary, 
   RevenueSummaryByPsych, 
-  RevenueTrendsEntry 
 } from "../../domain/interfaces/ITransactionRepository.js";
 import { RevenueTrendsEntry as ResponseRevenueTrendsEntry } from "../../application/interfaces/IFetchRevenueTrendsUseCase.js";
 import { 

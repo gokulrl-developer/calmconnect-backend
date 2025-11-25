@@ -168,7 +168,7 @@ export default class AuthController {
         path: "/",
       });
 
-      const { refreshToken, accessToken, ...user } = result;
+      const { refreshToken:_refreshToken, accessToken:_accessToken, ...user } = result;
 
       res
         .status(StatusCodes.OK)

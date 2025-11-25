@@ -5,7 +5,10 @@ import { ERROR_MESSAGES } from "../../../application/constants/error-messages.co
 import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
 import ICreateReviewUseCase from "../../../application/interfaces/ICreateReviewUseCase.js";
 import IListPsychReviewsUseCase from "../../../application/interfaces/IListPsychReviewsUseCase.js";
-import { CreateReviewDTO, ListPsychReviewsDTO } from "../../../application/dtos/user.dto.js";
+import {
+  CreateReviewDTO,
+  ListPsychReviewsDTO,
+} from "../../../application/dtos/user.dto.js";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 
 export default class ReviewController {
@@ -19,6 +22,12 @@ export default class ReviewController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+    if (!req.account) {
+      throw new AppError(
+        ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+        AppErrorCodes.INTERNAL_ERROR
+      );
+    }
     const { sessionId, rating, comment } = req.body;
     if (!sessionId || typeof sessionId !== "string") {
       throw new AppError(
@@ -28,19 +37,18 @@ export default class ReviewController {
     }
 
     if (!rating) {
-        throw new AppError(
-          ERROR_MESSAGES.REVIEW_RATING_REQUIRED,
-          AppErrorCodes.VALIDATION_ERROR
-        );
+      throw new AppError(
+        ERROR_MESSAGES.REVIEW_RATING_REQUIRED,
+        AppErrorCodes.VALIDATION_ERROR
+      );
     }
 
     if (typeof rating !== "number" || rating < 1 || rating > 5) {
-        throw new AppError(
-          ERROR_MESSAGES.REVIEW_RATING_INVALID_FORMAT,
-          AppErrorCodes.VALIDATION_ERROR
-        );
-      }
-    
+      throw new AppError(
+        ERROR_MESSAGES.REVIEW_RATING_INVALID_FORMAT,
+        AppErrorCodes.VALIDATION_ERROR
+      );
+    }
 
     if (comment) {
       if (typeof comment !== "string") {
@@ -59,7 +67,7 @@ export default class ReviewController {
 
     try {
       const dto: CreateReviewDTO = {
-        userId: req.account?.id!,
+        userId: req.account.id!,
         sessionId,
         rating,
         comment,
@@ -79,6 +87,18 @@ export default class ReviewController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+    if (!req.account) {
+      throw new AppError(
+        ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+        AppErrorCodes.INTERNAL_ERROR
+      );
+    }
+    if (!req.pagination) {
+      throw new AppError(
+        ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+        AppErrorCodes.INTERNAL_ERROR
+      );
+    }
     const { psychId, sort } = req.query;
 
     if (!psychId || typeof psychId !== "string") {
@@ -90,8 +110,7 @@ export default class ReviewController {
 
     if (
       sort &&
-      (typeof sort !== "string" ||
-        (sort !== "recent" && sort !== "top-rated"))
+      (typeof sort !== "string" || (sort !== "recent" && sort !== "top-rated"))
     ) {
       throw new AppError(
         ERROR_MESSAGES.REVIEW_SORT_INVALID_FORMAT,
@@ -103,8 +122,8 @@ export default class ReviewController {
       const dto: ListPsychReviewsDTO = {
         psychId,
         sort: (sort as "recent" | "top-rated") || "recent",
-        skip: req.pagination?.skip!,
-        limit: req.pagination?.limit!,
+        skip: req.pagination.skip!,
+        limit: req.pagination.limit!,
       };
 
       const result = await this._listPsychReviewsUseCase.execute(dto);
