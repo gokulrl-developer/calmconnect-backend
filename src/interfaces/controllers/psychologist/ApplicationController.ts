@@ -76,7 +76,7 @@ export default class ApplicationController {
         !Array.isArray(req.body.specializations) ||
         req.body.specializations.length === 0 ||
         !req.body.specializations.every(
-          (s: any) => typeof s === "string" && s.trim() !== ""
+          (s: unknown) => typeof s === "string" && s.trim() !== ""
         )
       ) {
         throw new AppError(

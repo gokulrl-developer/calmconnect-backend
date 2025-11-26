@@ -1,24 +1,26 @@
-type EventCallback<T = any> = (payload: T) => Promise<void> | void;
+import { EventMap } from "../../application/interfaces/events/EventMap.js";
+import { IEventBus } from "../../application/interfaces/events/IEventBus.js";
 
-export default class EventBus {
-  private listeners: Map<string, EventCallback[]>;
+type EventCallback<T> = (payload: T) => void | Promise<void>;
 
-  constructor() {
-    this.listeners = new Map<string, EventCallback[]>();
+export class EventBus<EM> implements IEventBus<EM>{
+  private listeners: {
+    [K in keyof EM]?: EventCallback<EM[K]>[];
+  } = {};
+
+  subscribe<K extends keyof EM>(eventName: K, callback: EventCallback<EM[K]>): void {
+    if (!this.listeners[eventName]) {
+      this.listeners[eventName] = [];
+    }
+    this.listeners[eventName]!.push(callback);
   }
 
-  subscribe(eventName: string, callback: EventCallback): void {
-    if (!this.listeners.has(eventName)) this.listeners.set(eventName, []);
-    this.listeners.get(eventName)!.push(callback);
-  }
-
-  async emit<T = any>(eventName: string, payload: T): Promise<void> {
-    const callbacks = this.listeners.get(eventName) || [];
+  async emit<K extends keyof EM>(eventName: K, payload: EM[K]): Promise<void> {
+    const callbacks = this.listeners[eventName] ?? [];
     for (const cb of callbacks) {
-            await cb(payload);
+      await cb(payload);
     }
   }
 }
 
-export const eventBus = new EventBus();
-
+export const eventBus = new EventBus<EventMap>();

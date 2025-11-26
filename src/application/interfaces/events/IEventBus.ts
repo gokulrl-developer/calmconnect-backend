@@ -1,13 +1,12 @@
-import { EventMap } from "./EventMap.js";
 
-export interface IEventBus {
-  subscribe<K extends keyof EventMap>(
+export interface IEventBus<EM> {
+  subscribe<K extends keyof EM>(
     eventName: K,
-    callback: (payload: EventMap[K]) => Promise<void> | void
+    callback: (payload: EM[K]) => void | Promise<void>
   ): void;
 
-  emit<K extends keyof EventMap>(
+  emit<K extends keyof EM>(
     eventName: K,
-    payload: EventMap[K]
+    payload: EM[K]
   ): Promise<void>;
 }
