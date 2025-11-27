@@ -67,12 +67,6 @@ export default class NotificationController {
           AppErrorCodes.INTERNAL_ERROR
         );
       }
-      if (!req.pagination) {
-        throw new AppError(
-          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
-          AppErrorCodes.INTERNAL_ERROR
-        );
-      }
       const accountId = req.account.id;
       const recipientType = req.account.role;
 
