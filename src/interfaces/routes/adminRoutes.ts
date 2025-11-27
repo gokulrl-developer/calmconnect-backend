@@ -49,6 +49,7 @@ import FetchTopPsychologistsUseCase from "../../application/use-cases/admin/Fetc
 import DashboardController from "../controllers/admin/DashboardController.js";
 import FetchDashboardSummaryCardsUseCase from "../../application/use-cases/admin/FetchDashboardSummaryCards.js";
 import ClearNotificationsUseCase from "../../application/use-cases/ClearNotificationsUseCase.js";
+import { ADMIN_ROUTES } from "../constants/admin-endpoints.constants.js";
 
 const applicationRepository = new ApplicationRepository();
 const psychRepository = new PsychRepository();
@@ -190,189 +191,188 @@ const dashboardController = new DashboardController(
 );
 const router = express.Router();
 
-router.post("/admin/login", (req, res, next) =>
-  authController.loginAdmin(req, res, next)
+router.post(ADMIN_ROUTES.LOGIN, (req, res, next) =>
+authController.loginAdmin(req, res, next)
 );
 router.get(
-  "/admin/applications",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req: Request, res: Response, next: NextFunction) =>
-    applicationController.listApplications(req, res, next)
+ADMIN_ROUTES.FETCH_APPLICATIONS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req: Request, res: Response, next: NextFunction) =>
+applicationController.listApplications(req, res, next)
 );
 router.patch(
-  "/admin/application/:id",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req: Request, res: Response, next: NextFunction) =>
-    applicationController.updateApplicationStatus(req, res, next)
+ADMIN_ROUTES.UPDATE_APPLICATION,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req: Request, res: Response, next: NextFunction) =>
+applicationController.updateApplicationStatus(req, res, next)
 );
 router.get(
-  "/admin/application/:id",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req: Request, res: Response, next: NextFunction) =>
-    applicationController.findApplicationDetails(req, res, next)
+ADMIN_ROUTES.APPLICATION_DETAILS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req: Request, res: Response, next: NextFunction) =>
+applicationController.findApplicationDetails(req, res, next)
 );
 router.get(
-  "/admin/users",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req: Request, res: Response, next: NextFunction) =>
-    userController.listUsers(req, res, next)
+ADMIN_ROUTES.FETCH_USERS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req: Request, res: Response, next: NextFunction) =>
+userController.listUsers(req, res, next)
 );
 router.patch(
-  "/admin/user/:id",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req: Request, res: Response, next: NextFunction) =>
-    userController.updateUserStatus(req, res, next)
+ADMIN_ROUTES.UPDATE_USER_STATUS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req: Request, res: Response, next: NextFunction) =>
+userController.updateUserStatus(req, res, next)
 );
 router.get(
-  "/admin/psychologists",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req: Request, res: Response, next: NextFunction) =>
-    psychController.listPsychologists(req, res, next)
+ADMIN_ROUTES.FETCH_PSYCHOLOGISTS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req: Request, res: Response, next: NextFunction) =>
+psychController.listPsychologists(req, res, next)
 );
 router.patch(
-  "/admin/psychologist/:id",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req: Request, res: Response, next: NextFunction) =>
-    psychController.updatePsychologistStatus(req, res, next)
+ADMIN_ROUTES.UPDATE_PSYCH_STATUS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req: Request, res: Response, next: NextFunction) =>
+psychController.updatePsychologistStatus(req, res, next)
 );
 router.get(
-  "/admin/psychologist-details/:psychId",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req: Request, res: Response, next: NextFunction) =>
-    psychController.fetchPsychDetails(req, res, next)
+ADMIN_ROUTES.PSYCH_DETAILS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req: Request, res: Response, next: NextFunction) =>
+psychController.fetchPsychDetails(req, res, next)
 );
 router.get(
-  "/admin/user-details/:userId",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req: Request, res: Response, next: NextFunction) =>
-    userController.fetchUserDetails(req, res, next)
+ADMIN_ROUTES.USER_DETAILS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req: Request, res: Response, next: NextFunction) =>
+userController.fetchUserDetails(req, res, next)
 );
 router.get(
-  "/admin/sessions",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  paginationMiddleware,
-  (req: Request, res: Response, next: NextFunction) =>
-    sessionController.listSessions(req, res, next)
+ADMIN_ROUTES.SESSION_LISTING,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+paginationMiddleware,
+(req: Request, res: Response, next: NextFunction) =>
+sessionController.listSessions(req, res, next)
 );
 
-/* ----------------notifications ------------------------------------------- */
-
+/* notifications */
 router.get(
-  "/admin/notifications",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  paginationMiddleware,
-  notificationController.list.bind(notificationController)
+ADMIN_ROUTES.FETCH_NOTIFICATIONS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+paginationMiddleware,
+notificationController.list.bind(notificationController)
 );
 router.patch(
-  "/admin/notifications",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  notificationController.markRead.bind(notificationController)
+ADMIN_ROUTES.MARK_NOTIFICATIONS_READ,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+notificationController.markRead.bind(notificationController)
 );
 router.get(
-  "/admin/notifications/count",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  notificationController.getUnreadCount.bind(notificationController)
+ADMIN_ROUTES.UNREAD_NOTIFICATIONS_COUNT,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+notificationController.getUnreadCount.bind(notificationController)
 );
 router.delete(
-  "/admin/notifications",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  notificationController.clearNotifications.bind(notificationController)
-);
-router.get(
-  "/admin/transactions",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  paginationMiddleware,
-  financeController.listTransactions.bind(financeController)
-);
-router.get(
-  "/admin/wallet",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  financeController.fetchWallet.bind(financeController)
-);
-router.get(
-  "/admin/transactions/:transactionId/receipt",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  financeController.generateTransactionReceipt.bind(financeController)
+ADMIN_ROUTES.CLEAR_NOTIFICATIONS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+notificationController.clearNotifications.bind(notificationController)
 );
 
-/* complaint related routes */
+/* transactions / wallet */
 router.get(
-  "/admin/complaints/:complaintId/",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  complaintController.fetchComplaintDetails.bind(complaintController)
+ADMIN_ROUTES.TRANSACTIONS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+paginationMiddleware,
+financeController.listTransactions.bind(financeController)
 );
 router.get(
-  "/admin/complaints/",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  paginationMiddleware,
-  complaintController.listComplaints.bind(complaintController)
+ADMIN_ROUTES.WALLET,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+financeController.fetchWallet.bind(financeController)
 );
 router.get(
-  "/admin/complaints/",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  paginationMiddleware,
-  complaintController.listComplaintHistory.bind(complaintController)
+ADMIN_ROUTES.TRANSACTION_RECEIPT,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+financeController.generateTransactionReceipt.bind(financeController)
+);
+
+/* complaints */
+router.get(
+ADMIN_ROUTES.COMPLAINT_DETAILS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+complaintController.fetchComplaintDetails.bind(complaintController)
+);
+router.get(
+ADMIN_ROUTES.LIST_COMPLAINTS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+paginationMiddleware,
+complaintController.listComplaints.bind(complaintController)
+);
+router.get(
+ADMIN_ROUTES.COMPLAINT_HISTORY,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+paginationMiddleware,
+complaintController.listComplaintHistory.bind(complaintController)
 );
 router.patch(
-  "/admin/complaints/:complaintId",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  complaintController.resolveComplaint.bind(complaintController)
+ADMIN_ROUTES.RESOLVE_COMPLAINT,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+complaintController.resolveComplaint.bind(complaintController)
 );
 
-/* ---------------- Dashboard ---------------- */
+/* dashboard */
 router.get(
-  "/admin/dashboard/revenue",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req, res, next) => dashboardController.fetchRevenueTrends(req, res, next)
+ADMIN_ROUTES.DASHBOARD_REVENUE,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req, res, next) => dashboardController.fetchRevenueTrends(req, res, next)
+);
+router.get(
+ADMIN_ROUTES.DASHBOARD_CLIENTS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req, res, next) =>
+dashboardController.fetchRegistrationTrends(req, res, next)
+);
+router.get(
+ADMIN_ROUTES.DASHBOARD_SESSIONS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req, res, next) => dashboardController.fetchSessionTrends(req, res, next)
+);
+router.get(
+ADMIN_ROUTES.DASHBOARD_TOP_PSYCHOLOGISTS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req, res, next) => dashboardController.fetchTopPsychologists(req, res, next)
+);
+router.get(
+ADMIN_ROUTES.DASHBOARD_SUMMARY_CARDS,
+verifyTokenMiddleware,
+authorizeRoles("admin"),
+(req, res, next) => dashboardController.fetchSummaryCards(req, res, next)
 );
 
-router.get(
-  "/admin/dashboard/clients",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req, res, next) =>
-    dashboardController.fetchRegistrationTrends(req, res, next)
-);
-
-router.get(
-  "/admin/dashboard/sessions",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req, res, next) => dashboardController.fetchSessionTrends(req, res, next)
-);
-
-router.get(
-  "/admin/dashboard/top-psychologists",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req, res, next) => dashboardController.fetchTopPsychologists(req, res, next)
-);
-router.get(
-  "/admin/dashboard/summary-cards",
-  verifyTokenMiddleware,
-  authorizeRoles("admin"),
-  (req, res, next) => dashboardController.fetchSummaryCards(req, res, next)
-);
 export default router;
