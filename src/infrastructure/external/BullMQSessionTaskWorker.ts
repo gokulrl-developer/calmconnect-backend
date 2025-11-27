@@ -7,7 +7,7 @@ import { transporter } from "../config/nodeMailerConfig.js";
 import { EMAIL_MESSAGES } from "../../application/constants/email-messages.constants.js";
 
 export default class BullMQSessionTaskWorker {
-  private readonly queueName = "session-task-queue";
+  private readonly queueName = process.env.REDIS_QUEUE_NAME!;
 
   private worker: Worker<
     SessionTaskJobMap[keyof SessionTaskJobMap],
@@ -29,7 +29,6 @@ export default class BullMQSessionTaskWorker {
     >(this.queueName, this.processJob.bind(this),  {
         connection
       });
-
     this.registerEvents();
   }
 
