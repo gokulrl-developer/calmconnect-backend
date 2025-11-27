@@ -15,7 +15,6 @@ export function getAvailableSlotsForDatePsych(
   quickSlots: QuickSlot[],
   sessions: Session[]
 ) {
-  console.log("getAvailableSlotsutil",specialDay,availabilityRules,quickSlots,sessions)
   let availability: Availability | null = null;
   if (availabilityRules.length === 0) {
     throw new AppError(
