@@ -63,6 +63,7 @@ import AdminConfigService from "../../infrastructure/external/AdminConfigService
 import FetchPsychDashboardUseCase from "../../application/use-cases/psychologist/FetchPsychDashboardUseCase.js";
 import ReviewRepository from "../../infrastructure/database/repositories/ReviewRepository.js";
 import ClearNotificationsUseCase from "../../application/use-cases/ClearNotificationsUseCase.js";
+import { PSYCH_ROUTES } from "../constants/psychologist-endpoints.constants.js";
 
 
 const psychRepository = new PsychRepository();
@@ -243,64 +244,75 @@ const checkStatusPsych = new CheckStatusPsych(checkStatusPsychUseCase);
 
 const router = express.Router();
 
+
 router.post(
-  "/psychologist/sign-up",
+  PSYCH_ROUTES.SIGN_UP,
   (req: Request, res: Response, next: NextFunction) =>
     authController.signUpPsych(req, res, next)
 );
+
 router.post(
-  "/psychologist/forgot-password",
+  PSYCH_ROUTES.FORGOT_PASSWORD,
   (req: Request, res: Response, next: NextFunction) =>
     authController.forgotPasswordPsych(req, res, next)
 );
+
 router.post(
-  "/psychologist/register",
+  PSYCH_ROUTES.REGISTER,
   (req: Request, res: Response, next: NextFunction) =>
     authController.registerPsych(req, res, next)
 );
+
 router.post(
-  "/psychologist/reset-password",
+  PSYCH_ROUTES.RESET_PASSWORD,
   (req: Request, res: Response, next: NextFunction) =>
     authController.resetPassword(req, res, next)
 );
+
 router.post(
-  "/psychologist/resend-otp-signup",
+  PSYCH_ROUTES.RESEND_OTP_SIGNUP,
   (req: Request, res: Response, next: NextFunction) =>
     authController.resendOtpSignUp(req, res, next)
 );
+
 router.post(
-  "/psychologist/resend-otp-reset",
+  PSYCH_ROUTES.RESEND_OTP_RESET,
   (req: Request, res: Response, next: NextFunction) =>
     authController.resendOtpReset(req, res, next)
 );
+
 router.post(
-  "/psychologist/social",
+  PSYCH_ROUTES.SOCIAL_LOGIN,
   (req: Request, res: Response, next: NextFunction) =>
     authController.googleAuthPsych(req, res, next)
 );
+
 router.post(
-  "/psychologist/login",
+  PSYCH_ROUTES.LOGIN,
   (req: Request, res: Response, next: NextFunction) =>
     authController.loginPsych(req, res, next)
 );
+
 router.get(
-  "/psychologist/dashboard",
+  PSYCH_ROUTES.DASHBOARD,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
   (req: Request, res: Response, next: NextFunction) =>
     psychController.getDashboard(req, res, next)
 );
+
 router.get(
-  "/psychologist/application",
+  PSYCH_ROUTES.GET_APPLICATION,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
   (req: Request, res: Response, next: NextFunction) =>
     applicationController.getApplication(req, res, next)
 );
+
 router.post(
-  "/psychologist/apply",
+  PSYCH_ROUTES.CREATE_APPLICATION,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
@@ -314,15 +326,16 @@ router.post(
 );
 
 router.get(
-  `/psychologist/profile`,
+  PSYCH_ROUTES.FETCH_PROFILE,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
   (req: Request, res: Response, next: NextFunction) =>
     psychController.fetchProfile(req, res, next)
 );
+
 router.get(
-  `/psychologist/sessions`,
+  PSYCH_ROUTES.LIST_SESSIONS,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   paginationMiddleware,
@@ -330,8 +343,9 @@ router.get(
   (req: Request, res: Response, next: NextFunction) =>
     sessionController.listSessions(req, res, next)
 );
+
 router.patch(
-  `/psychologist/profile`,
+  PSYCH_ROUTES.UPDATE_PROFILE,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
@@ -343,7 +357,7 @@ router.patch(
 // ------------------ Availability Routes ------------------
 
 router.post(
-  "/psychologist/availability-rule",
+  PSYCH_ROUTES.CREATE_AVAILABILITY_RULE,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
@@ -351,7 +365,7 @@ router.post(
 );
 
 router.patch(
-  "/psychologist/availability-rule/:availabilityRuleId",
+  PSYCH_ROUTES.EDIT_AVAILABILITY_RULE,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
@@ -359,7 +373,7 @@ router.patch(
 );
 
 router.delete(
-  "/psychologist/availability-rule/:availabilityRuleId",
+  PSYCH_ROUTES.DELETE_AVAILABILITY_RULE,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
@@ -367,7 +381,7 @@ router.delete(
 );
 
 router.get(
-  "/psychologist/availability-rule",
+  PSYCH_ROUTES.FETCH_AVAILABILITY_RULE,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
@@ -375,7 +389,7 @@ router.get(
 );
 
 router.get(
-  "/psychologist/availability-rules",
+  PSYCH_ROUTES.LIST_AVAILABILITY_RULES,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
@@ -384,7 +398,7 @@ router.get(
 
 // ---------- Special Day ----------
 router.post(
-  "/psychologist/special-day",
+  PSYCH_ROUTES.CREATE_SPECIAL_DAY,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
@@ -392,7 +406,7 @@ router.post(
 );
 
 router.patch(
-  "/psychologist/special-day/:specialDayId",
+  PSYCH_ROUTES.EDIT_SPECIAL_DAY,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
@@ -400,15 +414,16 @@ router.patch(
 );
 
 router.delete(
-  "/psychologist/special-day/:specialDayId",
+  PSYCH_ROUTES.DELETE_SPECIAL_DAY,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
   availabilityController.deleteSpecialDay.bind(availabilityController)
 );
 
+// ---------- Quick Slot ----------
 router.post(
-  "/psychologist/quick-slot",
+  PSYCH_ROUTES.CREATE_QUICK_SLOT,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
@@ -416,7 +431,7 @@ router.post(
 );
 
 router.patch(
-  "/psychologist/quick-slot/:quickSlotId",
+  PSYCH_ROUTES.EDIT_QUICK_SLOT,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
@@ -424,92 +439,78 @@ router.patch(
 );
 
 router.delete(
-  "/psychologist/quick-slot/:quickSlotId",
+  PSYCH_ROUTES.DELETE_QUICK_SLOT,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
   availabilityController.deleteQuickSlot.bind(availabilityController)
 );
 
+// ---------- Daily Availability ----------
 router.get(
-  "/psychologist/daily-availability",
+  PSYCH_ROUTES.FETCH_DAILY_AVAILABILITY,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
   availabilityController.fetchDailyAvailability.bind(availabilityController)
 );
-router.get(
-  "/psychologist/application",
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
-  checkStatusPsych.handle.bind(checkStatusPsych),
-  applicationController.getApplication.bind(applicationController)
-);
 
-router.patch(
-  "/psychologist/sessions/:sessionId",
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
-  checkStatusPsych.handle.bind(checkStatusPsych),
-  sessionController.cancelSession.bind(sessionController)
-);
+// ---------- Notifications ----------
 router.get(
-  "/psychologist/sessions/:sessionId/access",
+  PSYCH_ROUTES.FETCH_NOTIFICATIONS,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
-  checkStatusPsych.handle.bind(checkStatusPsych),
-  sessionController.checkSessionAccess.bind(sessionController)
-);
-
-/* ----------------notifications ------------------------------------------- */
-
-router.get(
-  "/psychologist/notifications",
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
-  paginationMiddleware,
   checkStatusPsych.handle.bind(checkStatusPsych),
   notificationController.list.bind(notificationController)
 );
+
 router.patch(
-  "/psychologist/notifications",
+  PSYCH_ROUTES.MARK_NOTIFICATIONS_READ,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
   notificationController.markAllRead.bind(notificationController)
 );
-router.get(
-  "/psychologist/notifications/count",
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
-  notificationController.getUnreadCount.bind(notificationController)
-);
+
 router.delete(
-  "/psychologist/notifications",
+  PSYCH_ROUTES.CLEAR_NOTIFICATIONS,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
   notificationController.clearNotifications.bind(notificationController)
 );
 
-
 router.get(
-  "/psychologist/transactions",
+  PSYCH_ROUTES.UNREAD_NOTIFICATIONS_COUNT,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
-  paginationMiddleware,
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  notificationController.getUnreadCount.bind(notificationController)
+);
+
+// ---------- Finance / Transactions ----------
+router.get(
+  PSYCH_ROUTES.TRANSACTION_LIST,
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
   financeController.listTransactions.bind(financeController)
 );
+
 router.get(
-  "/psychologist/wallet",
+  PSYCH_ROUTES.TRANSACTION_RECEIPT,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
-  financeController.fetchWallet.bind(financeController)
-);
-router.get(
-  "/psychologist/transactions/:transactionId/receipt",
-  verifyTokenMiddleware,
-  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
   financeController.generateTransactionReceipt.bind(financeController)
+);
+
+router.get(
+  PSYCH_ROUTES.WALLET,
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  financeController.fetchWallet.bind(financeController)
 );
 
 export default router;
