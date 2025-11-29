@@ -17,7 +17,7 @@ export default class BullMQSessionTaskQueue implements ISessionTaskQueue {
    const connection = new Redis(process.env.REDIS_URL!);
     this.queue = new Queue(process.env.REDIS_QUEUE_NAME!,  {
   connection
-}
+},
 );
   }
   async add<JobName extends keyof SessionTaskJobMap>(

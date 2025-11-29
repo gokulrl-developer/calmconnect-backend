@@ -30,7 +30,6 @@ export default class BullMQSessionTaskWorker {
     >(this.queueName, this.processJob.bind(this),  {
         connection
       });
-
     this.registerEvents();
   }
 
