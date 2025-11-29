@@ -13,12 +13,16 @@ import ITransactionRepository, {
   RevenueTrendsEntry,
 } from "../../../domain/interfaces/ITransactionRepository.js";
 import { startOfWeek, subWeeks } from "date-fns";
+import { TransactionOwnerType } from "../../../domain/enums/TransactionOwnerType.js";
+import { TransactionType } from "../../../domain/enums/TransactionType.js";
+import { TransactionReferenceType } from "../../../domain/enums/TransactionReferenceType.js";
+import { RevenueTrendsIntervalByAdmin } from "../../../domain/enums/RevenueTrendsIntervalByAdmin.js";
 
 interface TransactionQuery {
   ownerId: string;
-  ownerType: "platform" | "user" | "psychologist";
-  type?: "credit" | "debit";
-  referenceType?: "booking" | "psychologistPayment" | "refund";
+  ownerType: TransactionOwnerType;
+  type?: TransactionType;
+  referenceType?: TransactionReferenceType;
   createdAt?: { $gte: Date; $lte: Date };
 }
 export default class TransactionRepository
@@ -87,9 +91,9 @@ export default class TransactionRepository
 }
   async listByOwner(
     ownerId: string,
-    ownerType: "platform" | "user" | "psychologist",
-    type?: "credit" | "debit",
-    referenceType?: "booking" | "psychologistPayment" | "refund",
+    ownerType: TransactionOwnerType,
+    type?: TransactionType,
+    referenceType?: TransactionReferenceType,
     date?: string,
     skip = 0,
     limit = 50
@@ -123,17 +127,17 @@ export default class TransactionRepository
   async fetchRevenueTrends(
     fromDate: Date,
     toDate: Date,
-    interval: "day" | "month" | "year"
+    interval: RevenueTrendsIntervalByAdmin
   ): Promise<RevenueTrendsEntry[]> {
     const dateFormat =
-      interval === "day" ? "%Y-%m-%d" : interval === "month" ? "%Y-%m" : "%Y";
+      interval === RevenueTrendsIntervalByAdmin.DAY ? "%Y-%m-%d" : interval === RevenueTrendsIntervalByAdmin.MONTH ? "%Y-%m" : "%Y";
 
     const results = await this.model.aggregate([
       {
         $match: {
           createdAt: { $gte: fromDate, $lte: toDate },
-          type: "credit",
-          ownerType: "platform", 
+          type: TransactionType.CREDIT,
+          ownerType: TransactionOwnerType.PLATFORM, 
         },
       },
       {
@@ -158,15 +162,15 @@ export default class TransactionRepository
     toDate: Date
   ): Promise<RevenueSummary> {
     const totalValuePromise = this.model.aggregate([
-      { $match: { type: "credit", ownerType: "platform" } },
+      { $match: { type: TransactionType.CREDIT, ownerType: TransactionOwnerType.PLATFORM } },
       { $group: { _id: null, total: { $sum: "$amount" } } },
     ]);
 
     const addedValuePromise = this.model.aggregate([
       {
         $match: {
-          type: "credit",
-          ownerType: "platform",
+          type: TransactionType.CREDIT,
+          ownerType:TransactionOwnerType.PLATFORM,
           createdAt: { $gte: fromDate, $lte: toDate },
         },
       },
@@ -193,8 +197,8 @@ export default class TransactionRepository
     {
       $match: {
         ownerId: psychId,
-        ownerType: "psychologist",
-        type: "credit",
+        ownerType:TransactionOwnerType.PSYCHOLOGIST,
+        type: TransactionType.CREDIT,
         createdAt: { $gte: startDate, $lte: endDate },
       },
     },
@@ -235,8 +239,8 @@ export default class TransactionRepository
         {
           $match: {
             ownerId: psychId,
-            ownerType: "psychologist",
-            type: "credit",
+            ownerType: TransactionOwnerType.PSYCHOLOGIST,
+            type: TransactionType.CREDIT,
             createdAt: { $gte: startOfCurrentMonth, $lte: now },
           },
         },
@@ -246,8 +250,8 @@ export default class TransactionRepository
         {
           $match: {
             ownerId: psychId,
-            ownerType: "psychologist",
-            type: "credit",
+            ownerType: TransactionOwnerType.PSYCHOLOGIST,
+            type: TransactionType.CREDIT,
             createdAt: { $gte: startOfLastMonth, $lte: endOfLastMonth },
           },
         },
@@ -269,9 +273,9 @@ export default class TransactionRepository
     {
       $match: {
         ownerId: userId,
-        ownerType: "user",
-        type: { $in: ["credit", "debit"] },
-        referenceType: { $in: ["booking", "refund"] },
+        ownerType: TransactionOwnerType.USER,
+        type: { $in: Object.values(TransactionType) },
+        referenceType: { $in: [TransactionReferenceType.BOOKING, TransactionReferenceType.REFUND] },
       },
     },
 

@@ -3,6 +3,7 @@ import AvailabilityRule from "../../../domain/entities/availability-rule.entity.
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
 import { AvailabilityRuleModel, IAvailabilityRuleDocument } from "../models/AvailabilityRuleModel.js";
 import { BaseRepository } from "./BaseRepository.js";
+import { AvailabilityRuleStatus } from "../../../domain/enums/AvailabilityRuleStatus.js";
 
 
 export default class AvailabilityRuleRepository
@@ -42,12 +43,12 @@ export default class AvailabilityRuleRepository
   }
 
   async findAllActiveByPsychId(psychId: string): Promise<AvailabilityRule[]> {
-    const rules = await this.model.find({ psychologist: psychId,status:"active" });
+    const rules = await this.model.find({ psychologist: psychId,status:AvailabilityRuleStatus.ACTIVE });
     return rules.map((rule) => this.toDomain(rule));
   }
 
   async findActiveByWeekDayPsych(weekDay: number, psychId: string): Promise<AvailabilityRule[]> {
-    const docs = await this.model.find({ psychologist: psychId, weekDay,status:"active" });
+    const docs = await this.model.find({ psychologist: psychId, weekDay,status:AvailabilityRuleStatus.ACTIVE });
    
     return docs.map((doc)=>this.toDomain(doc));
   }

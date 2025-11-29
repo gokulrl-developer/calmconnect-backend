@@ -1,3 +1,10 @@
+import { AvailabilityRuleStatus } from "../../domain/enums/AvailabilityRuleStatus.js";
+import { PsychologistGender } from "../../domain/enums/PsychologistGender.js";
+import { QuickSlotStatus } from "../../domain/enums/QuickSlotStatus.js";
+import { SessionStatus } from "../../domain/enums/SessionStatus.js";
+import { SpecialDayStatus } from "../../domain/enums/SpecialDayStatus.js";
+import { SpecialDayType } from "../../domain/enums/SpecialDayType.js";
+
 export interface PsychSignUpDTO {
   firstName: string;
   lastName: string;
@@ -42,7 +49,7 @@ export interface PsychApplicationDTO {
   psychId: string;
   submittedAt: Date;
   phone: string;
-  gender: "male" | "female" | "others";
+  gender: PsychologistGender;
   dob: Date;
   profilePicture: Buffer;
   address: string;
@@ -75,7 +82,7 @@ export interface UpdatePsychProfileDTO {
 
 export interface SessionListingDTO{
   psychId:string,
-  status:"scheduled"|"cancelled"|"ended"|"pending",
+  status:SessionStatus,
   skip:number,
   limit:number
 }
@@ -102,7 +109,7 @@ export interface EditAvaialabilityRuleDTO {
   endTime?: string; // "17:00"
   durationInMins?: number; // slot duration
   bufferTimeInMins?: number; // optional buffer
-  status?: "active" | "inactive";
+  status?: AvailabilityRuleStatus;
 }
 
 /* Soft Delete AvailabilityRule */
@@ -114,7 +121,7 @@ export interface DeleteAvailabilityRuleDTO {
 export interface CreateSpecialDayDTO {
   psychId: string;
   date: Date;
-  type: "override" | "absent"; //override-different schedule,absent-complete holiday
+  type: SpecialDayType; //override-different schedule,absent-complete holiday
   startTime?: Date; //not needed for absent
   endTime?: Date; //not needed for absent
   durationInMins?: number; // slot duration   //not needed for absent
@@ -125,12 +132,12 @@ export interface CreateSpecialDayDTO {
 export interface EditSpecialDayDTO {
   psychId: string;
   specialDayId: string;
-  type?: "override" | "absent"; //override-different schedule,absent-complete holiday
+  type?: SpecialDayType; //override-different schedule,absent-complete holiday
   startTime?: Date;
   endTime?: Date;
   durationInMins?: number; // slot duration
   bufferTimeInMins?: number; // optional buffer
-  status?: "active" | "inactive";
+  status?: SpecialDayStatus;
 }
 
 /*  Soft Delete Special Day */
@@ -156,7 +163,7 @@ export interface EditQuickSlotDTO {
   endTime?: Date;
   durationInMins?: number; // slot duration
   bufferTimeInMins?: number; // optional buffer
-  status?: "active" | "inactive";
+  status?: QuickSlotStatus;
 }
 
 /* Soft Delete Quick Slot */

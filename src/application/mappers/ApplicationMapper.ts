@@ -2,6 +2,7 @@ import { PsychApplicationDTO } from "../dtos/psych.dto.js";
 import { Application } from "../../domain/entities/application.entity.js";
 import Psychologist from "../../domain/entities/psychologist.entity.js";
 import { LatestApplicationData } from "../interfaces/IFetchLatestApplicationUseCase.js";
+import { ApplicationStatus } from "../../domain/enums/ApplicationStatus.js";
 
 
 export interface FileStorageReturn{
@@ -29,7 +30,7 @@ export const toApplicationDomainSubmit=(application:PsychApplicationDTO,psycholo
     urls.licenseUrl,
     urls.resume,
     application.qualifications,
-    "pending",
+    ApplicationStatus.PENDING,
     undefined,
     psychologist.password,
     undefined,    

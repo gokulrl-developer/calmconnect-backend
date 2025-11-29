@@ -1,5 +1,6 @@
 import { EventMap } from "./EventMap.js";
 
+
 export interface IEventBus{
   subscribe<K extends keyof EventMap>(
     eventName: K,

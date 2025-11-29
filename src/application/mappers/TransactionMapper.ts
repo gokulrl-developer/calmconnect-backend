@@ -14,6 +14,11 @@ import {
 } from "../../application/interfaces/IFetchPsychDashboardUseCase.js";
 import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
 import { UserRecentTransactionsEntry } from "../interfaces/IFetchUserDashboardUseCase.js";
+import { TransactionOwnerType } from "../../domain/enums/TransactionOwnerType.js";
+import { TransactionSourceType } from "../../domain/enums/TransactionSourceType.js";
+import { TransactionRecipientType } from "../../domain/enums/TransactionRecipientType.js";
+import { TransactionType } from "../../domain/enums/TransactionType.js";
+import { TransactionReferenceType } from "../../domain/enums/TransactionReferenceType.js";
 
 
 export const toDomainBookingDebit = (
@@ -27,16 +32,16 @@ export const toDomainBookingDebit = (
   return new Transaction(
     userWalletId,
     ownerId,
-    "user", // ownerType
+    TransactionOwnerType.USER, // ownerType
     ownerId, // sourceId
-    "user", // sourceType
+    TransactionSourceType.USER, // sourceType
     recipientId, // recipientId
-    "platform", // recipientType
-    "debit",
+    TransactionRecipientType.PLATFORM, // recipientType
+    TransactionType.DEBIT,
     amount,
     sessionId,
     providerPaymentId,
-    "booking",
+    TransactionReferenceType.BOOKING,
     "User booking payment"
   );
 };
@@ -53,16 +58,16 @@ export const toDomainBookingCredit = (
   return new Transaction(
     adminWalletId,
     ownerId,
-    "platform", // ownerType
+    TransactionOwnerType.PLATFORM, // ownerType
     sourceId,
-    "user", // sourceType
+    TransactionSourceType.USER, // sourceType
     ownerId,
-    "platform", // recipientType
-    "credit",
+    TransactionRecipientType.PLATFORM, // recipientType
+    TransactionType.CREDIT,
     amount,
     sessionId,
     providerPaymentId,
-    "booking",
+    TransactionReferenceType.BOOKING,
     "Platform received booking payment"
   );
 };
@@ -78,16 +83,16 @@ export const toDomainRefundDebit = (
   return new Transaction(
     adminWalletId,
     ownerId,
-    "platform",
+    TransactionOwnerType.PLATFORM,
     ownerId,
-    "platform",
+    TransactionSourceType.PLATFORM,
     recipientId,
-    "user",
-    "debit",
+    TransactionRecipientType.USER,
+    TransactionType.DEBIT,
     amount,
     sessionId,
     undefined,
-    "refund",
+    TransactionReferenceType.REFUND,
     "Refund issued from platform"
   );
 };
@@ -103,16 +108,16 @@ export const toDomainRefundCredit = (
   return new Transaction(
     userWalletId,
     ownerId,
-    "user",
+    TransactionOwnerType.USER,
     sourceId,
-    "platform",
+    TransactionSourceType.PLATFORM,
     ownerId,
-    "user",
-    "credit",
+    TransactionRecipientType.USER,
+    TransactionType.CREDIT,
     amount,
     sessionId,
     undefined,
-    "refund",
+    TransactionReferenceType.REFUND,
     "Refund credited to user"
   );
 };
@@ -128,16 +133,16 @@ export const toDomainPayoutDebit = (
   return new Transaction(
     adminWalletId,
     ownerId,
-    "platform",
+    TransactionOwnerType.PLATFORM,
     ownerId,
-    "platform",
+    TransactionSourceType.PLATFORM,
     recipientId,
-    "psychologist",
-    "debit",
+    TransactionRecipientType.PSYCHOLOGIST,
+    TransactionType.DEBIT,
     amount,
     sessionId,
     undefined,
-    "psychologistPayment",
+    TransactionReferenceType.PSYCHOLOGIST_PAYMENT,
     "Payout to psychologist"
   );
 };
@@ -153,16 +158,16 @@ export const toDomainPayoutCredit = (
   return new Transaction(
     psychologistWalletId,
     ownerId,
-    "psychologist",
+    TransactionOwnerType.PSYCHOLOGIST,
     sourceId,
-    "platform",
+    TransactionSourceType.PLATFORM,
     ownerId,
-    "psychologist",
-    "credit",
+    TransactionRecipientType.PSYCHOLOGIST,
+    TransactionType.CREDIT,
     amount,
     sessionId,
     undefined,
-    "psychologistPayment",
+    TransactionReferenceType.PSYCHOLOGIST_PAYMENT,
     "Psychologist received payout"
   );
 };

@@ -7,6 +7,7 @@ import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
 import ICancelSessionUserUseCase from "../../../application/interfaces/ICancelSessionUserUseCase.js";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 import ICheckSessionAccessUseCase from "../../../application/interfaces/ICheckSessionAccessUseCase.js";
+import { SessionStatus } from "../../../domain/enums/SessionStatus.js";
 
 export default class SessionController {
   constructor(
@@ -37,10 +38,7 @@ export default class SessionController {
       const result = await this._listSessionsByUserUseCase.execute({
         userId: userId!,
         status: req.query.status as
-          | "scheduled"
-          | "cancelled"
-          | "ended"
-          | "pending",
+         SessionStatus,
         skip: req.pagination.skip!,
         limit: req.pagination.limit!,
       });

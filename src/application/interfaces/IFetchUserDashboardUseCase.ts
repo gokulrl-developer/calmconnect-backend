@@ -1,3 +1,7 @@
+import { ComplaintStatus } from "../../domain/enums/ComplaintStatus.js";
+import { SessionStatus } from "../../domain/enums/SessionStatus.js";
+import { TransactionReferenceType } from "../../domain/enums/TransactionReferenceType.js";
+import { TransactionType } from "../../domain/enums/TransactionType.js";
 import { FetchUserDashboardDTO } from "../dtos/user.dto.js";
 export interface UserSessionSummary{
     totalSessions:number;
@@ -12,14 +16,14 @@ export interface UserRecentSessionsEntry{
     lastName:string;
     profilePicture:string;
     startTime: string;
-    status:"scheduled"|"cancelled"|"ended"|"pending"
+    status:SessionStatus
 }
 
 export interface UserRecentTransactionsEntry{
     transactionId:string;
     time:string;
-    type:"credit"|"debit";
-    referenceType?:"booking"|"refund";
+    type:TransactionType;
+    referenceType?:TransactionReferenceType.BOOKING|TransactionReferenceType.REFUND;
     psychFirstName:string;
     psychLastName:string
 }
@@ -29,7 +33,7 @@ export interface UserRecentComplaintsEntry{
     psychFirstName:string;
     psychLastName:string;
     raisedTime:string;
-    status:"pending"|"resolved"
+    status:ComplaintStatus
 }
 export interface UserDashboardResponse{
     sessionSummary:UserSessionSummary,

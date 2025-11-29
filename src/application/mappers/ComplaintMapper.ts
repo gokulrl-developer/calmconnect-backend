@@ -11,6 +11,7 @@ import { ComplaintListByUserItem } from "../interfaces/IComplaintListinByUserUse
 import { createFullName } from "../../utils/createFullName.js";
 import { UserRecentComplaintsEntryFromPersistence } from "../../domain/interfaces/IComplaintRepository.js";
 import { UserRecentComplaintsEntry } from "../interfaces/IFetchUserDashboardUseCase.js";
+import { ComplaintStatus } from "../../domain/enums/ComplaintStatus.js";
 
 
 export const mapCreateComplaintDTOToDomain = (
@@ -22,7 +23,7 @@ export const mapCreateComplaintDTOToDomain = (
     session.psychologist,
     dto.sessionId,
     dto.description,
-    "pending",
+    ComplaintStatus.PENDING,
     new Date(),
     ""
   );
@@ -144,7 +145,7 @@ export const mapComplaintResolutionDTOToDomain = (
     existingComplaint.psychologist,
     existingComplaint.session,
     existingComplaint.description,
-    "resolved",
+    ComplaintStatus.RESOLVED,
     existingComplaint.createdAt,
     dto.adminNotes,
     existingComplaint.id,

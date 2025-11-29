@@ -16,14 +16,14 @@ export default class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', 
       sameSite: 'strict', 
-      maxAge: 7 * 24 * 60 * 60 * 1000, 
+      maxAge: Number(process.env.REFRESH_TOKEN_COOKIE_MAX_AGE!), 
       path: '/refresh', 
     });
     res.cookie('accessToken', result.accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', 
       sameSite: 'strict', 
-      maxAge: 60 * 15 * 1000, 
+      maxAge:Number(process.env.ACCESS_TOKEN_COOKIE_MAX_AGE!), 
       path: '/', 
     });
     

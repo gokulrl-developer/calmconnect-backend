@@ -11,6 +11,7 @@ import IApplicationDetailsUseCase from "../../../application/interfaces/IApplica
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import { ApplicationStatus } from "../../../domain/enums/ApplicationStatus.js";
 
 export default class ApplicationController {
   constructor(
@@ -41,7 +42,7 @@ export default class ApplicationController {
         page: parseInt(req.query.page as string) || 1,
         search: (req.query?.search as string) || null,
         status:
-          req.query.status ? req.query.status as "pending"|"accepted"|"rejected": undefined,
+          req.query.status ? req.query.status as ApplicationStatus: undefined,
       };
       const applications = await this._listUseCase.execute(dto);
       res.status(StatusCodes.OK).json({ success: true, data: applications });

@@ -1,3 +1,5 @@
+import { ComplaintStatus } from "../../domain/enums/ComplaintStatus.js";
+import { SessionStatus } from "../../domain/enums/SessionStatus.js";
 import { ComplaintDetailsByAdminDTO } from "../dtos/admin.dto.js";
 
 export interface ComplaintDetailsResponse {
@@ -10,10 +12,10 @@ export interface ComplaintDetailsResponse {
   sessionId?: string;
   sessionStartTime: string;
   sessionEndTime: string;
-  sessionStatus: "scheduled" | "cancelled" | "ended" | "pending";
+  sessionStatus: SessionStatus;
   sessionFees: number;
   description: string;
-  status: "pending" | "resolved";
+  status: ComplaintStatus;
   createdAt: string;
   adminNotes?: string;
   resolvedAt?: string;

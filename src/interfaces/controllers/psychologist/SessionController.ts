@@ -7,6 +7,7 @@ import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 import ICancelSessionPsychUseCase from "../../../application/interfaces/ICancelSessionPsychUseCase.js";
 import ICheckSessionAccessUseCase from "../../../application/interfaces/ICheckSessionAccessUseCase.js";
+import { SessionStatus } from "../../../domain/enums/SessionStatus.js";
 
 
 export default class SessionController {
@@ -32,7 +33,7 @@ export default class SessionController {
       const psychId = req.account.id;
       const result = await this._listSessionsByPsychUseCase.execute({
         psychId: psychId!,
-        status: req.query.status as"scheduled"|"cancelled"|"ended"|"pending",
+        status: req.query.status as SessionStatus,
         skip: req.pagination.skip!,
         limit: req.pagination.limit!,
       });

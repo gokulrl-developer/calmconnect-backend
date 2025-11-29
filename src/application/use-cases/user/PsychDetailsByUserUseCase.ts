@@ -35,7 +35,6 @@ private readonly _availabilityRuleRepository: IAvailabilityRuleRepository,
     
     const selectedDate = dto.date ? new Date(dto.date) : new Date();
     const startOfToday = new Date();
-    console.log("usecase",selectedDate,dto)
     startOfToday.setHours(0, 0, 0, 0);
     if(startOfToday>selectedDate){
       throw new AppError(ERROR_MESSAGES.SELECTED_DATE_PASSED,AppErrorCodes.VALIDATION_ERROR)

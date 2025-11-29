@@ -28,7 +28,7 @@ export class RefreshTokenController {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 15 * 60 * 1000 
+        maxAge: Number(process.env.ACCESS_TOKEN_COOKIE_MAX_AGE!)
       });
 
      

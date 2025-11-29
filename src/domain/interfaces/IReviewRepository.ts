@@ -1,9 +1,10 @@
 import Review from "../entities/review.entity.js";
+import { PsychReviewsSortByUser } from "../enums/PsychReviewsSortByUser.js";
 import IBaseRepository from "./IBaseRepository.js";
 
 export interface ListPsychReviewsFilter {
   psychId: string;
-  sort: "recent" | "top-rated";
+  sort: PsychReviewsSortByUser;
   skip: number;
   limit: number;
 }

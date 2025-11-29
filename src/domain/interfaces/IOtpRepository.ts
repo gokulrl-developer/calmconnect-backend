@@ -1,3 +1,4 @@
+import { Role } from "../enums/Role.js";
 
 export interface TempAccount {
   firstName: string;
@@ -9,7 +10,7 @@ export interface TempAccount {
 
 export interface Otp {
   otp:string;
-  role:"user"|"psychologist"
+  role:Role.USER|Role.PSYCHOLOGIST
 }
 
 export interface IOtpRepository {

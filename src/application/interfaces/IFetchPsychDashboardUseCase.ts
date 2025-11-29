@@ -1,3 +1,4 @@
+import { SessionStatus } from "../../domain/enums/SessionStatus.js";
 import { FetchPsychDashboardDTO } from "../dtos/psych.dto.js";
 
 export interface DashboardSummary {
@@ -37,7 +38,7 @@ export interface RecentSessionEntry {
   lastName: string;
   profilePicture: string;
   startTime: string;
-  status: "scheduled" | "cancelled" | "ended" | "pending";
+  status: SessionStatus;
 }
 
 export interface PsychologistDashboardResponse {

@@ -1,4 +1,6 @@
 import Session from "../entities/session.entity.js";
+import { SessionStatus } from "../enums/SessionStatus.js";
+import { SessionTrendsByAdminInterval } from "../enums/SessionTrendsByAdminInterval.js";
 import IBaseRepository from "./IBaseRepository.js";
 
 export interface SessionTrendsEntry {
@@ -33,7 +35,7 @@ export default interface ISessionRepository extends IBaseRepository<Session> {
   fetchSessionTrends(
     fromDate: Date,
     toDate: Date,
-    interval: "day" | "month" | "year"
+    interval: SessionTrendsByAdminInterval
   ): Promise<SessionTrendsEntry[]>;
   findTopBySessionCount(
     fromDate: Date,
@@ -87,7 +89,7 @@ export interface RecentSessionEntryFromPersistence {
   lastName: string;
   profilePicture: string;
   startTime: string;
-  status: "scheduled" | "cancelled" | "ended" | "pending";
+  status: SessionStatus;
 }
 
 export interface PsychSessionSummaryFromPersistence {
@@ -111,5 +113,5 @@ export interface RecentUserSessionEntryFromPersistence {
   lastName: string;
   profilePicture: string;
   startTime: string;
-  status: "scheduled" | "cancelled" | "ended" | "pending";
+  status: SessionStatus;
 }

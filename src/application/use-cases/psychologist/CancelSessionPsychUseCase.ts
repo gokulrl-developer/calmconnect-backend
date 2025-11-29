@@ -12,6 +12,8 @@ import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../error/app-error-codes.js";
 import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService.js";
 import { toWalletDomain } from "../../mappers/WalletMapper.js";
+import { WalletOwnerType } from "../../../domain/enums/WalletOwnerType.js";
+import { SessionStatus } from "../../../domain/enums/SessionStatus.js";
 
 export default class CancelSessionPsychUseCase {
   constructor(
@@ -32,19 +34,19 @@ export default class CancelSessionPsychUseCase {
     const { adminId } =
       this._adminConfigService.getAdminData();
     let platformWallet = await this._walletRepository.findOne({
-      ownerType: "platform",
+      ownerType: WalletOwnerType.PLATFORM,
     });
     let userWallet = await this._walletRepository.findByOwner(
       session.user,
-      "user"
+      WalletOwnerType.USER
     );
     if (!platformWallet) {
       platformWallet = await this._walletRepository.create(
-        new Wallet("platform", 0, adminId)
+        new Wallet(WalletOwnerType.PLATFORM, 0, adminId)
       );
     }
     if (!userWallet) {
-      const walletEntity = toWalletDomain("user", 0, session.user);
+      const walletEntity = toWalletDomain(WalletOwnerType.USER, 0, session.user);
       userWallet = await this._walletRepository.create(walletEntity);
     }
     if (session.psychologist !== dto.psychId) {
@@ -76,7 +78,7 @@ export default class CancelSessionPsychUseCase {
 
     const transactions = [debitTx.id!, creditTx.id!];
 
-    session.status = "cancelled";
+    session.status = SessionStatus.CANCELLED;
     session.transactionIds = session.transactionIds
       ? [...session.transactionIds, ...transactions]
       : [...transactions];

@@ -3,6 +3,7 @@ import SpecialDay from "../../../domain/entities/special-day.entity.js";
 import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
 import { SpecialDayModel, ISpecialDayDocument } from "../models/SpecialDayModel.js";
 import { BaseRepository } from "./BaseRepository.js";
+import { SpecialDayStatus } from "../../../domain/enums/SpecialDayStatus.js";
 
 export default class SpecialDayRepository
   extends BaseRepository<SpecialDay, ISpecialDayDocument>
@@ -22,7 +23,7 @@ export default class SpecialDayRepository
       specialDay.endTime,
       specialDay.durationInMins,
       specialDay.bufferTimeInMins,
-      specialDay.status ?? "active",
+      specialDay.status ?? SpecialDayStatus.ACTIVE,
       specialDay._id.toString()
     );
   }
@@ -53,7 +54,7 @@ export default class SpecialDayRepository
 
   const specialDay = await this.model.findOne({
     psychologist: new Types.ObjectId(psychId),
-    status: "active",
+    status: SpecialDayStatus.ACTIVE,
     date: {
       $gte: start,
       $lte: end
@@ -70,7 +71,7 @@ export default class SpecialDayRepository
   ): Promise<SpecialDay | null> {
     const overlapping = await this.model.findOne({
       psychologist: new Types.ObjectId(psychId),
-      status:"active",
+      status:SpecialDayStatus.ACTIVE,
       $nor: [
         {
           $and: [

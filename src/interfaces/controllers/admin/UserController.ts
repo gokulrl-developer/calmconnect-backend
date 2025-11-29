@@ -13,6 +13,7 @@ import IFetchUserDetailsByAdminUseCase, {
 import AppError from "../../../application/error/AppError.js";
 import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
+import { UserStatus } from "../../../domain/enums/UserStatus.js";
 
 export default class UserController {
   constructor(
@@ -35,7 +36,7 @@ export default class UserController {
       }
       const dto: ListUsersDTO = {
         page: parseInt(req.query.page as string) || 1,
-        filter: (req.query?.filter as "active" | "inactive") || null,
+        filter: (req.query?.filter as UserStatus) || null,
         search: (req.query?.search as string) || null,
       };
       const users = await this._listUseCase.execute(dto);

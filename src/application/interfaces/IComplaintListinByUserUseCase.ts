@@ -1,3 +1,4 @@
+import { ComplaintStatus } from "../../domain/enums/ComplaintStatus.js";
 import { ListComplaintsDTO } from "../dtos/user.dto.js";
 import PaginationData from "../utils/calculatePagination.js";
 
@@ -6,7 +7,7 @@ export interface ComplaintListByUserItem{
     psychologistFullName:string,
     psychologistEmail:string,
     sessionId?:string,
-    status:"pending"|"resolved",
+    status:ComplaintStatus,
     createdAt:string
 }
 export default interface IComplaintListingByUserUseCase{

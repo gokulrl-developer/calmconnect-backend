@@ -1,7 +1,8 @@
 import Wallet from "../../domain/entities/wallet.entity.js";
+import { WalletOwnerType } from "../../domain/enums/WalletOwnerType.js";
 
 export const toWalletDomain = (
-  ownerType: "user" | "psychologist" | "platform",
+  ownerType: WalletOwnerType,
   balance: number = 0,
   ownerId?: string
 ): Wallet => {

@@ -4,6 +4,7 @@ import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../error/app-error-codes.js";
 import AppError from "../../error/AppError.js";
 import IUpdatePsychStatusUseCase from "../../interfaces/IUpdatePsychStatusUseCase.js";
+import { PsychologistStatus } from "../../../domain/enums/PsychologistStatus.js";
 
 export class UpdatePsychUseCase implements IUpdatePsychStatusUseCase {
   constructor(private readonly _psychRepository: IPsychRepository) {}
@@ -15,7 +16,7 @@ export class UpdatePsychUseCase implements IUpdatePsychStatusUseCase {
         ERROR_MESSAGES.PSYCHOLOGIST_NOT_FOUND,
         AppErrorCodes.NOT_FOUND
       );
-    psych.isBlocked = dto.status === "inactive";
+    psych.isBlocked = dto.status === PsychologistStatus.INACTIVE;
     await this._psychRepository.update(dto.applicationId, psych);
   }
 }

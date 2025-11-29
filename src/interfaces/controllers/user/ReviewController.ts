@@ -10,6 +10,7 @@ import {
   ListPsychReviewsDTO,
 } from "../../../application/dtos/user.dto.js";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
+import { PsychReviewsSortByUser } from "../../../domain/enums/PsychReviewsSortByUser.js";
 
 export default class ReviewController {
   constructor(
@@ -121,7 +122,7 @@ export default class ReviewController {
     try {
       const dto: ListPsychReviewsDTO = {
         psychId,
-        sort: (sort as "recent" | "top-rated") || "recent",
+        sort: (sort as PsychReviewsSortByUser) || PsychReviewsSortByUser.RECENT,
         skip: req.pagination.skip!,
         limit: req.pagination.limit!,
       };

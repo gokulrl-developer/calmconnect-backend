@@ -1,3 +1,4 @@
+import { RevenueTrendsIntervalByAdmin } from "../../../domain/enums/RevenueTrendsIntervalByAdmin.js";
 import ITransactionRepository, { RevenueTrendsEntry } from "../../../domain/interfaces/ITransactionRepository.js";
 import { FetchRevenueTrendsDTO } from "../../dtos/admin.dto.js";
 import IFetchRevenueTrendsUseCase from "../../interfaces/IFetchRevenueTrendsUseCase.js";
@@ -18,13 +19,13 @@ export default class FetchRevenueTrendsUseCase implements IFetchRevenueTrendsUse
     const diffYears = diffMonths / 12;
 
     if (diffYears > 1) {
-      interval = "year";
+      interval = RevenueTrendsIntervalByAdmin.YEAR;
     } else if (diffMonths > 1) {
-      interval = "month";
+      interval = RevenueTrendsIntervalByAdmin.MONTH;
     } else {
-      interval = "day";
+      interval = RevenueTrendsIntervalByAdmin.DAY;
     }
-      const entries= await this._transactionRepository.fetchRevenueTrends(startDate,endDate,interval as "day"|"month"|"year");
+      const entries= await this._transactionRepository.fetchRevenueTrends(startDate,endDate,interval as RevenueTrendsIntervalByAdmin);
      const labels = generateLabels(startDate, endDate, interval as "year"|"month"|"day");
 
     const filledEntries: RevenueTrendsEntry[] = labels.map(label => {

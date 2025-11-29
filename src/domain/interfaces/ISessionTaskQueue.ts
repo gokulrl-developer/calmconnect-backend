@@ -1,5 +1,8 @@
+import { NotificationRecipientType } from "../enums/NotificationRecipientType.js";
+import { SessionQueueJob } from "../enums/SessionQueueJob.js";
+
 export interface SessionReminderTaskPayload {
-  recipientType: "psychologist"|"user"|"admin";
+  recipientType: NotificationRecipientType;
   recipientId: string;
   sessionId: string;
   minutes: number;
@@ -11,17 +14,16 @@ export interface SessionReminderTaskPayload {
 }
 
 export interface SessionOverTaskPayload{
-  recipientType: "psychologist"|"user";
+  recipientType: NotificationRecipientType.USER|NotificationRecipientType.PSYCHOLOGIST;
   recipientId: string;
   sessionId:string
 }
 
 export interface SessionTaskJobMap {
-  "session-reminder.30min": SessionReminderTaskPayload;
-  "session-reminder.5min": SessionReminderTaskPayload;
-  "session-over": SessionOverTaskPayload;
+  [SessionQueueJob.REMINDER_30_MINUTES]: SessionReminderTaskPayload;
+  [SessionQueueJob.REMINDER_5_MINUTES]: SessionReminderTaskPayload;
+  [SessionQueueJob.SESSION_OVER]: SessionOverTaskPayload;
 }
-
 
 export interface ISessionTaskQueue {
   add<JobName extends keyof SessionTaskJobMap>(

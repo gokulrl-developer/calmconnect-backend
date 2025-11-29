@@ -1,3 +1,4 @@
+import { SpecialDayType } from "../../../domain/enums/SpecialDayType.js";
 import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
 import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
@@ -16,7 +17,7 @@ export default class CreateSpecialDayUseCase
   ) {}
   async execute(dto: CreateSpecialDayDTO) {
     const specialDay = mapCreateSpecialDayDTOToDomain(dto);
-    if (specialDay.type === "absent") {
+    if (specialDay.type === SpecialDayType.ABSENT) {
       if (
         specialDay.startTime ||
         specialDay.endTime ||
@@ -29,7 +30,7 @@ export default class CreateSpecialDayUseCase
         );
       }
     } else {
-      if (specialDay.type === "override") {
+      if (specialDay.type === SpecialDayType.OVERRIDE) {
         if (!specialDay.startTime) {
           throw new AppError(
             ERROR_MESSAGES.START_TIME_REQUIRED,
@@ -65,7 +66,7 @@ export default class CreateSpecialDayUseCase
         AppErrorCodes.CONFLICT
       );
     }
-    if (specialDay.type === "override") {
+    if (specialDay.type === SpecialDayType.OVERRIDE) {
       const conflictingQuickSlots =
         await this._quickSlotRepository.findOverlappingActiveByTimeRangePsych(
           new Date(specialDay.startTime!),

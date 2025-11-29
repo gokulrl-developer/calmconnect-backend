@@ -5,6 +5,7 @@ import IUpdatePsychStatusUseCase from "../../../application/interfaces/IUpdatePs
 import { ListPsychDTO, UpdatePsychStatusDTO } from "../../../application/dtos/admin.dto.js";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 import IFetchpsychDetailsByAdminUseCase from "../../../application/interfaces/IFetchPsychDetailsByAdminUseCase.js";
+import { PsychologistStatus } from "../../../domain/enums/PsychologistStatus.js";
 
 export default class PsychController {
   constructor(
@@ -21,7 +22,7 @@ export default class PsychController {
     try {
       const dto: ListPsychDTO = {
         page: parseInt(req.query.page as string) || 1,
-        filter: req.query?.filter as "active"|"inactive" || null,
+        filter: req.query?.filter as PsychologistStatus || null,
         search: req.query?.search as string|| null,
       };
       const psychologists = await this._listUseCase.execute(dto);

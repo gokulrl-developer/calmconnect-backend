@@ -7,6 +7,8 @@ import { AppErrorCodes } from "../../error/app-error-codes.js";
 import { mapComplaintResolutionDTOToDomain } from "../../mappers/ComplaintMapper.js";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
 import { IEventBus } from "../../interfaces/events/IEventBus.js";
+import { EventMapEvents } from "../../../domain/enums/EventMapEvents.js";
+import { ComplaintStatus } from "../../../domain/enums/ComplaintStatus.js";
 
 export default class ComplaintResolutionUseCase implements IComplaintResolutionUseCase {
   constructor(
@@ -21,7 +23,7 @@ export default class ComplaintResolutionUseCase implements IComplaintResolutionU
       throw new AppError(ERROR_MESSAGES.COMPLAINT_NOT_FOUND, AppErrorCodes.COMPLAINT_NOT_FOUND);
     }
 
-    if (existingComplaint.status === "resolved") {
+    if (existingComplaint.status === ComplaintStatus.RESOLVED) {
       throw new AppError(ERROR_MESSAGES.COMPLAINT_ALREADY_RESOLVED, AppErrorCodes.COMPLAINT_ALREADY_RESOLVED);
     }
 
@@ -31,7 +33,7 @@ export default class ComplaintResolutionUseCase implements IComplaintResolutionU
       throw new AppError(ERROR_MESSAGES.COMPLAINT_UPDATION_FAILED,AppErrorCodes.COMPLAINT_UPDATION_FAILED)
     }
     const psychologist=await this._psychRepository.findById(complaint.psychologist!)
-    await this._eventBus.emit("complaint.resolved",{
+    await this._eventBus.emit(EventMapEvents.COMPLAINT_RESOLVED,{
       complaintId:dto.complaintId,
       userId:complaint.user!,
       psychologistFullName:psychologist?`${psychologist.firstName} ${psychologist.lastName}`:"N/A"

@@ -4,6 +4,8 @@ import User from "../../../domain/entities/user.entity.js";
 import IUserRepository, { UserTrendsEntry, UserTrendsSummary } from "../../../domain/interfaces/IUserRepository.js";
 import { IUserDocument, UserModel } from "../models/UserModel.js";
 import { BaseRepository } from "./BaseRepository.js";
+import { UserStatus } from "../../../domain/enums/UserStatus.js";
+import { UserTrendsIntervalByAdmin } from "../../../domain/enums/UserTrendsIntervalByAdmin.js";
 
 export default class UserRepository
   extends BaseRepository<User, IUserDocument>
@@ -71,7 +73,7 @@ export default class UserRepository
       ];
     }
     if (filter) {
-      query.isBlocked = filter === "inactive";
+      query.isBlocked = filter === UserStatus.INACTIVE;
     }
 
     const users = await this.model.find(query).skip(skip).limit(limit);
@@ -80,12 +82,12 @@ export default class UserRepository
   async fetchUserTrends(
     fromDate: Date,
     toDate: Date,
-    interval: "day" | "month" | "year"
+    interval: UserTrendsIntervalByAdmin
   ): Promise<UserTrendsEntry[]> {
     const dateFormat=
-    interval==="day"?
+    interval===UserTrendsIntervalByAdmin.DAY?
        { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }:
-      interval=== "month"?
+      interval=== UserTrendsIntervalByAdmin.MONTH?
       { $dateToString: { format: "%Y-%m", date: "$createdAt" } }:
       { $dateToString: { format: "%Y", date: "$createdAt" } };
     
@@ -105,7 +107,6 @@ export default class UserRepository
         $sort: { _id: 1 },
       },
     ]);
-  console.log(results)
     return results.map((r) => ({
       label: r._id,
       users: r.users,

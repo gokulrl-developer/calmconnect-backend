@@ -1,3 +1,4 @@
+import { PsychologistGender } from "../enums/PsychologistGender.js";
 
 export default class Psychologist {
   constructor(
@@ -9,7 +10,7 @@ export default class Psychologist {
     public walletBalance:number,
     public id?:string,
     public password?:string,
-    public gender?:"male"|"female"|"others",
+    public gender?:PsychologistGender,
     public dob?:Date,
     public profilePicture?:string,
     public address?:string,

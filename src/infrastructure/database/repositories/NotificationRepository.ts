@@ -3,6 +3,7 @@ import { Notification } from "../../../domain/entities/notification.entity.js";
 import { BaseRepository } from "./BaseRepository.js";
 import { NotificationModel, INotificationDocument } from "../models/NotificationModel.js";
 import { INotificationRepository } from "../../../domain/interfaces/INotificationRepository.js";
+import { NotificationRecipientType } from "../../../domain/enums/NotificationRecipientType.js";
 
 export class NotificationRepository
   extends BaseRepository<Notification, INotificationDocument>
@@ -42,7 +43,7 @@ export class NotificationRepository
   }
 
  async findByRecipient(
-  recipientType: "admin" | "user" | "psychologist",
+  recipientType: NotificationRecipientType,
   recipientId: string,
   skip = 0,
   limit = 50
@@ -58,7 +59,7 @@ export class NotificationRepository
   return {notifications: docs.map((doc) => this.toDomain(doc as INotificationDocument)),totalItems};
 }
 
-  async markReadByRecipient(recipientType: "admin" | "user" | "psychologist",
+  async markReadByRecipient(recipientType: NotificationRecipientType,
   recipientId: string): Promise<void> {
     await this.model.updateMany(
       { recipientType:recipientType,recipientId:recipientId },
@@ -67,7 +68,7 @@ export class NotificationRepository
   }
 
 async getUnreadCount(
-    recipientType: "admin" | "user" | "psychologist",
+    recipientType: NotificationRecipientType,
     recipientId: string
   ): Promise<number> {
     const count = await this.model.countDocuments({
@@ -79,7 +80,7 @@ async getUnreadCount(
   }
   async deleteAllByAccount(
     recipientId: string,
-    recipientType: "admin" | "user" | "psychologist"
+    recipientType: NotificationRecipientType
   ): Promise<void> {
     await this.model.deleteMany({ recipientId, recipientType });
   }
