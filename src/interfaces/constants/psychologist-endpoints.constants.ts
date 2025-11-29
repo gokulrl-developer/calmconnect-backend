@@ -22,6 +22,8 @@ export const PSYCH_ROUTES = {
 
   // -------- Sessions --------
   LIST_SESSIONS: "/psychologist/sessions",
+  CANCEL_SESSION: "/psychologist/sessions/:sessionId",
+  SESSION_ACCESS: "/psychologist/sessions/:sessionId/access",
 
   // -------- Availability Rules --------
   CREATE_AVAILABILITY_RULE: "/psychologist/availability-rule",

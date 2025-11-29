@@ -53,6 +53,12 @@ export default class CancelSessionUserUseCase implements ICancelSessionUserUseCa
       platformWallet.balance -= session.fees;
       await this._walletRepository.update(platformWallet.id!, platformWallet);
 
+      let userWallet = await this._walletRepository.findOne({ ownerType: WalletOwnerType.USER });
+    if (!userWallet) {
+      userWallet = await this._walletRepository.create(new Wallet(WalletOwnerType.USER, 0,session.user));
+    }
+      userWallet.balance+=session.fees;
+      await this._walletRepository.update(userWallet.id!, userWallet);
       const debitTx = await this._transactionRepository.create(debitFromPlatform);
       const creditTx = await this._transactionRepository.create(creditToUser);
 

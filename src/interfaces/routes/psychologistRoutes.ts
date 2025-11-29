@@ -345,6 +345,23 @@ router.get(
 );
 
 router.patch(
+  PSYCH_ROUTES.CANCEL_SESSION,
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  (req: Request, res: Response, next: NextFunction) =>
+    sessionController.cancelSession(req, res, next)
+);
+router.get(
+  PSYCH_ROUTES.SESSION_ACCESS,
+  verifyTokenMiddleware,
+  authorizeRoles("psychologist"),
+  checkStatusPsych.handle.bind(checkStatusPsych),
+  (req: Request, res: Response, next: NextFunction) =>
+    sessionController.checkSessionAccess(req, res, next)
+);
+
+router.patch(
   PSYCH_ROUTES.UPDATE_PROFILE,
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),

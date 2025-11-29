@@ -72,7 +72,9 @@ export default class CancelSessionPsychUseCase {
 
     platformWallet.balance -= session.fees;
     await this._walletRepository.update(platformWallet.id!, platformWallet);
-
+   
+    userWallet.balance+=session.fees;
+    await this._walletRepository.update(userWallet.id!,userWallet);
     const debitTx = await this._transactionRepository.create(debitFromPlatform);
     const creditTx = await this._transactionRepository.create(creditToUser);
 
