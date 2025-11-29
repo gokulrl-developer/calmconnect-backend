@@ -1,3 +1,4 @@
+import { PsychologistGender } from "../../domain/enums/PsychologistGender.js";
 import { PsychDetailsByAdminDTO } from "../dtos/admin.dto.js";
 
 export interface AdminPsychDetailsResponse {
@@ -6,7 +7,7 @@ export interface AdminPsychDetailsResponse {
   email: string;
   isBlocked: boolean;
   psychId: string;
-  gender?: "male" | "female" | "others";
+  gender?: PsychologistGender;
   dob?: Date;
   profilePicture?: string;
   address?: string;

@@ -5,9 +5,10 @@ import ISendNotificationUseCase from "../../application/interfaces/ISendNotifica
 import { SessionTaskJobMap } from "../../domain/interfaces/ISessionTaskQueue.js";
 import { transporter } from "../config/nodeMailerConfig.js";
 import { EMAIL_MESSAGES } from "../../application/constants/email-messages.constants.js";
+import { SessionQueueJob } from "../../domain/enums/SessionQueueJob.js";
 
 export default class BullMQSessionTaskWorker {
-  private readonly queueName = "session-task-queue";
+  private readonly queueName = process.env.REDIS_QUEUE_NAME!;
 
   private worker: Worker<
     SessionTaskJobMap[keyof SessionTaskJobMap],
@@ -41,8 +42,8 @@ export default class BullMQSessionTaskWorker {
       const data = job.data;
      console.log("process",data)
       switch (job.name) {
-        case "session-reminder.30min":
-        case "session-reminder.5min": {
+        case SessionQueueJob.REMINDER_30_MINUTES:
+        case SessionQueueJob.REMINDER_5_MINUTES: {
           const {
             recipientId,
             recipientType,
@@ -79,7 +80,7 @@ export default class BullMQSessionTaskWorker {
           break;
         }
 
-        case "session-over": {
+        case SessionQueueJob.SESSION_OVER: {
           const { recipientId, recipientType, sessionId } =
             data as SessionTaskJobMap["session-over"];
           await this._markSessionOverUseCase.execute({ sessionId });

@@ -8,6 +8,7 @@ import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../error/app-error-codes.js";
 import AppError from "../../error/AppError.js";
 import IForgotPasswordUserUseCase from "../../interfaces/IForgotPasswordUserUseCase.js";
+import { Role } from "../../../domain/enums/Role.js";
 
 export default class ForgotPasswordUserUseCase implements IForgotPasswordUserUseCase{
     constructor(
@@ -23,7 +24,7 @@ export default class ForgotPasswordUserUseCase implements IForgotPasswordUserUse
           throw new AppError(ERROR_MESSAGES.GOOGLE_AUTH_EMAIL,AppErrorCodes.INVALID_CREDENTIALS)
        }
        const otp=generateOtp()
-       await this._otpRepository.storeOtp(dto.email,{otp,role:"user"})
+       await this._otpRepository.storeOtp(dto.email,{otp,role:Role.USER})
        await sendMail(
                    dto.email,
                     EMAIL_MESSAGES.OTP_SUBJECT,

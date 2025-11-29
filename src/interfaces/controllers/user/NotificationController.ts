@@ -8,6 +8,7 @@ import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js"
 import IMarkNotificationReadUseCase from "../../../application/interfaces/IMarkNotificationsReadUseCase.js";
 import IGetUnreadNotificationsCountUseCase from "../../../application/interfaces/IGetUnreadNotificationsCountUseCase.js";
 import IClearNotificationsUseCase from "../../../application/interfaces/IClearNotificationsUseCase.js";
+import { NotificationRecipientType } from "../../../domain/enums/NotificationRecipientType.js";
 
 export default class NotificationController {
   constructor(
@@ -45,7 +46,7 @@ export default class NotificationController {
       const { notifications, paginationData } =
         await this._getNotificationsUseCase.execute({
           recipientId: recipientId!,
-          recipientType: "user",
+          recipientType: NotificationRecipientType.USER,
           skip,
           limit,
         });
@@ -77,7 +78,7 @@ export default class NotificationController {
       const recipientType = req.account.role;
 
       await this._markNotificationReadUseCase.execute({
-        recipientType: recipientType!,
+        recipientType: recipientType as NotificationRecipientType,
         recipientId: accountId!,
       });
 
@@ -104,7 +105,7 @@ export default class NotificationController {
       const recipientType = req.account.role;
 
       const count = await this._getUnreadCountUseCase.execute({
-        recipientType: recipientType!,
+        recipientType: recipientType as NotificationRecipientType,
         recipientId: accountId!,
       });
 
@@ -132,7 +133,7 @@ export default class NotificationController {
       const recipientType = req.account.role;
 
       await this._clearNotificationsUseCase.execute({
-        recipientType: recipientType!,
+        recipientType: recipientType as NotificationRecipientType,
         recipientId: accountId!,
       });
 

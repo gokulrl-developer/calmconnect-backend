@@ -5,6 +5,7 @@ import {
 import AvailabilityRule from "../../domain/entities/availability-rule.entity.js";
 import { HHMMToIso } from "../../utils/timeConverter.js";
 import { AvailabilityRuleSummary } from "../interfaces/IListAvailabilityRulesUseCase.js";
+import { AvailabilityRuleStatus } from "../../domain/enums/AvailabilityRuleStatus.js";
 
 export const mapCreateAvailabilityRuleDTOToDomain = (
   dto: CreateAvaialabilityRuleDTO
@@ -16,7 +17,7 @@ export const mapCreateAvailabilityRuleDTOToDomain = (
     dto.endTime,
     dto.durationInMins,
     dto.bufferTimeInMins ?? 0,
-    "active",
+    AvailabilityRuleStatus.ACTIVE,
     undefined
   );
 };

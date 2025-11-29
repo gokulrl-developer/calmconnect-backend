@@ -1,4 +1,5 @@
 import { model, Schema, Document, Types } from "mongoose";
+import { AvailabilityRuleStatus } from "../../../domain/enums/AvailabilityRuleStatus.js";
 
 export interface IAvailabilityRuleDocument extends Document {
   psychologist: Types.ObjectId;
@@ -7,7 +8,7 @@ export interface IAvailabilityRuleDocument extends Document {
   endTime: string;             // "17:00"
   durationInMins: number;
   bufferTimeInMins: number;
-  status: "active" | "inactive";
+  status: AvailabilityRuleStatus;
   id: string;
 }
 
@@ -19,7 +20,7 @@ const AvailabilityRuleSchema = new Schema<IAvailabilityRuleDocument>(
     endTime: { type: String, required: true },
     durationInMins: { type: Number, required: true },
     bufferTimeInMins: { type: Number, default: 0 },
-    status: { type: String, enum: ["active", "inactive"], default: "active" },
+    status: { type: String, enum: Object.values(AvailabilityRuleStatus), default: AvailabilityRuleStatus.ACTIVE },
   },
   {
     timestamps: true, 

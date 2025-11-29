@@ -20,6 +20,7 @@ import { SessionDetailsInVideoCall } from "../interfaces/ICheckSessionAccessUseC
 import { TopPsychologistResponse } from "../interfaces/IFetchTopPsychologistsUseCase.js";
 import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
 import { UserRecentSessionsEntry, UserSessionSummary } from "../interfaces/IFetchUserDashboardUseCase.js";
+import { SessionStatus } from "../../domain/enums/SessionStatus.js";
 
 export const mapCreateOrderDTOToDomain = (
   dto: CreateOrderDTO,
@@ -35,7 +36,7 @@ export const mapCreateOrderDTOToDomain = (
     endTime,
     duration,
     [],
-    "pending",
+    SessionStatus.PENDING,
     fees
   );
 };
@@ -148,7 +149,7 @@ export const mapRecentSessionsToResponse = (entry:RecentSessionEntryFromPersiste
   lastName:entry.lastName,
   profilePicture:entry.profilePicture,
   startTime: entry.startTime,
-  status: entry.status as "scheduled" | "cancelled" | "ended" | "pending",
+  status: entry.status as SessionStatus,
 });
 
 

@@ -38,7 +38,6 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
 
     const startTime = dto.startTime ?? existingQuickSlot.startTime!;
     const endTime = dto.endTime ?? existingQuickSlot.endTime!;
-          console.log("usecase",startTime,endTime)
     const overlappingQuickSlots =
       await this._quickSlotRepo.findOverlappingActiveByTimeRangePsych(
         startTime,

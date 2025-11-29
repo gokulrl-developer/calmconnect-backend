@@ -3,19 +3,19 @@ import { IEventBus } from "../../application/interfaces/events/IEventBus.js";
 
 type EventCallback<T> = (payload: T) => void | Promise<void>;
 
-export class EventBus<EM> implements IEventBus<EM>{
+export class EventBus implements IEventBus{
   private listeners: {
-    [K in keyof EM]?: EventCallback<EM[K]>[];
+    [K in keyof EventMap]?: EventCallback<EventMap[K]>[];
   } = {};
 
-  subscribe<K extends keyof EM>(eventName: K, callback: EventCallback<EM[K]>): void {
+  subscribe<K extends keyof EventMap>(eventName: K, callback: EventCallback<EventMap[K]>): void {
     if (!this.listeners[eventName]) {
       this.listeners[eventName] = [];
     }
     this.listeners[eventName]!.push(callback);
   }
 
-  async emit<K extends keyof EM>(eventName: K, payload: EM[K]): Promise<void> {
+  async emit<K extends keyof EventMap>(eventName: K, payload: EventMap[K]): Promise<void> {
     const callbacks = this.listeners[eventName] ?? [];
     for (const cb of callbacks) {
       await cb(payload);
@@ -23,4 +23,4 @@ export class EventBus<EM> implements IEventBus<EM>{
   }
 }
 
-export const eventBus = new EventBus<EventMap>();
+export const eventBus = new EventBus();

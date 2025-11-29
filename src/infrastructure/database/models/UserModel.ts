@@ -1,4 +1,5 @@
 import { Schema, model, Document } from 'mongoose';
+import { UserGender } from '../../../domain/enums/UserGender.js';
 
 export interface IUserDocument extends Document {
   firstName: string;                        
@@ -7,7 +8,7 @@ export interface IUserDocument extends Document {
   password?: string;
   isBlocked: boolean;
   dob?: Date;
-  gender?: 'male' | 'female' | 'others';
+  gender?: UserGender;
   profilePicture?: string;
   address?: string;
   walletBalance: number;
@@ -24,7 +25,7 @@ const UserSchema = new Schema<IUserDocument>(
     password: { type: String },
     isBlocked: { type: Boolean, default: false },
     dob: { type: Date },
-    gender: { type: String, enum: ['male', 'female', 'others'] },
+    gender: { type: String, enum: Object.values(UserGender) },
     profilePicture: { type: String },
     address: { type: String },
     walletBalance: { type: Number, default: 0 },

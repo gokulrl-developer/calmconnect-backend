@@ -1,3 +1,5 @@
+import { ApplicationStatus } from "../enums/ApplicationStatus.js";
+import { PsychologistGender } from "../enums/PsychologistGender.js";
 
 export class Application {
   constructor(
@@ -8,7 +10,7 @@ export class Application {
     public isVerified:boolean,
     public submittedAt:Date, 
     public phone:string, 
-    public gender:"male"|"female"|"others",
+    public gender:PsychologistGender,
     public dob:Date,
     public profilePicture:string,
     public address:string,
@@ -19,7 +21,7 @@ export class Application {
     public licenseUrl:string,
     public resume:string,
     public qualifications:string,
-    public status:"pending"|"accepted"|"rejected",
+    public status:ApplicationStatus,
     public rejectionReason?:string,
     public password?:string,
     public hourlyFees?:number,

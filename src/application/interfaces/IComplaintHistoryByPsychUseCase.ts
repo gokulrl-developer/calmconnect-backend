@@ -1,3 +1,4 @@
+import { ComplaintStatus } from "../../domain/enums/ComplaintStatus.js"
 import { ComplainthIstoryDTO } from "../dtos/admin.dto.js"
 import PaginationData from "../utils/calculatePagination.js"
 
@@ -8,7 +9,7 @@ export interface ComplaintHistoryByAdminItem{
     psychologistFullName:string,
     psychologistEmail:string,
     sessionId?:string,
-    status:"pending"|"resolved",
+    status:ComplaintStatus,
     createdAt:string
 }
 

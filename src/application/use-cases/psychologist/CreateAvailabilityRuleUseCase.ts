@@ -14,14 +14,12 @@ export default class CreateAvailabilityRuleUseCase
     private readonly _availabilityRuleRepository: IAvailabilityRuleRepository
   ) {}
   async execute(dto: CreateAvaialabilityRuleDTO) {
-    console.log("use case dto",dto)
     const avaialbilityRule = mapCreateAvailabilityRuleDTOToDomain(dto);
     const weekDayAvailabilityRules =
       await this._availabilityRuleRepository.findActiveByWeekDayPsych(
         dto.weekDay,
         dto.psychId
       );
-      console.log("use case fetched rules",weekDayAvailabilityRules)
       const currentRuleStartMinutes=timeStringToMinutes(dto.startTime);
       const currentRuleEndMinutes=timeStringToMinutes(dto.endTime);
     for (const availabilityRule of weekDayAvailabilityRules) {

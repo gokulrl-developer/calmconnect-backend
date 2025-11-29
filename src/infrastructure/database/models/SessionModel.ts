@@ -1,4 +1,5 @@
 import { model, Schema, Document, Types } from "mongoose";
+import { SessionStatus } from "../../../domain/enums/SessionStatus.js";
 
 export interface ISessionDocument extends Document {
   psychologist: Types.ObjectId;
@@ -7,7 +8,7 @@ export interface ISessionDocument extends Document {
   endTime:Date,
   durationInMins: number;
   transactionIds: Types.ObjectId[];
-  status: "scheduled"|"cancelled"|"ended"|"pending";
+  status: SessionStatus;
   fees: number; 
   videoRoomId?: string;
 }
@@ -19,7 +20,7 @@ const SessionSchema = new Schema<ISessionDocument>({
   endTime: { type: Date, required: true },
   durationInMins: { type: Number, required: true },
   transactionIds: [{ type: String, required: true }],
-  status: { type: String, enum: ["scheduled","cancelled","ended","pending"], required: true },
+  status: { type: String, enum: Object.values(SessionStatus), required: true },
   fees: { type: Number, required: true },
   videoRoomId: { type: String },
 });

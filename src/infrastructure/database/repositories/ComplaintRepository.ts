@@ -3,9 +3,10 @@ import Complaint from "../../../domain/entities/complaint.entity.js";
 import IComplaintRepository, { ComplaintHistoryFilter, UserRecentComplaintsEntryFromPersistence } from "../../../domain/interfaces/IComplaintRepository.js";
 import { ComplaintModel, IComplaintDocument } from "../models/ComplaintModel.js";
 import { BaseRepository } from "./BaseRepository.js";
+import { ComplaintStatus } from "../../../domain/enums/ComplaintStatus.js";
 
 interface ComplaintSearchFilter {
-  status?: "resolved" | "pending";
+  status?: ComplaintStatus;
   search?: string;
   skip: number;
   limit: number;
@@ -21,7 +22,7 @@ interface FilterQueryUserList{
 }
 
 interface FilterQueryAdminList{
-  status?:"resolved"|"pending",
+  status?:ComplaintStatus,
   search?:string
 }
 export default class ComplaintRepository

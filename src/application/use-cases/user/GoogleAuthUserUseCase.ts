@@ -8,7 +8,7 @@ import { generateAccessToken, generateRefreshToken } from "../../../utils/tokenH
 import { IGoogleAuthUserUseCase } from "../../interfaces/IGoogleAuthUserUseCase.js";
 import { getGoogleAuthCredentials } from "../../../infrastructure/external/GoogleOauthService.js";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
-import { ROLES } from "../../constants/roles.constants.js";
+import { Role } from "../../../domain/enums/Role.js";
 
 export default class GoogleAuthUserUseCase implements IGoogleAuthUserUseCase {
   constructor(
@@ -29,8 +29,8 @@ export default class GoogleAuthUserUseCase implements IGoogleAuthUserUseCase {
       User=res;
     }
     
-    const accessToken = generateAccessToken({id:User.id!,role:ROLES.USER});
-    const refreshToken =generateRefreshToken({id:User.id!,role:ROLES.USER});  
+    const accessToken = generateAccessToken({id:User.id!,role:Role.USER});
+    const refreshToken =generateRefreshToken({id:User.id!,role:Role.USER});  
     
     const result =toLoginResponse(User,accessToken,refreshToken)
     return result;

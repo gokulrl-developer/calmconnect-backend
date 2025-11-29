@@ -12,6 +12,7 @@ import {
 } from "../../../application/dtos/admin.dto.js";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 import IComplaintHistoryByPsychUseCase from "../../../application/interfaces/IComplaintHistoryByPsychUseCase.js";
+import { ComplaintStatus } from "../../../domain/enums/ComplaintStatus.js";
 
 export default class ComplaintController {
   constructor(
@@ -77,7 +78,7 @@ export default class ComplaintController {
       const dto = {
         skip: req.pagination.skip!,
         limit: req.pagination.limit!,
-        status: status as "pending" | "resolved" | undefined,
+        status: status as ComplaintStatus | undefined,
         search: search ? search : undefined,
       };
 

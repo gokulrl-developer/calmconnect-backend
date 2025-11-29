@@ -1,3 +1,4 @@
+import { SessionStatus } from "../../domain/enums/SessionStatus.js";
 import { SessionListingDTO } from "../dtos/admin.dto.js";
 import PaginationData from "../utils/calculatePagination.js";
 
@@ -9,7 +10,7 @@ export interface SessionListingAdminItem {
   startTime: Date;
   endTime:Date;
   durationInMins: number;
-  status: "scheduled"|"cancelled"|"ended"|"pending";
+  status: SessionStatus;
   fees: number;
   sessionId: string;
 }

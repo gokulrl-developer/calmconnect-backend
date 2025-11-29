@@ -7,6 +7,7 @@ import { AppErrorCodes } from "../../error/app-error-codes.js";
 import AppError from "../../error/AppError.js";
 import { ILoginPsychUseCase, LoginResponse } from "../../interfaces/ILoginPsychUseCase.js";
 import { toLoginResponse } from "../../mappers/PsychMapper.js";
+import { Role } from "../../../domain/enums/Role.js";
 
 export default class LoginPsychUseCase implements ILoginPsychUseCase{
   constructor(
@@ -39,8 +40,8 @@ export default class LoginPsychUseCase implements ILoginPsychUseCase{
       throw new AppError(ERROR_MESSAGES.ACCOUNT_BLOCKED,AppErrorCodes.FORBIDDEN_ERROR)
     }
     
-    const refreshToken = generateRefreshToken({ id: psychEntity.id!,role:"psychologist"});
-    const accessToken = generateAccessToken({ id: psychEntity.id!,role:"psychologist" });
+    const refreshToken = generateRefreshToken({ id: psychEntity.id!,role:Role.PSYCHOLOGIST});
+    const accessToken = generateAccessToken({ id: psychEntity.id!,role:Role.PSYCHOLOGIST });
     
     return toLoginResponse(psychEntity,accessToken,refreshToken);
   }

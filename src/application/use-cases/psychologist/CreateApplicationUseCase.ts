@@ -10,6 +10,8 @@ import ICreateApplicationUseCase from "../../interfaces/ICreateApplicationUseCas
 import { toApplicationDomainSubmit } from "../../mappers/ApplicationMapper.js";
 import { IEventBus } from "../../interfaces/events/IEventBus.js";
 import { adminConfig } from "../../../utils/adminConfig.js";
+import { EventMapEvents } from "../../../domain/enums/EventMapEvents.js";
+import { ApplicationStatus } from "../../../domain/enums/ApplicationStatus.js";
 
 export default class CreateApplicationUseCase implements ICreateApplicationUseCase{
   constructor(
@@ -25,10 +27,10 @@ export default class CreateApplicationUseCase implements ICreateApplicationUseCa
         throw new AppError(ERROR_MESSAGES.APPLICATION_LIMIT_EXCEEDED,AppErrorCodes.FORBIDDEN_ERROR)
      };
      for(const app of applications){
-      if(app.status==="pending"){
+      if(app.status===ApplicationStatus.PENDING){
         throw new AppError(ERROR_MESSAGES.PENDING_APPLICATION_EXISTS,AppErrorCodes.FORBIDDEN_ERROR)
       }
-      if(app.status==="accepted"){
+      if(app.status===ApplicationStatus.ACCEPTED){
         throw new AppError(ERROR_MESSAGES.ACCEPTED_APPLICATION_EXISTS,AppErrorCodes.FORBIDDEN_ERROR)
       }
      }
@@ -53,7 +55,7 @@ export default class CreateApplicationUseCase implements ICreateApplicationUseCa
      const applicationEntity=toApplicationDomainSubmit(dto,psychologist,{licenseUrl,resume,profilePicture});
     await this._applicationRepository.create(applicationEntity);
     
-    await this._eventBus.emit('application.created', {
+    await this._eventBus.emit(EventMapEvents.APPLICATION_CREATED, {
       adminId:adminConfig.adminId,
       psychologistName:`${psychologist.firstName} ${psychologist.lastName}`,
       psychologistEmail:psychologist.email!,

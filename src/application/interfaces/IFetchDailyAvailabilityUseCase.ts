@@ -1,3 +1,7 @@
+import { AvailabilityRuleStatus } from "../../domain/enums/AvailabilityRuleStatus.js";
+import { QuickSlotStatus } from "../../domain/enums/QuickSlotStatus.js";
+import { SpecialDayStatus } from "../../domain/enums/SpecialDayStatus.js";
+import { SpecialDayType } from "../../domain/enums/SpecialDayType.js";
 import { FetchDailyAvailabilityDTO } from "../dtos/psych.dto.js";
 
 export interface DailyAvailabilityRule {
@@ -5,17 +9,17 @@ export interface DailyAvailabilityRule {
   endTime: string; //ISO string
   durationInMins: number;
   bufferTimeInMins: number;
-  status: "active" | "inactive";
+  status: AvailabilityRuleStatus;
   availabilityRuleId: string;
 }
 
 export interface DailySpecialDay {
-  type: "override" | "absent";
+  type:SpecialDayType;
   startTime?: string; // ISO string
   endTime?: string; // ISO string
   durationInMins?: number;
   bufferTimeInMins?: number;
-  status: "active" | "inactive";
+  status: SpecialDayStatus;
   specialDayId: string;
 }
 
@@ -24,7 +28,7 @@ export interface DailyQuickSlot {
   endTime: string;      //ISO string
   durationInMins: number; // slot duration
   bufferTimeInMins: number; 
-  status: "active" | "inactive";
+  status: QuickSlotStatus;
   quickSlotId: string;
 }
 export interface DailyAvailability {

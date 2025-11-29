@@ -1,3 +1,4 @@
+import { AvailabilityRuleStatus } from "../../domain/enums/AvailabilityRuleStatus.js";
 import { FetchAvailabilityRule } from "../dtos/psych.dto.js";
 
 export interface AvailabilityRuleDetails{
@@ -6,7 +7,7 @@ export interface AvailabilityRuleDetails{
     endTime:string,
     durationInMins:number,
     bufferTimeInMins:number,
-    status:"active"|"inactive",
+    status:AvailabilityRuleStatus,
     availabilityRuleId:string
 }
 export default interface IFetchAvailabilityRuleUseCase{

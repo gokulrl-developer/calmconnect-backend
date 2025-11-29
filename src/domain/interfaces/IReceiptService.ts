@@ -1,14 +1,16 @@
 import Transaction from "../entities/transaction.entity.js";
+import { TransactionRecipientType } from "../enums/TransactionRecipientType.js";
+import { TransactionSourceType } from "../enums/TransactionSourceType.js";
 
 export interface SourceData{
   name?:string,
   email?:string,
-  type:"psychologist"|"user"|"platform"
+  type:TransactionSourceType
 }
 export interface RecipientData{
   name?:string,
   email?:string,
-  type:"psychologist"|"user"|"platform"
+  type:TransactionRecipientType
 }
 export interface IReceiptService {
   generateTransactionReceipt(

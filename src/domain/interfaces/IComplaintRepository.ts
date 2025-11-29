@@ -1,4 +1,5 @@
 import Complaint from "../entities/complaint.entity.js";
+import { ComplaintStatus } from "../enums/ComplaintStatus.js";
 import IBaseRepository from "./IBaseRepository.js";
 
 export interface ComplaintHistoryFilter{
@@ -29,5 +30,5 @@ export interface UserRecentComplaintsEntryFromPersistence{
     psychFirstName:string;
     psychLastName:string;
     raisedTime:string;
-    status:"pending"|"resolved"
+    status:ComplaintStatus
 }

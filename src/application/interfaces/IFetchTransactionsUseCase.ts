@@ -1,12 +1,14 @@
 
+import { TransactionReferenceType } from "../../domain/enums/TransactionReferenceType.js";
+import { TransactionType } from "../../domain/enums/TransactionType.js";
 import { GetTransactionsDTO } from "../dtos/shared.dto.js";
 import PaginationData from "../utils/calculatePagination.js";
 
 export interface TransactionListItem {
   transactionId: string;
-  type: "credit" | "debit";
+  type: TransactionType;
   amount: number;
-  referenceType?: "booking" | "psychologistPayment" | "refund";
+  referenceType?: TransactionReferenceType;
   createdAt: Date;
 }
 

@@ -1,3 +1,7 @@
+import { PsychReviewsSortByUser } from "../../domain/enums/PsychReviewsSortByUser.js";
+import { SessionStatus } from "../../domain/enums/SessionStatus.js";
+import { UserGender } from "../../domain/enums/UserGender.js";
+
 export interface UserSignUpDTO {
   firstName: string;
   lastName: string;
@@ -47,7 +51,7 @@ export interface UpdateUserProfileDTO {
   address?: string;
   firstName?:string;
   lastName?:string;
-  gender?:"male"|"female"|"others";
+  gender?:UserGender;
   dob?:Date;
 }
 
@@ -74,7 +78,7 @@ export interface VerifyPaymentDTO {
 
 export interface SessionListingDTO{
   userId:string,
-  status:"scheduled"|"cancelled"|"ended"|"pending",
+  status:SessionStatus,
   skip:number,
   limit:number
 }
@@ -124,7 +128,7 @@ export interface CreateReviewDTO{
 
 export interface ListPsychReviewsDTO{
  psychId:string;
- sort:"recent"|"top-rated";
+ sort:PsychReviewsSortByUser;
  skip:number;
  limit:number;
 }

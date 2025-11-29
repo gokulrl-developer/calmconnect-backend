@@ -1,4 +1,5 @@
 import { Schema, model, Document, Types } from "mongoose";
+import { PsychologistGender } from "../../../domain/enums/PsychologistGender.js";
 
 export interface IPsychDocument extends Document {
   _id: Types.ObjectId;
@@ -9,7 +10,7 @@ export interface IPsychDocument extends Document {
   isVerified: boolean;
   isBlocked: boolean;
   dob?: Date;
-  gender?: "male" | "female" | "others";
+  gender?: PsychologistGender;
   profilePicture?: string;
   address?: string;
   walletBalance: number;
@@ -36,7 +37,7 @@ const PsychologistSchema = new Schema<IPsychDocument>(
     isVerified: { type: Boolean, default: false },
     isBlocked: { type: Boolean, default: false },
     dob: { type: Date },
-    gender: { type: String, enum: ["male", "female", "others"] },
+    gender: { type: String, enum: Object.values(PsychologistGender) },
     profilePicture: { type: String },
     address: { type: String },
     walletBalance: { type: Number, default: 0 },

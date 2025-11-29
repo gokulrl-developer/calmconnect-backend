@@ -1,3 +1,5 @@
+import { SessionStatus } from "../../domain/enums/SessionStatus.js";
+import { WalletOwnerType } from "../../domain/enums/WalletOwnerType.js";
 import ISessionRepository from "../../domain/interfaces/ISessionRepository.js";
 import ITransactionRepository from "../../domain/interfaces/ITransactionRepository.js";
 import IWalletRepository from "../../domain/interfaces/IWalletRepository.js";
@@ -21,25 +23,25 @@ export default class MarkSessionOverUseCase implements IMarkSessionOverUseCase {
       throw new Error(ERROR_MESSAGES.SESSION_NOT_FOUND);
     }
 
-    if (session.status !== "scheduled") {
+    if (session.status !== SessionStatus.SCHEDULED) {
       return;
     }
 
-    session.status = "ended";
+    session.status = SessionStatus.ENDED;
 
     const adminData=adminConfig;
     await this._sessionRepo.update(session.id!, session);
     let psychWallet = await this._walletRepo.findByOwner(
       session.psychologist,
-      "psychologist"
+      WalletOwnerType.PSYCHOLOGIST
     );
     const platformWallet = await this._walletRepo.findByOwner(
       adminData.adminId,
-      "platform"
+      WalletOwnerType.PLATFORM
     );
     if (!psychWallet) {
       const walletEntity = toWalletDomain(
-        "psychologist",
+        WalletOwnerType.PSYCHOLOGIST,
         0,
         session.psychologist
       );

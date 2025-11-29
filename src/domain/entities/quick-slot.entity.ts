@@ -1,3 +1,5 @@
+import { QuickSlotStatus } from "../enums/QuickSlotStatus.js";
+
 export default class QuickSlot {
   constructor(
     public psychologist: string,
@@ -6,7 +8,7 @@ export default class QuickSlot {
     public endTime: Date, 
     public durationInMins: number, // slot duration
     public bufferTimeInMins: number, // optional buffer
-    public status: "active" | "inactive" = "active",
+    public status: QuickSlotStatus = QuickSlotStatus.ACTIVE,
     public id?: string
   ) {}
 }

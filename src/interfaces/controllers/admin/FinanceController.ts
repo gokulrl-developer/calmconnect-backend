@@ -12,6 +12,10 @@ import { ERROR_MESSAGES } from "../../../application/constants/error-messages.co
 import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
 import ITransactionListUseCase from "../../../application/interfaces/IFetchTransactionsUseCase.js";
 import { REGEX_EXP } from "../../constants/regex.constants.js";
+import { TransactionOwnerType } from "../../../domain/enums/TransactionOwnerType.js";
+import { TransactionType } from "../../../domain/enums/TransactionType.js";
+import { TransactionReferenceType } from "../../../domain/enums/TransactionReferenceType.js";
+import { WalletOwnerType } from "../../../domain/enums/WalletOwnerType.js";
 
 export default class FinanceController {
   constructor(
@@ -71,16 +75,14 @@ export default class FinanceController {
         );
       }
       const dto: GetTransactionsDTO = {
-        ownerType: "platform",
+        ownerType: TransactionOwnerType.PLATFORM,
         ownerId: req.account.id!,
         skip: req.pagination.skip,
         limit: req.pagination.limit,
-        type: type as "debit" | "credit",
+        type: type as TransactionType,
         date: date,
         referenceType: referenceType as
-          | "booking"
-          | "psychologistPayment"
-          | "refund",
+          TransactionReferenceType,
       };
       const result = await this._transactionListUseCase.execute(dto);
       res.status(StatusCodes.OK).json({ ...result });
@@ -102,7 +104,7 @@ export default class FinanceController {
         );
       }
       const dto: GetWalletDTO = {
-        ownerType: "platform",
+        ownerType: WalletOwnerType.PLATFORM,
         ownerId: req.account.id!,
       };
       const wallet = await this._fetchWalletUseCase.execute(dto);
@@ -133,7 +135,7 @@ export default class FinanceController {
       }
 
       const dto: GetTransactionReceiptDTO = {
-        ownerType: "platform",
+        ownerType: TransactionOwnerType.PLATFORM,
         ownerId: req.account.id!,
         transactionId,
       };

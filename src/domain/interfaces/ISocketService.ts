@@ -1,6 +1,8 @@
+import { NotificationRecipientType } from "../enums/NotificationRecipientType.js";
+
 export interface SendNotificationPayload{
   recipientId: string;
-  recipientType:"admin"|"user"|"psychologist";
+  recipientType:NotificationRecipientType;
   title: string;
   message: string;
   type: string;

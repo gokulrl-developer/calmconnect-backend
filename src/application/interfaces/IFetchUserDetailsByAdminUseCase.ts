@@ -1,3 +1,4 @@
+import { UserGender } from "../../domain/enums/UserGender.js";
 import { UserDetailsByAdminDTO } from "../dtos/admin.dto.js";
 
 export interface AdminUserDetails {
@@ -6,7 +7,7 @@ export interface AdminUserDetails {
   email: string;
   isBlocked: boolean;
   userId: string;
-  gender?: "male" | "female" | "others";
+  gender?: UserGender;
   dob?: Date;
   profilePicture?: string;
   address?: string;

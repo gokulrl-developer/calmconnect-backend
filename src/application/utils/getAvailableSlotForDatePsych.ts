@@ -2,6 +2,7 @@ import AvailabilityRule from "../../domain/entities/availability-rule.entity.js"
 import QuickSlot from "../../domain/entities/quick-slot.entity.js";
 import Session from "../../domain/entities/session.entity.js";
 import SpecialDay from "../../domain/entities/special-day.entity.js";
+import { SpecialDayType } from "../../domain/enums/SpecialDayType.js";
 import { isoToHHMM } from "../../utils/timeConverter.js";
 import { ERROR_MESSAGES } from "../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../error/app-error-codes.js";
@@ -15,7 +16,6 @@ export function getAvailableSlotsForDatePsych(
   quickSlots: QuickSlot[],
   sessions: Session[]
 ) {
-  console.log("getAvailableSlotsutil",specialDay,availabilityRules,quickSlots,sessions)
   let availability: Availability | null = null;
   if (availabilityRules.length === 0) {
     throw new AppError(
@@ -25,14 +25,14 @@ export function getAvailableSlotsForDatePsych(
   }
   const allSlots: { startTime: string; endTime: string }[] = [];
   if (specialDay) {
-    if (specialDay.type === "override") {
+    if (specialDay.type === SpecialDayType.OVERRIDE) {
       availability = {
         startTime: isoToHHMM(specialDay.startTime!.toISOString()),
         endTime: isoToHHMM(specialDay.endTime!.toISOString()),
         durationInMins: specialDay.durationInMins!,
         bufferTimeInMins: specialDay.bufferTimeInMins!,
       };
-    } else if (specialDay.type === "absent") {
+    } else if (specialDay.type === SpecialDayType.ABSENT) {
       availability = null;
     }
     const availabilitySlots = generateSlots(availability);

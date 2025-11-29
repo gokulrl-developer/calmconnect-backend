@@ -3,6 +3,7 @@ import Wallet from "../../../domain/entities/wallet.entity.js";
 import IWalletRepository from "../../../domain/interfaces/IWalletRepository.js";
 import { WalletModel, IWalletDocument } from "../models/WalletModel.js";
 import { BaseRepository } from "./BaseRepository.js";
+import { WalletOwnerType } from "../../../domain/enums/WalletOwnerType.js";
 
 export default class WalletRepository 
   extends BaseRepository<Wallet, IWalletDocument>
@@ -32,7 +33,7 @@ export default class WalletRepository
   }
   async findByOwner(
     ownerId: string,
-    ownerType: "platform"|"user"|"psychologist"
+    ownerType: WalletOwnerType
   ): Promise<Wallet | null> {
     const doc = await this.model.findOne({ ownerId, ownerType });
     return doc ? this.toDomain(doc) : null;

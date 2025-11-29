@@ -1,8 +1,9 @@
 import { model, Schema, Document} from "mongoose";
+import { NotificationRecipientType } from "../../../domain/enums/NotificationRecipientType.js";
 
 export interface INotificationDocument extends Document {
   recipientId: string;
-  recipientType:"user"|"psychologist"|"admin",
+  recipientType:NotificationRecipientType,
   title: string;
   message: string;
   type: string;

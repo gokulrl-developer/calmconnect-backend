@@ -7,6 +7,7 @@ import {
 } from "../models/QuickSlotModel.js";
 import { BaseRepository } from "./BaseRepository.js";
 import { endOfDay, startOfDay } from "date-fns";
+import { QuickSlotStatus } from "../../../domain/enums/QuickSlotStatus.js";
 
 export default class QuickSlotRepository
   extends BaseRepository<QuickSlot, IQuickSlotDocument>
@@ -25,7 +26,7 @@ export default class QuickSlotRepository
       new Date(slot.endTime),
       slot.durationInMins,
       slot.bufferTimeInMins ?? 0,
-      slot.status ?? "active",
+      slot.status ?? QuickSlotStatus.ACTIVE,
       slot._id.toString()
     );
   }
@@ -61,7 +62,7 @@ export default class QuickSlotRepository
 
   const slots = await this.model.find({
     psychologist: new Types.ObjectId(psychId),
-    status: "active",
+    status: QuickSlotStatus.ACTIVE,
     date: { $gte: dayStart, $lte: dayEnd }
   });
 
@@ -75,7 +76,7 @@ export default class QuickSlotRepository
   ): Promise<QuickSlot[]> {
     const overlapping = await this.model.find({
       psychologist: new Types.ObjectId(psychId),
-      status: "active",
+      status: QuickSlotStatus.ACTIVE,
       $nor: [
         {
           $and: [

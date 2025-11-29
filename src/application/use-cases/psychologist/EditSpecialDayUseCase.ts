@@ -7,6 +7,7 @@ import SpecialDay from "../../../domain/entities/special-day.entity.js";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../error/app-error-codes.js";
 import AppError from "../../error/AppError.js";
+import { SpecialDayType } from "../../../domain/enums/SpecialDayType.js";
 
 export default class EditSpecialDayUseCase implements IEditSpecialDayUseCase {
   constructor(
@@ -23,14 +24,14 @@ export default class EditSpecialDayUseCase implements IEditSpecialDayUseCase {
     if(existingSpecialDay.psychologist !==dto.psychId){
             throw new AppError(ERROR_MESSAGES.UNAUTHORISED_ACTION,AppErrorCodes.FORBIDDEN_ERROR)
         }
-    if (dto.type === "absent") {
+    if (dto.type === SpecialDayType.ABSENT) {
       if (dto.startTime || dto.endTime || dto.durationInMins || dto.bufferTimeInMins) {
         throw new AppError(ERROR_MESSAGES.INVALID_FIELDS, AppErrorCodes.INVALID_INPUT);
       }
     } 
 
-    const startTime = dto.type === "override" && dto.startTime ? new Date(dto.startTime) : existingSpecialDay.startTime!;
-    const endTime = dto.type === "override" && dto.endTime ? new Date(dto.endTime) : existingSpecialDay.endTime!;
+    const startTime = dto.type === SpecialDayType.OVERRIDE && dto.startTime ? new Date(dto.startTime) : existingSpecialDay.startTime!;
+    const endTime = dto.type === SpecialDayType.OVERRIDE && dto.endTime ? new Date(dto.endTime) : existingSpecialDay.endTime!;
 
     const conflictingQuickSlots = await this._quickSlotRepository.findOverlappingActiveByTimeRangePsych(
       startTime,

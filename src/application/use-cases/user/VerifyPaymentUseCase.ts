@@ -14,6 +14,11 @@ import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
 import { ISessionTaskQueue } from "../../../domain/interfaces/ISessionTaskQueue.js";
 import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService.js";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { SessionStatus } from "../../../domain/enums/SessionStatus.js";
+import { WalletOwnerType } from "../../../domain/enums/WalletOwnerType.js";
+import { EventMapEvents } from "../../../domain/enums/EventMapEvents.js";
+import { SessionQueueJob } from "../../../domain/enums/SessionQueueJob.js";
+import { NotificationRecipientType } from "../../../domain/enums/NotificationRecipientType.js";
 
 export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
   constructor(
@@ -40,7 +45,7 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
 
     const session = await this._sessionRepository.findById(dto.sessionId);
 
-    if (!session || session.status !== "pending") {
+    if (!session || session.status !== SessionStatus.PENDING) {
       throw new AppError(
         ERROR_MESSAGES.SESSION_UNAVAILABLE,
         AppErrorCodes.NOT_FOUND
@@ -48,10 +53,10 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     }
 
     const adminData=this._adminConfigService.getAdminData();
-    let platformWallet = await this._walletRepository.findByOwner(adminData.adminId,"platform")
-    let userWallet = await this._walletRepository.findByOwner(dto.userId,"user");
+    let platformWallet = await this._walletRepository.findByOwner(adminData.adminId,WalletOwnerType.PLATFORM)
+    let userWallet = await this._walletRepository.findByOwner(dto.userId,WalletOwnerType.USER);
     if (!platformWallet) {
-      const walletEntity = toWalletDomain("platform", verificationResult.amount!/100,adminData.adminId);
+      const walletEntity = toWalletDomain(WalletOwnerType.PLATFORM, verificationResult.amount!/100,adminData.adminId);
       platformWallet = await this._walletRepository.create(walletEntity);
     } else {
       platformWallet.balance =
@@ -60,7 +65,7 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     await this._walletRepository.update(platformWallet.id!, platformWallet);
 
     if(!userWallet){
-      const walletEntity = toWalletDomain("user", 0,dto.userId);
+      const walletEntity = toWalletDomain(WalletOwnerType.USER, 0,dto.userId);
       userWallet = await this._walletRepository.create(walletEntity);
     }
 
@@ -89,7 +94,7 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
       transactionDebit
     );
     const transactionIds = [creditTransaction.id, debitTransaction.id];
-    session.status = "scheduled";
+    session.status = SessionStatus.SCHEDULED;
     session.transactionIds = transactionIds as string[];
     await this._sessionRepository.update(session.id!, session);
 
@@ -98,7 +103,7 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     if (!user) {
       throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
     }
-    await this._eventBus.emit("session.created", {
+    await this._eventBus.emit(EventMapEvents.SESSION_CREATED, {
       userFullName: `${user.firstName} ${user.lastName}`,
       userEmail: user.email,
       psychologistId: session.psychologist,
@@ -108,8 +113,8 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     const now = Date.now();
 
     const reminders = [
-      { minutes: 30, event: "session-reminder.30min" },
-      { minutes: 5, event: "session-reminder.5min" },
+      { minutes: 30, event: SessionQueueJob.REMINDER_30_MINUTES },
+      { minutes: 5, event: SessionQueueJob.REMINDER_5_MINUTES },
     ];
    const psychologist=await this._psychRepository.findById(session.psychologist);
    if (!psychologist) {
@@ -120,9 +125,9 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
 
       if (delay > 0) {
         await this._sessionTaskQueue.add(
-          event as "session-reminder.30min" | "session-reminder.5min",
+          event as SessionQueueJob.REMINDER_30_MINUTES | SessionQueueJob.REMINDER_5_MINUTES,
           {
-            recipientType: "psychologist",
+            recipientType: NotificationRecipientType.PSYCHOLOGIST,
             recipientId: session.psychologist,
             sessionId,
             minutes,
@@ -135,9 +140,9 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
           delay
         );
         await this._sessionTaskQueue.add(
-          event as "session-reminder.30min" | "session-reminder.5min",
+          event as SessionQueueJob.REMINDER_30_MINUTES | SessionQueueJob.REMINDER_5_MINUTES,
           {
-            recipientType: "user",
+            recipientType: NotificationRecipientType.USER,
             recipientId: userId,
             sessionId,
             minutes,
@@ -154,18 +159,18 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     const endDelay = endTimestamp - now;
     if (endDelay > 0) {
       await this._sessionTaskQueue.add(
-        "session-over",
+        SessionQueueJob.SESSION_OVER,
         {
-          recipientType: "psychologist",
+          recipientType: NotificationRecipientType.PSYCHOLOGIST,
           recipientId: session.psychologist,
           sessionId,
         },
         endDelay
       );
       await this._sessionTaskQueue.add(
-        "session-over",
+        SessionQueueJob.SESSION_OVER,
         {
-          recipientType: "user",
+          recipientType: NotificationRecipientType.USER,
           recipientId: userId,
           sessionId,
         },

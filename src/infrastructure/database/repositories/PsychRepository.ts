@@ -4,6 +4,8 @@ import Psychologist from "../../../domain/entities/psychologist.entity.js";
 import IPsychologistRepository, { ListPsychQueryByUser, PsychSummary, PsychTrendsEntry } from "../../../domain/interfaces/IPsychRepository.js";
 import { IPsychDocument, PsychModel } from "../models/PsychologistModel.js";
 import { BaseRepository } from "./BaseRepository.js";
+import { ListPsychByUserSort } from "../../../domain/enums/ListPsychByUserSort.js";
+import { FetchPsychTrendsByAdminInterval } from "../../../domain/enums/FetchPsychTrendsByAdminInterval.js";
 
 export default class PsychRepository
   extends BaseRepository<Psychologist, IPsychDocument>
@@ -129,10 +131,10 @@ export default class PsychRepository
 
   if (sort) {
     const sortMap: Record<string,  Record<string, 1 | -1>> = {
-      "a-z": { firstName: 1 },
-      "z-a": { firstName: -1 },
-      rating: { avgRating: -1 },
-      price: { hourlyFees: 1 }, 
+      [ListPsychByUserSort.A_Z]: { firstName: 1 },
+      [ListPsychByUserSort.Z_A]: { firstName: -1 },
+      [ListPsychByUserSort.RATING]: { avgRating: -1 },
+      [ListPsychByUserSort.PRICE]: { hourlyFees: 1 }, 
     };
 
     basePipeline.push({ $sort: sortMap[sort] });
@@ -158,12 +160,12 @@ export default class PsychRepository
  async fetchPsychTrends(
     fromDate: Date,
     toDate: Date,
-    interval: "day" | "month" | "year"
+    interval: FetchPsychTrendsByAdminInterval
   ): Promise<PsychTrendsEntry[]> {
     const dateFormat =
-      interval === "day"
+      interval === FetchPsychTrendsByAdminInterval.DAY
         ? { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }
-        : interval === "month"
+        : interval === FetchPsychTrendsByAdminInterval.MONTH
         ? { $dateToString: { format: "%Y-%m", date: "$createdAt" } }
         : { $dateToString: { format: "%Y", date: "$createdAt" } };
 
@@ -224,5 +226,5 @@ interface PsychListQueryByUser extends FilterQuery<Psychologist> {
   }>;
   skip?: number;
   limit?: number;
-  sort?: "a-z" | "z-a" | "rating" | "price";
+  sort?: ListPsychByUserSort;
 }

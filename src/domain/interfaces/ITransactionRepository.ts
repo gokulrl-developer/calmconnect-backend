@@ -1,4 +1,7 @@
 import Transaction from "../entities/transaction.entity.js";
+import { RevenueTrendsIntervalByAdmin } from "../enums/RevenueTrendsIntervalByAdmin.js";
+import { TransactionReferenceType } from "../enums/TransactionReferenceType.js";
+import { TransactionType } from "../enums/TransactionType.js";
 import IBaseRepository from "./IBaseRepository.js";
 
 export interface RevenueTrendsEntry {
@@ -11,8 +14,8 @@ export default interface ITransactionRepository
   listByOwner(
     ownerId: string,
     ownerType: string,
-    type?: "credit" | "debit",
-    referenceType?: "booking" | "psychologistPayment" | "refund",
+    type?: TransactionType,
+    referenceType?: TransactionReferenceType,
     date?: string,
     skip?: number,
     limit?: number
@@ -20,7 +23,7 @@ export default interface ITransactionRepository
   fetchRevenueTrends(
     fromDate: Date,
     toDate: Date,
-    interval: "day" | "month" | "year"
+    interval: RevenueTrendsIntervalByAdmin
   ): Promise<RevenueTrendsEntry[]>;
   fetchRevenueSummary(fromDate: Date, toDate: Date): Promise<RevenueSummary>;
   fetchPsychRevenueTrends(psychId: string): Promise<PsychRevenueTrendsEntry[]>;
@@ -49,8 +52,8 @@ export interface RevenueSummaryByPsych {
 export interface RecentUserTransactionEntryFromPersistence {
   transactionId: string;
   time: string;
-  type: "credit" | "debit";
-  referenceType?: "booking" | "refund";
+  type: TransactionType;
+  referenceType?: TransactionReferenceType.BOOKING|TransactionReferenceType.REFUND;
   psychFirstName: string;
   psychLastName: string;
 }

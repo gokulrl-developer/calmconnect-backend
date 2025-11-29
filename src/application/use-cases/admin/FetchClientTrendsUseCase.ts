@@ -1,3 +1,5 @@
+import { FetchPsychTrendsByAdminInterval } from "../../../domain/enums/FetchPsychTrendsByAdminInterval.js";
+import { UserTrendsIntervalByAdmin } from "../../../domain/enums/UserTrendsIntervalByAdmin.js";
 import IPsychRepository, {
   PsychTrendsEntry,
 } from "../../../domain/interfaces/IPsychRepository.js";
@@ -38,12 +40,12 @@ export default class FetchClientsTrendsUseCase
     const userEntries = await this._userRepository.fetchUserTrends(
       startDate,
       endDate,
-      interval as "day" | "month" | "year"
+      interval as UserTrendsIntervalByAdmin
     );
     const psychEntries = await this._psychRepository.fetchPsychTrends(
       startDate,
       endDate,
-      interval as "day" | "month" | "year"
+      interval as FetchPsychTrendsByAdminInterval
     );
         const labels = generateLabels(startDate, endDate, interval as "year"|"month"|"day");
 
