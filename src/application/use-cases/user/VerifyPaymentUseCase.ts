@@ -12,13 +12,13 @@ import { toWalletDomain } from "../../mappers/WalletMapper.js";
 import { IEventBus } from "../../interfaces/events/IEventBus.js";
 import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
 import { ISessionTaskQueue } from "../../../domain/interfaces/ISessionTaskQueue.js";
-import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService.js";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
 import { SessionStatus } from "../../../domain/enums/SessionStatus.js";
 import { WalletOwnerType } from "../../../domain/enums/WalletOwnerType.js";
 import { EventMapEvents } from "../../../domain/enums/EventMapEvents.js";
 import { SessionQueueJob } from "../../../domain/enums/SessionQueueJob.js";
 import { NotificationRecipientType } from "../../../domain/enums/NotificationRecipientType.js";
+import IAdminRepository from "../../../domain/interfaces/IAdminRepository.js";
 
 export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
   constructor(
@@ -29,7 +29,7 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     private readonly _userRepository: IUserRepository,
     private readonly _sessionTaskQueue: ISessionTaskQueue,
     private readonly _eventBus: IEventBus,
-    private readonly _adminConfigService:IAdminConfigService,
+    private readonly _adminRepository:IAdminRepository,
     private readonly _psychRepository:IPsychRepository
   ) {}
 
@@ -52,7 +52,10 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
       );
     }
 
-    const adminData=this._adminConfigService.getAdminData();
+    const adminData=await this._adminRepository.findOne();
+    if(!adminData){
+      throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+    }
     let platformWallet = await this._walletRepository.findByOwner(adminData.adminId,WalletOwnerType.PLATFORM)
     let userWallet = await this._walletRepository.findByOwner(dto.userId,WalletOwnerType.USER);
     if (!platformWallet) {

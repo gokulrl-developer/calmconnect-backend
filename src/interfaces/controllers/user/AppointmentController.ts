@@ -89,6 +89,7 @@ export default class AppointmentController {
   }
 
   async fetchCheckoutData(req: Request, res: Response, next: NextFunction) {
+    
     try {
       const dto: FetchCheckoutDataDTO = {
         psychId: String(req.query.psychId),

@@ -10,17 +10,17 @@ import { CancelSessionDTO } from "../../dtos/psych.dto.js";
 import AppError from "../../error/AppError.js";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../error/app-error-codes.js";
-import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService.js";
 import { toWalletDomain } from "../../mappers/WalletMapper.js";
 import { WalletOwnerType } from "../../../domain/enums/WalletOwnerType.js";
 import { SessionStatus } from "../../../domain/enums/SessionStatus.js";
+import IAdminRepository from "../../../domain/interfaces/IAdminRepository.js";
 
 export default class CancelSessionPsychUseCase {
   constructor(
     private readonly _sessionRepository: ISessionRepository,
     private readonly _transactionRepository: ITransactionRepository,
     private readonly _walletRepository: IWalletRepository,
-    private readonly _adminConfigService: IAdminConfigService
+    private readonly _adminRepository:IAdminRepository
   ) {}
 
   async execute(dto: CancelSessionDTO): Promise<void> {
@@ -31,8 +31,11 @@ export default class CancelSessionPsychUseCase {
         AppErrorCodes.NOT_FOUND
       );
 
-    const { adminId } =
-      this._adminConfigService.getAdminData();
+      const adminData=await this._adminRepository.findOne();
+      if(!adminData){
+        throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+      }
+    const { adminId } =adminData;
     let platformWallet = await this._walletRepository.findOne({
       ownerType: WalletOwnerType.PLATFORM,
     });

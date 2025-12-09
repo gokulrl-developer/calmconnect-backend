@@ -13,16 +13,16 @@ import AppError from "../../error/AppError.js";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../error/app-error-codes.js";
 import ICancelSessionUserUseCase from "../../interfaces/ICancelSessionUserUseCase.js";
-import IAdminConfigService from "../../../domain/interfaces/IAdminConfigService.js";
 import { WalletOwnerType } from "../../../domain/enums/WalletOwnerType.js";
 import { SessionStatus } from "../../../domain/enums/SessionStatus.js";
+import IAdminRepository from "../../../domain/interfaces/IAdminRepository.js";
 
 export default class CancelSessionUserUseCase implements ICancelSessionUserUseCase{
   constructor(
     private readonly _sessionRepository: ISessionRepository,
     private readonly _transactionRepository: ITransactionRepository,
     private readonly _walletRepository: IWalletRepository,
-    private readonly _adminConfigService:IAdminConfigService
+    private readonly _adminRepository:IAdminRepository
   ) {}
 
   async execute(dto: CancelSessionDTO): Promise<void> {
@@ -37,8 +37,11 @@ export default class CancelSessionUserUseCase implements ICancelSessionUserUseCa
     const sessionStart = new Date(session.startTime);
     const threeDaysBefore = new Date(sessionStart);
     threeDaysBefore.setDate(sessionStart.getDate() - 3);
-    const {adminId}=this._adminConfigService.getAdminData();
-
+    const adminData=await this._adminRepository.findOne();
+        if(!adminData){
+          throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+        }
+    const {adminId}=adminData
     let platformWallet = await this._walletRepository.findOne({ ownerType: WalletOwnerType.PLATFORM });
     if (!platformWallet) {
       platformWallet = await this._walletRepository.create(new Wallet(WalletOwnerType.PLATFORM, 0,adminId));

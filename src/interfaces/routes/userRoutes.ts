@@ -50,7 +50,6 @@ import FetchWalletUseCase from "../../application/use-cases/FetchWalletUseCase.j
 import GetTransactionListUseCase from "../../application/use-cases/TransactionListUseCase.js";
 import { PdfkitReceiptService } from "../../infrastructure/external/PdfkitReceiptService.js";
 import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetNotificationsCountUseCase.js";
-import AdminConfigService from "../../infrastructure/external/AdminConfigService.js";
 import ComplaintController from "../controllers/user/ComplaintController.js";
 import CreateComplaintUseCase from "../../application/use-cases/user/CreateComplaintUseCase.js";
 import ComplaintRepository from "../../infrastructure/database/repositories/ComplaintRepository.js";
@@ -63,6 +62,7 @@ import ListPsychReviewsUseCase from "../../application/use-cases/user/ListPsychR
 import FetchUserDashboardUseCase from "../../application/use-cases/user/FetchUserDashboardUseCase.js";
 import ClearNotificationsUseCase from "../../application/use-cases/ClearNotificationsUseCase.js";
 import { USER_ROUTES } from "../constants/user-endpoints.constants.js";
+import AdminRepository from "../../infrastructure/database/repositories/AdminRepository.js";
 
 
 const userRepository = new UserRepository();
@@ -79,9 +79,9 @@ const transactionRepository = new TransactionRepository();
 const notificationRepository = new NotificationRepository();
 const notificationQueue = new BullMQNotificationQueue();
 const receiptService = new PdfkitReceiptService();
-const adminConfigService = new AdminConfigService();
 const complaintRepository = new ComplaintRepository();
 const reviewRepository = new ReviewRepository();
+const adminRepository=new AdminRepository()
 
 const registerUserUseCase = new RegisterUserUseCase(
   userRepository,
@@ -143,7 +143,7 @@ const verifyPaymentUseCase = new VerifyPaymentUseCase(
   userRepository,
   notificationQueue,
   eventBus,
-  adminConfigService,
+  adminRepository,
   psychRepository
 );
 const listSessionsByUserUseCase = new SessionListingUserUseCase(
@@ -154,7 +154,7 @@ const cancelSessionUseCase = new CancelSessionUserUseCase(
   sessionRepository,
   transactionRepository,
   walletRepository,
-  adminConfigService
+  adminRepository
 );
 const checkSessionAccessUseCase = new CheckSessionAccessUseCase(
   sessionRepository
