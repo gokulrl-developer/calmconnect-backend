@@ -50,6 +50,7 @@ import DashboardController from "../controllers/admin/DashboardController.js";
 import FetchDashboardSummaryCardsUseCase from "../../application/use-cases/admin/FetchDashboardSummaryCards.js";
 import ClearNotificationsUseCase from "../../application/use-cases/ClearNotificationsUseCase.js";
 import { ADMIN_ROUTES } from "../constants/admin-endpoints.constants.js";
+import AdminRepository from "../../infrastructure/database/repositories/AdminRepository.js";
 
 const applicationRepository = new ApplicationRepository();
 const psychRepository = new PsychRepository();
@@ -60,8 +61,9 @@ const transactionRepository = new TransactionRepository();
 const walletRepository = new WalletRepository();
 const receiptService = new PdfkitReceiptService();
 const complaintRepository = new ComplaintRepository();
+const adminRepository=new AdminRepository();
 
-const loginAdminUseCase = new LoginAdminUseCase();
+const loginAdminUseCase = new LoginAdminUseCase(adminRepository);
 const listUseCase = new ApplicationListUseCase(applicationRepository);
 const updateApplicationUseCase = new UpdateApplicationUseCase(
   applicationRepository,

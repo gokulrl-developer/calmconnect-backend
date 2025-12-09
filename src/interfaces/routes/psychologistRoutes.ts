@@ -59,11 +59,11 @@ import GenerateTransactionReceiptUseCase from "../../application/use-cases/Gener
 import FetchWalletUseCase from "../../application/use-cases/FetchWalletUseCase.js";
 import GetTransactionListUseCase from "../../application/use-cases/TransactionListUseCase.js";
 import { PdfkitReceiptService } from "../../infrastructure/external/PdfkitReceiptService.js";
-import AdminConfigService from "../../infrastructure/external/AdminConfigService.js";
 import FetchPsychDashboardUseCase from "../../application/use-cases/psychologist/FetchPsychDashboardUseCase.js";
 import ReviewRepository from "../../infrastructure/database/repositories/ReviewRepository.js";
 import ClearNotificationsUseCase from "../../application/use-cases/ClearNotificationsUseCase.js";
 import { PSYCH_ROUTES } from "../constants/psychologist-endpoints.constants.js";
+import AdminRepository from "../../infrastructure/database/repositories/AdminRepository.js";
 
 
 const psychRepository = new PsychRepository();
@@ -79,8 +79,8 @@ const transactionRepository = new TransactionRepository();
 const walletRepository = new WalletRepository();
 const notificationRepository = new NotificationRepository();
 const receiptService=new PdfkitReceiptService();
-const adminConfigService=new AdminConfigService();
 const reviewRepository=new ReviewRepository();
+const adminRepository=new AdminRepository();
 
 const registerPsychUseCase = new RegisterPsychUseCase(
   psychRepository,
@@ -94,6 +94,7 @@ const createApplicationUseCase = new CreateApplicationUseCase(
   applicationRepository,
   psychRepository,
   cloudinaryService,
+  adminRepository,
   eventBus
 );
 
@@ -166,7 +167,7 @@ const cancelSessionUseCase = new CancelSessionPsychUseCase(
   sessionRepository,
   transactionRepository,
   walletRepository,
-  adminConfigService
+  adminRepository
 );
 const fetchLatestApplicationUseCase = new FetchLatestApplicationUseCase(
   applicationRepository

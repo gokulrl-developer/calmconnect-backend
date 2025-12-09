@@ -1,13 +1,18 @@
 import { EventMapEvents } from "../../domain/enums/EventMapEvents.js";
 import { NotificationRecipientType } from "../../domain/enums/NotificationRecipientType.js";
-import { adminConfig } from "../../utils/adminConfig.js";
+import IAdminRepository from "../../domain/interfaces/IAdminRepository.js";
+import { ERROR_MESSAGES } from "../constants/error-messages.constants.js";
+import { AppErrorCodes } from "../error/app-error-codes.js";
+import AppError from "../error/AppError.js";
 import { IEventBus } from "../interfaces/events/IEventBus.js";
 import INotificationHandler from "../interfaces/events/INotificationHandler.js";
 import ISendNotificationUseCase from "../interfaces/ISendNotificationUseCase.js";
 
 
 export default class NotificationHandler implements INotificationHandler{
-  constructor(private readonly _sendNotificationUseCase: ISendNotificationUseCase) {}
+  constructor(private readonly _sendNotificationUseCase: ISendNotificationUseCase,
+     private readonly _adminRepository:IAdminRepository
+  ) {}
 
   subscribe(eventBus: IEventBus): void {
     eventBus.subscribe(EventMapEvents.APPLICATION_CREATED, async ({ psychologistName,adminId, psychologistEmail }) => {
@@ -31,9 +36,13 @@ export default class NotificationHandler implements INotificationHandler{
         });
     }); 
     eventBus.subscribe(EventMapEvents.COMPLAINT_RAISED, async ({ complaintId,userFullName,psychologistFullName,sessionId }) => {
-        await this._sendNotificationUseCase.execute({
+       const adminData=await this._adminRepository.findOne();
+           if(!adminData){
+             throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+           }
+      await this._sendNotificationUseCase.execute({
           recipientType:NotificationRecipientType.ADMIN,
-          recipientId: adminConfig.adminId,
+          recipientId: adminData.adminId,
           title: "Complaint Raised",
           message: `${userFullName} raised a complaint : #${complaintId.split("").slice(-4).join("")} against ${psychologistFullName} related to the session : #${sessionId.split("").slice(-4).join("")}`,
           type: "complaint",

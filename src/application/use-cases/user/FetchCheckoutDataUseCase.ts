@@ -87,8 +87,7 @@ export default class FetchCheckoutDataUseCase
     ).getTime();
     const duration = (end - start) / (60 * 1000);
 
-    const fees = (psychologist.hourlyFees! * duration!) / 60;
-
+    let fees = (psychologist.hourlyFees! * duration!) / 60;
     const checkoutData: CheckoutData = {
       startTime: startTimeIso,
       endTime: endTimeIso,

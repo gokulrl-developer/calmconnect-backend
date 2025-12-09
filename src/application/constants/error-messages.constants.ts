@@ -109,5 +109,6 @@ export const ERROR_MESSAGES = {
   REVIEW_COMMENT_EXCEEDS_LENGTH:"Review comment length should not exceed 300 characters.",
   REVIEW_SORT_INVALID_FORMAT:"Review sort is in invalid format.",
   APPLICATION_STATUS_FILTER_INVALID:"The applications status filter is invalid",
-  COMPLAINT_UPDATION_FAILED:"Complaint updation failed"
+  COMPLAINT_UPDATION_FAILED:"Complaint updation failed",
+  ADMIN_DATA_NOT_FOUND:"Admin Data not found"
 } as const;
