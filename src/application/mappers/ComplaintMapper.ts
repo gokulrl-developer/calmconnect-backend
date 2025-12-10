@@ -12,6 +12,7 @@ import { createFullName } from "../../utils/createFullName.js";
 import { UserRecentComplaintsEntryFromPersistence } from "../../domain/interfaces/IComplaintRepository.js";
 import { UserRecentComplaintsEntry } from "../interfaces/IFetchUserDashboardUseCase.js";
 import { ComplaintStatus } from "../../domain/enums/ComplaintStatus.js";
+import { PsychologistStatus } from "../../domain/enums/PsychologistStatus.js";
 
 
 export const mapCreateComplaintDTOToDomain = (
@@ -121,6 +122,7 @@ export const mapDomainToAdminComplaintDetails = (
     psychologistId: psychologist.id!,
     psychologistFullName: `${psychologist.firstName} ${psychologist.lastName}`,
     psychologistEmail: psychologist.email,
+    psychologistStatus:psychologist.isBlocked===true?PsychologistStatus.INACTIVE:PsychologistStatus.ACTIVE,
     sessionId: session.id,
     sessionStartTime: session.startTime.toISOString(),
     sessionEndTime: session.endTime.toISOString(),
