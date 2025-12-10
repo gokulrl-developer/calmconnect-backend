@@ -1,4 +1,5 @@
 import { ComplaintStatus } from "../../domain/enums/ComplaintStatus.js";
+import { PsychologistStatus } from "../../domain/enums/PsychologistStatus.js";
 import { SessionStatus } from "../../domain/enums/SessionStatus.js";
 import { ComplaintDetailsByAdminDTO } from "../dtos/admin.dto.js";
 
@@ -9,6 +10,7 @@ export interface ComplaintDetailsResponse {
   psychologistId: string;
   psychologistFullName: string;
   psychologistEmail: string;
+  psychologistStatus:PsychologistStatus;
   sessionId?: string;
   sessionStartTime: string;
   sessionEndTime: string;
