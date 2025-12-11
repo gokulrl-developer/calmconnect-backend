@@ -35,6 +35,24 @@ export default class NotificationHandler implements INotificationHandler{
           type: "booking",
         });
     }); 
+    eventBus.subscribe(EventMapEvents.USER_CANCELLED_SESSION, async ({ userFullName, psychologistId,date,time }) => {
+        await this._sendNotificationUseCase.execute({
+          recipientType:NotificationRecipientType.PSYCHOLOGIST,
+          recipientId: psychologistId,
+          title: "Session Cancellation",
+          message: `${userFullName}  cancelled the session scheduled on ${date} at ${time}.`,
+          type: "booking",
+        });
+    }); 
+    eventBus.subscribe(EventMapEvents.PSYCHOLOGIST_CANCELLED_SESSION, async ({ psychologistFullName, userId,date,time }) => {
+        await this._sendNotificationUseCase.execute({
+          recipientType:NotificationRecipientType.USER,
+          recipientId: userId,
+          title: "Session Cancellation",
+          message: `${psychologistFullName}  cancelled the session scheduled on ${date} at ${time}.`,
+          type: "booking",
+        });
+    }); 
     eventBus.subscribe(EventMapEvents.COMPLAINT_RAISED, async ({ complaintId,userFullName,psychologistFullName,sessionId }) => {
        const adminData=await this._adminRepository.findOne();
            if(!adminData){
