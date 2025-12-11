@@ -167,7 +167,9 @@ const cancelSessionUseCase = new CancelSessionPsychUseCase(
   sessionRepository,
   transactionRepository,
   walletRepository,
-  adminRepository
+  adminRepository,
+  psychRepository,
+  eventBus
 );
 const fetchLatestApplicationUseCase = new FetchLatestApplicationUseCase(
   applicationRepository

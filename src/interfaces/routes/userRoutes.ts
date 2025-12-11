@@ -154,7 +154,9 @@ const cancelSessionUseCase = new CancelSessionUserUseCase(
   sessionRepository,
   transactionRepository,
   walletRepository,
-  adminRepository
+  adminRepository,
+  eventBus,
+  userRepository
 );
 const checkSessionAccessUseCase = new CheckSessionAccessUseCase(
   sessionRepository
