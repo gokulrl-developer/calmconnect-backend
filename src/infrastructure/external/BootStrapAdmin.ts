@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import { AdminModel } from "../database/models/AdminModel.js";
 import { hashPassword } from "../../utils/passwordEncryption.js";
 

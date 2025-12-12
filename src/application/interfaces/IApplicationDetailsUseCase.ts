@@ -1,6 +1,5 @@
 import { ApplicationStatus } from "../../domain/enums/ApplicationStatus.js"
 import { PsychologistGender } from "../../domain/enums/PsychologistGender.js"
-import { PsychologistStatus } from "../../domain/enums/PsychologistStatus.js"
 import { ApplicationDetailsDTO } from "../dtos/admin.dto.js"
 
 export interface ApplicationDetails{

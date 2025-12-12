@@ -87,7 +87,7 @@ export default class CreateOrderUseCase implements ICreateOrderUseCase {
       HHMMToIso(requiredSlot.startTime, selectedDate)
     ).getTime();
     const duration = (end - start) / (60 * 1000);
-    let fees = (psychologist.hourlyFees! * duration!) / 60;
+    const fees = (psychologist.hourlyFees! * duration!) / 60;
     const paymentOrder = await this._paymentProvider.createOrder({
       amount: Math.round(fees * 100),
       currency: "INR",
