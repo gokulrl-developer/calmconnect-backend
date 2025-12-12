@@ -1,11 +1,10 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-export interface IAdmin {
-  email: string;
+
+export interface IAdminDocument extends Document{
+ email: string;
   password: string;
 }
-
-export interface IAdminDocument extends Document<Types.ObjectId, {}, IAdmin>, IAdmin {}
 
 const AdminSchema = new Schema<IAdminDocument>({
   email: { type: String, required: true },
