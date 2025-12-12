@@ -48,7 +48,7 @@ export const PSYCH_ROUTES = {
 
   // -------- Notifications --------
   FETCH_NOTIFICATIONS: "/psychologist/notifications",
-  MARK_NOTIFICATIONS_READ: "/psychologist/notifications/read",
+  MARK_NOTIFICATIONS_READ: "/psychologist/notifications",
   CLEAR_NOTIFICATIONS: "/psychologist/notifications/clear",
   UNREAD_NOTIFICATIONS_COUNT: "/psychologist/notifications/count",
 

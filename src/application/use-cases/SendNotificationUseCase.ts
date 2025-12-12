@@ -18,6 +18,7 @@ export default class SendNotificationUseCase
     title: string;
     message: string;
     type: string;
+    link?:string
   }): Promise<Notification> {
     const notif = new Notification(
       payload.recipientId,
@@ -25,6 +26,7 @@ export default class SendNotificationUseCase
       payload.title,
       payload.message,
       payload.type,
+      payload.link,
       false,
       new Date()
     );

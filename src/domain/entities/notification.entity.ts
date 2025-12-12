@@ -7,6 +7,7 @@ export class Notification {
     public title: string,
     public message: string,
     public type: string,
+    public link?:string,
     public isRead: boolean = false,
     public createdAt: Date = new Date(),
     public id?: string | null
