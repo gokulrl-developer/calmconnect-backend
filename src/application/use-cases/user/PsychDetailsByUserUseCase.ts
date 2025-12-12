@@ -25,7 +25,7 @@ private readonly _availabilityRuleRepository: IAvailabilityRuleRepository,
 
   async execute(dto: PsychDetailsByUserDTO) {
     const psychologist = await this._psychRepository.findById(dto.psychId);
-
+    
     if (!psychologist) {
       throw new AppError(
         ERROR_MESSAGES.PSYCHOLOGIST_NOT_FOUND,
@@ -34,7 +34,7 @@ private readonly _availabilityRuleRepository: IAvailabilityRuleRepository,
     }
     
     const selectedDate = dto.date ? new Date(dto.date) : new Date();
-     const startOfToday = new Date();
+    const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
     if(startOfToday>selectedDate){
       throw new AppError(ERROR_MESSAGES.SELECTED_DATE_PASSED,AppErrorCodes.VALIDATION_ERROR)
@@ -46,9 +46,9 @@ private readonly _availabilityRuleRepository: IAvailabilityRuleRepository,
         const quickSlots =await this._quickSlotRepository.findActiveByDatePsych(selectedDate,dto.psychId)  
         const sessions =await this._sessionRepository.findBookedSessions(selectedDate,dto.psychId)
     
-       let availableSlots=getAvailableSlotsForDatePsych(specialDay,availabilityRules,quickSlots,sessions);
-       let filteredSlots:Slot[]=[];
-       for(let slot of availableSlots){
+       const availableSlots=getAvailableSlotsForDatePsych(specialDay,availabilityRules,quickSlots,sessions);
+       const filteredSlots:Slot[]=[];
+       for(const slot of availableSlots){
         const slotStartTime = new Date(HHMMToIso(slot.startTime, new Date(dto.date!)));
         if(slotStartTime.getTime()>Date.now()){
            filteredSlots.push(slot)

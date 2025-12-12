@@ -20,8 +20,13 @@ export default class PsychController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const psychId = req.account?.id!;
-      const { fromDate, toDate } = req.query;
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      const psychId = req.account.id!;
 
       const dto = {
         psychId,
@@ -41,7 +46,13 @@ export default class PsychController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const psychId = req?.account?.id;
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      const psychId = req.account.id;
       const psychProfile = await this._fetchPsychProfileUseCase.execute({
         psychId: psychId!,
       });
@@ -58,10 +69,16 @@ export default class PsychController {
     next: NextFunction
   ): Promise<void> {
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      const psychId = req.account?.id;
+      const psychId = req.account.id;
 
-      let {
+      const {
         address,
         languages,
         specializations,

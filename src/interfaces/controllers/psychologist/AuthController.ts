@@ -50,12 +50,12 @@ export default class AuthController {
         );
       }
 
-      const result = await this._registerPsychUseCase.execute(req.body);
+      await this._registerPsychUseCase.execute(req.body);
       res
         .status(StatusCodes.CREATED)
         .json({ message: SUCCESS_MESSAGES.REGISTRATION_SUCCESSFUL });
     } catch (error) {
-      next();
+      next(error);
     }
   }
 
@@ -83,12 +83,12 @@ export default class AuthController {
           AppErrorCodes.VALIDATION_ERROR
         );
       }
-      const result = await this._resetPasswordUseCase.execute(req.body);
+      await this._resetPasswordUseCase.execute(req.body);
       res
         .status(StatusCodes.CREATED)
         .json({ message: SUCCESS_MESSAGES.PASSWORD_RESET_SUCCESSFUL });
     } catch (error) {
-      next();
+      next(error);
     }
   }
 
@@ -161,7 +161,7 @@ export default class AuthController {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        maxAge: Number(process.env.REFRESH_TOKEN_COOKIE_MAX_AGE!),
         path: "/refresh",
       });
 
@@ -169,11 +169,11 @@ export default class AuthController {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        maxAge: 60 * 15 * 1000,
+        maxAge: Number(process.env.ACCESS_TOKEN_COOKIE_MAX_AGE!),
         path: "/",
       });
 
-      const { refreshToken, accessToken, ...Psych } = result;
+      const { refreshToken:_refreshToken, accessToken:_accessToken, ...Psych } = result;
 
       res
         .status(StatusCodes.OK)
@@ -202,7 +202,7 @@ export default class AuthController {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        maxAge: Number(process.env.REFRESH_TOKEN_COOKIE_MAX_AGE!),
         path: "/refresh",
       });
 
@@ -210,7 +210,7 @@ export default class AuthController {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        maxAge: 60 * 15 * 1000,
+        maxAge: Number(process.env.ACCESS_TOKEN_COOKIE_MAX_AGE!),
         path: "/",
       });
 

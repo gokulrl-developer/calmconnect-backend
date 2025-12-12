@@ -23,6 +23,7 @@ export const toNotificationListingItem = (
     title: notification.title,
     message: notification.message,
     type: notification.type,
+    link:notification.link ?? null,
     isRead: notification.isRead,
     createdAt: notification.createdAt,
   };

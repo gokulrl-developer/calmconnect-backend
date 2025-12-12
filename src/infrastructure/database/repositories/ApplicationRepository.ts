@@ -3,6 +3,7 @@ import { Application } from "../../../domain/entities/application.entity.js";
 import IApplicationRepository from "../../../domain/interfaces/IApplicationRepository.js";
 import { IApplicationDocument, ApplicationModel } from "../models/ApplicationModel.js";
 import { BaseRepository } from "./BaseRepository.js";
+import { ApplicationStatus } from "../../../domain/enums/ApplicationStatus.js";
 
 export default class ApplicationRepository
   extends BaseRepository<Application, IApplicationDocument>
@@ -85,7 +86,7 @@ export default class ApplicationRepository
     return apps.map((a) => this.toDomain(a));
   }
 
-  async listApplications(skip: number, limit: number,search:string,status?:"pending"|"accepted"|"rejected"): Promise<Application[]> {
+  async listApplications(skip: number, limit: number,search:string,status?:ApplicationStatus): Promise<Application[]> {
     const query: ListApplicationsQuery={};
     if (search) {
       query.$or = [
@@ -123,5 +124,5 @@ interface ListApplicationsQuery{
     lastName?: { $regex: string; $options: string };
     email?: { $regex: string; $options: string };
   }[];
-  status?: "pending" | "accepted" | "rejected";
+  status?: ApplicationStatus;
 }

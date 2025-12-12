@@ -9,6 +9,7 @@ import { AppErrorCodes } from "../../error/app-error-codes.js";
 import { IEventBus } from "../../interfaces/events/IEventBus.js";
 import IUserRepository from "../../../domain/interfaces/IUserRepository.js";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { EventMapEvents } from "../../../domain/enums/EventMapEvents.js";
 
 export default class CreateComplaintUseCase implements ICreateComplaintUseCase {
   constructor(
@@ -37,7 +38,7 @@ export default class CreateComplaintUseCase implements ICreateComplaintUseCase {
     const complaintCreated=await this._complaintRepository.create(complaint);
     const user=await this._userRepository.findById(dto.userId);
     const psychologist=await this._psychRepository.findById(session.psychologist);
-    await this._eventBus.emit('complaint.raised', {
+    await this._eventBus.emit(EventMapEvents.COMPLAINT_RAISED, {
           complaintId:complaintCreated.id!,
           userFullName:user?`${user.firstName} ${user.lastName}`:"N/A",
           psychologistFullName:psychologist?`${psychologist.firstName} ${psychologist.lastName}`:"N/A",

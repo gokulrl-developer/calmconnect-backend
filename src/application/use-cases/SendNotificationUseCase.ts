@@ -1,4 +1,5 @@
 import { Notification } from "../../domain/entities/notification.entity.js";
+import { NotificationRecipientType } from "../../domain/enums/NotificationRecipientType.js";
 import { INotificationRepository } from "../../domain/interfaces/INotificationRepository.js";
 import ISocketService, { SendNotificationPayload } from "../../domain/interfaces/ISocketService.js";
 import ISendNotificationUseCase from "../interfaces/ISendNotificationUseCase.js";
@@ -12,11 +13,12 @@ export default class SendNotificationUseCase
   ) {}
 
   async execute(payload: {
-    recipientType: "admin" | "user" | "psychologist";
+    recipientType: NotificationRecipientType;
     recipientId: string;
     title: string;
     message: string;
     type: string;
+    link?:string
   }): Promise<Notification> {
     const notif = new Notification(
       payload.recipientId,
@@ -24,6 +26,7 @@ export default class SendNotificationUseCase
       payload.title,
       payload.message,
       payload.type,
+      payload.link,
       false,
       new Date()
     );

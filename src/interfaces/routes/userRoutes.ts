@@ -50,7 +50,6 @@ import FetchWalletUseCase from "../../application/use-cases/FetchWalletUseCase.j
 import GetTransactionListUseCase from "../../application/use-cases/TransactionListUseCase.js";
 import { PdfkitReceiptService } from "../../infrastructure/external/PdfkitReceiptService.js";
 import GetUnreadNotificationCountUseCase from "../../application/use-cases/GetNotificationsCountUseCase.js";
-import AdminConfigService from "../../infrastructure/external/AdminConfigService.js";
 import ComplaintController from "../controllers/user/ComplaintController.js";
 import CreateComplaintUseCase from "../../application/use-cases/user/CreateComplaintUseCase.js";
 import ComplaintRepository from "../../infrastructure/database/repositories/ComplaintRepository.js";
@@ -62,6 +61,8 @@ import ReviewRepository from "../../infrastructure/database/repositories/ReviewR
 import ListPsychReviewsUseCase from "../../application/use-cases/user/ListPsychReviewsUseCase.js";
 import FetchUserDashboardUseCase from "../../application/use-cases/user/FetchUserDashboardUseCase.js";
 import ClearNotificationsUseCase from "../../application/use-cases/ClearNotificationsUseCase.js";
+import { USER_ROUTES } from "../constants/user-endpoints.constants.js";
+import AdminRepository from "../../infrastructure/database/repositories/AdminRepository.js";
 
 
 const userRepository = new UserRepository();
@@ -78,9 +79,9 @@ const transactionRepository = new TransactionRepository();
 const notificationRepository = new NotificationRepository();
 const notificationQueue = new BullMQNotificationQueue();
 const receiptService = new PdfkitReceiptService();
-const adminConfigService = new AdminConfigService();
 const complaintRepository = new ComplaintRepository();
 const reviewRepository = new ReviewRepository();
+const adminRepository=new AdminRepository()
 
 const registerUserUseCase = new RegisterUserUseCase(
   userRepository,
@@ -142,7 +143,7 @@ const verifyPaymentUseCase = new VerifyPaymentUseCase(
   userRepository,
   notificationQueue,
   eventBus,
-  adminConfigService,
+  adminRepository,
   psychRepository
 );
 const listSessionsByUserUseCase = new SessionListingUserUseCase(
@@ -153,7 +154,9 @@ const cancelSessionUseCase = new CancelSessionUserUseCase(
   sessionRepository,
   transactionRepository,
   walletRepository,
-  adminConfigService
+  adminRepository,
+  eventBus,
+  userRepository
 );
 const checkSessionAccessUseCase = new CheckSessionAccessUseCase(
   sessionRepository
@@ -258,138 +261,137 @@ const checkStatusUser = new CheckStatusUser(checkStatusUserUseCase);
 
 const router = express.Router();
 
+/* ----------------------- AUTH ROUTES ----------------------- */
 router.post(
-  "/user/sign-up",
+  USER_ROUTES.SIGN_UP,
   (req: Request, res: Response, next: NextFunction) =>
     authController.signUpUser(req, res, next)
 );
 router.post(
-  "/user/forgot-password",
+  USER_ROUTES.FORGOT_PASSWORD,
   (req: Request, res: Response, next: NextFunction) =>
     authController.forgotPassword(req, res, next)
 );
 router.post(
-  "/user/register",
+  USER_ROUTES.REGISTER,
   (req: Request, res: Response, next: NextFunction) =>
     authController.registerUser(req, res, next)
 );
 router.post(
-  "/user/reset-password",
+  USER_ROUTES.RESET_PASSWORD,
   (req: Request, res: Response, next: NextFunction) =>
     authController.resetPassword(req, res, next)
 );
 router.post(
-  "/user/resend-otp-signup",
+  USER_ROUTES.RESEND_OTP_SIGNUP,
   (req: Request, res: Response, next: NextFunction) =>
     authController.resendOtpSignUp(req, res, next)
 );
 router.post(
-  "/user/resend-otp-reset",
+  USER_ROUTES.RESEND_OTP_RESET,
   (req: Request, res: Response, next: NextFunction) =>
     authController.resendOtpReset(req, res, next)
 );
-router.post("/user/social", (req: Request, res: Response, next: NextFunction) =>
+router.post(USER_ROUTES.SOCIAL_LOGIN, (req, res, next) =>
   authController.googleAuthUser(req, res, next)
 );
-router.post("/user/login", (req: Request, res: Response, next: NextFunction) =>
+router.post(USER_ROUTES.LOGIN, (req, res, next) =>
   authController.loginUser(req, res, next)
 );
+
+/* ----------------------- DASHBOARD ----------------------- */
 router.get(
-  "/user/dashboard",
+  USER_ROUTES.DASHBOARD,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   checkStatusUser.handle.bind(checkStatusUser),
-  (req: Request, res: Response, next: NextFunction) =>
-    userController.getDashboard(req, res, next)
+  (req, res, next) => userController.getDashboard(req, res, next)
 );
+
+/* ----------------------- PSYCHOLOGISTS ----------------------- */
 router.get(
-  "/user/psychologists",
+  USER_ROUTES.LIST_PSYCHOLOGISTS,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   checkStatusUser.handle.bind(checkStatusUser),
   paginationMiddleware,
-  (req: Request, res: Response, next: NextFunction) =>
-    appointmentController.listPsychologists(req, res, next)
+  (req, res, next) => appointmentController.listPsychologists(req, res, next)
 );
 router.get(
-  "/user/psychologist-details",
+  USER_ROUTES.PSYCHOLOGIST_DETAILS,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   checkStatusUser.handle.bind(checkStatusUser),
-  (req: Request, res: Response, next: NextFunction) =>
-    appointmentController.psychDetails(req, res, next)
+  (req, res, next) => appointmentController.psychDetails(req, res, next)
 );
 router.get(
-  "/user/checkout",
+  USER_ROUTES.CHECKOUT_DATA,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   checkStatusUser.handle.bind(checkStatusUser),
-  (req: Request, res: Response, next: NextFunction) =>
-    appointmentController.fetchCheckoutData(req, res, next)
+  (req, res, next) => appointmentController.fetchCheckoutData(req, res, next)
 );
 router.post(
-  "/user/create-order",
+  USER_ROUTES.CREATE_ORDER,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   checkStatusUser.handle.bind(checkStatusUser),
-  (req: Request, res: Response, next: NextFunction) =>
-    appointmentController.createOrder(req, res, next)
+  (req, res, next) => appointmentController.createOrder(req, res, next)
 );
 router.post(
-  "/user/verify-payment",
+  USER_ROUTES.VERIFY_PAYMENT,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   checkStatusUser.handle.bind(checkStatusUser),
-  (req: Request, res: Response, next: NextFunction) =>
-    appointmentController.verifyPayment(req, res, next)
+  (req, res, next) => appointmentController.verifyPayment(req, res, next)
 );
+
+/* ----------------------- PROFILE ----------------------- */
 router.get(
-  "/user/profile",
+  USER_ROUTES.FETCH_PROFILE,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   checkStatusUser.handle.bind(checkStatusUser),
-  (req: Request, res: Response, next: NextFunction) =>
-    userController.fetchProfile(req, res, next)
-);
-router.get(
-  "/user/sessions",
-  verifyTokenMiddleware,
-  authorizeRoles("user"),
-  checkStatusUser.handle.bind(checkStatusUser),
-  paginationMiddleware,
-  (req: Request, res: Response, next: NextFunction) =>
-    sessionController.listSessions(req, res, next)
+  (req, res, next) => userController.fetchProfile(req, res, next)
 );
 router.patch(
-  "/user/sessions/:sessionId",
-  verifyTokenMiddleware,
-  authorizeRoles("user"),
-  checkStatusUser.handle.bind(checkStatusUser),
-  paginationMiddleware,
-  (req: Request, res: Response, next: NextFunction) =>
-    sessionController.cancelSession(req, res, next)
-);
-router.get(
-  "/user/sessions/:sessionId/access",
-  verifyTokenMiddleware,
-  authorizeRoles("user"),
-  checkStatusUser.handle.bind(checkStatusUser),
-  (req: Request, res: Response, next: NextFunction) =>
-    sessionController.checkSessionAccess(req, res, next)
-);
-router.patch(
-  "/user/profile",
+  USER_ROUTES.UPDATE_PROFILE,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   checkStatusUser.handle.bind(checkStatusUser),
   upload.fields([{ name: "profilePicture", maxCount: 1 }]),
-  (req: Request, res: Response, next: NextFunction) =>
-    userController.updateProfile(req, res, next)
+  (req, res, next) => userController.updateProfile(req, res, next)
 );
 
-/* ----------------notifications ------------------------------------------- */
+/* ----------------------- SESSIONS ----------------------- */
 router.get(
-  "/user/notifications",
+  USER_ROUTES.LIST_SESSIONS,
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  paginationMiddleware,
+  (req, res, next) => sessionController.listSessions(req, res, next)
+);
+router.patch(
+  USER_ROUTES.CANCEL_SESSION,
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  paginationMiddleware,
+  (req, res, next) => sessionController.cancelSession(req, res, next)
+);
+router.get(
+  USER_ROUTES.SESSION_ACCESS,
+  verifyTokenMiddleware,
+  authorizeRoles("user"),
+  checkStatusUser.handle.bind(checkStatusUser),
+  (req, res, next) =>
+    sessionController.checkSessionAccess(req, res, next)
+);
+
+/* ----------------------- NOTIFICATIONS ----------------------- */
+router.get(
+  USER_ROUTES.LIST_NOTIFICATIONS,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   checkStatusUser.handle.bind(checkStatusUser),
@@ -397,80 +399,79 @@ router.get(
   notificationController.list.bind(notificationController)
 );
 router.patch(
-  "/user/notifications",
+  USER_ROUTES.MARK_ALL_NOTIFICATIONS_READ,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   checkStatusUser.handle.bind(checkStatusUser),
   notificationController.markAllRead.bind(notificationController)
 );
 router.get(
-  "/user/notifications/count",
+  USER_ROUTES.UNREAD_NOTIFICATIONS_COUNT,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   notificationController.getUnreadCount.bind(notificationController)
 );
 router.delete(
-  "/user/notifications",
+  USER_ROUTES.CLEAR_NOTIFICATIONS,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   notificationController.clearNotifications.bind(notificationController)
 );
 
+/* ----------------------- FINANCE ----------------------- */
 router.get(
-  "/user/transactions",
+  USER_ROUTES.LIST_TRANSACTIONS,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   paginationMiddleware,
   financeController.listTransactions.bind(financeController)
 );
 router.get(
-  "/user/wallet",
+  USER_ROUTES.FETCH_WALLET,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   financeController.fetchWallet.bind(financeController)
 );
 router.get(
-  "/user/transactions/:transactionId/receipt",
+  USER_ROUTES.TRANSACTION_RECEIPT,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   financeController.generateTransactionReceipt.bind(financeController)
 );
 
-/* complaint related routes */
+/* ----------------------- COMPLAINTS ----------------------- */
 router.get(
-  "/user/complaints/:complaintId/",
+  USER_ROUTES.FETCH_COMPLAINT_DETAILS,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   complaintController.fetchComplaintDetails.bind(complaintController)
 );
 router.get(
-  "/user/complaints/",
+  USER_ROUTES.LIST_COMPLAINTS,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   paginationMiddleware,
   complaintController.listComplaints.bind(complaintController)
 );
 router.post(
-  "/user/complaints/",
+  USER_ROUTES.CREATE_COMPLAINT,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   complaintController.createComplaint.bind(complaintController)
 );
 
-// Review related routes----------------------------------------
-
+/* ----------------------- REVIEWS ----------------------- */
 router.post(
-  "/user/reviews/",
+  USER_ROUTES.CREATE_REVIEW,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   reviewController.createReview.bind(reviewController)
 );
 router.get(
-  "/user/reviews/",
+  USER_ROUTES.LIST_REVIEWS,
   verifyTokenMiddleware,
   authorizeRoles("user"),
   paginationMiddleware,
   reviewController.listPsychReviews.bind(reviewController)
 );
-
 export default router;

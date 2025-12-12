@@ -4,6 +4,7 @@ import IReviewRepository, { ListPsychReviewsFilter, RatingSummaryFromPersistence
 import { ReviewModel, IReviewDocument } from "../models/ReviewModel.js";
 import { BaseRepository } from "./BaseRepository.js";
 import { SortOrder } from "mongoose";
+import { PsychReviewsSortByUser } from "../../../domain/enums/PsychReviewsSortByUser.js";
 
 export default class ReviewRepository
   extends BaseRepository<Review, IReviewDocument>
@@ -43,7 +44,7 @@ export default class ReviewRepository
     const { psychId, sort, skip, limit } = filter;
 
     const sortOption :Record<string, SortOrder> =
-      sort === "top-rated" ? { rating: -1, createdAt: -1 } : { createdAt: -1 };
+      sort === PsychReviewsSortByUser.TOP_RATED ? { rating: -1, createdAt: -1 } : { createdAt: -1 };
 
     const [docs, totalItems] = await Promise.all([
       this.model

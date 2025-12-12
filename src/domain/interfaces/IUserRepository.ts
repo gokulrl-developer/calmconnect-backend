@@ -1,5 +1,6 @@
 import { ListUsersDTO } from "../../application/dtos/admin.dto.js";
 import User from "../entities/user.entity.js";
+import { UserTrendsIntervalByAdmin } from "../enums/UserTrendsIntervalByAdmin.js";
 import IBaseRepository from "./IBaseRepository.js";
 
 export interface UserTrendsEntry{
@@ -9,7 +10,7 @@ export interface UserTrendsEntry{
 export default interface IUserRepository extends IBaseRepository<User>{
    findByEmail(email: string): Promise<User | null>;
   findList(dto:ListUsersDTO):Promise<User[]>;
-  fetchUserTrends(fromDate:Date,toDate:Date,interval:"day"|"month"|"year"):Promise<UserTrendsEntry[]>;
+  fetchUserTrends(fromDate:Date,toDate:Date,interval:UserTrendsIntervalByAdmin):Promise<UserTrendsEntry[]>;
   fetchUserTrendsSummary(fromDate:Date,toDate:Date):Promise<UserTrendsSummary>
 }
 

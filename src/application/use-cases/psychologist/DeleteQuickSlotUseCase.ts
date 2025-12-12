@@ -4,7 +4,7 @@ import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepositor
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../error/app-error-codes.js";
 import AppError from "../../error/AppError.js";
-import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { QuickSlotStatus } from "../../../domain/enums/QuickSlotStatus.js";
 
 export default class DeleteQuickSlotUseCase implements IDeleteQuickSlotUseCase {
   constructor(
@@ -22,7 +22,7 @@ export default class DeleteQuickSlotUseCase implements IDeleteQuickSlotUseCase {
     }
 
     await this._quickSlotRepository.update(existingQuickSlot.id!, {
-      status: "inactive",
+    status: QuickSlotStatus.INACTIVE,
     });
   }
 }

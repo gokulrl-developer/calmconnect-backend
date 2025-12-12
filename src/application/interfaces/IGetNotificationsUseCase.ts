@@ -7,7 +7,8 @@ export interface NotificationListingItem{
     type: string,
     isRead: boolean ,
     createdAt: Date,
-    notificationId: string 
+    notificationId: string,
+    link:string |null
 }
 
 export default interface IGetNotificationsUseCase {

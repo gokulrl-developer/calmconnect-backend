@@ -1,4 +1,5 @@
 import QuickSlot from "../../domain/entities/quick-slot.entity.js";
+import { QuickSlotStatus } from "../../domain/enums/QuickSlotStatus.js";
 import { CreateQuickSlotDTO, EditQuickSlotDTO } from "../dtos/psych.dto.js";
 
 export const mapCreateQuickSlotDTOToDomain=(dto:CreateQuickSlotDTO)=>{
@@ -9,7 +10,7 @@ export const mapCreateQuickSlotDTOToDomain=(dto:CreateQuickSlotDTO)=>{
        new Date(dto.endTime),
        dto.durationInMins,
        dto.bufferTimeInMins??0,
-       "active",
+       QuickSlotStatus.ACTIVE,
        undefined      
     )
 }
@@ -18,8 +19,8 @@ export const mapEditQuickSlotDTOToDomain=(dto:EditQuickSlotDTO,quickSlot:QuickSl
     return new QuickSlot(
        dto.psychId,
        quickSlot.date,
-       dto.startTime?new Date(dto.startTime):quickSlot.startTime,
-       dto.endTime?new Date(dto.endTime):quickSlot.endTime,
+       dto.startTime?dto.startTime:quickSlot.startTime,
+       dto.endTime?dto.endTime:quickSlot.endTime,
        dto.durationInMins??quickSlot.durationInMins,
        dto.bufferTimeInMins??quickSlot.bufferTimeInMins,
        dto.status??quickSlot.status,

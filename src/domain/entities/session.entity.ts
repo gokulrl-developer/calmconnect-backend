@@ -1,3 +1,5 @@
+import { SessionStatus } from "../enums/SessionStatus.js";
+
 export default class Session{
     constructor(
        public psychologist:string,
@@ -6,7 +8,7 @@ export default class Session{
        public endTime:Date,
        public durationInMins:number,
        public transactionIds:string[],
-       public status:"scheduled"|"cancelled"|"ended"|"pending",
+       public status:SessionStatus,
        public fees:number, //rupees
        public id?:string,
        public videoRoomId?:string,

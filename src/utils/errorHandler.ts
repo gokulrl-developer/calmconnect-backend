@@ -1,34 +1,37 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response} from "express";
 import { AppErrorCodes } from "../application/error/app-error-codes.js";
 import AppError from "../application/error/AppError.js";
 import { StatusCodes } from "./http-statuscodes.js";
 export const errorHandler = (
-  err: any,
-  req: Request,
+  err:AppError | Error | { code?: string; message?: string },
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next:NextFunction
 ) => {
-  console.log(err)
-  if (err.code) {
+  console.log("error message and error object",err?.message,err)
+  if (err instanceof AppError) {
     const statusCode = errorToHttpStatus(err.code);
-    console.log(statusCode,err.code,err.message)
-    if (err instanceof AppError) {
-      if (statusCode >= 400 && statusCode < 500) {
-        return res.status(statusCode).json({
-          code: err.code,
-          message: err.message,
-          success: false,
-        });
-      } else {
-        console.error("custom Error :", err.message, err.code);
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Internal server error",
-          success:false
-        });
-      }
+    if (statusCode >= 400 && statusCode < 500) {
+      return res.status(statusCode).json({
+        code: err.code,
+        message: err.message,
+        success: false,
+      });
+    } else {
+      console.error("Custom Error:", err.message, err.code);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        code: "INTERNAL_SERVER_ERROR",
+        message: err.message||"Internal server error",
+        success: false,
+      });
     }
   }
+
+  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    code: "INTERNAL_SERVER_ERROR",
+    message: "Internal server error",
+    success: false,
+  });
 };
 
 
@@ -73,6 +76,8 @@ const errorToHttpStatus = (code: string): number => {
 
     case AppErrorCodes.INTERNAL_ERROR:
       return StatusCodes.INTERNAL_SERVER_ERROR;
+      case AppErrorCodes.COMPLAINT_UPDATION_FAILED:
+        return StatusCodes.INTERNAL_SERVER_ERROR
 
     default:
       return StatusCodes.INTERNAL_SERVER_ERROR;

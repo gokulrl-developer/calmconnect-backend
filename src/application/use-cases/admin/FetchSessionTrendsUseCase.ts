@@ -3,6 +3,7 @@ import ISessionRepository from "../../../domain/interfaces/ISessionRepository.js
 import IFetchSessionTrendsUseCase, { SessionTrendsEntry } from "../../interfaces/ISessionTrendsUseCase.js";
 import { toSessionTrendsResponse } from "../../mappers/SessionMapper.js";
 import { generateLabels } from "../../utils/generateLabels.js";
+import { SessionTrendsByAdminInterval } from "../../../domain/enums/SessionTrendsByAdminInterval.js";
 
 export default class FetchSessionTrendsUseCase implements IFetchSessionTrendsUseCase {
   constructor(
@@ -19,13 +20,13 @@ export default class FetchSessionTrendsUseCase implements IFetchSessionTrendsUse
     const diffYears = diffMonths / 12;
 
     if (diffYears > 1) {
-      interval = "year";
+      interval = SessionTrendsByAdminInterval.YEAR;
     } else if (diffMonths > 1) {
-      interval = "month";
+      interval = SessionTrendsByAdminInterval.MONTH;
     } else {
-      interval = "day";
+      interval = SessionTrendsByAdminInterval.DAY;
     }
-    const entries = await this._sessionRepository.fetchSessionTrends(startDate, endDate,interval as "day"|"month"|"year");
+    const entries = await this._sessionRepository.fetchSessionTrends(startDate, endDate,interval as SessionTrendsByAdminInterval);
     const labels = generateLabels(startDate, endDate, interval as "year"|"month"|"day");
 
     const filledEntries: SessionTrendsEntry[] = labels.map(label => {

@@ -21,6 +21,7 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
     const existingQuickSlot = await this._quickSlotRepo.findById(
       dto.quickSlotId
     );
+    console.log(existingQuickSlot)
     if (!existingQuickSlot) {
       throw new AppError(
         ERROR_MESSAGES.QUICK_SLOT_NOT_FOUND,
@@ -37,7 +38,6 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
 
     const startTime = dto.startTime ?? existingQuickSlot.startTime!;
     const endTime = dto.endTime ?? existingQuickSlot.endTime!;
-
     const overlappingQuickSlots =
       await this._quickSlotRepo.findOverlappingActiveByTimeRangePsych(
         startTime,
@@ -79,7 +79,7 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
       existingQuickSlot.psychologist
     );
 
-    for (let availabilityRule of availabilityRules) {
+    for (const availabilityRule of availabilityRules) {
       const slotStartMinutes =
         startTime.getHours() * 60 + startTime.getMinutes();
       const slotEndMinutes = endTime.getHours() * 60 + endTime.getMinutes();
@@ -88,10 +88,10 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
 
       if (
         specialDay === null &&
-        ((slotStartMinutes > ruleStartMinutes &&
-          slotStartMinutes < ruleEndMinutes) ||
-          (slotEndMinutes < ruleEndMinutes &&
-            slotEndMinutes > ruleStartMinutes))
+         !((slotStartMinutes >= ruleStartMinutes &&
+          slotStartMinutes >= ruleEndMinutes) ||
+          (slotEndMinutes <= ruleEndMinutes &&
+            slotEndMinutes <= ruleStartMinutes))
       ) {
         throw new AppError(
           ERROR_MESSAGES.CONFLICTING_AVAILABILITY_RULE,

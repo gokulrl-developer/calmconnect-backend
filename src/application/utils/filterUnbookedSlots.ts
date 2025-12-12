@@ -8,10 +8,10 @@ const isOverlapping = (
   sessionStart: Date,
   sessionEnd: Date
 ) => {
-  return (
-    (slotStart < sessionEnd && slotStart >= sessionStart) ||
-    (slotEnd > sessionStart && slotEnd <= sessionEnd)
-  );
+  return (!(
+    (slotStart >= sessionEnd && slotStart >= sessionStart) ||
+    (slotEnd <= sessionStart && slotEnd <= sessionEnd)
+  ))
 };
 
 export const filterUnbookedSlots = (

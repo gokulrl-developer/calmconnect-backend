@@ -1,3 +1,4 @@
+import { UserGender } from "../enums/UserGender.js";
 
 export default class User {
   constructor(
@@ -9,7 +10,7 @@ export default class User {
     public password?:string,
     public id?:string,
     public createdAt?:Date,
-    public gender?:"male"|"female"|"others",
+    public gender?:UserGender,
     public dob?:Date,
     public profilePicture?:string,
     public address?:string,

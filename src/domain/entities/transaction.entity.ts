@@ -1,19 +1,23 @@
-import { Types } from "mongoose";
+import { TransactionOwnerType } from "../enums/TransactionOwnerType.js";
+import { TransactionRecipientType } from "../enums/TransactionRecipientType.js";
+import { TransactionReferenceType } from "../enums/TransactionReferenceType.js";
+import { TransactionSourceType } from "../enums/TransactionSourceType.js";
+import { TransactionType } from "../enums/TransactionType.js";
 
 export default class Transaction {
   constructor(
     public walletId:string,
     public ownerId:string,
-    public ownerType:"user" | "psychologist" |"platform",       
+    public ownerType:TransactionOwnerType,       
     public sourceId: string,
-    public sourceType:"user" | "psychologist" |"platform",
+    public sourceType:TransactionSourceType,
     public recipientId: string, 
-    public recipientType:"user" | "psychologist" |"platform",
-    public type: "credit" | "debit",              
+    public recipientType:TransactionRecipientType,
+    public type: TransactionType,              
     public amount: number,                         
     public sessionId:string,
     public providerPaymentId?: string, 
-    public referenceType?: "booking" | "psychologistPayment" | "refund",
+    public referenceType?: TransactionReferenceType,
     public description?: string,                   
     public createdAt?: Date,
     public id?:string                        

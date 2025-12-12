@@ -1,6 +1,8 @@
+import { WalletOwnerType } from "../enums/WalletOwnerType.js";
+
 export default class Wallet {
   constructor(
-      public ownerType: "user" | "psychologist" |"platform",
+      public ownerType: WalletOwnerType,
       public balance: number,
       public ownerId?: string,
       public id?:string

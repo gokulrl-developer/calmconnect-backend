@@ -18,7 +18,7 @@ export default class RegisterUserUseCase implements IRegisterUserUseCase {
      if (!tempUser) {
        throw new AppError(ERROR_MESSAGES.INVALID_OTP,AppErrorCodes.INVALID_OTP);
       }
-      const{otp,...user}=tempUser;
+      const{otp:_otp,...user}=tempUser;
       const userEntity = toUserDomainRegister(user); 
 
       await this._userRepository.create(userEntity);

@@ -1,13 +1,14 @@
 import { Worker, Job } from "bullmq";
-import { Redis } from "ioredis";
+import  {Redis}  from "ioredis";
 import IMarkSessionOverUseCase from "../../application/interfaces/IMarkSessionOverUseCase.js";
 import ISendNotificationUseCase from "../../application/interfaces/ISendNotificationUseCase.js";
 import { SessionTaskJobMap } from "../../domain/interfaces/ISessionTaskQueue.js";
 import { transporter } from "../config/nodeMailerConfig.js";
 import { EMAIL_MESSAGES } from "../../application/constants/email-messages.constants.js";
+import { SessionQueueJob } from "../../domain/enums/SessionQueueJob.js";
 
 export default class BullMQSessionTaskWorker {
-  private readonly queueName = "session-task-queue";
+  private readonly queueName = process.env.REDIS_QUEUE_NAME!;
 
   private worker: Worker<
     SessionTaskJobMap[keyof SessionTaskJobMap],
@@ -19,15 +20,16 @@ export default class BullMQSessionTaskWorker {
     private readonly _sendNotificationUseCase: ISendNotificationUseCase,
     private readonly _markSessionOverUseCase: IMarkSessionOverUseCase,
   ) {
-    const connection = new Redis(process.env.REDIS_URL!, {
+     const connection = new Redis(process.env.REDIS_URL!, {
       maxRetriesPerRequest: null,
     });
     this.worker = new Worker<
       SessionTaskJobMap[keyof SessionTaskJobMap],
       void,
       keyof SessionTaskJobMap
-    >(this.queueName, this.processJob.bind(this), { connection: connection });
-
+    >(this.queueName, this.processJob.bind(this),  {
+        connection
+      });
     this.registerEvents();
   }
 
@@ -35,11 +37,12 @@ export default class BullMQSessionTaskWorker {
     job: Job<SessionTaskJobMap[JobName], void, JobName>
   ): Promise<void> {
     try {
+      console.log("job processing reached")  
       const data = job.data;
-
+     console.log("process",data)
       switch (job.name) {
-        case "session-reminder.30min":
-        case "session-reminder.5min": {
+        case SessionQueueJob.REMINDER_30_MINUTES:
+        case SessionQueueJob.REMINDER_5_MINUTES: {
           const {
             recipientId,
             recipientType,
@@ -76,7 +79,7 @@ export default class BullMQSessionTaskWorker {
           break;
         }
 
-        case "session-over": {
+        case SessionQueueJob.SESSION_OVER: {
           const { recipientId, recipientType, sessionId } =
             data as SessionTaskJobMap["session-over"];
           await this._markSessionOverUseCase.execute({ sessionId });
@@ -100,19 +103,32 @@ export default class BullMQSessionTaskWorker {
   }
 
   private registerEvents(): void {
-    this.worker.on("completed", (job) => {
-      console.log(`Job completed: ${job.name}, id: ${job.id}`);
-    });
+  this.worker.on("ready", () => {
+    console.log("Worker is mounted and ready to process jobs");
+  });
 
-    this.worker.on("failed", (job, err) => {
-      console.error(
-        `Job failed: ${job?.name ?? ""}, id: ${job?.id ?? ""}`,
-        err
-      );
-    });
-  }
+  this.worker.on("active", (job) => {
+    console.log("Job started:", job.name, job.id);
+  });
+
+  this.worker.on("completed", (job) => {
+    console.log(`Job completed: ${job.name}, id: ${job.id}`);
+  });
+
+  this.worker.on("failed", (job, err) => {
+    console.error(
+      `Job failed: ${job?.name ?? ""}, id: ${job?.id ?? ""}`,
+      err
+    );
+  });
+
+  this.worker.on("error", (err) => {
+    console.error("Worker error:", err);
+  });
+}
 
   public async close(): Promise<void> {
     await this.worker.close();
   }
+  
 }

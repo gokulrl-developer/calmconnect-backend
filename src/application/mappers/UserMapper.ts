@@ -3,6 +3,8 @@ import User from "../../domain/entities/user.entity.js";
 import { UserProfile } from "../interfaces/IFetchUserProfileUseCase.js";
 import { UserTrendsSummary } from "../../domain/interfaces/IUserRepository.js";
 import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
+import { AdminUserListResponseItem } from "../interfaces/IUserListUseCase.js";
+import { UserStatus } from "../../domain/enums/UserStatus.js";
 
 export const toUserDomainRegister=(user:UserSignUpDTO):User=>{
   
@@ -65,13 +67,13 @@ export const toLoginResponse = (user: User, accessToken: string,refreshToken:str
 }
 }
 
-export const toAdminUserListResponse=(user:User)=>{
+export const toAdminUserListResponse=(user:User):AdminUserListResponseItem=>{
   return{  
-    id:user.id,
+    id:user.id!,
     firstName:user.firstName,
     lastName:user.lastName,
   email:user.email,
-  status:!user.isBlocked?"active":"inactive"
+  status:!user.isBlocked?UserStatus.ACTIVE:UserStatus.INACTIVE
   }
 
 }

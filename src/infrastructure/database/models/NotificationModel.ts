@@ -1,14 +1,16 @@
-import { model, Schema, Document, Types } from "mongoose";
+import { model, Schema, Document} from "mongoose";
+import { NotificationRecipientType } from "../../../domain/enums/NotificationRecipientType.js";
 
 export interface INotificationDocument extends Document {
   recipientId: string;
-  recipientType:"user"|"psychologist"|"admin",
+  recipientType:NotificationRecipientType,
   title: string;
   message: string;
   type: string;
   isRead: boolean;
   createdAt: Date;
   updatedAt: Date;
+  link?:string;
 }
 
 const NotificationSchema = new Schema<INotificationDocument>(
@@ -19,6 +21,7 @@ const NotificationSchema = new Schema<INotificationDocument>(
     message: { type: String, required: true },
     type: { type: String, required: true },
     isRead: { type: Boolean, default: false },
+    link: { type: String },
   },
   { timestamps: true }
 );

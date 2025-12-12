@@ -1,3 +1,9 @@
+import { NotificationRecipientType } from "../../domain/enums/NotificationRecipientType.js";
+import { TransactionOwnerType } from "../../domain/enums/TransactionOwnerType.js";
+import { TransactionReferenceType } from "../../domain/enums/TransactionReferenceType.js";
+import { TransactionType } from "../../domain/enums/TransactionType.js";
+import { WalletOwnerType } from "../../domain/enums/WalletOwnerType.js";
+
 export interface CheckSessionAccessDTO {
   sessionId: string;
   userId?: string;
@@ -16,43 +22,43 @@ export interface GetMessagesDTO {
 }
 
 export interface GetNotificationsDTO {
-  recipientType: "admin" | "user" | "psychologist";
+  recipientType: NotificationRecipientType;
   recipientId: string;
   skip?: number;
   limit?: number;
 }
 
 export interface MarkNotificationsReadDTO {
-  recipientType: "admin" | "user" | "psychologist";
+  recipientType: NotificationRecipientType;
   recipientId: string;
 }
 export interface GetUnreadNotificationsCountDTO {
-  recipientType: "admin" | "user" | "psychologist";
+  recipientType: NotificationRecipientType;
   recipientId: string;
 }
 
 export interface GetWalletDTO{
-  ownerType: "platform" | "user" | "psychologist";
+  ownerType: WalletOwnerType;
   ownerId: string;
 }
 
 export interface GetTransactionsDTO{
-  ownerType: "platform" | "user" | "psychologist";
+  ownerType: TransactionOwnerType;
   ownerId: string;
-  type?:"credit"|"debit",
-  referenceType?:"booking" | "psychologistPayment" | "refund",
+  type?:TransactionType,
+  referenceType?:TransactionReferenceType,
   date?:string,
   skip?:number;
   limit?:number
 }
 
 export interface GetTransactionReceiptDTO{
-  ownerType: "platform" | "user" | "psychologist";
+  ownerType: TransactionOwnerType;
   ownerId: string;
   transactionId:string;
 }
 
 export interface ClearNotificationsDTO {
-  recipientType: "admin" | "user" | "psychologist";
+  recipientType: NotificationRecipientType;
   recipientId: string;
 }

@@ -2,7 +2,7 @@ import { FetchCheckoutDataDTO } from "../../dtos/user.dto.js";
 import Psychologist from "../../../domain/entities/psychologist.entity.js";
 import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilityRuleRepository.js";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
-import { HHMMToIso, isoToHHMM } from "../../../utils/timeConverter.js";
+import { HHMMToIso} from "../../../utils/timeConverter.js";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../error/app-error-codes.js";
 import AppError from "../../error/AppError.js";
@@ -88,7 +88,6 @@ export default class FetchCheckoutDataUseCase
     const duration = (end - start) / (60 * 1000);
 
     const fees = (psychologist.hourlyFees! * duration!) / 60;
-
     const checkoutData: CheckoutData = {
       startTime: startTimeIso,
       endTime: endTimeIso,

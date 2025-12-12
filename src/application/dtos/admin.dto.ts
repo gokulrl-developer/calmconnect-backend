@@ -1,3 +1,9 @@
+import { ApplicationStatus } from "../../domain/enums/ApplicationStatus.js";
+import { ComplaintStatus } from "../../domain/enums/ComplaintStatus.js";
+import { PsychologistStatus } from "../../domain/enums/PsychologistStatus.js";
+import { SessionStatus } from "../../domain/enums/SessionStatus.js";
+import { UserStatus } from "../../domain/enums/UserStatus.js";
+
 export interface AdminLoginDTO{
     email:string,
     password:string,
@@ -6,34 +12,34 @@ export interface AdminLoginDTO{
 export interface ListApplicationsDTO{
     page:number,
     search:string |null,
-    status?:"pending"|"accepted"|"rejected"
+    status?:ApplicationStatus
 }
 export interface UpdateApplicationStatusDTO{
     applicationId:string,
-    status:"pending" | "accepted" | "rejected",
+    status:ApplicationStatus,
     reason:string |null;
 }
 
 export interface ListUsersDTO{
     page:number,
     search:string |null,
-    filter:"active"|"inactive"|null
+    filter:UserStatus|null
 }
 
 export interface UpdateUserStatusDTO{
     applicationId:string,
-    status:"active"|"inactive"
+    status:UserStatus
 }
 
 export interface ListPsychDTO{
     page:number,
     search:string |null,
-    filter:"active"|"inactive"|null
+    filter:PsychologistStatus|null
 }
 
 export interface UpdatePsychStatusDTO{
     applicationId:string,
-    status:"active"|"inactive"
+    status:PsychologistStatus
 }
 
 export interface ApplicationDetailsDTO{
@@ -41,7 +47,7 @@ export interface ApplicationDetailsDTO{
 }
 
 export interface SessionListingDTO{
-  status:"scheduled"|"cancelled"|"ended"|"pending",
+  status:SessionStatus,
   skip:number,
   limit:number
 }
@@ -57,7 +63,7 @@ export interface UserDetailsByAdminDTO{
 export interface ComplaintListingByAdminDTO{
     skip:number;
     limit:number;
-    status?:"pending"|"resolved";
+    status?:ComplaintStatus;
     search?:string;
 }
 

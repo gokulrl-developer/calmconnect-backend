@@ -7,6 +7,8 @@ import { ERROR_MESSAGES } from "../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../error/app-error-codes.js";
 import IUserRepository from "../../domain/interfaces/IUserRepository.js";
 import IPsychRepository from "../../domain/interfaces/IPsychRepository.js";
+import { TransactionSourceType } from "../../domain/enums/TransactionSourceType.js";
+import { TransactionRecipientType } from "../../domain/enums/TransactionRecipientType.js";
 
 
 export default class GenerateTransactionReceiptUseCase
@@ -31,25 +33,25 @@ export default class GenerateTransactionReceiptUseCase
         throw new AppError(ERROR_MESSAGES.UNAUTHORISED_ACCESS,AppErrorCodes.FORBIDDEN_ERROR)
     }
     let sourceData:SourceData|undefined;
-    if (transaction.sourceType === "user") {
+    if (transaction.sourceType === TransactionSourceType.USER) {
       const user = await this._userRepository.findById(transaction.sourceId);
       if (!user) {
         throw new AppError(ERROR_MESSAGES.USER_NOT_FOUND, AppErrorCodes.NOT_FOUND);
       }
       sourceData= {
-        type: "user",
+        type: TransactionSourceType.USER,
         name: `${user.firstName} ${user.lastName}`,
         email: user.email,
       };
     }
 
-    if (transaction.sourceType === "psychologist") {
+    if (transaction.sourceType === TransactionSourceType.PSYCHOLOGIST) {
       const psych = await this._psychRepository.findById(transaction.sourceId);
       if (!psych) {
         throw new AppError(ERROR_MESSAGES.PSYCHOLOGIST_NOT_FOUND, AppErrorCodes.NOT_FOUND);
       }
       sourceData= {
-        type: "psychologist",
+        type: TransactionSourceType.PSYCHOLOGIST,
         name: `${psych.firstName} ${psych.lastName}`,
         email: psych.email,
       };
@@ -57,33 +59,33 @@ export default class GenerateTransactionReceiptUseCase
 
     if (transaction.sourceType === "platform") {
       sourceData= {
-        type: "platform",
+        type: TransactionSourceType.PLATFORM,
       };
     }
 
     let recipientData:RecipientData|undefined;
-    if (transaction.recipientType === "user") {
+    if (transaction.recipientType === TransactionRecipientType.USER) {
       const user = await this._userRepository.findById(transaction.recipientId);
       if (!user) {
         throw new AppError(ERROR_MESSAGES.USER_NOT_FOUND, AppErrorCodes.NOT_FOUND);
       }
       recipientData = {
-        type: "user",
+        type: TransactionRecipientType.USER,
         name: `${user.firstName} ${user.lastName}`,
         email: user.email,
       };
-    } else if (transaction.recipientType === "psychologist") {
+    } else if (transaction.recipientType === TransactionRecipientType.PSYCHOLOGIST) {
       const psych = await this._psychRepository.findById(transaction.recipientId);
       if (!psych) {
         throw new AppError(ERROR_MESSAGES.PSYCHOLOGIST_NOT_FOUND, AppErrorCodes.NOT_FOUND);
       }
       recipientData = {
-        type: "psychologist",
+        type: TransactionRecipientType.PSYCHOLOGIST,
         name: `${psych.firstName} ${psych.lastName}`,
         email: psych.email,
       };
     } else {
-      recipientData = { type: "platform" };
+      recipientData = { type: TransactionRecipientType.PLATFORM };
     }
 
     return this._receiptService.generateTransactionReceipt(transaction,sourceData!,recipientData!);

@@ -3,6 +3,7 @@ import SpecialDay from "../../../domain/entities/special-day.entity.js";
 import ISpecialDayRepository from "../../../domain/interfaces/ISpecialDayRepository.js";
 import { SpecialDayModel, ISpecialDayDocument } from "../models/SpecialDayModel.js";
 import { BaseRepository } from "./BaseRepository.js";
+import { SpecialDayStatus } from "../../../domain/enums/SpecialDayStatus.js";
 
 export default class SpecialDayRepository
   extends BaseRepository<SpecialDay, ISpecialDayDocument>
@@ -22,7 +23,7 @@ export default class SpecialDayRepository
       specialDay.endTime,
       specialDay.durationInMins,
       specialDay.bufferTimeInMins,
-      specialDay.status ?? "active",
+      specialDay.status ?? SpecialDayStatus.ACTIVE,
       specialDay._id.toString()
     );
   }
@@ -44,14 +45,24 @@ export default class SpecialDayRepository
     return persistenceObj;
   }
 
-  async findActiveByDatePsych(date: Date, psychId: string): Promise<SpecialDay | null> {
-    const specialDay = await this.model.findOne({
-      psychologist: new Types.ObjectId(psychId),
-      date,
-      status:"active"
-    });
-    return specialDay ? this.toDomain(specialDay) : null;
-  }
+  async findActiveByDatePsych(date: Date, psychId: string) {
+  const start = new Date(date);
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date(date);
+  end.setHours(23, 59, 59, 999);
+
+  const specialDay = await this.model.findOne({
+    psychologist: new Types.ObjectId(psychId),
+    status: SpecialDayStatus.ACTIVE,
+    date: {
+      $gte: start,
+      $lte: end
+    }
+  });
+
+  return specialDay ? this.toDomain(specialDay) : null;
+}
 
   async findOverlappingActiveByTimeRangePsych(
     startTime: Date,
@@ -60,8 +71,21 @@ export default class SpecialDayRepository
   ): Promise<SpecialDay | null> {
     const overlapping = await this.model.findOne({
       psychologist: new Types.ObjectId(psychId),
-      status:"active",
-      $and: [{ startTime: { $lte: endTime } }, { endTime: { $gte: startTime } }],
+      status:SpecialDayStatus.ACTIVE,
+      $nor: [
+        {
+          $and: [
+            { startTime: { $lte: startTime } },
+            { endTime: { $lte: startTime } },
+          ],
+        },
+        {
+          $and: [
+            { startTime: { $gte: endTime } },
+            { endTime: { $gte: endTime } },
+          ],
+        },
+      ],
       });
 
     return overlapping ? this.toDomain(overlapping) : null;

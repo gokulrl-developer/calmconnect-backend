@@ -20,21 +20,21 @@ export default class CreateAvailabilityRuleUseCase
         dto.weekDay,
         dto.psychId
       );
-      let currentRuleStartMinutes=timeStringToMinutes(dto.startTime);
-      let currentRuleEndMinutes=timeStringToMinutes(dto.endTime);
-    for (let availabilityRule of weekDayAvailabilityRules) {
+      const currentRuleStartMinutes=timeStringToMinutes(dto.startTime);
+      const currentRuleEndMinutes=timeStringToMinutes(dto.endTime);
+    for (const availabilityRule of weekDayAvailabilityRules) {
       const ruleStartMinutes = timeStringToMinutes(availabilityRule.startTime);
       const ruleEndMinutes = timeStringToMinutes(availabilityRule.endTime);
 
       if (
-        ((currentRuleStartMinutes > ruleStartMinutes &&
-          currentRuleStartMinutes < ruleEndMinutes) ||
-          (currentRuleEndMinutes < ruleEndMinutes &&
-            currentRuleEndMinutes > ruleStartMinutes))
+        !((currentRuleStartMinutes >= ruleStartMinutes &&
+          currentRuleStartMinutes >= ruleEndMinutes) ||
+          (currentRuleEndMinutes <= ruleEndMinutes &&
+            currentRuleEndMinutes <= ruleStartMinutes))
       ) {
         throw new AppError(
           ERROR_MESSAGES.CONFLICTING_AVAILABILITY_RULE,
-          AppErrorCodes.CONFLICT
+          AppErrorCodes.OVERLAPPING_AVAILABILITY_RULE
         );
       }
     }

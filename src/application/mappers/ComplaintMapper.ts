@@ -11,6 +11,8 @@ import { ComplaintListByUserItem } from "../interfaces/IComplaintListinByUserUse
 import { createFullName } from "../../utils/createFullName.js";
 import { UserRecentComplaintsEntryFromPersistence } from "../../domain/interfaces/IComplaintRepository.js";
 import { UserRecentComplaintsEntry } from "../interfaces/IFetchUserDashboardUseCase.js";
+import { ComplaintStatus } from "../../domain/enums/ComplaintStatus.js";
+import { PsychologistStatus } from "../../domain/enums/PsychologistStatus.js";
 
 
 export const mapCreateComplaintDTOToDomain = (
@@ -22,7 +24,7 @@ export const mapCreateComplaintDTOToDomain = (
     session.psychologist,
     dto.sessionId,
     dto.description,
-    "pending",
+    ComplaintStatus.PENDING,
     new Date(),
     ""
   );
@@ -120,6 +122,7 @@ export const mapDomainToAdminComplaintDetails = (
     psychologistId: psychologist.id!,
     psychologistFullName: `${psychologist.firstName} ${psychologist.lastName}`,
     psychologistEmail: psychologist.email,
+    psychologistStatus:psychologist.isBlocked===true?PsychologistStatus.INACTIVE:PsychologistStatus.ACTIVE,
     sessionId: session.id,
     sessionStartTime: session.startTime.toISOString(),
     sessionEndTime: session.endTime.toISOString(),
@@ -144,7 +147,7 @@ export const mapComplaintResolutionDTOToDomain = (
     existingComplaint.psychologist,
     existingComplaint.session,
     existingComplaint.description,
-    "resolved",
+    ComplaintStatus.RESOLVED,
     existingComplaint.createdAt,
     dto.adminNotes,
     existingComplaint.id,

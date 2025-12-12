@@ -4,7 +4,7 @@ import AppError from "../../application/error/AppError.js";
 import { AppErrorCodes } from "../../application/error/app-error-codes.js";
 import { ERROR_MESSAGES } from "../../application/constants/error-messages.constants.js";
 
-const verifyTokenMiddleware=async(req: Request, res: Response, next: NextFunction) => {
+async function verifyTokenMiddleware(req: Request, res: Response, next: NextFunction){
   try{ 
   const token = req.cookies.accessToken;
     if (!token) {
@@ -15,7 +15,7 @@ const verifyTokenMiddleware=async(req: Request, res: Response, next: NextFunctio
     if (!decoded || !decoded.id || !decoded.role) {
       throw new AppError(ERROR_MESSAGES.SESSION_EXPIRED,AppErrorCodes.SESSION_EXPIRED)
     }
-       req.account={id:decoded.id,role:decoded.role,...req.account}
+      req.account={id:decoded.id,role:decoded.role,...req.account}
 
     next();
   }catch(error){

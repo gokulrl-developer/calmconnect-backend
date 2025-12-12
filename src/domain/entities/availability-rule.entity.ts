@@ -1,3 +1,5 @@
+import { AvailabilityRuleStatus } from "../enums/AvailabilityRuleStatus.js";
+
 export default class AvailabilityRule {
   constructor(
     public psychologist: string,
@@ -6,7 +8,7 @@ export default class AvailabilityRule {
     public endTime: string,          // "17:00"
     public durationInMins: number,   // slot duration
     public bufferTimeInMins: number = 0, // optional buffer
-    public status:"active"|"inactive"="active",
+    public status:AvailabilityRuleStatus=AvailabilityRuleStatus.ACTIVE,
     public id?: string
   ) {}
 }

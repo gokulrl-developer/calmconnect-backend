@@ -4,6 +4,7 @@ import IAvailabilityRuleRepository from "../../../domain/interfaces/IAvailabilit
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../error/app-error-codes.js";
 import AppError from "../../error/AppError.js";
+import { AvailabilityRuleStatus } from "../../../domain/enums/AvailabilityRuleStatus.js";
 
 export default class DeleteAvailabilityRuleUseCase implements IDeleteAvailabilityRuleUseCase {
   constructor(
@@ -22,7 +23,7 @@ export default class DeleteAvailabilityRuleUseCase implements IDeleteAvailabilit
     }
 
     await this._availabilityRuleRepository.update(existingRule.id!, {
-      status: "inactive"
+      status: AvailabilityRuleStatus.INACTIVE
     });
   }
 }

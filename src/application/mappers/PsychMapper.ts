@@ -9,6 +9,9 @@ import {
 } from "../../domain/interfaces/IPsychRepository.js";
 import { Slot } from "../utils/generateSlots.js";
 import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
+import { AdminPsychListResponseItem } from "../interfaces/IPsychListUseCase.js";
+import { PsychologistStatus } from "../../domain/enums/PsychologistStatus.js";
+import { ListPsychByUserSort } from "../../domain/enums/ListPsychByUserSort.js";
 
 export const toPsychDomainRegister = (psych: PsychSignUpDTO): Psychologist => {
   return new Psychologist(
@@ -140,13 +143,13 @@ export const toCheckStatusResponse = (psych: Psychologist) => {
   };
 };
 
-export const toAdminPsychListResponse = (psych: Psychologist) => {
+export const toAdminPsychListResponse = (psych: Psychologist):AdminPsychListResponseItem => {
   return {
-    id: psych.id,
+    id: psych.id!,
     firstName: psych.firstName,
     lastName: psych.lastName,
     email: psych.email,
-    status: !psych.isBlocked ? "active" : "inactive",
+    status: !psych.isBlocked ? PsychologistStatus.ACTIVE : PsychologistStatus.INACTIVE,
   };
 };
 
@@ -158,8 +161,8 @@ export const toPsychListByUserPersistence = (
     gender: dto.gender ?? null,
     date: dto.date ?? null,
     sort:
-      (dto.sort as undefined | "a-z" | "z-a" | "price" | "rating") ??
-      "a-z" /* a-z,z-a,rating,price */,
+      (dto.sort as undefined | ListPsychByUserSort) ??
+      ListPsychByUserSort.A_Z /* a-z,z-a,rating,price */,
     search: dto.search ?? null /* name,specializations,languages fields */,
     skip: dto.skip,
     limit: dto.limit,

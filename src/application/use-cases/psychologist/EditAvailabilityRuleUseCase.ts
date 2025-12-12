@@ -9,7 +9,6 @@ import AvailabilityRule from "../../../domain/entities/availability-rule.entity.
 import IQuickSlotRepository from "../../../domain/interfaces/IQuickSlotRepository.js";
 import {
   HHMMToIso,
-  isoToHHMM,
   timeStringToMinutes,
 } from "../../../utils/timeConverter.js";
 import QuickSlot from "../../../domain/entities/quick-slot.entity.js";
@@ -47,21 +46,19 @@ export default class EditAvailabilityRuleUseCase
         updatedRule.weekDay,
         dto.psychId
       );
-    let currentRuleStartMinutes = timeStringToMinutes(updatedRule.startTime);
-    let currentRuleEndMinutes = timeStringToMinutes(updatedRule.endTime);
-    for (let availabilityRule of weekDayAvailabilityRules) {
+    const currentRuleStartMinutes = timeStringToMinutes(updatedRule.startTime);
+    const currentRuleEndMinutes = timeStringToMinutes(updatedRule.endTime);
+    for (const availabilityRule of weekDayAvailabilityRules) {
       if(availabilityRule.id===dto.availabilityRuleId){
         continue;
       }
       const ruleStartMinutes = timeStringToMinutes(availabilityRule.startTime);
       const ruleEndMinutes = timeStringToMinutes(availabilityRule.endTime);
 
-      if (
-        (currentRuleStartMinutes > ruleStartMinutes &&
-          currentRuleStartMinutes < ruleEndMinutes) ||
-        (currentRuleEndMinutes < ruleEndMinutes &&
-          currentRuleEndMinutes > ruleStartMinutes)
-      ) {
+      if (!((currentRuleStartMinutes >= ruleStartMinutes &&
+          currentRuleStartMinutes >= ruleEndMinutes) ||
+          (currentRuleEndMinutes <= ruleEndMinutes &&
+            currentRuleEndMinutes <= ruleStartMinutes))) {
         throw new AppError(
           ERROR_MESSAGES.CONFLICTING_AVAILABILITY_RULE,
           AppErrorCodes.CONFLICT

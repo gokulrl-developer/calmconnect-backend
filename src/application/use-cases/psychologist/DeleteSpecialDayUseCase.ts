@@ -5,6 +5,7 @@ import { ERROR_MESSAGES } from "../../constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../error/app-error-codes.js";
 import AppError from "../../error/AppError.js";
 import IPsychRepository from "../../../domain/interfaces/IPsychRepository.js";
+import { SpecialDayStatus } from "../../../domain/enums/SpecialDayStatus.js";
 
 export default class DeleteSpecialDayUseCase implements IDeleteSpecialDayUseCase {
   constructor(
@@ -24,7 +25,7 @@ export default class DeleteSpecialDayUseCase implements IDeleteSpecialDayUseCase
     }
 
     await this._specialDayRepository.update(existingSpecialDay.id!, {
-      status: "inactive"
+      status: SpecialDayStatus.INACTIVE
     });
   }
 }

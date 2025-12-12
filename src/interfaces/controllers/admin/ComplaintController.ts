@@ -12,13 +12,14 @@ import {
 } from "../../../application/dtos/admin.dto.js";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 import IComplaintHistoryByPsychUseCase from "../../../application/interfaces/IComplaintHistoryByPsychUseCase.js";
+import { ComplaintStatus } from "../../../domain/enums/ComplaintStatus.js";
 
 export default class ComplaintController {
   constructor(
     private _complaintDetailsByAdminUseCase: IComplaintDetailsByAdminUseCase,
     private _complaintListingByAdminUseCase: IComplaintListingByAdminUseCase,
     private _complaintResolutionUseCase: IComplaintResolutionUseCase,
-    private _complaintHistoryByPsychUseCase:IComplaintHistoryByPsychUseCase
+    private _complaintHistoryByPsychUseCase: IComplaintHistoryByPsychUseCase
   ) {}
 
   async fetchComplaintDetails(
@@ -51,7 +52,12 @@ export default class ComplaintController {
   ): Promise<void> {
     try {
       const { status, search } = req.query;
-
+      if (!req.pagination) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       if (
         status &&
         (typeof status !== "string" ||
@@ -63,13 +69,16 @@ export default class ComplaintController {
         );
       }
 
-      if(search && typeof search !=="string"){
-        throw new AppError(ERROR_MESSAGES.SEARCH_FIELD_INVALID,AppErrorCodes.VALIDATION_ERROR)
+      if (search && typeof search !== "string") {
+        throw new AppError(
+          ERROR_MESSAGES.SEARCH_FIELD_INVALID,
+          AppErrorCodes.VALIDATION_ERROR
+        );
       }
       const dto = {
-        skip: req.pagination?.skip!,
-        limit: req.pagination?.limit!,
-        status: status as "pending" | "resolved" | undefined,
+        skip: req.pagination.skip!,
+        limit: req.pagination.limit!,
+        status: status as ComplaintStatus | undefined,
         search: search ? search : undefined,
       };
 
@@ -85,14 +94,23 @@ export default class ComplaintController {
     next: NextFunction
   ): Promise<void> {
     try {
-       const {psychId}=req.query;
-       if(!psychId || typeof psychId !=="string"){
-        throw new AppError(ERROR_MESSAGES.DATA_INSUFFICIANT,AppErrorCodes.VALIDATION_ERROR)
-       }
+      const { psychId } = req.query;
+      if (!req.pagination) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      if (!psychId || typeof psychId !== "string") {
+        throw new AppError(
+          ERROR_MESSAGES.DATA_INSUFFICIANT,
+          AppErrorCodes.VALIDATION_ERROR
+        );
+      }
       const dto = {
-        psychId:psychId!,
-        skip: req.pagination?.skip!,
-        limit: req.pagination?.limit!,
+        psychId: psychId!,
+        skip: req.pagination.skip!,
+        limit: req.pagination.limit!,
       };
 
       const result = await this._complaintHistoryByPsychUseCase.execute(dto);
@@ -110,14 +128,19 @@ export default class ComplaintController {
     try {
       const { complaintId } = req.params;
       const { adminNotes } = req.body;
-
+      if (!req.pagination) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       if (!complaintId) {
         throw new AppError(
           ERROR_MESSAGES.DATA_INSUFFICIANT,
           AppErrorCodes.VALIDATION_ERROR
         );
       }
-      if (!adminNotes || typeof adminNotes !=="string") {
+      if (!adminNotes || typeof adminNotes !== "string") {
         throw new AppError(
           ERROR_MESSAGES.ADMIN_NOTES_REQUIRED,
           AppErrorCodes.VALIDATION_ERROR

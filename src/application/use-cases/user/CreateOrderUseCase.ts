@@ -1,4 +1,3 @@
-import Session from "../../../domain/entities/session.entity.js";
 import Psychologist from "../../../domain/entities/psychologist.entity.js";
 import ICreateOrderUseCase, {
   CreateOrderResponse,
@@ -89,7 +88,6 @@ export default class CreateOrderUseCase implements ICreateOrderUseCase {
     ).getTime();
     const duration = (end - start) / (60 * 1000);
     const fees = (psychologist.hourlyFees! * duration!) / 60;
-
     const paymentOrder = await this._paymentProvider.createOrder({
       amount: Math.round(fees * 100),
       currency: "INR",

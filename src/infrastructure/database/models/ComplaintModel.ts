@@ -1,11 +1,12 @@
 import { model, Schema, Document, Types } from "mongoose";
+import { ComplaintStatus } from "../../../domain/enums/ComplaintStatus.js";
 
 export interface IComplaintDocument extends Document {
   user: Types.ObjectId;
   psychologist: Types.ObjectId;
   session?: Types.ObjectId;
   description: string;
-  status: "resolved" | "pending";
+  status: ComplaintStatus;
   createdAt: Date;
   adminNotes?: string;
   resolvedAt?: Date;
@@ -18,7 +19,7 @@ const ComplaintSchema = new Schema<IComplaintDocument>(
     psychologist: { type: Schema.Types.ObjectId, ref: "Psychologist", required: true },
     session: { type: Schema.Types.ObjectId, ref: "Session" },
     description: { type: String, required: true },
-    status: { type: String, enum: ["resolved", "pending"], default: "pending" },
+    status: { type: String, enum: Object.values(ComplaintStatus), default: ComplaintStatus.PENDING },
     adminNotes: { type: String },
     resolvedAt: { type: Date },
   },

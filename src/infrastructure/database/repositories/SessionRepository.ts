@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { FilterQuery, Types } from "mongoose";
 import Session from "../../../domain/entities/session.entity.js";
 import ISessionRepository, {
   PsychSessionSummaryFromPersistence,
@@ -13,6 +13,8 @@ import ISessionRepository, {
 import { SessionModel, ISessionDocument } from "../models/SessionModel.js";
 import { BaseRepository } from "./BaseRepository.js";
 import { startOfWeek, subWeeks } from "date-fns";
+import { SessionStatus } from "../../../domain/enums/SessionStatus.js";
+import { SessionTrendsByAdminInterval } from "../../../domain/enums/SessionTrendsByAdminInterval.js";
 
 export default class SessionRepository
   extends BaseRepository<Session, ISessionDocument>
@@ -78,7 +80,7 @@ export default class SessionRepository
 
     const sessions = await this.model.find({
       startTime: { $gte: startOfDay, $lte: endOfDay },
-      status: "scheduled",
+      status: SessionStatus.SCHEDULED,
       psychologist: new Types.ObjectId(psychId),
     });
 
@@ -102,7 +104,9 @@ export default class SessionRepository
     skip: number,
     limit: number
   ): Promise<{ sessions: Session[]; totalItems: number }> {
-    const filter: any = { user: new Types.ObjectId(userId) };
+    type SessionFilter = FilterQuery<Session>;
+
+    const filter: SessionFilter = { user: new Types.ObjectId(userId) };
     if (status) {
       filter.status = status;
     }
@@ -123,7 +127,9 @@ export default class SessionRepository
     skip: number,
     limit: number
   ): Promise<{ sessions: Session[]; totalItems: number }> {
-    const filter: any = { psychologist: new Types.ObjectId(psychId) };
+    type SessionFilter = FilterQuery<Session>;
+
+    const filter: SessionFilter = { psychologist: new Types.ObjectId(psychId) };
     if (status) {
       filter.status = status;
     }
@@ -143,7 +149,8 @@ export default class SessionRepository
     skip: number,
     limit: number
   ): Promise<{ sessions: Session[]; totalItems: number }> {
-    const filter: any = {};
+    type SessionFilter = FilterQuery<Session>;
+    const filter: SessionFilter = {};
     if (status) {
       filter.status = status;
     }
@@ -151,7 +158,6 @@ export default class SessionRepository
       this.model.find(filter).sort({ startTime: -1 }).skip(skip).limit(limit),
       this.model.countDocuments(filter),
     ]);
-    console.log("sessions", sessions);
     return {
       sessions: sessions.map((doc) => this.toDomain(doc)),
       totalItems,
@@ -161,12 +167,12 @@ export default class SessionRepository
   async fetchSessionTrends(
     fromDate: Date,
     toDate: Date,
-    interval: "day" | "month" | "year"
+    interval: SessionTrendsByAdminInterval
   ): Promise<SessionTrendsEntry[]> {
     const dateFormat =
-      interval === "day"
+      interval === SessionTrendsByAdminInterval.DAY
         ? { $dateToString: { format: "%Y-%m-%d", date: "$startTime" } }
-        : interval === "month"
+        : interval === SessionTrendsByAdminInterval.MONTH
         ? { $dateToString: { format: "%Y-%m", date: "$startTime" } }
         : { $dateToString: { format: "%Y", date: "$startTime" } };
 
@@ -182,7 +188,7 @@ export default class SessionRepository
           sessions: { $sum: 1 },
           cancelledSessions: {
             $sum: {
-              $cond: [{ $eq: ["$status", "cancelled"] }, 1, 0],
+              $cond: [{ $eq: ["$status", SessionStatus.CANCELLED] }, 1, 0],
             },
           },
         },
@@ -283,7 +289,7 @@ export default class SessionRepository
     ]);
 
     const filled: PsychSessionTrendsEntry[] = [];
-    let currentWeekDate = startOfWeek(endDate, { weekStartsOn: 1 });
+    const currentWeekDate = startOfWeek(endDate, { weekStartsOn: 1 });
 
     for (let i = 3; i >= 0; i--) {
       const weekDate = subWeeks(currentWeekDate, i);
@@ -308,7 +314,7 @@ export default class SessionRepository
       {
         $match: {
           psychologist: new Types.ObjectId(psychId),
-          status: { $in: ["scheduled", "cancelled", "ended", "pending"] },
+          status: { $in: Object.values(SessionStatus) },
         },
       },
       {
@@ -401,9 +407,9 @@ export default class SessionRepository
       cancelledSessions,
     ] = await Promise.all([
       this.model.countDocuments({ user: userObjectId }),
-      this.model.countDocuments({ user: userObjectId, status: "ended" }),
-      this.model.countDocuments({ user: userObjectId, status: "scheduled" }),
-      this.model.countDocuments({ user: userObjectId, status: "cancelled" }),
+      this.model.countDocuments({ user: userObjectId, status: SessionStatus.ENDED }),
+      this.model.countDocuments({ user: userObjectId, status: SessionStatus.SCHEDULED }),
+      this.model.countDocuments({ user: userObjectId, status: SessionStatus.CANCELLED }),
     ]);
 
     return {
@@ -424,7 +430,7 @@ export default class SessionRepository
       {
         $match: {
           user: new Types.ObjectId(userId),
-          status: { $in: ["scheduled", "cancelled", "ended", "pending"] },
+          status: { $in: Object.values(SessionStatus) },
         },
       },
       {

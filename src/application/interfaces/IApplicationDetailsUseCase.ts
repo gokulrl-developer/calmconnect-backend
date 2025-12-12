@@ -1,3 +1,5 @@
+import { ApplicationStatus } from "../../domain/enums/ApplicationStatus.js"
+import { PsychologistGender } from "../../domain/enums/PsychologistGender.js"
 import { ApplicationDetailsDTO } from "../dtos/admin.dto.js"
 
 export interface ApplicationDetails{
@@ -6,7 +8,7 @@ export interface ApplicationDetails{
     email:string,
     submittedAt:Date, 
     phone:string, 
-    gender:"male"|"female"|"others",
+    gender:PsychologistGender,
     dob:Date,
     profilePicture:string,
     address:string,
@@ -16,7 +18,7 @@ export interface ApplicationDetails{
     licenseUrl:string,
     resume:string,
     qualifications:string,
-    status:"pending"|"accepted"|"rejected",
+    status:ApplicationStatus,
    
 }
 

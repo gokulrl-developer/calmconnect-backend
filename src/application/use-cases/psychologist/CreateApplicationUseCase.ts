@@ -9,13 +9,16 @@ import AppError from "../../error/AppError.js";
 import ICreateApplicationUseCase from "../../interfaces/ICreateApplicationUseCase.js";
 import { toApplicationDomainSubmit } from "../../mappers/ApplicationMapper.js";
 import { IEventBus } from "../../interfaces/events/IEventBus.js";
-import { adminConfig } from "../../../utils/adminConfig.js";
+import { EventMapEvents } from "../../../domain/enums/EventMapEvents.js";
+import { ApplicationStatus } from "../../../domain/enums/ApplicationStatus.js";
+import IAdminRepository from "../../../domain/interfaces/IAdminRepository.js";
 
 export default class CreateApplicationUseCase implements ICreateApplicationUseCase{
   constructor(
      private readonly _applicationRepository:IApplicationRepository,
      private readonly _psychologistRepository:IPsychRepository,
      private readonly _fileStorageService:IFileStorageService,
+     private readonly _adminRepository:IAdminRepository,
      private readonly _eventBus:IEventBus
   ){}
   async execute(dto:PsychApplicationDTO){
@@ -24,11 +27,11 @@ export default class CreateApplicationUseCase implements ICreateApplicationUseCa
      if(applications.length>=3){
         throw new AppError(ERROR_MESSAGES.APPLICATION_LIMIT_EXCEEDED,AppErrorCodes.FORBIDDEN_ERROR)
      };
-     for(let app of applications){
-      if(app.status==="pending"){
+     for(const app of applications){
+      if(app.status===ApplicationStatus.PENDING){
         throw new AppError(ERROR_MESSAGES.PENDING_APPLICATION_EXISTS,AppErrorCodes.FORBIDDEN_ERROR)
       }
-      if(app.status==="accepted"){
+      if(app.status===ApplicationStatus.ACCEPTED){
         throw new AppError(ERROR_MESSAGES.ACCEPTED_APPLICATION_EXISTS,AppErrorCodes.FORBIDDEN_ERROR)
       }
      }
@@ -51,10 +54,14 @@ export default class CreateApplicationUseCase implements ICreateApplicationUseCa
       profilePicture=dto.profilePicture
     }
      const applicationEntity=toApplicationDomainSubmit(dto,psychologist,{licenseUrl,resume,profilePicture});
-    const result= await this._applicationRepository.create(applicationEntity);
+    await this._applicationRepository.create(applicationEntity);
     
-    await this._eventBus.emit('application.created', {
-      adminId:adminConfig.adminId,
+    const adminData=await this._adminRepository.findOne();
+        if(!adminData){
+          throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
+        }
+    await this._eventBus.emit(EventMapEvents.APPLICATION_CREATED, {
+      adminId:adminData.adminId,
       psychologistName:`${psychologist.firstName} ${psychologist.lastName}`,
       psychologistEmail:psychologist.email!,
     });

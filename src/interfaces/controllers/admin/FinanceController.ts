@@ -12,6 +12,10 @@ import { ERROR_MESSAGES } from "../../../application/constants/error-messages.co
 import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
 import ITransactionListUseCase from "../../../application/interfaces/IFetchTransactionsUseCase.js";
 import { REGEX_EXP } from "../../constants/regex.constants.js";
+import { TransactionOwnerType } from "../../../domain/enums/TransactionOwnerType.js";
+import { TransactionType } from "../../../domain/enums/TransactionType.js";
+import { TransactionReferenceType } from "../../../domain/enums/TransactionReferenceType.js";
+import { WalletOwnerType } from "../../../domain/enums/WalletOwnerType.js";
 
 export default class FinanceController {
   constructor(
@@ -26,6 +30,18 @@ export default class FinanceController {
     next: NextFunction
   ): Promise<void> {
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+      if (!req.pagination) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       const { type, date, referenceType } = req.query;
       if (
         type &&
@@ -59,16 +75,14 @@ export default class FinanceController {
         );
       }
       const dto: GetTransactionsDTO = {
-        ownerType: "platform",
-        ownerId: req.account?.id!,
-        skip: req.pagination?.skip,
-        limit: req.pagination?.limit,
-        type: type as "debit" | "credit",
+        ownerType: TransactionOwnerType.PLATFORM,
+        ownerId: req.account.id!,
+        skip: req.pagination.skip,
+        limit: req.pagination.limit,
+        type: type as TransactionType,
         date: date,
         referenceType: referenceType as
-          | "booking"
-          | "psychologistPayment"
-          | "refund",
+          TransactionReferenceType,
       };
       const result = await this._transactionListUseCase.execute(dto);
       res.status(StatusCodes.OK).json({ ...result });
@@ -83,9 +97,15 @@ export default class FinanceController {
     next: NextFunction
   ): Promise<void> {
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       const dto: GetWalletDTO = {
-        ownerType: "platform",
-        ownerId: req.account?.id!,
+        ownerType: WalletOwnerType.PLATFORM,
+        ownerId: req.account.id!,
       };
       const wallet = await this._fetchWalletUseCase.execute(dto);
       res.status(StatusCodes.OK).json({ wallet });
@@ -100,6 +120,12 @@ export default class FinanceController {
     next: NextFunction
   ): Promise<void> {
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       const transactionId = req.params.transactionId;
       if (!transactionId) {
         throw new AppError(
@@ -109,14 +135,13 @@ export default class FinanceController {
       }
 
       const dto: GetTransactionReceiptDTO = {
-        ownerType: "platform",
-        ownerId: req.account?.id!,
+        ownerType: TransactionOwnerType.PLATFORM,
+        ownerId: req.account.id!,
         transactionId,
       };
 
-      const pdfBuffer = await this._generateTransactionReceiptUseCase.execute(
-        dto
-      );
+      const pdfBuffer =
+        await this._generateTransactionReceiptUseCase.execute(dto);
       res
         .status(StatusCodes.OK)
         .set({

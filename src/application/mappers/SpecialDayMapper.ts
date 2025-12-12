@@ -1,4 +1,6 @@
 import SpecialDay from "../../domain/entities/special-day.entity.js";
+import { SpecialDayStatus } from "../../domain/enums/SpecialDayStatus.js";
+import { SpecialDayType } from "../../domain/enums/SpecialDayType.js";
 import { CreateSpecialDayDTO, EditSpecialDayDTO,  } from "../dtos/psych.dto.js";
 
 export const mapCreateSpecialDayDTOToDomain=(dto:CreateSpecialDayDTO)=>{
@@ -10,7 +12,7 @@ export const mapCreateSpecialDayDTOToDomain=(dto:CreateSpecialDayDTO)=>{
         dto.endTime?new Date(dto.endTime):undefined,
         dto.durationInMins??undefined,
         dto.bufferTimeInMins??0,
-        "active",
+        SpecialDayStatus.ACTIVE,
         undefined
     )
 }
@@ -20,10 +22,10 @@ export const mapEditSpecialDayDTOToDomain=(dto:EditSpecialDayDTO,specialDay:Spec
         dto.psychId,
         new Date(specialDay.date),
         dto.type??specialDay.type,
-        (dto.type==="override"?(dto.startTime?new Date(dto.startTime):specialDay.startTime):undefined),
-        (dto.type==="override"?(dto.endTime?new Date(dto.endTime):specialDay.endTime):undefined),
-        (dto.type==="override"?(dto.durationInMins?dto.durationInMins:specialDay.durationInMins):undefined),
-        (dto.type==="override"?(dto.bufferTimeInMins?dto.bufferTimeInMins:(specialDay.bufferTimeInMins??0)):undefined),
+        (dto.type===SpecialDayType.OVERRIDE?(dto.startTime?new Date(dto.startTime):specialDay.startTime):undefined),
+        (dto.type===SpecialDayType.OVERRIDE?(dto.endTime?new Date(dto.endTime):specialDay.endTime):undefined),
+        (dto.type===SpecialDayType.OVERRIDE?(dto.durationInMins??specialDay.durationInMins):undefined),
+        (dto.type===SpecialDayType.OVERRIDE?(dto.bufferTimeInMins??(specialDay.bufferTimeInMins??0)):undefined),
         dto.status??specialDay.status,
         dto.specialDayId
     )

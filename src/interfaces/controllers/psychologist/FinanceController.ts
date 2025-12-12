@@ -7,12 +7,15 @@ import {
   GetWalletDTO,
   GetTransactionReceiptDTO,
 } from "../../../application/dtos/shared.dto.js";
-import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 import AppError from "../../../application/error/AppError.js";
 import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
 import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
 import ITransactionListUseCase from "../../../application/interfaces/IFetchTransactionsUseCase.js";
 import { REGEX_EXP } from "../../constants/regex.constants.js";
+import { TransactionOwnerType } from "../../../domain/enums/TransactionOwnerType.js";
+import { TransactionType } from "../../../domain/enums/TransactionType.js";
+import { TransactionReferenceType } from "../../../domain/enums/TransactionReferenceType.js";
+import { WalletOwnerType } from "../../../domain/enums/WalletOwnerType.js";
 
 export default class FinanceController {
   constructor(
@@ -21,58 +24,93 @@ export default class FinanceController {
     private _generateTransactionReceiptUseCase: IGenerateTransactionReceiptUseCase
   ) {}
 
-
   async listTransactions(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const {type,date,referenceType}=req.query;
-      if(type && (typeof type !=="string" || ["debit","credit"].includes(type)===false)){
-           throw new AppError(ERROR_MESSAGES.TRANSACTION_TYPE_INVALID_FORMAT,AppErrorCodes.INVALID_INPUT)
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
       }
-      if(date && (typeof date !=="string" || REGEX_EXP.ISO_DATE.test(date)===false)){
-           throw new AppError(ERROR_MESSAGES.TRANSACTION_DATE_INVALID_FORMAT,AppErrorCodes.INVALID_INPUT)
+      if (!req.pagination) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
       }
-      if(referenceType && (typeof referenceType !=="string" || ["booking" , "psychologistPayment" , "refund"].includes(referenceType)===false)){
-           throw new AppError(ERROR_MESSAGES.TRANSACTION_REFERENCE_TYPE_INVALID_FORMAT,AppErrorCodes.INVALID_INPUT)
+      const { type, date, referenceType } = req.query;
+      if (
+        type &&
+        (typeof type !== "string" ||
+          ["debit", "credit"].includes(type) === false)
+      ) {
+        throw new AppError(
+          ERROR_MESSAGES.TRANSACTION_TYPE_INVALID_FORMAT,
+          AppErrorCodes.INVALID_INPUT
+        );
+      }
+      if (
+        date &&
+        (typeof date !== "string" || REGEX_EXP.ISO_DATE.test(date) === false)
+      ) {
+        throw new AppError(
+          ERROR_MESSAGES.TRANSACTION_DATE_INVALID_FORMAT,
+          AppErrorCodes.INVALID_INPUT
+        );
+      }
+      if (
+        referenceType &&
+        (typeof referenceType !== "string" ||
+          ["booking", "psychologistPayment", "refund"].includes(
+            referenceType
+          ) === false)
+      ) {
+        throw new AppError(
+          ERROR_MESSAGES.TRANSACTION_REFERENCE_TYPE_INVALID_FORMAT,
+          AppErrorCodes.INVALID_INPUT
+        );
       }
       const dto: GetTransactionsDTO = {
-        ownerType: "psychologist",
-        ownerId: req.account?.id!,
-        skip: req.pagination?.skip,
-        limit: req.pagination?.limit,
-        type:type as "debit"|"credit",
-        date:date,
-        referenceType:referenceType as "booking"|"psychologistPayment"|"refund"
+        ownerType: TransactionOwnerType.PSYCHOLOGIST,
+        ownerId: req.account.id!,
+        skip: req.pagination.skip,
+        limit: req.pagination.limit,
+        type: type as TransactionType,
+        date: date,
+        referenceType: referenceType as
+          TransactionReferenceType,
       };
 
       const result = await this._transactionListUseCase.execute(dto);
-      res
-        .status(StatusCodes.OK)
-        .json({ ...result });
+      res.status(StatusCodes.OK).json({ ...result });
     } catch (error) {
       next(error);
     }
   }
 
- 
   async fetchWallet(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
       const dto: GetWalletDTO = {
-        ownerType: "psychologist",
-        ownerId: req.account?.id!,
+        ownerType: WalletOwnerType.PSYCHOLOGIST,
+        ownerId: req.account.id!,
       };
 
       const wallet = await this._fetchWalletUseCase.execute(dto);
-      res
-        .status(StatusCodes.OK)
-        .json({ wallet });
+      res.status(StatusCodes.OK).json({ wallet });
     } catch (error) {
       next(error);
     }
@@ -84,18 +122,29 @@ export default class FinanceController {
     next: NextFunction
   ): Promise<void> {
     try {
+      if (!req.account) {
+        throw new AppError(
+          ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+          AppErrorCodes.INTERNAL_ERROR
+        );
+      }
+
       const transactionId = req.params.transactionId;
       if (!transactionId) {
-        throw new AppError(ERROR_MESSAGES.DATA_INSUFFICIANT, AppErrorCodes.VALIDATION_ERROR);
+        throw new AppError(
+          ERROR_MESSAGES.DATA_INSUFFICIANT,
+          AppErrorCodes.VALIDATION_ERROR
+        );
       }
 
       const dto: GetTransactionReceiptDTO = {
-        ownerType: "psychologist",
-        ownerId: req.account?.id!,
+        ownerType: TransactionOwnerType.PSYCHOLOGIST,
+        ownerId: req.account.id!,
         transactionId,
       };
 
-      const pdfBuffer = await this._generateTransactionReceiptUseCase.execute(dto);
+      const pdfBuffer =
+        await this._generateTransactionReceiptUseCase.execute(dto);
 
       res
         .status(StatusCodes.OK)
