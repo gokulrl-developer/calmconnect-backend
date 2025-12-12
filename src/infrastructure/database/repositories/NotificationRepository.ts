@@ -21,9 +21,10 @@ export class NotificationRepository
       notif.title,
       notif.message,
       notif.type,
+      notif.link ?? undefined,
       notif.isRead,
       notif.createdAt,
-      notif._id.toString()
+      notif._id.toString(),
     );
   }
 
@@ -38,6 +39,7 @@ export class NotificationRepository
     if (entity.isRead !== undefined) persistenceObj.isRead = entity.isRead;
     if (entity.createdAt) persistenceObj.createdAt = entity.createdAt;
     if (entity.id) persistenceObj._id = new Types.ObjectId(entity.id);
+    if(entity.link) persistenceObj.link=entity.link;
 
     return persistenceObj;
   }

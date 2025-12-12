@@ -7,4 +7,6 @@ export interface EventMap {
   [EventMapEvents.PSYCHOLOGIST_CANCELLED_SESSION]: { psychologistFullName: string; userId: string ;date:string;time:string};
   [EventMapEvents.COMPLAINT_RAISED]:{complaintId:string;userFullName:string;psychologistFullName:string;sessionId:string};
   [EventMapEvents.COMPLAINT_RESOLVED]:{complaintId:string;userId:string,psychologistFullName:string}
+  [EventMapEvents.USER_JOINED]:{sessionId:string}
+  [EventMapEvents.PSYCHOLOGIST_JOINED]:{sessionId:string}
 }

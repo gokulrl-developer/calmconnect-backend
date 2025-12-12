@@ -16,6 +16,8 @@ import {
 } from "../../application/dtos/shared.dto.js";
 import { SendNotificationPayload } from "../../domain/interfaces/ISocketService.js";
 import ISocketService from "../../domain/interfaces/ISocketService.js";
+import { IEventBus } from "../../application/interfaces/events/IEventBus.js";
+import { EventMapEvents } from "../../domain/enums/EventMapEvents.js";
 
 
 export interface SignalPayload {
@@ -35,7 +37,8 @@ export default class SocketServer implements ISocketService {
     private readonly _postMessageUseCase: IPostMessageUseCase,
     private readonly _getMessagesUseCase: IGetMessagesUseCase,
     private readonly _checkStatusPsychUseCase: ICheckStatusPsychUseCase,
-    private readonly _checkStatusUserUseCase: ICheckStatusUserUseCase
+    private readonly _checkStatusUserUseCase: ICheckStatusUserUseCase,
+    private readonly _eventBus:IEventBus
   ) {
     this._io = new IOServer(this._httpServer, { cors: { origin: "*" } });
     this._userSocketMap = new Map();
@@ -128,15 +131,20 @@ export default class SocketServer implements ISocketService {
             socket.emit("join-denied", { reason: res.reason });
             return;
           }
-
+          
           const room = `room:${sessionId}`;
           socket.join(room);
-
+          
           const history = await this._getMessagesUseCase.execute({ sessionId });
           socket.emit("chat-history", history);
           socket.emit("join-accepted", { session: res.session });
-
+          
           socket.to(room).emit("peer-joined", { accountId });
+          if(socket.data.role==="user"){
+            this._eventBus.emit(EventMapEvents.USER_JOINED,{sessionId})
+          }else if(socket.data.role==="psychologist"){
+          this._eventBus.emit(EventMapEvents.PSYCHOLOGIST_JOINED,{sessionId})
+          }
         } catch (err) {
           console.error(err);
           socket.emit("error", { message: "Error while joining the meeting" });

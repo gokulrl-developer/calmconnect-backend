@@ -481,6 +481,7 @@ router.get(
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
+  paginationMiddleware,
   notificationController.list.bind(notificationController)
 );
 

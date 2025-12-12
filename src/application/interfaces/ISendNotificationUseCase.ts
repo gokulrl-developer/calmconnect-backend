@@ -7,6 +7,7 @@ export interface SendNotificationPayload {
     title: string;
     message: string;
     type: string;
+    link?:string
   }
 
 export default interface ISendNotificationUseCase {

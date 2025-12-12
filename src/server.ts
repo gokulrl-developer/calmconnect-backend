@@ -62,7 +62,8 @@ const startServer = async () => {
       postMessageUseCase,
       getMessagesUseCase,
       checkStatusPsychUseCase,
-      checkStatusUserUseCase
+      checkStatusUserUseCase,
+      eventBus
     );
 
     const sendNotificationUseCase = new SendNotificationUseCase(
@@ -78,7 +79,10 @@ const startServer = async () => {
 
     const notificationHandler = new NotificationHandler(
       sendNotificationUseCase,
-      adminRepository
+      adminRepository,
+      userRepository,
+      psychRepository,
+      sessionRepository
     );
     new BullMQSessionTaskWorker(sendNotificationUseCase,markSessionOverUseCase)
     notificationHandler.subscribe(eventBus);
