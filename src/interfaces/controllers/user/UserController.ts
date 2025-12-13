@@ -7,6 +7,7 @@ import { ERROR_MESSAGES } from "../../../application/constants/error-messages.co
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 import IUpdateUserProfileUseCase from "../../../application/interfaces/IUpdateUserProfileUseCase.js";
 import IFetchUserDashboardUseCase from "../../../application/interfaces/IFetchUserDashboardUseCase.js";
+import { UserGender } from "../../../domain/enums/UserGender.js";
 
 export default class UserController {
   constructor(
@@ -104,9 +105,8 @@ export default class UserController {
         }
       }
 
-      const allowedGenders = ["male", "female", "others"];
       if (gender !== undefined) {
-        if (typeof gender !== "string" || !allowedGenders.includes(gender)) {
+        if (typeof gender !== "string" || (gender !== UserGender.FEMALE && gender !== UserGender.MALE && gender !== UserGender.OTHERS)) {
           throw new AppError(
             ERROR_MESSAGES.GENDER_REQUIRED,
             AppErrorCodes.VALIDATION_ERROR

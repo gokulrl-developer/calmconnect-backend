@@ -13,6 +13,7 @@ import {
 import IFetchCheckoutDataUseCase from "../../../application/interfaces/IFetchCheckoutDataUseCase.js";
 import ICreateOrderUseCase from "../../../application/interfaces/ICreateOrderUseCase.js";
 import IVerifyPaymentUseCase from "../../../application/interfaces/IVerifyPaymentUseCase.js";
+import { ListPsychByUserSort } from "../../../domain/enums/ListPsychByUserSort.js";
 
 export default class AppointmentController {
   constructor(
@@ -36,10 +37,10 @@ export default class AppointmentController {
       }
       if (
         req.query.sort &&
-        req.query.sort !== "a-z" &&
-        req.query.sort !== "z-a" &&
-        req.query.sort !== "rating" &&
-        req.query.sort !== "price"
+        req.query.sort !== ListPsychByUserSort.A_Z &&
+        req.query.sort !== ListPsychByUserSort.Z_A &&
+        req.query.sort !== ListPsychByUserSort.RATING &&
+        req.query.sort !== ListPsychByUserSort.PRICE
       ) {
         throw new AppError(
           ERROR_MESSAGES.SORT_INVALID_FORMAT,

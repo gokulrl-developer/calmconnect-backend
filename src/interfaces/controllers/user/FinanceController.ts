@@ -44,7 +44,7 @@ export default class FinanceController {
     }
     if (
       type &&
-      (typeof type !== "string" || ["debit", "credit"].includes(type) === false)
+      (typeof type !== "string" || (type !== TransactionType.CREDIT && type !== TransactionType.DEBIT))
     ) {
       throw new AppError(
         ERROR_MESSAGES.TRANSACTION_TYPE_INVALID_FORMAT,
@@ -63,8 +63,10 @@ export default class FinanceController {
     if (
       referenceType &&
       (typeof referenceType !== "string" ||
-        ["booking", "psychologistPayment", "refund"].includes(referenceType) ===
-          false)
+        (referenceType !== TransactionReferenceType.BOOKING &&
+          referenceType !== TransactionReferenceType.PSYCHOLOGIST_PAYMENT
+           && referenceType !== TransactionReferenceType.REFUND
+        ))
     ) {
       throw new AppError(
         ERROR_MESSAGES.TRANSACTION_REFERENCE_TYPE_INVALID_FORMAT,

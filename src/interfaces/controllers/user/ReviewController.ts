@@ -111,7 +111,7 @@ export default class ReviewController {
 
     if (
       sort &&
-      (typeof sort !== "string" || (sort !== "recent" && sort !== "top-rated"))
+      (typeof sort !== "string" || (sort !== PsychReviewsSortByUser.RECENT && sort !== PsychReviewsSortByUser.TOP_RATED))
     ) {
       throw new AppError(
         ERROR_MESSAGES.REVIEW_SORT_INVALID_FORMAT,
