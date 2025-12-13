@@ -195,8 +195,8 @@ export const toRevenueTrendsResponse = (
 };
 
 export const mapRevenueSummaryToCardItem = (summary: RevenueSummary): SummaryCardItem => ({
-  totalValue: summary.totalValue,
-  addedValue: summary.addedValue,
+  totalValue: summary.totalValue/10,
+  addedValue: summary.addedValue/10,
 });
 
 export const mapPsychRevenueTrendsToResponse = (

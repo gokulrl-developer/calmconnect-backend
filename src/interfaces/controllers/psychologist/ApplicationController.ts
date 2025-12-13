@@ -6,6 +6,7 @@ import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
 import IFetchLatestApplicationUseCase from "../../../application/interfaces/IFetchLatestApplicationUseCase.js";
+import { PsychologistGender } from "../../../domain/enums/PsychologistGender.js";
 
 export default class ApplicationController {
   constructor(
@@ -43,8 +44,10 @@ export default class ApplicationController {
       }
       if (
         !req.body.gender ||
-        !["male", "female", "others"].includes(req.body.gender)
-      ) {
+        (req.body.gender !== PsychologistGender.MALE 
+          && req.body.gender !== PsychologistGender.FEMALE
+            && req.body.gender !== PsychologistGender.OTHERS
+        )) {
         throw new AppError(
           ERROR_MESSAGES.GENDER_REQUIRED,
           AppErrorCodes.VALIDATION_ERROR
