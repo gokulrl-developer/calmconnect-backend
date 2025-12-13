@@ -26,7 +26,7 @@ export default class ApplicationController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const validStatuses = ["pending", "accepted", "rejected"] as const;
+      const validStatuses = [ApplicationStatus.ACCEPTED,ApplicationStatus.PENDING,ApplicationStatus.REJECTED] as const;
       if (req.query.status) {
       if (
         typeof req.query.status !== "string" ||
@@ -62,14 +62,14 @@ export default class ApplicationController {
         status: req.body.status,
         reason: req.body.reason || null,
       };
-      if (dto.status !== "accepted" && dto.status !== "rejected") {
+      if (dto.status !== ApplicationStatus.ACCEPTED && dto.status !== ApplicationStatus.REJECTED) {
         throw new AppError(
           ERROR_MESSAGES.STATUS_REQUIRED,
           AppErrorCodes.VALIDATION_ERROR
         );
       }
       if (
-        dto.status === "rejected" &&
+        dto.status === ApplicationStatus.REJECTED &&
         (!dto.reason ||
           typeof dto.reason !== "string" ||
           dto.reason.trim() === "")

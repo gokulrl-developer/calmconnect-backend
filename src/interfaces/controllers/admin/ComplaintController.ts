@@ -61,7 +61,7 @@ export default class ComplaintController {
       if (
         status &&
         (typeof status !== "string" ||
-          ["pending", "resolved"].includes(status) === false)
+          (ComplaintStatus.PENDING !== status &&ComplaintStatus.RESOLVED!==status))
       ) {
         throw new AppError(
           ERROR_MESSAGES.COMPLAINT_STATUS_INVALID,

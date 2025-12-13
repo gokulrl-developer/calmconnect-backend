@@ -17,6 +17,9 @@ import { AppErrorCodes } from "../../../application/error/app-error-codes.js";
 import { StatusCodes } from "../../../utils/http-statuscodes.js";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 import { REGEX_EXP } from "../../constants/regex.constants.js";
+import { AvailabilityRuleStatus } from "../../../domain/enums/AvailabilityRuleStatus.js";
+import { SpecialDayType } from "../../../domain/enums/SpecialDayType.js";
+import { QuickSlotStatus } from "../../../domain/enums/QuickSlotStatus.js";
 
 export default class AvailabilityController {
   constructor(
@@ -77,7 +80,7 @@ export default class AvailabilityController {
       throw new AppError(ERROR_MESSAGES.DURATION_REQUIRED, AppErrorCodes.VALIDATION_ERROR);
     if (bufferTimeInMins !== undefined && typeof bufferTimeInMins !== "number")
       throw new AppError(ERROR_MESSAGES.BUFFER_TIME_INVALID, AppErrorCodes.VALIDATION_ERROR);
-    if (status !== undefined && !["active", "inactive"].includes(status))
+    if (status !== undefined && (AvailabilityRuleStatus.ACTIVE !== status && AvailabilityRuleStatus.INACTIVE !== status))
       throw new AppError(ERROR_MESSAGES.INVALID_FIELDS, AppErrorCodes.VALIDATION_ERROR);
 
     await this._editAvailabilityRuleUseCase.execute({
@@ -125,7 +128,7 @@ export default class AvailabilityController {
       const { date, type, startTime, endTime, durationInMins, bufferTimeInMins } = req.body;
 
       if (!date || typeof date !== "string" || !REGEX_EXP.ISO_DATE.test(date)) throw new AppError(ERROR_MESSAGES.DATE_REQUIRED, AppErrorCodes.VALIDATION_ERROR);
-      if (!["override", "absent"].includes(type)) throw new AppError(ERROR_MESSAGES.INVALID_FIELDS, AppErrorCodes.VALIDATION_ERROR);
+      if ((type !== SpecialDayType.OVERRIDE && type !== SpecialDayType.ABSENT)) throw new AppError(ERROR_MESSAGES.INVALID_FIELDS, AppErrorCodes.VALIDATION_ERROR);
 
       await this._createSpecialDayUseCase.execute({ psychId: psychId!, date: new Date(date), type, startTime, endTime, durationInMins, bufferTimeInMins });
 
@@ -146,9 +149,9 @@ export default class AvailabilityController {
 
     if (!specialDayId || typeof specialDayId !== "string")
       throw new AppError(ERROR_MESSAGES.DATA_INSUFFICIANT, AppErrorCodes.VALIDATION_ERROR);
-    if (type && !["override", "absent"].includes(type))
+    if (type && (type !== SpecialDayType.OVERRIDE && type !== SpecialDayType.ABSENT))
       throw new AppError(ERROR_MESSAGES.INVALID_FIELDS, AppErrorCodes.VALIDATION_ERROR);
-    if (status && !["active", "inactive"].includes(status))
+    if (status && (type !== SpecialDayType.OVERRIDE && type !== SpecialDayType.ABSENT))
       throw new AppError(ERROR_MESSAGES.INVALID_FIELDS, AppErrorCodes.VALIDATION_ERROR);
 
     await this._editSpecialDayUseCase.execute({ psychId: psychId!, specialDayId, type, startTime, endTime, durationInMins, bufferTimeInMins, status });
@@ -210,7 +213,7 @@ export default class AvailabilityController {
    
     if (!quickSlotId || typeof quickSlotId !== "string")
       throw new AppError(ERROR_MESSAGES.DATA_INSUFFICIANT, AppErrorCodes.VALIDATION_ERROR);
-    if (status && !["active", "inactive"].includes(status))
+    if (status && (QuickSlotStatus.ACTIVE !== status && QuickSlotStatus.INACTIVE !== status))
       throw new AppError(ERROR_MESSAGES.INVALID_FIELDS, AppErrorCodes.VALIDATION_ERROR);
 
     await this._editQuickSlotUseCase.execute({ psychId: psychId!, quickSlotId, startTime:startTime?new Date(startTime):undefined,endTime:endTime?new Date(endTime):undefined, durationInMins, bufferTimeInMins, status });
