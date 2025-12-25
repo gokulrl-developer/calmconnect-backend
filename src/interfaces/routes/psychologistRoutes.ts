@@ -515,6 +515,7 @@ router.get(
   verifyTokenMiddleware,
   authorizeRoles("psychologist"),
   checkStatusPsych.handle.bind(checkStatusPsych),
+  paginationMiddleware,
   financeController.listTransactions.bind(financeController)
 );
 

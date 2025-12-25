@@ -454,6 +454,7 @@ export default class SessionRepository
           firstName: "$psychologistData.firstName",
           lastName: "$psychologistData.lastName",
           profilePicture: "$psychologistData.profilePicture",
+          startTime:"$startTime",
           time: "$startTime",
           status: 1,
         },
