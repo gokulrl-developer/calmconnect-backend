@@ -8,7 +8,7 @@ export interface SendNotificationPayload{
   type: string;
   isRead: boolean;
   createdAt: Date;
-  id: string | null;
+  notificationId: string | null;
 }
 
 export default interface ISocketService {

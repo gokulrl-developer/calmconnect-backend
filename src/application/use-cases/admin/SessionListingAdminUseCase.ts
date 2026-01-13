@@ -45,6 +45,6 @@ export default class SessionListingAdminUseCase
         );
       })
     );
-    return {sessions:results,paginationData:calculatePagination(filteredData.totalItems,dto.skip,dto.limit)};
+    return {sessions:results,paginationData:calculatePagination(filteredData.totalItemCount,dto.skip,dto.limit)};
   }
 }

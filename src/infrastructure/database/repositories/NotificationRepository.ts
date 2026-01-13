@@ -38,7 +38,7 @@ export class NotificationRepository
     if (entity.type) persistenceObj.type = entity.type;
     if (entity.isRead !== undefined) persistenceObj.isRead = entity.isRead;
     if (entity.createdAt) persistenceObj.createdAt = entity.createdAt;
-    if (entity.id) persistenceObj._id = new Types.ObjectId(entity.id);
+    if (entity.notificationId) persistenceObj._id = new Types.ObjectId(entity.notificationId);
     if(entity.link) persistenceObj.link=entity.link;
 
     return persistenceObj;
@@ -57,8 +57,8 @@ export class NotificationRepository
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
-  const totalItems=await this.model.countDocuments(query);
-  return {notifications: docs.map((doc) => this.toDomain(doc as INotificationDocument)),totalItems};
+  const totalItemCount=await this.model.countDocuments(query);
+  return {notifications: docs.map((doc) => this.toDomain(doc as INotificationDocument)),totalItemCount};
 }
 
   async markReadByRecipient(recipientType: NotificationRecipientType,

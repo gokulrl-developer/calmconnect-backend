@@ -28,7 +28,7 @@ export default class WalletRepository
       ownerType: entity.ownerType,
       balance: entity.balance,
       ownerId: entity.ownerId ? entity.ownerId : undefined,
-      _id: entity.id ? new Types.ObjectId(entity.id) : undefined,
+      _id: entity.walletId ? new Types.ObjectId(entity.walletId) : undefined,
     };
   }
   async findByOwner(

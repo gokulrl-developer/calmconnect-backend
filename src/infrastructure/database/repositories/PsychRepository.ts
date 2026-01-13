@@ -102,7 +102,7 @@ export default class PsychRepository
 
  async listPsychByUser(
   query: ListPsychQueryByUser
-): Promise<{ psychologists: Psychologist[]; totalItems: number }> {
+): Promise<{ psychologists: Psychologist[]; totalItemCount: number }> {
   const {
     specialization,
     gender,
@@ -152,9 +152,9 @@ export default class PsychRepository
   const psychologists = data.map((doc: IPsychDocument) =>
     this.toDomain(doc)
   );
-  const totalItems = countResult[0]?.count || 0;
+  const totalItemCount = countResult[0]?.count || 0;
 
-  return { psychologists, totalItems };
+  return { psychologists, totalItemCount };
 }
 
  async fetchPsychTrends(
@@ -178,7 +178,7 @@ export default class PsychRepository
       {
         $group: {
           _id: dateFormat,
-          psychologists: { $sum: 1 },
+          psychologistCount: { $sum: 1 },
         },
       },
       { $sort: { _id: 1 } },
@@ -186,7 +186,7 @@ export default class PsychRepository
 
     return results.map((r) => ({
       label: r._id,
-      psychologists: r.psychologists,
+      psychologistCount: r.psychologistCount,
     }));
   }
 
@@ -198,9 +198,9 @@ async fetchPsychSummary(fromDate: Date, toDate: Date): Promise<PsychSummary> {
     createdAt: { $gte: fromDate, $lte: toDate },
   }).exec();
 
-  const [totalValue, addedValue] = await Promise.all([totalValuePromise, addedValuePromise]);
+  const [totalPsychologistCount, addedPsychologistCount] = await Promise.all([totalValuePromise, addedValuePromise]);
 
-  return { totalValue, addedValue };
+  return { totalPsychologistCount, addedPsychologistCount };
 }
 }
 

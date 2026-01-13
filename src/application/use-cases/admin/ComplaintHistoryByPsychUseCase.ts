@@ -20,7 +20,7 @@ export default class ComplaintHistoryByPsychUseCase
   async execute(dto: ComplainthIstoryDTO) {
     const { psychId,skip, limit} = dto;
 
-    const { complaints, totalItems } =
+    const { complaints, totalItemCount } =
       await this._complaintRepository.findComplaintsByPsychologist({
         psychId,
         skip,
@@ -45,7 +45,7 @@ export default class ComplaintHistoryByPsychUseCase
       })
     );
 
-    const paginationData = calculatePagination(totalItems, skip, limit);
+    const paginationData = calculatePagination(totalItemCount, skip, limit);
     return { complaints: items, paginationData };
   }
 }

@@ -5,8 +5,8 @@ import IBaseRepository from "./IBaseRepository.js";
 
 export interface SessionTrendsEntry {
   label: string; //day/month
-  sessions: number;
-  cancelledSessions: number;
+  sessionCount: number;
+  cancelledSessionCount: number;
 }
 
 export default interface ISessionRepository extends IBaseRepository<Session> {
@@ -20,18 +20,18 @@ export default interface ISessionRepository extends IBaseRepository<Session> {
     status: string,
     skip: number,
     limit: number
-  ): Promise<{ sessions: Session[]; totalItems: number }>;
+  ): Promise<{ sessions: Session[]; totalItemCount: number }>;
   listSessionsByPsych(
     userId: string,
     status: string,
     skip: number,
     limit: number
-  ): Promise<{ sessions: Session[]; totalItems: number }>;
+  ): Promise<{ sessions: Session[]; totalItemCount: number }>;
   listSessionsByAdmin(
     status: string,
     skip: number,
     limit: number
-  ): Promise<{ sessions: Session[]; totalItems: number }>;
+  ): Promise<{ sessions: Session[]; totalItemCount: number }>;
   fetchSessionTrends(
     fromDate: Date,
     toDate: Date,
@@ -65,7 +65,7 @@ export default interface ISessionRepository extends IBaseRepository<Session> {
 }
 
 export interface TopPsychologistsEntryFromPersistence {
-  id: string;
+  psychId: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -74,17 +74,17 @@ export interface TopPsychologistsEntryFromPersistence {
 }
 
 export interface SessionTrendsSummary {
-  totalValue: number; // all time total count
-  addedValue: number; // added value in this time range
+  totalSessionCount: number; // all time total count
+  addedSessionCount: number; // added value in this time range
 }
 
 export interface PsychSessionTrendsEntry {
   week: string;
-  sessions: number;
+  sessionCount: number;
 }
 
 export interface RecentSessionEntryFromPersistence {
-  id: string;
+  sessionId: string;
   firstName: string;
   lastName: string;
   profilePicture: string;
@@ -93,18 +93,18 @@ export interface RecentSessionEntryFromPersistence {
 }
 
 export interface PsychSessionSummaryFromPersistence {
-  todaySessions: number;
-  upcomingSessions: number;
+  todaySessionCount: number;
+  upcomingSessionCount: number;
   nextSessionTime: Date | null;
-  totalSessions: number;
-  thisMonthSessions: number;
+  totalSessionCount: number;
+  thisMonthSessionCount: number;
 }
 
 export interface UserSessionSummaryFromPersistence {
-  totalSessions: number;
-  completedSessions: number;
-  upcomingSessions: number;
-  cancelledSessions: number;
+  totalSessionCount: number;
+  completedSessionCount: number;
+  upcomingSessionCount: number;
+  cancelledSessionCount: number;
 }
 
 export interface RecentUserSessionEntryFromPersistence {

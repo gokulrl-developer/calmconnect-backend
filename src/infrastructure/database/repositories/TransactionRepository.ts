@@ -73,7 +73,7 @@ export default class TransactionRepository
       providerPaymentId: entity.providerPaymentId,
       referenceType: entity.referenceType,
       description: entity.description,
-      _id: entity.id ? new Types.ObjectId(entity.id) : undefined,
+      _id: entity.transactionId ? new Types.ObjectId(entity.transactionId) : undefined,
     };
   }
 
@@ -97,7 +97,7 @@ export default class TransactionRepository
     date?: string,
     skip = 0,
     limit = 50
-  ): Promise<{ transactions: Transaction[]; totalItems: number }> {
+  ): Promise<{ transactions: Transaction[]; totalItemCount: number }> {
     const filter: TransactionQuery = {
       ownerId,
       ownerType,
@@ -113,14 +113,14 @@ export default class TransactionRepository
       filter.createdAt = { $gte: startOfDay, $lte: endOfDay };
     }
 
-    const [docs, totalItems] = await Promise.all([
+    const [docs, totalItemCount] = await Promise.all([
       this.model.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
       this.model.countDocuments(filter),
     ]);
 
     return {
       transactions: docs.map((doc) => this.toDomain(doc)),
-      totalItems,
+      totalItemCount,
     };
   }
 
@@ -183,8 +183,8 @@ export default class TransactionRepository
     ]);
 
     return {
-      totalValue: totalResult[0]?.total || 0,
-      addedValue: addedResult[0]?.total || 0,
+      totalRevenue: totalResult[0]?.total || 0,
+      addedRevenue: addedResult[0]?.total || 0,
     };
   }
 
@@ -260,8 +260,8 @@ export default class TransactionRepository
     ]);
 
     return {
-      current: currentResult[0]?.total || 0,
-      lastMonth: lastResult[0]?.total || 0,
+      currentRevenue: currentResult[0]?.total || 0,
+      lastMonthRevenue: lastResult[0]?.total || 0,
     };
   }
 

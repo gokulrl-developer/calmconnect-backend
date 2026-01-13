@@ -4,10 +4,10 @@ import { TransactionReferenceType } from "../../domain/enums/TransactionReferenc
 import { TransactionType } from "../../domain/enums/TransactionType.js";
 import { FetchUserDashboardDTO } from "../dtos/user.dto.js";
 export interface UserSessionSummary{
-    totalSessions:number;
-    completedSessions:number;
-    upcomingSessions:number;
-    cancelledSessions:number;
+    totalSessionCount:number;
+    completedSessionCount:number;
+    upcomingSessionCount:number;
+    cancelledSessionCount:number;
 }
 
 export interface UserRecentSessionsEntry{

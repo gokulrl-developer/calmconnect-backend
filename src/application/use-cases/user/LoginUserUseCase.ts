@@ -35,8 +35,8 @@ export default class LoginUserUseCase implements ILoginUserUseCase{
       throw new AppError(ERROR_MESSAGES.ACCOUNT_BLOCKED,AppErrorCodes.BLOCKED)
     }
 
-    const refreshToken = generateRefreshToken({ id: userEntity.id!,role:ROLES.USER });
-    const accessToken = generateAccessToken({ id: userEntity.id!,role:ROLES.USER });
+    const refreshToken = generateRefreshToken({ id: userEntity.userId!,role:ROLES.USER });
+    const accessToken = generateAccessToken({ id: userEntity.userId!,role:ROLES.USER });
 
     return toLoginResponse(userEntity,accessToken,refreshToken);
   }

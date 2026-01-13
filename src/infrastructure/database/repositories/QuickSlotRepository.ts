@@ -47,7 +47,7 @@ export default class QuickSlotRepository
     if (entity.bufferTimeInMins !== undefined)
       persistenceObj.bufferTimeInMins = entity.bufferTimeInMins;
     if (entity.status !== undefined) persistenceObj.status = entity.status;
-    if (entity.id) persistenceObj._id = new Types.ObjectId(entity.id);
+    if (entity.quickSlotId) persistenceObj._id = new Types.ObjectId(entity.quickSlotId);
 
     return persistenceObj;
   }

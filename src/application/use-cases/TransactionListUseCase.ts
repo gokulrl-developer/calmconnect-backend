@@ -13,7 +13,7 @@ export default class GetTransactionListUseCase
 
   async execute(dto: GetTransactionsDTO): Promise<TransactionListResponse> {
     const { ownerType, ownerId,type,referenceType,date, skip = 0, limit = 10 } = dto; 
-    const { transactions, totalItems } =
+    const { transactions, totalItemCount } =
       await this._transactionRepo.listByOwner(
         ownerId,
         ownerType,
@@ -25,7 +25,7 @@ export default class GetTransactionListUseCase
       );
     return {
       transactions: transactions.map(toTransactionListItem),
-      paginationData: calculatePagination(totalItems, skip, limit),
+      paginationData: calculatePagination(totalItemCount, skip, limit),
     };
   }
 }

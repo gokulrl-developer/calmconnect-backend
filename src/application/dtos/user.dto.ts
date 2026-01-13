@@ -38,7 +38,7 @@ export interface UserResetPasswordDTO {
 }
 
 export interface UserCheckStatusDTO {
-  id: string;
+  userId: string;
 }
 
 export interface FetchUserProfileDTO {

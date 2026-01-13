@@ -5,6 +5,6 @@ export class ChatMessage {
       public senderName:string,
       public text: string,
       public createdAt: Date = new Date(),
-      public id?: string,
+      public chatMessageId?: string,
   ) {}
 }

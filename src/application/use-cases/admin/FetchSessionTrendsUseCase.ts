@@ -29,11 +29,11 @@ export default class FetchSessionTrendsUseCase implements IFetchSessionTrendsUse
     const entries = await this._sessionRepository.fetchSessionTrends(startDate, endDate,interval as SessionTrendsByAdminInterval);
     const labels = generateLabels(startDate, endDate, interval as "year"|"month"|"day");
 
-    const filledEntries: SessionTrendsEntry[] = labels.map(label => {
+    const filledSessionEntries: SessionTrendsEntry[] = labels.map(label => {
       const found = entries.find(e => e.label === label);
-      return found ?? { label, sessions: 0, cancelledSessions: 0 };
+      return found ?? { label, sessionCount: 0, cancelledSessionCount: 0 };
     });
 
-    return filledEntries.map(toSessionTrendsResponse);
+    return filledSessionEntries.map(toSessionTrendsResponse);
   }
 }

@@ -13,14 +13,14 @@ export default interface IComplaintRepository
     userId: string,
     skip: number,
     limit: number
-  ): Promise<{ complaints: Complaint[]; totalItems: number }>;
+  ): Promise<{ complaints: Complaint[]; totalItemCount: number }>;
   findComplaintsWithSearchFilter(filter: {
     status?: string;
     search?: string; // can match user/psychologist name or email
     skip: number;
     limit: number;
-  }): Promise<{ complaints: Complaint[]; totalItems: number }>;
-  findComplaintsByPsychologist(filter: ComplaintHistoryFilter): Promise<{ complaints: Complaint[]; totalItems: number }>;
+  }): Promise<{ complaints: Complaint[]; totalItemCount: number }>;
+  findComplaintsByPsychologist(filter: ComplaintHistoryFilter): Promise<{ complaints: Complaint[]; totalItemCount: number }>;
   fetchRecentUserComplaints(userId:string,limit:number):Promise<UserRecentComplaintsEntryFromPersistence[]>
 }
 

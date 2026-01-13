@@ -16,7 +16,7 @@ export default class ComplaintListingByUserUseCase implements IComplaintListingB
   async execute(dto: ListComplaintsDTO) {
     const { userId, skip, limit } = dto;
 
-    const { complaints, totalItems } = await this._complaintRepository.findComplaintsByUser(
+    const { complaints, totalItemCount } = await this._complaintRepository.findComplaintsByUser(
       userId,
       skip,
       limit
@@ -30,7 +30,7 @@ export default class ComplaintListingByUserUseCase implements IComplaintListingB
       })
     );
 
-    const paginationData = calculatePagination(totalItems, skip, limit);
+    const paginationData = calculatePagination(totalItemCount, skip, limit);
 
     return { complaints: items, paginationData };
   }

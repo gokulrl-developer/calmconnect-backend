@@ -10,6 +10,6 @@ export class Notification {
     public link?:string,
     public isRead: boolean = false,
     public createdAt: Date = new Date(),
-    public id?: string | null
+    public notificationId?: string | null
   ) {}
 }

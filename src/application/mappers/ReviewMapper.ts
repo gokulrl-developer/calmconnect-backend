@@ -9,7 +9,7 @@ export const mapCreateReviewDTOToDomain = (
   session: Session
 ) => {
   return new Review(
-    session.id!,
+    session.sessionId!,
     session.user,
     session.psychologist,
     dto.rating!,
@@ -21,7 +21,7 @@ export const mapCreateReviewDTOToDomain = (
 
 export const mapDomainToListPsychReviewsResponse = (review: Review) => {
   return {
-    reviewId: review.id!,
+    reviewId: review.reviewId!,
     rating: review.rating,
     createdAt: review.createdAt.toISOString(),
     comment: review.comment,
@@ -31,6 +31,6 @@ export const mapDomainToListPsychReviewsResponse = (review: Review) => {
 export const mapRatingSummaryToResponse = (
   summary: RatingSummaryFromPersistence
 ): PsychRatingSummary => ({
-  current: summary.current,
-  lastMonth: summary.lastMonth,
+  currentRating: summary.currentRating,
+  lastMonthRating: summary.lastMonthRating,
 });

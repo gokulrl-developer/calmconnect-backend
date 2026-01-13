@@ -21,6 +21,6 @@ export default class ResetPasswordUserUseCase implements IResetPasswordUserUseCa
         }
         const user=await this._userRepository.findByEmail(dto.email);
         user!.password=await hashPassword(dto.password);
-        await this._userRepository.update(user!.id!,user!)
+        await this._userRepository.update(user!.userId!,user!)
     }
 }

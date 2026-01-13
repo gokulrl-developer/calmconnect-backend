@@ -11,7 +11,7 @@ export const toSendNotificationPayload = (notification: Notification): SendNotif
     type: notification.type,
     isRead: notification.isRead,
     createdAt: notification.createdAt,
-    id: notification.id ?? null,
+    notificationId: notification.notificationId ?? null,
   };
 };
 
@@ -19,7 +19,7 @@ export const toNotificationListingItem = (
   notification: Notification
 ): NotificationListingItem => {
   return {
-    notificationId: notification.id!,
+    notificationId: notification.notificationId!,
     title: notification.title,
     message: notification.message,
     type: notification.type,

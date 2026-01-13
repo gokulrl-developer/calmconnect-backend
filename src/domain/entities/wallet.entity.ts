@@ -5,6 +5,6 @@ export default class Wallet {
       public ownerType: WalletOwnerType,
       public balance: number,
       public ownerId?: string,
-      public id?:string
+      public walletId?:string
   ) {}
 }

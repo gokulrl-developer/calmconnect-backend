@@ -8,7 +8,7 @@ export default class User {
     public isBlocked:boolean,
     public walletBalance:number,
     public password?:string,
-    public id?:string,
+    public userId?:string,
     public createdAt?:Date,
     public gender?:UserGender,
     public dob?:Date,

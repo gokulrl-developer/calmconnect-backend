@@ -21,7 +21,7 @@ export default class DeleteQuickSlotUseCase implements IDeleteQuickSlotUseCase {
       throw new AppError(ERROR_MESSAGES.UNAUTHORISED_ACTION, AppErrorCodes.FORBIDDEN_ERROR);
     }
 
-    await this._quickSlotRepository.update(existingQuickSlot.id!, {
+    await this._quickSlotRepository.update(existingQuickSlot.quickSlotId!, {
     status: QuickSlotStatus.INACTIVE,
     });
   }

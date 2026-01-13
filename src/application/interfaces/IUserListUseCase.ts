@@ -2,7 +2,7 @@ import { UserStatus } from "../../domain/enums/UserStatus.js";
 import { ListUsersDTO } from "../dtos/admin.dto.js";
 
 export interface AdminUserListResponseItem{
-    id:string,
+    userId:string,
     email:string,
     firstName:string,
     lastName:string,

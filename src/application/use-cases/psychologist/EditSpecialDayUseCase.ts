@@ -45,6 +45,6 @@ export default class EditSpecialDayUseCase implements IEditSpecialDayUseCase {
 
     const updatedSpecialDay: SpecialDay = mapEditSpecialDayDTOToDomain(dto, existingSpecialDay);
     
-    await this._specialDayRepository.update(existingSpecialDay.id!, updatedSpecialDay);
+    await this._specialDayRepository.update(existingSpecialDay.specialDayId!, updatedSpecialDay);
   }
 }

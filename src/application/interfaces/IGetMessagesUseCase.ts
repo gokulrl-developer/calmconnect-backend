@@ -6,7 +6,7 @@ export interface GetMessageResponse {
   senderName: string;
   text: string;
   createdAt: Date;
-  id: string;
+  chatMessageId: string;
 }
 export default interface IGetMessagesUseCase{
     execute(dto:GetMessagesDTO):Promise<GetMessageResponse[]>

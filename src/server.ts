@@ -23,7 +23,6 @@ import WalletRepository from "./infrastructure/database/repositories/WalletRepos
 import app from "./app.js";
 import BullMQSessionTaskWorker from "./infrastructure/external/BullMQSessionTaskWorker.js";
 import AdminRepository from "./infrastructure/database/repositories/AdminRepository.js";
-import { AdminBootstrapper } from "./infrastructure/external/BootStrapAdmin.js";
 
 const PORT = process.env.PORT || 5000;
 
@@ -86,8 +85,7 @@ const startServer = async () => {
     );
     new BullMQSessionTaskWorker(sendNotificationUseCase,markSessionOverUseCase)
     notificationHandler.subscribe(eventBus);
-    const adminBootStrapper=new AdminBootstrapper();
-     await adminBootStrapper.execute();
+    
     socketServer.initialize();
     httpServer.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);

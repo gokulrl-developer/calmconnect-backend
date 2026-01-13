@@ -53,7 +53,7 @@ export default class SessionRepository
       status: entity.status,
       fees: entity.fees,
       videoRoomId: entity.videoRoomId,
-      _id: entity.id ? new Types.ObjectId(entity.id) : undefined,
+      _id: entity.sessionId ? new Types.ObjectId(entity.sessionId) : undefined,
     };
   }
   getISOWeek(date: Date): number {
@@ -103,21 +103,21 @@ export default class SessionRepository
     status: string,
     skip: number,
     limit: number
-  ): Promise<{ sessions: Session[]; totalItems: number }> {
+  ): Promise<{ sessions: Session[]; totalItemCount: number }> {
     type SessionFilter = FilterQuery<Session>;
 
     const filter: SessionFilter = { user: new Types.ObjectId(userId) };
     if (status) {
       filter.status = status;
     }
-    const [sessions, totalItems] = await Promise.all([
+    const [sessions, totalItemCount] = await Promise.all([
       this.model.find(filter).sort({ startTime: -1 }).skip(skip).limit(limit),
       this.model.countDocuments({ user: new Types.ObjectId(userId) }),
     ]);
 
     return {
       sessions: sessions.map((doc) => this.toDomain(doc)),
-      totalItems,
+      totalItemCount,
     };
   }
 
@@ -126,21 +126,21 @@ export default class SessionRepository
     status: string,
     skip: number,
     limit: number
-  ): Promise<{ sessions: Session[]; totalItems: number }> {
+  ): Promise<{ sessions: Session[]; totalItemCount: number }> {
     type SessionFilter = FilterQuery<Session>;
 
     const filter: SessionFilter = { psychologist: new Types.ObjectId(psychId) };
     if (status) {
       filter.status = status;
     }
-    const [sessions, totalItems] = await Promise.all([
+    const [sessions, totalItemCount] = await Promise.all([
       this.model.find(filter).sort({ startTime: -1 }).skip(skip).limit(limit),
       this.model.countDocuments({ psychologist: new Types.ObjectId(psychId) }),
     ]);
 
     return {
       sessions: sessions.map((doc) => this.toDomain(doc)),
-      totalItems,
+      totalItemCount,
     };
   }
 
@@ -148,19 +148,19 @@ export default class SessionRepository
     status: string,
     skip: number,
     limit: number
-  ): Promise<{ sessions: Session[]; totalItems: number }> {
+  ): Promise<{ sessions: Session[]; totalItemCount: number }> {
     type SessionFilter = FilterQuery<Session>;
     const filter: SessionFilter = {};
     if (status) {
       filter.status = status;
     }
-    const [sessions, totalItems] = await Promise.all([
+    const [sessions, totalItemCount] = await Promise.all([
       this.model.find(filter).sort({ startTime: -1 }).skip(skip).limit(limit),
       this.model.countDocuments(filter),
     ]);
     return {
       sessions: sessions.map((doc) => this.toDomain(doc)),
-      totalItems,
+      totalItemCount,
     };
   }
 
@@ -185,8 +185,8 @@ export default class SessionRepository
       {
         $group: {
           _id: dateFormat,
-          sessions: { $sum: 1 },
-          cancelledSessions: {
+          sessionCount: { $sum: 1 },
+          cancelledSessionCount: {
             $sum: {
               $cond: [{ $eq: ["$status", SessionStatus.CANCELLED] }, 1, 0],
             },
@@ -198,8 +198,8 @@ export default class SessionRepository
 
     return results.map((r) => ({
       label: r._id,
-      sessions: r.sessions,
-      cancelledSessions: r.cancelledSessions,
+      sessionCount: r.sessionCount,
+      cancelledSessionCount: r.cancelledSessionCount,
     }));
   }
 
@@ -258,12 +258,12 @@ export default class SessionRepository
       })
       .exec();
 
-    const [totalValue, addedValue] = await Promise.all([
+    const [totalSessionCount, addedSessionCount] = await Promise.all([
       totalValuePromise,
       addedValuePromise,
     ]);
 
-    return { totalValue, addedValue };
+    return { totalSessionCount, addedSessionCount };
   }
 
   async fetchPsychSessionTrends(
@@ -288,7 +288,7 @@ export default class SessionRepository
       { $sort: { _id: 1 } },
     ]);
 
-    const filled: PsychSessionTrendsEntry[] = [];
+    const filledEntries: PsychSessionTrendsEntry[] = [];
     const currentWeekDate = startOfWeek(endDate, { weekStartsOn: 1 });
 
     for (let i = 3; i >= 0; i--) {
@@ -296,13 +296,13 @@ export default class SessionRepository
       const weekNum = this.getISOWeek(weekDate);
       const found = results.find((r) => r._id === weekNum);
 
-      filled.push({
+      filledEntries.push({
         week: `Week ${weekNum}`,
-        sessions: found ? found.sessions : 0,
+        sessionCount: found ? found.sessions : 0,
       });
     }
 
-    return filled;
+    return filledEntries;
   }
 
   async fetchRecentSessionsByPsych(
@@ -358,11 +358,11 @@ export default class SessionRepository
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
     const [
-      todaySessions,
-      upcomingSessions,
+      todaySessionCount,
+      upcomingSessionCount,
       nextSession,
-      totalSessions,
-      thisMonthSessions,
+      totalSessionCount,
+      thisMonthSessionCount,
     ] = await Promise.all([
       this.model.countDocuments({
         psychologist: new Types.ObjectId(psychId),
@@ -387,11 +387,11 @@ export default class SessionRepository
     ]);
 
     return {
-      todaySessions,
-      upcomingSessions,
+      todaySessionCount,
+      upcomingSessionCount,
       nextSessionTime: nextSession ? nextSession.startTime : null,
-      totalSessions,
-      thisMonthSessions,
+      totalSessionCount,
+      thisMonthSessionCount,
     };
   }
 
@@ -401,10 +401,10 @@ export default class SessionRepository
     const userObjectId = new Types.ObjectId(userId);
 
     const [
-      totalSessions,
-      completedSessions,
-      upcomingSessions,
-      cancelledSessions,
+      totalSessionCount,
+      completedSessionCount,
+      upcomingSessionCount,
+      cancelledSessionCount,
     ] = await Promise.all([
       this.model.countDocuments({ user: userObjectId }),
       this.model.countDocuments({ user: userObjectId, status: SessionStatus.ENDED }),
@@ -413,10 +413,10 @@ export default class SessionRepository
     ]);
 
     return {
-      totalSessions,
-      completedSessions,
-      upcomingSessions,
-      cancelledSessions,
+      totalSessionCount,
+      completedSessionCount,
+      upcomingSessionCount,
+      cancelledSessionCount,
     };
   }
 

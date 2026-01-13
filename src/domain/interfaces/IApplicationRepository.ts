@@ -7,5 +7,5 @@ export default interface IApplicationRepository extends IBaseRepository<Applicat
     findLatestByPsychId(psychId: string): Promise<Application | null>;
     findAllByPsychId(psychId: string): Promise<Application[]>;
     listApplications(skip:number,limit:number,search:string|null,status?:ApplicationStatus):Promise<Application[]>;
-    findApplicationById(id:string):Promise<Application | null>
+    findApplicationById(applicationId:string):Promise<Application | null>
 }

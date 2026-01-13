@@ -2,7 +2,7 @@ import { PsychLoginDTO } from "../dtos/psych.dto.js";
 
 export interface LoginResponse {
   psych: {
-    id: string;
+    psychId: string;
     firstName: string;
     lastName: string;
     isVerified:boolean

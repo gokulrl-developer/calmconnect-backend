@@ -100,7 +100,7 @@ export default class UserRepository
       {
         $group: {
           _id: dateFormat,
-          users: { $sum: 1 },
+          userCount: { $sum: 1 },
         },
       },
       {
@@ -109,7 +109,7 @@ export default class UserRepository
     ]);
     return results.map((r) => ({
       label: r._id,
-      users: r.users,
+      userCount: r.userCount,
     }));
   }
 
@@ -122,8 +122,8 @@ export default class UserRepository
     const [total, added] = await Promise.all([totalPromise, addedPromise]);
 
     return {
-      totalValue: total,
-      addedValue: added,
+      totalUserCount: total,
+      addedUserCount: added,
     };
   }
 }
