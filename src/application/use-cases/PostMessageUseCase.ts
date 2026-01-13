@@ -29,7 +29,7 @@ export default class PostMessageUseCase implements IPostMessageUseCase {
           AppErrorCodes.NOT_FOUND
         );
       }
-      senderId = user.id!;
+      senderId = user.userId!;
       senderName = `${user.firstName} ${user.lastName}`;
     } else if (dto.psychId) {
       const psych = await this._psychRepo.findById(dto.psychId);
@@ -39,7 +39,7 @@ export default class PostMessageUseCase implements IPostMessageUseCase {
           AppErrorCodes.NOT_FOUND
         );
       }
-      senderId = psych.id!;
+      senderId = psych.psychId!;
       senderName = `${psych.firstName} ${psych.lastName}`;
     }
 

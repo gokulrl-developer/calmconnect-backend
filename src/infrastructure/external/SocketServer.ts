@@ -239,9 +239,9 @@ export default class SocketServer implements ISocketService {
       socket.data.accountId = decoded.id;
       socket.data.role = decoded.role;
       if (decoded.role === "user")
-        await this._checkStatusUserUseCase.execute({ id: decoded.id });
+        await this._checkStatusUserUseCase.execute({ userId: decoded.id });
       else if (decoded.role === "psychologist")
-        await this._checkStatusPsychUseCase.execute({ id: decoded.id });
+        await this._checkStatusPsychUseCase.execute({ psychId: decoded.id });
 
       next();
     } catch (err) {

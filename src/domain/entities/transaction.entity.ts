@@ -20,7 +20,7 @@ export default class Transaction {
     public referenceType?: TransactionReferenceType,
     public description?: string,                   
     public createdAt?: Date,
-    public id?:string                        
+    public transactionId?:string                        
   ) {
     this.createdAt = createdAt ?? new Date();
   }

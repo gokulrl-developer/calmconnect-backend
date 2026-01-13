@@ -71,22 +71,22 @@ export default class CancelSessionUserUseCase
 
     if (now <= threeDaysBefore) {
       const debitFromPlatform = toDomainRefundDebit(
-        platformWallet.id!,
+        platformWallet.walletId!,
         adminId,
         dto.userId,
         session.fees,
-        session.id!
+        session.sessionId!
       );
       const creditToUser = toDomainRefundCredit(
         dto.userId!,
         dto.userId,
         adminId,
         session.fees,
-        session.id!
+        session.sessionId!
       );
 
       platformWallet.balance -= session.fees;
-      await this._walletRepository.update(platformWallet.id!, platformWallet);
+      await this._walletRepository.update(platformWallet.walletId!, platformWallet);
 
       let userWallet = await this._walletRepository.findOne({
         ownerType: WalletOwnerType.USER,
@@ -97,12 +97,12 @@ export default class CancelSessionUserUseCase
         );
       }
       userWallet.balance += session.fees;
-      await this._walletRepository.update(userWallet.id!, userWallet);
+      await this._walletRepository.update(userWallet.walletId!, userWallet);
       const debitTx =
         await this._transactionRepository.create(debitFromPlatform);
       const creditTx = await this._transactionRepository.create(creditToUser);
 
-      transactions.push(debitTx.id!, creditTx.id!);
+      transactions.push(debitTx.transactionId!, creditTx.transactionId!);
     } else {
       let psychWallet = await this._walletRepository.findOne({
         ownerType: WalletOwnerType.PSYCHOLOGIST,
@@ -118,33 +118,33 @@ export default class CancelSessionUserUseCase
       const amountToPsych = session.fees * 0.9;
 
       const debitFromPlatform = toDomainPayoutDebit(
-        platformWallet.id!,
+        platformWallet.walletId!,
         adminId,
         session.psychologist,
         amountToPsych,
-        session.id!
+        session.sessionId!
       );
       const creditToPsych = toDomainPayoutCredit(
-        psychWallet.id!,
+        psychWallet.walletId!,
         session.psychologist,
         adminId,
         amountToPsych,
-        session.id!
+        session.sessionId!
       );
 
       platformWallet.balance -= amountToPsych;
       psychWallet.balance += amountToPsych;
 
       await Promise.all([
-        this._walletRepository.update(platformWallet.id!, platformWallet),
-        this._walletRepository.update(psychWallet.id!, psychWallet),
+        this._walletRepository.update(platformWallet.walletId!, platformWallet),
+        this._walletRepository.update(psychWallet.walletId!, psychWallet),
       ]);
 
       const debitTx =
         await this._transactionRepository.create(debitFromPlatform);
       const creditTx = await this._transactionRepository.create(creditToPsych);
 
-      transactions.push(debitTx.id!, creditTx.id!);
+      transactions.push(debitTx.transactionId!, creditTx.transactionId!);
     }
 
     session.status = SessionStatus.CANCELLED;
@@ -162,6 +162,6 @@ export default class CancelSessionUserUseCase
       date:`${sessionStart.getDate()}-${sessionStart.getMonth() + 1}-${sessionStart.getFullYear()}`,
       time:`${sessionStart.getHours().toString().padStart(2, '0')}:${sessionStart.getMinutes().toString().padStart(2, '0')}`
     });
-    await this._sessionRepository.update(session.id!, session);
+    await this._sessionRepository.update(session.sessionId!, session);
   }
 }

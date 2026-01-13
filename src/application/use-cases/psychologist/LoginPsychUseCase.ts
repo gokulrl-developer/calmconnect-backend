@@ -40,8 +40,8 @@ export default class LoginPsychUseCase implements ILoginPsychUseCase{
       throw new AppError(ERROR_MESSAGES.ACCOUNT_BLOCKED,AppErrorCodes.FORBIDDEN_ERROR)
     }
     
-    const refreshToken = generateRefreshToken({ id: psychEntity.id!,role:Role.PSYCHOLOGIST});
-    const accessToken = generateAccessToken({ id: psychEntity.id!,role:Role.PSYCHOLOGIST });
+    const refreshToken = generateRefreshToken({ id: psychEntity.psychId!,role:Role.PSYCHOLOGIST});
+    const accessToken = generateAccessToken({ id: psychEntity.psychId!,role:Role.PSYCHOLOGIST });
     
     return toLoginResponse(psychEntity,accessToken,refreshToken);
   }

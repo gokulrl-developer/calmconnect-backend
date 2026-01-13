@@ -22,7 +22,7 @@ export default class DeleteAvailabilityRuleUseCase implements IDeleteAvailabilit
       throw new AppError(ERROR_MESSAGES.UNAUTHORISED_ACTION, AppErrorCodes.FORBIDDEN_ERROR);
     }
 
-    await this._availabilityRuleRepository.update(existingRule.id!, {
+    await this._availabilityRuleRepository.update(existingRule.availabilityRuleId!, {
       status: AvailabilityRuleStatus.INACTIVE
     });
   }

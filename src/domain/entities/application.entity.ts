@@ -25,7 +25,7 @@ export class Application {
     public rejectionReason?:string,
     public password?:string,
     public hourlyFees?:number,
-    public id?:string,
+    public applicationId?:string,
     public avgRating?:number,
     public createdAt?:Date
   ) {}

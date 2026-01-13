@@ -34,7 +34,7 @@ export const mapEditAvailabilityRuleDTOToDomain = (
     dto.durationInMins ?? rule.durationInMins,
     dto.bufferTimeInMins ?? rule.bufferTimeInMins,
     dto.status ?? rule.status,
-    rule.id
+    rule.availabilityRuleId
   );
 };
 
@@ -44,7 +44,7 @@ export const mapAvailabilityRulesToSummaries = (
 ): AvailabilityRuleSummary[] => {
   return rules.map(rule => ({
     weekDay: rule.weekDay,
-    availabilityRuleId: rule.id!
+    availabilityRuleId: rule.availabilityRuleId!
   }));
 };
 
@@ -58,7 +58,7 @@ export const mapDomainToRuleDetailsResponse = (
     durationInMins: rule.durationInMins,
     bufferTimeInMins: rule.bufferTimeInMins,
     status: rule.status,
-    availabilityRuleId: rule.id!,
+    availabilityRuleId: rule.availabilityRuleId!,
   };
 };
 
@@ -69,7 +69,7 @@ export const mapDomainToDailyAvailabilityRule=(rule:AvailabilityRule,date:Date)=
         durationInMins:rule.durationInMins,
         bufferTimeInMins:rule.bufferTimeInMins,
         status:rule.status,
-        availabilityRuleId:rule.id!
+        availabilityRuleId:rule.availabilityRuleId!
     }
 }
 /* export const toAvailabilityRuleListResponse=(dto:AvailabilityRule)=>{

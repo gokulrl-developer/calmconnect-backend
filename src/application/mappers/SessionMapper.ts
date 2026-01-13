@@ -18,7 +18,7 @@ import {
 import { CreateOrderDTO } from "../dtos/user.dto.js";
 import { SessionDetailsInVideoCall } from "../interfaces/ICheckSessionAccessUseCase.js";
 import { TopPsychologistResponse } from "../interfaces/IFetchTopPsychologistsUseCase.js";
-import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
+import { SessionSummary as SessionSummaryResponse } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
 import { UserRecentSessionsEntry, UserSessionSummary } from "../interfaces/IFetchUserDashboardUseCase.js";
 import { SessionStatus } from "../../domain/enums/SessionStatus.js";
 
@@ -53,7 +53,7 @@ export const toSessionListingUserResponse = (
     durationInMins: session.durationInMins,
     status: session.status,
     fees: session.fees,
-    sessionId: session.id!,
+    sessionId: session.sessionId!,
   };
 };
 export const toSessionListingPsychResponse = (
@@ -69,7 +69,7 @@ export const toSessionListingPsychResponse = (
     durationInMins: session.durationInMins,
     status: session.status,
     fees: session.fees,
-    sessionId: session.id!,
+    sessionId: session.sessionId!,
   };
 };
 export const toSessionListingAdminResponse = (
@@ -89,7 +89,7 @@ export const toSessionListingAdminResponse = (
     durationInMins: session.durationInMins,
     status: session.status,
     fees: session.fees,
-    sessionId: session.id!,
+    sessionId: session.sessionId!,
   };
 };
 
@@ -102,7 +102,7 @@ export const toSessionDetailsInVideoCall = (
     startTime: session.startTime,
     endTime: session.endTime,
     durationInMins: session.durationInMins,
-    sessionId: session.id!,
+    sessionId: session.sessionId!,
   };
 };
 
@@ -111,8 +111,8 @@ export const toSessionTrendsResponse = (
 ): ResponseSessionTrendsEntry => {
   return {
     label: entry.label,
-    sessions: entry.sessions,
-    cancelledSessions: entry.cancelledSessions ?? 0, 
+    sessionCount: entry.sessionCount,
+    cancelledSessionCount: entry.cancelledSessionCount ?? 0, 
   };
 };
 
@@ -120,7 +120,7 @@ export const toTopPsychResponse = (
   entry: TopPsychologistsEntryFromPersistence
 ): TopPsychologistResponse => {
   return {
-    id: entry.id,
+    psychId: entry.psychId,
     firstName: entry.firstName,
     lastName: entry.lastName,
     email: entry.email,
@@ -129,22 +129,22 @@ export const toTopPsychResponse = (
   };
 };
 
-export const mapSessionTrendsSummaryToCardItem = (summary: SessionTrendsSummary): SummaryCardItem => ({
-  totalValue: summary.totalValue,
-  addedValue: summary.addedValue,
+export const mapSessionTrendsSummaryToCardItem = (summary: SessionTrendsSummary): SessionSummaryResponse => ({
+  totalSessionCount: summary.totalSessionCount,
+  addedSessionCount: summary.addedSessionCount,
 });
 
 export const mapPsychSessionTrendsToResponse = (
   entry: PsychSessionTrendsEntry
 ):  ResponsePsychSessionTrendsEntry=> ({
   week: entry.week,
-  sessions: entry.sessions,
+  sessionCount: entry.sessionCount,
 });
 
 
 
 export const mapRecentSessionsToResponse = (entry:RecentSessionEntryFromPersistence): RecentSessionEntry => ({
-  id: entry.id!,
+  sessionId: entry.sessionId!,
   firstName:entry.firstName,
   lastName:entry.lastName,
   profilePicture:entry.profilePicture,
@@ -156,22 +156,22 @@ export const mapRecentSessionsToResponse = (entry:RecentSessionEntryFromPersiste
 export const mapSessionSummaryToResponse = (
   summary: PsychSessionSummaryFromPersistence
 ):PsychSessionsSummary => ({
-  todaySessions: summary.todaySessions,
-  upcomingSessions: summary.upcomingSessions,
+  todaySessionCount: summary.todaySessionCount,
+  upcomingSessionCount: summary.upcomingSessionCount,
   nextSessionTime: summary.nextSessionTime
     ? summary.nextSessionTime.toISOString()
     : "N/A",
-  totalSessions: summary.totalSessions,
-  thisMonthSessions: summary.thisMonthSessions,
+  totalSessionCount: summary.totalSessionCount,
+  thisMonthSessionCount: summary.thisMonthSessionCount,
 });
 
 export const mapUserSessionSummaryFromPersistence = (
   data: UserSessionSummaryFromPersistence
 ): UserSessionSummary => ({
-  totalSessions: data.totalSessions,
-  completedSessions: data.completedSessions,
-  upcomingSessions: data.upcomingSessions,
-  cancelledSessions: data.cancelledSessions,
+  totalSessionCount: data.totalSessionCount,
+  completedSessionCount: data.completedSessionCount,
+  upcomingSessionCount: data.upcomingSessionCount,
+  cancelledSessionCount: data.cancelledSessionCount,
 });
 
 export const mapRecentUserSessionsFromPersistence = (

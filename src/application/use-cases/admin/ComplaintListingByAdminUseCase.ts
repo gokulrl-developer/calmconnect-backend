@@ -21,7 +21,7 @@ export default class ComplaintListingByAdminUseCase
   async execute(dto: ComplaintListingByAdminDTO) {
     const { skip, limit, status, search } = dto;
 
-    const { complaints, totalItems } =
+    const { complaints, totalItemCount } =
       await this._complaintRepository.findComplaintsWithSearchFilter({
         status,
         search,
@@ -47,7 +47,7 @@ export default class ComplaintListingByAdminUseCase
       })
     );
 
-    const paginationData = calculatePagination(totalItems, skip, limit);
+    const paginationData = calculatePagination(totalItemCount, skip, limit);
     return { complaints: items, paginationData };
   }
 }

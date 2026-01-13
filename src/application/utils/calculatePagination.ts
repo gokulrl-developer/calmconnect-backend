@@ -1,16 +1,16 @@
 export default interface PaginationData{
- totalItems:number,
+ totalItemCount:number,
  totalPages:number,
  currentPage:number,
  pageSize:number
 }
 
-export function calculatePagination(totalItems: number, skip: number, limit: number):PaginationData {
+export function calculatePagination(totalItemCount: number, skip: number, limit: number):PaginationData {
   const pageSize = limit;
   const currentPage = Math.floor(skip / limit) + 1;
-  const totalPages = Math.ceil(totalItems / pageSize);
+  const totalPages = Math.ceil(totalItemCount / pageSize);
 
-  return { totalItems, totalPages, currentPage, pageSize };
+  return { totalItemCount, totalPages, currentPage, pageSize };
 }
 
 export function calculateSkip(page: number, limit: number): number {

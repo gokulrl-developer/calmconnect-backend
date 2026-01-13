@@ -9,7 +9,7 @@ export default class Complaint{
         public status:ComplaintStatus=ComplaintStatus.PENDING,
         public createdAt:Date=new Date(),
         public adminNotes:string,
-        public id?:string,
+        public complaintId?:string,
         public resolvedAt?:Date
     ){}
 }

@@ -34,19 +34,19 @@ export default class ReviewRepository
     if (entity.psychologist) persistence.psychologist = new Types.ObjectId(entity.psychologist);
     if (entity.rating !== undefined) persistence.rating = entity.rating;
     if (entity.comment !== undefined) persistence.comment = entity.comment;
-    if (entity.id) persistence._id = new Types.ObjectId(entity.id);
+    if (entity.reviewId) persistence._id = new Types.ObjectId(entity.reviewId);
     return persistence;
   }
 
   async listPsychReviews(
     filter: ListPsychReviewsFilter
-  ): Promise<{ reviews: Review[]; totalItems: number }> {
+  ): Promise<{ reviews: Review[]; totalItemCount: number }> {
     const { psychId, sort, skip, limit } = filter;
 
     const sortOption :Record<string, SortOrder> =
       sort === PsychReviewsSortByUser.TOP_RATED ? { rating: -1, createdAt: -1 } : { createdAt: -1 };
 
-    const [docs, totalItems] = await Promise.all([
+    const [docs, totalItemCount] = await Promise.all([
       this.model
         .find({ psychologist: new Types.ObjectId(psychId) })
         .sort(sortOption)
@@ -56,7 +56,7 @@ export default class ReviewRepository
     ]);
 
     const reviews = docs.map((d) => this.toDomain(d));
-    return { reviews, totalItems };
+    return { reviews, totalItemCount };
   }
 
    async fetchRatingSummaryByPsych(
@@ -69,7 +69,7 @@ export default class ReviewRepository
       { $group: { _id: null, avgRating: { $avg: "$rating" } } },
     ]);
 
-    const current =
+    const currentRating =
       currentAgg.length > 0 ? currentAgg[0].avgRating : 0;
 
     const lastMonthStart = new Date();
@@ -85,9 +85,9 @@ export default class ReviewRepository
       { $group: { _id: null, avgRating: { $avg: "$rating" } } },
     ]);
 
-    const lastMonth =
+    const lastMonthRating =
       lastMonthAgg.length > 0 ? lastMonthAgg[0].avgRating : 0;
 
-    return { current, lastMonth };
+    return { currentRating, lastMonthRating };
   }
 }

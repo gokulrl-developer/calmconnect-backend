@@ -8,7 +8,7 @@ export const mapDomainToGetMessagesResponse=(message:ChatMessage)=>{
       senderName:message.senderName,
       text:message.text,
       createdAt:message.createdAt,
-      id:message.id!, 
+      chatMessageId:message.chatMessageId!, 
     }
 }
 

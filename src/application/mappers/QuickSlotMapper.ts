@@ -35,6 +35,6 @@ export const mapDomainToDailyQuickSlot=(quickSlot:QuickSlot)=>{
     durationInMins: quickSlot.durationInMins, // slot duration
     bufferTimeInMins: quickSlot.bufferTimeInMins, // optional buffer
     status: quickSlot.status,
-    quickSlotId:quickSlot.id! 
+    quickSlotId:quickSlot.quickSlotId! 
     }
 }

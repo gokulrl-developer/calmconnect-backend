@@ -19,7 +19,7 @@ export default interface ITransactionRepository
     date?: string,
     skip?: number,
     limit?: number
-  ): Promise<{ transactions: Transaction[]; totalItems: number }>;
+  ): Promise<{ transactions: Transaction[]; totalItemCount: number }>;
   fetchRevenueTrends(
     fromDate: Date,
     toDate: Date,
@@ -36,8 +36,8 @@ export default interface ITransactionRepository
 }
 
 export interface RevenueSummary {
-  totalValue: number; // all time total count , without deducting the psychologist payout
-  addedValue: number; // added value in this time range  without deducting the psychologist payout
+  totalRevenue: number; // all time total count , without deducting the psychologist payout
+  addedRevenue: number; // added value in this time range  without deducting the psychologist payout
 }
 
 export interface PsychRevenueTrendsEntry {
@@ -46,8 +46,8 @@ export interface PsychRevenueTrendsEntry {
 }
 
 export interface RevenueSummaryByPsych {
-  current: number;
-  lastMonth: number;
+  currentRevenue: number;
+  lastMonthRevenue: number;
 }
 export interface RecentUserTransactionEntryFromPersistence {
   transactionId: string;

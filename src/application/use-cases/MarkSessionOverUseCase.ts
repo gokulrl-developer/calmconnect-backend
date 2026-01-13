@@ -39,7 +39,7 @@ export default class MarkSessionOverUseCase implements IMarkSessionOverUseCase {
     if (!adminData) {
       throw new Error(ERROR_MESSAGES.ADMIN_DATA_NOT_FOUND);
     }
-    await this._sessionRepo.update(session.id!, session);
+    await this._sessionRepo.update(session.sessionId!, session);
     let psychWallet = await this._walletRepo.findByOwner(
       session.psychologist,
       WalletOwnerType.PSYCHOLOGIST
@@ -57,21 +57,21 @@ export default class MarkSessionOverUseCase implements IMarkSessionOverUseCase {
       psychWallet = await this._walletRepo.create(walletEntity);
     }
     psychWallet.balance+=session.fees*.9;
-    await this._walletRepo.update(psychWallet.id!, psychWallet);
+    await this._walletRepo.update(psychWallet.walletId!, psychWallet);
     const transactionCredit = toDomainPayoutCredit(
-      psychWallet.id!,
+      psychWallet.walletId!,
       session.psychologist,
       adminData.adminId,
       session.fees*0.9,
-      session.id!
+      session.sessionId!
     );
 
     const transactionDebit = toDomainPayoutDebit(
-      platformWallet!.id!,
+      platformWallet!.walletId!,
       adminData.adminId!,
       session.psychologist,
       session.fees*0.9,
-      session.id!
+      session.sessionId!
     );
 
     await this._transactionRepo.create(transactionCredit);

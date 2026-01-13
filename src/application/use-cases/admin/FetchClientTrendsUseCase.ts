@@ -51,24 +51,24 @@ export default class FetchClientsTrendsUseCase
 
     const filledUserEntries: UserTrendsEntry[] = labels.map((label) => {
       const existing = userEntries.find((entry) => entry.label === label);
-      return existing || { label, users: 0 };
+      return existing || { label, userCount: 0 };
     });
 
     const filledPsychEntries: PsychTrendsEntry[] = labels.map((label) => {
       const existing = psychEntries.find((entry) => entry.label === label);
-      return existing || { label, psychologists: 0 };
+      return existing || { label, psychologistCount: 0 };
     });
 
-    const finalEntries: ClientTrendsEntry[] = labels.map((label) => {
+    const finalClientEntries: ClientTrendsEntry[] = labels.map((label) => {
       const user = filledUserEntries.find((u) => u.label === label);
       const psych = filledPsychEntries.find((p) => p.label === label);
       return {
         label,
-        users: user?.users ?? 0,
-        psychologists: psych?.psychologists ?? 0,
+        userCount: user?.userCount ?? 0,
+        psychologistCount: psych?.psychologistCount ?? 0,
       };
     });
 
-    return finalEntries;
+    return finalClientEntries;
   }
 }

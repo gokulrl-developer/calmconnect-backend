@@ -11,7 +11,7 @@ export class CheckStatusUserUseCase implements ICheckStatusUserUseCase {
 ) {}
 
   async execute(dto: UserCheckStatusDTO): Promise<void> {
-    const user = await this._userRepository.findById(dto.id);
+    const user = await this._userRepository.findById(dto.userId);
 
     if (!user) {
       throw new AppError(ERROR_MESSAGES.ACCOUNT_BLOCKED,AppErrorCodes.BLOCKED);

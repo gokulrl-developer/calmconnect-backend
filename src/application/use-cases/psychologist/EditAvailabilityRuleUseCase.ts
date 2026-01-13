@@ -49,7 +49,7 @@ export default class EditAvailabilityRuleUseCase
     const currentRuleStartMinutes = timeStringToMinutes(updatedRule.startTime);
     const currentRuleEndMinutes = timeStringToMinutes(updatedRule.endTime);
     for (const availabilityRule of weekDayAvailabilityRules) {
-      if(availabilityRule.id===dto.availabilityRuleId){
+      if(availabilityRule.availabilityRuleId===dto.availabilityRuleId){
         continue;
       }
       const ruleStartMinutes = timeStringToMinutes(availabilityRule.startTime);
@@ -92,7 +92,7 @@ export default class EditAvailabilityRuleUseCase
       );
     }
     await this._availabilityRuleRepository.update(
-      existingRule.id!,
+      existingRule.availabilityRuleId!,
       updatedRule
     );
   }

@@ -103,7 +103,7 @@ export default class CreateOrderUseCase implements ICreateOrderUseCase {
     return {
       providerOrderId: paymentOrder.providerOrderId,
       amount: Math.round(fees * 100),
-      sessionId: session.id!,
+      sessionId: session.sessionId!,
     };
   }
 }

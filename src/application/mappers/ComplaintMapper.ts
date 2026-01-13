@@ -36,12 +36,12 @@ export const mapDomainToUserComplaintListItem = (
   session: Session | null
 ): ComplaintListByUserItem => {
   return {
-    complaintId: complaint.id!,
+    complaintId: complaint.complaintId!,
     psychologistFullName: psychologist
       ? createFullName(psychologist.firstName, psychologist.lastName)
       : "N/A",
     psychologistEmail: psychologist?.email ?? "N/A",
-    sessionId: session?.id ?? "N/A",
+    sessionId: session?.sessionId ?? "N/A",
     status: complaint.status,
     createdAt: complaint.createdAt.toISOString(),
   };
@@ -55,7 +55,7 @@ export const mapDomainToUserComplaintDetails = (
   return {
     psychologistFullName: `${psychologist.firstName} ${psychologist.lastName}`,
     psychologistEmail: psychologist.email,
-    sessionId: session.id,
+    sessionId: session.sessionId,
     sessionStartTime: session.startTime.toISOString(),
     sessionEndTime: session.endTime.toISOString(),
     sessionStatus:session.status,
@@ -77,14 +77,14 @@ export const mapDomainToAdminComplaintListItem = (
   session: Session | null
 ): ComplaintListByAdminItem => {
   return {
-    complaintId: complaint.id!,
+    complaintId: complaint.complaintId!,
     userFullName: user ? createFullName(user.firstName, user.lastName) : "N/A",
     userEmail: user?.email ?? "N/A",
     psychologistFullName: psychologist
       ? createFullName(psychologist.firstName, psychologist.lastName)
       : "N/A",
     psychologistEmail: psychologist?.email ?? "N/A",
-    sessionId: session?.id ?? "N/A",
+    sessionId: session?.sessionId ?? "N/A",
     status: complaint.status,
     createdAt: complaint.createdAt.toISOString(),
   };
@@ -96,14 +96,14 @@ export const mapDomainToAdminComplainHistoryItem = (
   session: Session | null
 ): ComplaintListByAdminItem => {
   return {
-    complaintId: complaint.id!,
+    complaintId: complaint.complaintId!,
     userFullName: user ? createFullName(user.firstName, user.lastName) : "N/A",
     userEmail: user?.email ?? "N/A",
     psychologistFullName: psychologist
       ? createFullName(psychologist.firstName, psychologist.lastName)
       : "N/A",
     psychologistEmail: psychologist?.email ?? "N/A",
-    sessionId: session?.id ?? "N/A",
+    sessionId: session?.sessionId ?? "N/A",
     status: complaint.status,
     createdAt: complaint.createdAt.toISOString(),
   };
@@ -116,14 +116,14 @@ export const mapDomainToAdminComplaintDetails = (
   session: Session
 ): AdminComplaintDetailsResponse => {
   return {
-    userId: user.id!,
+    userId: user.userId!,
     userFullName: `${user.firstName} ${user.lastName}`,
     userEmail: user.email,
-    psychologistId: psychologist.id!,
+    psychologistId: psychologist.psychId!,
     psychologistFullName: `${psychologist.firstName} ${psychologist.lastName}`,
     psychologistEmail: psychologist.email,
     psychologistStatus:psychologist.isBlocked===true?PsychologistStatus.INACTIVE:PsychologistStatus.ACTIVE,
-    sessionId: session.id,
+    sessionId: session.sessionId,
     sessionStartTime: session.startTime.toISOString(),
     sessionEndTime: session.endTime.toISOString(),
     sessionStatus:session.status,
@@ -150,7 +150,7 @@ export const mapComplaintResolutionDTOToDomain = (
     ComplaintStatus.RESOLVED,
     existingComplaint.createdAt,
     dto.adminNotes,
-    existingComplaint.id,
+    existingComplaint.complaintId,
     new Date()
   );
 };

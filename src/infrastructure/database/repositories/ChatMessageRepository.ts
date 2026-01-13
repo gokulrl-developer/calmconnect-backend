@@ -33,7 +33,7 @@ export class ChatMessageRepository
     if(entity.senderName) persistenceObj.senderName=entity.senderName;
     if (entity.text) persistenceObj.text = entity.text;
     if (entity.createdAt) persistenceObj.createdAt = entity.createdAt;
-    if (entity.id) persistenceObj._id = new Types.ObjectId(entity.id);
+    if (entity.chatMessageId) persistenceObj._id = new Types.ObjectId(entity.chatMessageId);
 
     return persistenceObj;
   }

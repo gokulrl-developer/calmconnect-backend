@@ -10,7 +10,7 @@ export default class Session{
        public transactionIds:string[],
        public status:SessionStatus,
        public fees:number, //rupees
-       public id?:string,
+       public sessionId?:string,
        public videoRoomId?:string,
     ){}
 }

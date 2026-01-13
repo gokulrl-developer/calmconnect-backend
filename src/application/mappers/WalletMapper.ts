@@ -17,6 +17,6 @@ export const toFetchWalletResponse=(entity:Wallet)=>{
   return {
     ownerType:entity.ownerType,
     balance:entity.balance,
-    walletId:entity.id!
+    walletId:entity.walletId!
   }
 }

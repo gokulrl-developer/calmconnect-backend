@@ -24,7 +24,7 @@ export default class DeleteSpecialDayUseCase implements IDeleteSpecialDayUseCase
       throw new AppError(ERROR_MESSAGES.UNAUTHORISED_ACTION, AppErrorCodes.FORBIDDEN_ERROR);
     }
 
-    await this._specialDayRepository.update(existingSpecialDay.id!, {
+    await this._specialDayRepository.update(existingSpecialDay.specialDayId!, {
       status: SpecialDayStatus.INACTIVE
     });
   }

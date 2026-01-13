@@ -2,7 +2,7 @@ import { UserLoginDTO } from "../dtos/user.dto.js";
 
 export interface LoginResponse {
   user: {
-    id: string;
+    userId: string;
     firstName: string;
     lastName: string;
   };

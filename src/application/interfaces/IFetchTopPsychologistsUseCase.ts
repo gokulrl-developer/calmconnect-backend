@@ -1,7 +1,7 @@
 import { FetchTopPsychologistDTO } from "../dtos/admin.dto.js";
 
 export interface TopPsychologistResponse {
-  id: string;
+  psychId: string;
   firstName: string;
   lastName: string;
   email: string;
