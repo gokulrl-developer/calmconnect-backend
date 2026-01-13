@@ -71,29 +71,29 @@ export default class CancelSessionPsychUseCase {
       );
     }
     const debitFromPlatform = toDomainRefundDebit(
-      platformWallet.id!,
+      platformWallet.walletId!,
       adminId,
       session.user,
       session.fees,
-      session.id!
+      session.sessionId!
     );
     const creditToUser = toDomainRefundCredit(
-      userWallet.id!,
+      userWallet.walletId!,
       session.user,
       adminId,
       session.fees,
-      session.id!
+      session.sessionId!
     );
 
     platformWallet.balance -= session.fees;
-    await this._walletRepository.update(platformWallet.id!, platformWallet);
+    await this._walletRepository.update(platformWallet.walletId!, platformWallet);
 
     userWallet.balance += session.fees;
-    await this._walletRepository.update(userWallet.id!, userWallet);
+    await this._walletRepository.update(userWallet.walletId!, userWallet);
     const debitTx = await this._transactionRepository.create(debitFromPlatform);
     const creditTx = await this._transactionRepository.create(creditToUser);
 
-    const transactions = [debitTx.id!, creditTx.id!];
+    const transactions = [debitTx.transactionId!, creditTx.transactionId!];
 
     session.status = SessionStatus.CANCELLED;
     session.transactionIds = session.transactionIds
@@ -116,6 +116,6 @@ export default class CancelSessionPsychUseCase {
       date: `${sessionStart.getDate()}-${sessionStart.getMonth() + 1}-${sessionStart.getFullYear()}`,
       time: `${sessionStart.getHours().toString().padStart(2, "0")}:${sessionStart.getMinutes().toString().padStart(2, "0")}`,
     });
-    await this._sessionRepository.update(session.id!, session);
+    await this._sessionRepository.update(session.sessionId!, session);
   }
 }

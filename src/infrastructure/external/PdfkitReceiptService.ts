@@ -56,7 +56,7 @@ export class PdfkitReceiptService implements IReceiptService {
     doc.moveDown(1);
     doc.font("Helvetica");
 
-    drawField("Transaction ID:", maskId(transaction.id));
+    drawField("Transaction ID:", maskId(transaction.transactionId));
     drawField("Date:", transaction.createdAt?.toLocaleString() || "N/A");
     drawField("Type:", transaction.type.toUpperCase());
     drawField("Amount:", `INR ${transaction.amount.toFixed(2)}`);
