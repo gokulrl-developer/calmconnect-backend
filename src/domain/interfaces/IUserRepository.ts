@@ -5,7 +5,7 @@ import IBaseRepository from "./IBaseRepository.js";
 
 export interface UserTrendsEntry{
   label:string; //day/month...
-  users:number;
+  userCount:number;
 }
 export default interface IUserRepository extends IBaseRepository<User>{
    findByEmail(email: string): Promise<User | null>;
@@ -15,6 +15,6 @@ export default interface IUserRepository extends IBaseRepository<User>{
 }
 
 export interface UserTrendsSummary{
-  totalValue:number;  // all time total count
-  addedValue:number; // added value in this time range
+  totalUserCount:number;  // all time total count
+  addedUserCount:number; // added value in this time range
 }

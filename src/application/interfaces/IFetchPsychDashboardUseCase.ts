@@ -7,24 +7,24 @@ export interface DashboardSummary {
   revenueSummary: PsychRevenueSummary;
 }
 export interface PsychSessionsSummary {
-  todaySessions: number;
-  upcomingSessions: number;
+  todaySessionCount: number;
+  upcomingSessionCount: number;
   nextSessionTime: string;
-  totalSessions: number;
-  thisMonthSessions: number;
+  totalSessionCount: number;
+  thisMonthSessionCount: number;
 }
 export interface PsychRatingSummary {
-  current: number;
-  lastMonth: number;
+  currentRating: number;
+  lastMonthRating: number;
 }
 export interface PsychRevenueSummary {
-  current: number;
-  lastMonth: number;
+  currentRevenue: number;
+  lastMonthRevenue: number;
 }
 
 export interface PsychSessionsTrendEntry {
   week: string;
-  sessions: number;
+  sessionCount: number;
 }
 
 export interface RevenueTrendEntry {
@@ -33,7 +33,7 @@ export interface RevenueTrendEntry {
 }
 
 export interface RecentSessionEntry {
-  id: string;
+  sessionId: string;
   firstName: string;
   lastName: string;
   profilePicture: string;

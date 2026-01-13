@@ -9,6 +9,6 @@ export default class QuickSlot {
     public durationInMins: number, // slot duration
     public bufferTimeInMins: number, // optional buffer
     public status: QuickSlotStatus = QuickSlotStatus.ACTIVE,
-    public id?: string
+    public quickSlotId?: string
   ) {}
 }

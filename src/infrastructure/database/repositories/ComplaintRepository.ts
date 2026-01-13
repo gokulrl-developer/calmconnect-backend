@@ -14,7 +14,7 @@ interface ComplaintSearchFilter {
 
 interface PaginatedComplaintResult {
   complaints: Complaint[];
-  totalItems: number;
+  totalItemCount: number;
 }
 
 interface FilterQueryUserList{
@@ -57,7 +57,7 @@ export default class ComplaintRepository
     if (entity.status !== undefined) persistence.status = entity.status;
     if (entity.adminNotes !== undefined) persistence.adminNotes = entity.adminNotes;
     if (entity.resolvedAt !== undefined) persistence.resolvedAt = entity.resolvedAt;
-    if (entity.id) persistence._id = new Types.ObjectId(entity.id);
+    if (entity.complaintId) persistence._id = new Types.ObjectId(entity.complaintId);
     return persistence;
   }
 
@@ -68,12 +68,12 @@ export default class ComplaintRepository
   ): Promise<PaginatedComplaintResult> {
     const userObjectId = new Types.ObjectId(userId);
     const filter: FilterQueryUserList = { user: userObjectId };
-    const [docs, totalItems] = await Promise.all([
+    const [docs, totalItemCount] = await Promise.all([
       this.model.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
       this.model.countDocuments(filter),
     ]);
     const complaints = docs.map((doc) => this.toDomain(doc));
-    return { complaints, totalItems };
+    return { complaints, totalItemCount };
   }
 
   async findComplaintsWithSearchFilter(
@@ -123,26 +123,26 @@ export default class ComplaintRepository
     pipeline.push({ $set: {user:"$user._id",psychologist:"$psychologist._id"} });
     pipeline.push({ $sort: { createdAt: -1 } }, { $skip: skip }, { $limit: limit });
 
-    const [results, totalItems] = await Promise.all([
+    const [results, totalItemCount] = await Promise.all([
       this.model.aggregate(pipeline),
       this.model.countDocuments(status ? { status } : {}),
     ]);
 
     const complaints = results.map((r) => this.toDomain(r));
-    return { complaints, totalItems };
+    return { complaints, totalItemCount };
   }
   async findComplaintsByPsychologist(
     filter: ComplaintHistoryFilter
   ): Promise<PaginatedComplaintResult> {
     const { psychId, skip, limit } = filter;
 
-    const [results, totalItems] = await Promise.all([
+    const [results, totalItemCount] = await Promise.all([
       this.model.find({psychologist:new Types.ObjectId(psychId)}).sort({createdAt:-1}).skip(skip).limit(limit),
       this.model.countDocuments(status ? { status } : {}),
     ]);
 
     const complaints = results.map((r) => this.toDomain(r));
-    return { complaints, totalItems };
+    return { complaints, totalItemCount };
   }
 
   async fetchRecentUserComplaints(

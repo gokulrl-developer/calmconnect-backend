@@ -11,6 +11,6 @@ export default class SpecialDay {
     public durationInMins?: number, // slot duration  //not needed for absent
     public bufferTimeInMins?: number, // optional buffer
     public status: SpecialDayStatus = SpecialDayStatus.ACTIVE,
-    public id?: string
+    public specialDayId?: string
   ) {}
 }

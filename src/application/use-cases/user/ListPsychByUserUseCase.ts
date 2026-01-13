@@ -51,19 +51,19 @@ export default class ListPsychByUserUseCase implements IListPsychByUserUseCase {
             await Promise.all([
               this._availabilityRuleRepository.findActiveByWeekDayPsych(
                 weekDay,
-                psych.id!
+                psych.psychId!
               ),
               this._specialDayRepository.findActiveByDatePsych(
                 selectedDate,
-                psych.id!
+                psych.psychId!
               ),
               this._quickSlotsRepository.findActiveByDatePsych(
                 selectedDate,
-                psych.id!
+                psych.psychId!
               ),
               this._sessionRepository.findBookedSessions(
                 selectedDate,
-                psych.id!
+                psych.psychId!
               ),
             ]);
 
@@ -90,7 +90,7 @@ export default class ListPsychByUserUseCase implements IListPsychByUserUseCase {
     );
 
     const paginationData = calculatePagination(
-      filteredData.totalItems,
+      filteredData.totalItemCount,
       dto.skip,
       dto.limit
     );

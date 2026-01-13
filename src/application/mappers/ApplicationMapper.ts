@@ -72,7 +72,7 @@ export const toFetchLatestApplicationResponse = (
 
 export const toAdminApplicationListResponse=(application:Application)=>{
   return{  
-    id:application.id,
+    applicationId:application.applicationId,
     firstName:application.firstName,
     lastName:application.lastName,
   email:application.email,

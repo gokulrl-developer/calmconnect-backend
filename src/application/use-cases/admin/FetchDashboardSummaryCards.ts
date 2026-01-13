@@ -29,10 +29,10 @@ export default class FetchDashboardSummaryCardsUseCase implements IFetchDashboar
     ]);
 
     return {
-      users: mapUserSummaryToCardItem(userSummary),
-      psychologists: mapPsychSummaryToCardItem(psychSummary),
-      sessions: mapSessionTrendsSummaryToCardItem(sessionSummary),
-      revenue: mapRevenueSummaryToCardItem(revenueSummary),
+      userSummary: mapUserSummaryToCardItem(userSummary),
+      psychologistSummary: mapPsychSummaryToCardItem(psychSummary),
+      sessionSummary: mapSessionTrendsSummaryToCardItem(sessionSummary),
+      revenueSummary: mapRevenueSummaryToCardItem(revenueSummary),
     };
   }
 }

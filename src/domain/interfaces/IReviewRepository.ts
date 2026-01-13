@@ -10,14 +10,14 @@ export interface ListPsychReviewsFilter {
 }
 
 export interface RatingSummaryFromPersistence {
-  current: number;
-  lastMonth: number;
+  currentRating: number;
+  lastMonthRating: number;
 }
 
 export default interface IReviewRepository extends IBaseRepository<Review> {
   listPsychReviews(
     filter: ListPsychReviewsFilter
-  ): Promise<{ reviews: Review[]; totalItems: number }>;
+  ): Promise<{ reviews: Review[]; totalItemCount: number }>;
   fetchRatingSummaryByPsych(
     psychId: string
   ): Promise<RatingSummaryFromPersistence>;

@@ -9,6 +9,6 @@ export default class AvailabilityRule {
     public durationInMins: number,   // slot duration
     public bufferTimeInMins: number = 0, // optional buffer
     public status:AvailabilityRuleStatus=AvailabilityRuleStatus.ACTIVE,
-    public id?: string
+    public availabilityRuleId?: string
   ) {}
 }

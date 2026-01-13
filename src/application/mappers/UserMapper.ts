@@ -2,7 +2,7 @@ import { UpdateUserProfileDTO, UserSignUpDTO } from "../dtos/user.dto.js";
 import User from "../../domain/entities/user.entity.js";
 import { UserProfile } from "../interfaces/IFetchUserProfileUseCase.js";
 import { UserTrendsSummary } from "../../domain/interfaces/IUserRepository.js";
-import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
+import { UserSummary as UserSummaryResponse } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
 import { AdminUserListResponseItem } from "../interfaces/IUserListUseCase.js";
 import { UserStatus } from "../../domain/enums/UserStatus.js";
 
@@ -58,7 +58,7 @@ export const toUserDomainGoogleAuth=(user:FromGoogleAuthService ):User=>{
 export const toLoginResponse = (user: User, accessToken: string,refreshToken:string) =>{
   return {
   user: {
-    id: user.id!,
+    userId: user.userId!,
     firstName: user.firstName,
     lastName: user.lastName
   },
@@ -69,7 +69,7 @@ export const toLoginResponse = (user: User, accessToken: string,refreshToken:str
 
 export const toAdminUserListResponse=(user:User):AdminUserListResponseItem=>{
   return{  
-    id:user.id!,
+    userId:user.userId!,
     firstName:user.firstName,
     lastName:user.lastName,
   email:user.email,
@@ -99,7 +99,7 @@ export const toUserDomainFromUpdateDTO = (
     existingUser.isBlocked,
     existingUser.walletBalance,
     existingUser.password,
-    existingUser.id,
+    existingUser.userId,
     existingUser.createdAt,
     dto.gender??existingUser.gender,
     dto.dob??existingUser.dob,
@@ -116,7 +116,7 @@ export const mapDomainToDetailsResponseByAdmin=(user:User)=>{
     lastName:user.lastName,
     email:user.email,
     isBlocked:user.isBlocked,
-    userId:user.id!,
+    userId:user.userId!,
     gender:user.gender,
     dob:user.dob,
     profilePicture:user.profilePicture,
@@ -124,9 +124,9 @@ export const mapDomainToDetailsResponseByAdmin=(user:User)=>{
     }
 }
 
-export const mapUserSummaryToCardItem = (summary: UserTrendsSummary): SummaryCardItem => ({
-  totalValue: summary.totalValue,
-  addedValue: summary.addedValue,
+export const mapUserSummaryToCardItem = (summary: UserTrendsSummary): UserSummaryResponse => ({
+  totalUserCount: summary.totalUserCount,
+  addedUserCount: summary.addedUserCount,
 });
 
 

@@ -30,6 +30,6 @@ export default class SessionListingPsychUseCase
         return toSessionListingPsychResponse(session, userFullName, userEmail);
       })
     );
-    return {sessions:results,paginationData:calculatePagination(filteredData.totalItems,dto.skip,dto.limit)};
+    return {sessions:results,paginationData:calculatePagination(filteredData.totalItemCount,dto.skip,dto.limit)};
   }
 }

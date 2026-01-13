@@ -46,7 +46,7 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
       );
 
     const conflictSlots = overlappingQuickSlots.filter(
-      (slot) => slot.id !== existingQuickSlot.id
+      (slot) => slot.quickSlotId !== existingQuickSlot.quickSlotId
     );
     if (conflictSlots.length > 0) {
       throw new AppError(
@@ -104,6 +104,6 @@ export default class EditQuickSlotUseCase implements IEditQuickSlotUseCase {
       existingQuickSlot
     );
 
-    await this._quickSlotRepo.update(existingQuickSlot.id!, updatedQuickSlot);
+    await this._quickSlotRepo.update(existingQuickSlot.quickSlotId!, updatedQuickSlot);
   }
 }

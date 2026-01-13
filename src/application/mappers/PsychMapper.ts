@@ -8,7 +8,7 @@ import {
   PsychSummary,
 } from "../../domain/interfaces/IPsychRepository.js";
 import { Slot } from "../utils/generateSlots.js";
-import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
+import { PsychSummary as PsychSummaryResponse } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
 import { AdminPsychListResponseItem } from "../interfaces/IPsychListUseCase.js";
 import { PsychologistStatus } from "../../domain/enums/PsychologistStatus.js";
 import { ListPsychByUserSort } from "../../domain/enums/ListPsychByUserSort.js";
@@ -114,7 +114,7 @@ export const toLoginResponse = (
   refreshToken: string
 ) => ({
   psych: {
-    id: psych.id!,
+    psychId: psych.psychId!,
     firstName: psych.firstName,
     lastName: psych.lastName,
     isVerified: psych.isVerified,
@@ -128,7 +128,7 @@ export const toGoogleAuthResponse = (
   refreshToken: string
 ) => ({
   psych: {
-    id: psych.id!,
+    psychId: psych.psychId!,
     firstName: psych.firstName,
     lastName: psych.lastName,
     isVerified: psych.isVerified,
@@ -145,7 +145,7 @@ export const toCheckStatusResponse = (psych: Psychologist) => {
 
 export const toAdminPsychListResponse = (psych: Psychologist):AdminPsychListResponseItem => {
   return {
-    id: psych.id!,
+    psychId: psych.psychId!,
     firstName: psych.firstName,
     lastName: psych.lastName,
     email: psych.email,
@@ -171,7 +171,7 @@ export const toPsychListByUserPersistence = (
 
 export const toPsychListByUserResponse = (psych: Psychologist) => {
   return {
-    psychId: psych.id!,
+    psychId: psych.psychId!,
     name: psych.firstName + " " + psych.lastName,
     rating: psych.avgRating ?? null,
     specializations: psych.specializations?.join(" ") ?? null,
@@ -188,7 +188,7 @@ export const toPsychDetailsByUserResponse = (
 ) => {
   return {
     availableSlots: slots,
-    psychId: psych.id as string,
+    psychId: psych.psychId as string,
     name: psych.firstName + " " + psych.lastName,
     rating: psych.avgRating ?? 0,
     specializations: psych.specializations ?? [],
@@ -228,7 +228,7 @@ export const toPsychDomainFromUpdateDTO = (
     existingPsych.isVerified,
     existingPsych.isBlocked,
     existingPsych.walletBalance,
-    existingPsych.id,
+    existingPsych.psychId,
     existingPsych.password,
     existingPsych.gender,
     existingPsych.dob,
@@ -254,7 +254,7 @@ export const mapDomainToDetailsResponseByAdmin = (psych: Psychologist) => {
     lastName: psych.lastName,
     email: psych.email,
     isBlocked: psych.isBlocked,
-    psychId: psych.id!,
+    psychId: psych.psychId!,
     gender: psych.gender,
     dob: psych.dob,
     profilePicture: psych.profilePicture,
@@ -269,7 +269,11 @@ export const mapDomainToDetailsResponseByAdmin = (psych: Psychologist) => {
   };
 };
 
-export const mapPsychSummaryToCardItem = (summary: PsychSummary): SummaryCardItem => ({
-  totalValue: summary.totalValue,
-  addedValue: summary.addedValue,
-});
+export const mapPsychSummaryToCardItem = (summary: PsychSummary): PsychSummaryResponse => {
+  
+  return {
+  totalPsychologistCount: summary.totalPsychologistCount,
+  addedPsychologistCount: summary.addedPsychologistCount,
+}
+}
+

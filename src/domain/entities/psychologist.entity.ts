@@ -8,7 +8,7 @@ export default class Psychologist {
     public isVerified:boolean,
     public isBlocked:boolean,
     public walletBalance:number,
-    public id?:string,
+    public psychId?:string,
     public password?:string,
     public gender?:PsychologistGender,
     public dob?:Date,

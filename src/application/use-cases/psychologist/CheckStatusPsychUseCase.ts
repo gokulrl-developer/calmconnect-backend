@@ -12,7 +12,7 @@ export class CheckStatusPsychUseCase implements ICheckStatusPsychUseCase {
 ) {}
 
   async execute(dto: PsychCheckStatusDTO){
-    const psych = await this._PsychRepository.findById(dto.id);
+    const psych = await this._PsychRepository.findById(dto.psychId);
 
     if (!psych) {
       throw new AppError(ERROR_MESSAGES.ACCOUNT_LOGGED_OUT,AppErrorCodes.INVALID_CREDENTIALS);

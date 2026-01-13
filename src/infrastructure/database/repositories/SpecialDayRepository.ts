@@ -40,7 +40,7 @@ export default class SpecialDayRepository
     if (entity.durationInMins !== undefined) persistenceObj.durationInMins = entity.durationInMins;
     if (entity.bufferTimeInMins !== undefined) persistenceObj.bufferTimeInMins = entity.bufferTimeInMins;
     if (entity.status !== undefined) persistenceObj.status = entity.status;
-    if (entity.id) persistenceObj._id = new Types.ObjectId(entity.id);
+    if (entity.specialDayId) persistenceObj._id = new Types.ObjectId(entity.specialDayId);
 
     return persistenceObj;
   }

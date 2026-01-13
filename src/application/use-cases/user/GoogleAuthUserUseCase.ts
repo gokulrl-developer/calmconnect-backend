@@ -29,8 +29,8 @@ export default class GoogleAuthUserUseCase implements IGoogleAuthUserUseCase {
       User=res;
     }
     
-    const accessToken = generateAccessToken({id:User.id!,role:Role.USER});
-    const refreshToken =generateRefreshToken({id:User.id!,role:Role.USER});  
+    const accessToken = generateAccessToken({id:User.userId!,role:Role.USER});
+    const refreshToken =generateRefreshToken({id:User.userId!,role:Role.USER});  
     
     const result =toLoginResponse(User,accessToken,refreshToken)
     return result;

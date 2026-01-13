@@ -8,7 +8,7 @@ import IBaseRepository from "./IBaseRepository.js";
 export default interface IPsychRepository extends IBaseRepository<Psychologist>{
     findByEmail(email: string): Promise<Psychologist | null>;
     findList(dto:ListPsychDTO):Promise<Psychologist[]>;
-    listPsychByUser(query:ListPsychQueryByUser):Promise<{psychologists:Psychologist[],totalItems:number}>;
+    listPsychByUser(query:ListPsychQueryByUser):Promise<{psychologists:Psychologist[],totalItemCount:number}>;
     fetchPsychTrends(fromDate:Date,toDate:Date,interval:FetchPsychTrendsByAdminInterval):Promise<PsychTrendsEntry[]>;
     fetchPsychSummary(fromDate:Date,toDate:Date):Promise<PsychSummary>
 }
@@ -25,10 +25,10 @@ limit:number
 
 export interface PsychTrendsEntry{
   label:string;                    //day/month...
-  psychologists:number;
+  psychologistCount:number;
 }
 
 export interface PsychSummary{
-  totalValue:number;  // all time total count
-  addedValue:number; // added value in this time range
+  totalPsychologistCount:number;  // all time total count
+  addedPsychologistCount:number; // added value in this time range
 }

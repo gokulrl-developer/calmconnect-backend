@@ -34,6 +34,6 @@ export default class SessionListingUserUseCase
         return toSessionListingUserResponse(session, psychFullName, psychEmail);
       })
     );
-    return {sessions:results,paginationData:calculatePagination(filteredData.totalItems,dto.skip,dto.limit)};
+    return {sessions:results,paginationData:calculatePagination(filteredData.totalItemCount,dto.skip,dto.limit)};
   }
 }

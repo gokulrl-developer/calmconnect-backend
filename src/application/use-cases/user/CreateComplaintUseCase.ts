@@ -39,10 +39,10 @@ export default class CreateComplaintUseCase implements ICreateComplaintUseCase {
     const user=await this._userRepository.findById(dto.userId);
     const psychologist=await this._psychRepository.findById(session.psychologist);
     await this._eventBus.emit(EventMapEvents.COMPLAINT_RAISED, {
-          complaintId:complaintCreated.id!,
+          complaintId:complaintCreated.complaintId!,
           userFullName:user?`${user.firstName} ${user.lastName}`:"N/A",
           psychologistFullName:psychologist?`${psychologist.firstName} ${psychologist.lastName}`:"N/A",
-          sessionId:session.id!,
+          sessionId:session.sessionId!,
         })
   }
 }

@@ -39,6 +39,6 @@ export const mapDomainToDailySpecialDay=(specialDay:SpecialDay)=>{
         durationInMins:specialDay.durationInMins,
         bufferTimeInMins:specialDay.bufferTimeInMins,
         status:specialDay.status,
-        specialDayId:specialDay.id!
+        specialDayId:specialDay.specialDayId!
     }
 }

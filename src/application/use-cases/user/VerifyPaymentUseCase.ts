@@ -65,7 +65,7 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
       platformWallet.balance =
         platformWallet.balance + verificationResult.amount!;
     }
-    await this._walletRepository.update(platformWallet.id!, platformWallet);
+    await this._walletRepository.update(platformWallet.walletId!, platformWallet);
 
     if(!userWallet){
       const walletEntity = toWalletDomain(WalletOwnerType.USER, 0,dto.userId);
@@ -73,20 +73,20 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     }
 
     const transactionCredit = toDomainBookingCredit(
-      platformWallet.id!,
+      platformWallet.walletId!,
       adminData.adminId,
       dto.userId,
       verificationResult.amount!/100,
-      session.id!,
+      session.sessionId!,
       dto.providerPaymentId
     );
 
     const transactionDebit = toDomainBookingDebit(
-      userWallet.id!,
+      userWallet.walletId!,
       dto.userId!,
       adminData.adminId,
       verificationResult.amount!/100,
-      session.id!,
+      session.sessionId!,
       dto.providerPaymentId
     );
 
@@ -96,10 +96,10 @@ export default class VerifyPaymentUseCase implements IVerifyPaymentUseCase {
     const debitTransaction = await this._transactionRepository.create(
       transactionDebit
     );
-    const transactionIds = [creditTransaction.id, debitTransaction.id];
+    const transactionIds = [creditTransaction.transactionId, debitTransaction.transactionId];
     session.status = SessionStatus.SCHEDULED;
     session.transactionIds = transactionIds as string[];
-    await this._sessionRepository.update(session.id!, session);
+    await this._sessionRepository.update(session.sessionId!, session);
 
     const user = await this._userRepository.findById(session.user);
 

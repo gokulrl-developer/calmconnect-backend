@@ -12,7 +12,7 @@ import {
   PsychRevenueSummary, 
   RevenueTrendEntry as ResponsePsychRevenueTrendsEntry 
 } from "../../application/interfaces/IFetchPsychDashboardUseCase.js";
-import { SummaryCardItem } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
+import { RevenueSummary as RevenueSummaryResponse } from "../interfaces/IFetchDashboardSummaryCardsAdminUseCase.js";
 import { UserRecentTransactionsEntry } from "../interfaces/IFetchUserDashboardUseCase.js";
 import { TransactionOwnerType } from "../../domain/enums/TransactionOwnerType.js";
 import { TransactionSourceType } from "../../domain/enums/TransactionSourceType.js";
@@ -177,7 +177,7 @@ export const toTransactionListItem = (
   transaction: Transaction
 ): TransactionListItem => {
   return {
-    transactionId: transaction.id!,
+    transactionId: transaction.transactionId!,
     type: transaction.type,
     amount: transaction.amount,
     referenceType: transaction.referenceType,
@@ -194,9 +194,9 @@ export const toRevenueTrendsResponse = (
   };
 };
 
-export const mapRevenueSummaryToCardItem = (summary: RevenueSummary): SummaryCardItem => ({
-  totalValue: summary.totalValue/10,
-  addedValue: summary.addedValue/10,
+export const mapRevenueSummaryToCardItem = (summary: RevenueSummary): RevenueSummaryResponse => ({
+  totalRevenue: summary.totalRevenue/10,
+  addedRevenue: summary.addedRevenue/10,
 });
 
 export const mapPsychRevenueTrendsToResponse = (
@@ -209,8 +209,8 @@ export const mapPsychRevenueTrendsToResponse = (
 export const mapRevenueSummaryToResponse = (
   summary: PsychRevenueSummary
 ): RevenueSummaryByPsych => ({
-  current: summary.current,
-  lastMonth: summary.lastMonth,
+  currentRevenue: summary.currentRevenue,
+  lastMonthRevenue: summary.lastMonthRevenue,
 });
 
 export const mapRecentUserTransactionsFromPersistence = (

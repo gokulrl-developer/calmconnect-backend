@@ -15,7 +15,7 @@ export class CheckStatusUser {
         if(!req.account){
              throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
             }
-      await this._checkStatusUserUseCase.execute({ id: req.account.id });
+      await this._checkStatusUserUseCase.execute({ userId: req.account.id });
       next();
     } catch (err) {
       next(err)
@@ -29,7 +29,7 @@ export class CheckStatusPsych {
 
   handle = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const result=await this._checkStatusPsychUseCase.execute({ id: req.account!.id! });
+      const result=await this._checkStatusPsychUseCase.execute({ psychId: req.account!.id! });
       req.account!.isVerified=result.isVerified;
       next();
     } catch (err) {

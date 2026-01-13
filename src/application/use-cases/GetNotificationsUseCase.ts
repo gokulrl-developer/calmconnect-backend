@@ -11,14 +11,14 @@ export default class GetNotificationsUseCase
 
   async execute(dto: GetNotificationsDTO) {
     const { recipientType, recipientId, skip = 0, limit = 10 } = dto;
-      const {notifications,totalItems}= await this._notificationRepo.findByRecipient(
+      const {notifications,totalItemCount}= await this._notificationRepo.findByRecipient(
         recipientType,
         recipientId,
         skip,
         limit
       );
 
-      return {notifications:notifications.map(toNotificationListingItem),paginationData:calculatePagination(totalItems,skip,limit)}
+      return {notifications:notifications.map(toNotificationListingItem),paginationData:calculatePagination(totalItemCount,skip,limit)}
     
   }
 }

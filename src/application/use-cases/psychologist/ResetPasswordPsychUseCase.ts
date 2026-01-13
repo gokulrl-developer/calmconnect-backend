@@ -19,8 +19,8 @@ export default class ResetPasswordPsychUseCase implements IResetPasswordPsychUse
         if(!storedOtp || storedOtp.role !==ROLES.PSYCHOLOGIST){
             throw new AppError(ERROR_MESSAGES.INVALID_OTP,AppErrorCodes.INVALID_OTP)
         }
-        const user=await this._psychRepository.findByEmail(dto.email);
-        user!.password=await hashPassword(dto.password);
-        await this._psychRepository.update(user!.id!,user!)
+        const psych=await this._psychRepository.findByEmail(dto.email);
+        psych!.password=await hashPassword(dto.password);
+        await this._psychRepository.update(psych!.psychId!,psych!)
     }
 }
