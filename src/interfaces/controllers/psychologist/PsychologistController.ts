@@ -7,13 +7,14 @@ import { ERROR_MESSAGES } from "../../../application/constants/error-messages.co
 import IUpdatePsychProfileUseCase from "../../../application/interfaces/IUpdatePsychProfileUseCase.js";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js";
 import IFetchPsychDashboardUseCase from "../../../application/interfaces/IFetchPsychDashboardUseCase.js";
+import { ALLOWED_FILE_SIZE } from "../../constants/file-sizes.constants.js";
 
 export default class PsychController {
   constructor(
     private readonly _fetchPsychProfileUseCase: IFetchPsychProfileUseCase,
     private readonly _updatePsychProfileUseCase: IUpdatePsychProfileUseCase,
     private readonly _fetchPsychDashboardUseCase: IFetchPsychDashboardUseCase
-  ) {}
+  ) { }
   async getDashboard(
     req: Request,
     res: Response,
@@ -161,6 +162,12 @@ export default class PsychController {
       let profilePicture: Buffer | undefined = undefined;
       if (files?.profilePicture?.[0]?.buffer instanceof Buffer) {
         profilePicture = files.profilePicture[0].buffer;
+        if (files?.profilePicture?.[0]?.size > ALLOWED_FILE_SIZE.PROFILE_IMAGE_SIZE) {
+          throw new AppError(
+            ERROR_MESSAGES.PROFILE_PICTURE_SIZE_EXCEEDED(ALLOWED_FILE_SIZE.PROFILE_IMAGE_SIZE),
+            AppErrorCodes.VALIDATION_ERROR
+          )
+        }
       }
 
       await this._updatePsychProfileUseCase.execute({

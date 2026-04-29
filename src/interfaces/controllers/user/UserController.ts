@@ -8,6 +8,7 @@ import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js"
 import IUpdateUserProfileUseCase from "../../../application/interfaces/IUpdateUserProfileUseCase.js";
 import IFetchUserDashboardUseCase from "../../../application/interfaces/IFetchUserDashboardUseCase.js";
 import { UserGender } from "../../../domain/enums/UserGender.js";
+import { ALLOWED_FILE_SIZE } from "../../constants/file-sizes.constants.js";
 
 export default class UserController {
   constructor(
@@ -132,6 +133,12 @@ export default class UserController {
             ERROR_MESSAGES.PROFILE_PICTURE_REQUIRED,
             AppErrorCodes.VALIDATION_ERROR
           );
+        }
+        if(file.size>ALLOWED_FILE_SIZE.PROFILE_IMAGE_SIZE){
+          throw new AppError(
+            ERROR_MESSAGES.PROFILE_PICTURE_SIZE_EXCEEDED(ALLOWED_FILE_SIZE.PROFILE_IMAGE_SIZE),
+            AppErrorCodes.VALIDATION_ERROR
+          )
         }
         profilePicture = file.buffer;
       }

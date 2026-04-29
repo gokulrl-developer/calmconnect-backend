@@ -1,3 +1,5 @@
+import { ALLOWED_LICENSE_FILE_TYPES, ALLOWED_PROFILE_IMAGE_TYPES, ALLOWED_RESUME_FILE_TYPES } from "./file-mime-types.constants.js";
+
 export const ERROR_MESSAGES = {
   ACCOUNT_BLOCKED: "Account is blocked",
   ACCOUNT_LOGGED_OUT: "Account is logged out",
@@ -110,5 +112,11 @@ export const ERROR_MESSAGES = {
   REVIEW_SORT_INVALID_FORMAT:"Review sort is in invalid format.",
   APPLICATION_STATUS_FILTER_INVALID:"The applications status filter is invalid",
   COMPLAINT_UPDATION_FAILED:"Complaint updation failed",
-  ADMIN_DATA_NOT_FOUND:"Admin Data not found"
+  ADMIN_DATA_NOT_FOUND:"Admin Data not found",
+  LICENSE_MIME_TYPE_INVALID:`Only the following mime types are allowed for license document : ${ALLOWED_LICENSE_FILE_TYPES.join()}`,
+  RESUME_MIME_TYPE_INVALID:`Only the following mime types are allowed for resume document : ${ALLOWED_RESUME_FILE_TYPES.join()}`,
+  PROFILE_PICTURE_MIME_INVALID:`Only the following mime types are allowed for resume document : ${ALLOWED_PROFILE_IMAGE_TYPES.join()}`,
+  PROFILE_PICTURE_SIZE_EXCEEDED:(allowedSize:number)=>`Maximum size of profile picture should be ${(allowedSize)/(1024*1024)} MB`,
+  LICENSE_SIZE_EXCEEDED:(allowedSize:number)=>`Maximum size of license should be ${(allowedSize)/(1024*1024)} MB`,
+  RESUME_SIZE_EXCEEDED:(allowedSize:number)=>`Maximum size of resume should be ${(allowedSize)/(1024*1024)} MB`
 } as const;
