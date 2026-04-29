@@ -6,12 +6,14 @@ import { AppErrorCodes } from "../../error/app-error-codes.js";
 import AppError from "../../error/AppError.js";
 import IUpdatePsychProfileUseCase from "../../interfaces/IUpdatePsychProfileUseCase.js";
 import { toPsychDomainFromUpdateDTO } from "../../mappers/PsychMapper.js";
+import { fileTypeFromBuffer, FileTypeResult } from "file-type";
+import { ALLOWED_PROFILE_IMAGE_TYPES } from "../../constants/file-mime-types.constants.js";
 
 export default class UpdatePsychProfileUseCase implements IUpdatePsychProfileUseCase {
     constructor(
         private readonly _psychRepository: IPsychRepository,
         private readonly _fileStorageService: IFileStorageService
-    ) {}
+    ) { }
 
     async execute(dto: UpdatePsychProfileDTO & { psychId: string }): Promise<void> {
         const { psychId, profilePicture, hourlyFees, quickSlotHourlyFees } = dto;
@@ -25,15 +27,19 @@ export default class UpdatePsychProfileUseCase implements IUpdatePsychProfileUse
 
         let profilePictureUrl: string | undefined = undefined;
         if (profilePicture && !(typeof profilePicture === "string")) {
-            profilePictureUrl = await this._fileStorageService.uploadFile(profilePicture, "profiles");
+            const fileType: FileTypeResult | undefined = await fileTypeFromBuffer(profilePicture);
+            if (fileType === undefined || !ALLOWED_PROFILE_IMAGE_TYPES.includes(fileType.mime)) {
+                throw new AppError(ERROR_MESSAGES.PROFILE_PICTURE_MIME_INVALID, AppErrorCodes.VALIDATION_ERROR)
+            }
+            profilePictureUrl = await this._fileStorageService.uploadFile(profilePicture, "profiles",fileType.mime);
         }
 
         const existingPsych = await this._psychRepository.findById(psychId);
         if (!existingPsych) {
             throw new AppError(ERROR_MESSAGES.PSYCHOLOGIST_NOT_FOUND, AppErrorCodes.NOT_FOUND);
         }
-        const updatedPsych = toPsychDomainFromUpdateDTO(existingPsych, { ...dto, profilePicture:profilePictureUrl });
-        
+        const updatedPsych = toPsychDomainFromUpdateDTO(existingPsych, { ...dto, profilePicture: profilePictureUrl });
+
         const result = await this._psychRepository.update(psychId, updatedPsych);
 
         if (!result) {

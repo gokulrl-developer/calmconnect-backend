@@ -12,58 +12,72 @@ import { IEventBus } from "../../interfaces/events/IEventBus.js";
 import { EventMapEvents } from "../../../domain/enums/EventMapEvents.js";
 import { ApplicationStatus } from "../../../domain/enums/ApplicationStatus.js";
 import IAdminRepository from "../../../domain/interfaces/IAdminRepository.js";
+import { fileTypeFromBuffer, FileTypeResult } from "file-type";
+import { ALLOWED_LICENSE_FILE_TYPES, ALLOWED_PROFILE_IMAGE_TYPES, ALLOWED_RESUME_FILE_TYPES } from "../../constants/file-mime-types.constants.js";
 
-export default class CreateApplicationUseCase implements ICreateApplicationUseCase{
+export default class CreateApplicationUseCase implements ICreateApplicationUseCase {
   constructor(
-     private readonly _applicationRepository:IApplicationRepository,
-     private readonly _psychologistRepository:IPsychRepository,
-     private readonly _fileStorageService:IFileStorageService,
-     private readonly _adminRepository:IAdminRepository,
-     private readonly _eventBus:IEventBus
-  ){}
-  async execute(dto:PsychApplicationDTO){
-     const psychologist=await this._psychologistRepository.findById(dto.psychId) as Psychologist;
-     const applications=await this._applicationRepository.findAllByPsychId(dto.psychId);
-     if(applications.length>=3){
-        throw new AppError(ERROR_MESSAGES.APPLICATION_LIMIT_EXCEEDED,AppErrorCodes.FORBIDDEN_ERROR)
-     };
-     for(const app of applications){
-      if(app.status===ApplicationStatus.PENDING){
-        throw new AppError(ERROR_MESSAGES.PENDING_APPLICATION_EXISTS,AppErrorCodes.FORBIDDEN_ERROR)
+    private readonly _applicationRepository: IApplicationRepository,
+    private readonly _psychologistRepository: IPsychRepository,
+    private readonly _fileStorageService: IFileStorageService,
+    private readonly _adminRepository: IAdminRepository,
+    private readonly _eventBus: IEventBus
+  ) { }
+  async execute(dto: PsychApplicationDTO) {
+    const psychologist = await this._psychologistRepository.findById(dto.psychId) as Psychologist;
+    const applications = await this._applicationRepository.findAllByPsychId(dto.psychId);
+    if (applications.length >= 3) {
+      throw new AppError(ERROR_MESSAGES.APPLICATION_LIMIT_EXCEEDED, AppErrorCodes.FORBIDDEN_ERROR)
+    };
+    for (const app of applications) {
+      if (app.status === ApplicationStatus.PENDING) {
+        throw new AppError(ERROR_MESSAGES.PENDING_APPLICATION_EXISTS, AppErrorCodes.FORBIDDEN_ERROR)
       }
-      if(app.status===ApplicationStatus.ACCEPTED){
-        throw new AppError(ERROR_MESSAGES.ACCEPTED_APPLICATION_EXISTS,AppErrorCodes.FORBIDDEN_ERROR)
+      if (app.status === ApplicationStatus.ACCEPTED) {
+        throw new AppError(ERROR_MESSAGES.ACCEPTED_APPLICATION_EXISTS, AppErrorCodes.FORBIDDEN_ERROR)
       }
-     }
-     let licenseUrl:string;
-     let resume:string;
-     let profilePicture:string;
-     if(typeof dto.license !== "string"){
-      licenseUrl = await this._fileStorageService.uploadFile(dto.license, "licenses");
-    }else{
-      licenseUrl=dto.license
     }
-    if(typeof dto.resume !== "string"){
-    resume = await this._fileStorageService.uploadFile(dto.resume, "resumes");
-    }else{
-      resume=dto.resume;
+    let licenseUrl: string;
+    let resume: string;
+    let profilePicture: string;
+    if (typeof dto.license !== "string") {
+      const fileType: FileTypeResult | undefined = await fileTypeFromBuffer(dto.license);
+      if (fileType === undefined || !ALLOWED_LICENSE_FILE_TYPES.includes(fileType.mime)) {
+        throw new AppError(ERROR_MESSAGES.LICENSE_MIME_TYPE_INVALID, AppErrorCodes.VALIDATION_ERROR)
+      }
+      licenseUrl = await this._fileStorageService.uploadFile(dto.license, "licenses",fileType.mime);
+    } else {
+      licenseUrl = dto.license
     }
-    if(typeof dto.profilePicture !== "string"){
-      profilePicture = await this._fileStorageService.uploadFile(dto.profilePicture, "profiles");
-    }else{
-      profilePicture=dto.profilePicture
+    if (typeof dto.resume !== "string") {
+      const fileType: FileTypeResult | undefined = await fileTypeFromBuffer(dto.resume);
+      if (fileType === undefined || !ALLOWED_RESUME_FILE_TYPES.includes(fileType.mime)) {
+        throw new AppError(ERROR_MESSAGES.RESUME_MIME_TYPE_INVALID, AppErrorCodes.VALIDATION_ERROR)
+      }
+      resume = await this._fileStorageService.uploadFile(dto.resume, "resumes",fileType.mime);
+    } else {
+      resume = dto.resume;
     }
-     const applicationEntity=toApplicationDomainSubmit(dto,psychologist,{licenseUrl,resume,profilePicture});
+    if (typeof dto.profilePicture !== "string") {
+      const fileType: FileTypeResult | undefined = await fileTypeFromBuffer(dto.profilePicture);
+      if (fileType === undefined || !ALLOWED_PROFILE_IMAGE_TYPES.includes(fileType.mime)) {
+        throw new AppError(ERROR_MESSAGES.PROFILE_PICTURE_MIME_INVALID, AppErrorCodes.VALIDATION_ERROR)
+      }
+      profilePicture = await this._fileStorageService.uploadFile(dto.profilePicture, "profiles",fileType.mime);
+    } else {
+      profilePicture = dto.profilePicture
+    }
+    const applicationEntity = toApplicationDomainSubmit(dto, psychologist, { licenseUrl, resume, profilePicture });
     await this._applicationRepository.create(applicationEntity);
-    
-    const adminData=await this._adminRepository.findOne();
-        if(!adminData){
-          throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR,AppErrorCodes.INTERNAL_ERROR)
-        }
+
+    const adminData = await this._adminRepository.findOne();
+    if (!adminData) {
+      throw new AppError(ERROR_MESSAGES.INTERNAL_SERVER_ERROR, AppErrorCodes.INTERNAL_ERROR)
+    }
     await this._eventBus.emit(EventMapEvents.APPLICATION_CREATED, {
-      adminId:adminData.adminId,
-      psychologistName:`${psychologist.firstName} ${psychologist.lastName}`,
-      psychologistEmail:psychologist.email!,
+      adminId: adminData.adminId,
+      psychologistName: `${psychologist.firstName} ${psychologist.lastName}`,
+      psychologistEmail: psychologist.email!,
     });
   }
 
