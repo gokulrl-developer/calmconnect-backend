@@ -7,12 +7,13 @@ import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants.js"
 import { ERROR_MESSAGES } from "../../../application/constants/error-messages.constants.js";
 import IFetchLatestApplicationUseCase from "../../../application/interfaces/IFetchLatestApplicationUseCase.js";
 import { PsychologistGender } from "../../../domain/enums/PsychologistGender.js";
+import { ALLOWED_FILE_SIZE } from "../../constants/file-sizes.constants.js";
 
 export default class ApplicationController {
   constructor(
     private readonly _createApplicationUseCase: ICreateApplicationUseCase,
     private readonly _fetchLatestApplicationUseCase: IFetchLatestApplicationUseCase
-  ) {}
+  ) { }
 
   async createApplication(
     req: Request,
@@ -44,9 +45,9 @@ export default class ApplicationController {
       }
       if (
         !req.body.gender ||
-        (req.body.gender !== PsychologistGender.MALE 
+        (req.body.gender !== PsychologistGender.MALE
           && req.body.gender !== PsychologistGender.FEMALE
-            && req.body.gender !== PsychologistGender.OTHERS
+          && req.body.gender !== PsychologistGender.OTHERS
         )) {
         throw new AppError(
           ERROR_MESSAGES.GENDER_REQUIRED,
@@ -111,6 +112,15 @@ export default class ApplicationController {
           AppErrorCodes.VALIDATION_ERROR
         );
       }
+
+      if (files?.license && files.license?.[0].buffer instanceof Buffer) {
+        if (files?.license?.[0]?.size > ALLOWED_FILE_SIZE.LICENSE_SIZE) {
+          throw new AppError(
+            ERROR_MESSAGES.LICENSE_SIZE_EXCEEDED(ALLOWED_FILE_SIZE.LICENSE_SIZE),
+            AppErrorCodes.VALIDATION_ERROR
+          )
+        }
+      }
       if (
         (!req.body.profilePicture ||
           typeof req.body.profilePicture !== "string") &&
@@ -122,6 +132,14 @@ export default class ApplicationController {
           AppErrorCodes.VALIDATION_ERROR
         );
       }
+      if (files?.profilePicture && files.profilePicture?.[0].buffer instanceof Buffer) {
+        if (files?.profilePicture?.[0]?.size > ALLOWED_FILE_SIZE.PROFILE_IMAGE_SIZE) {
+          throw new AppError(
+            ERROR_MESSAGES.PROFILE_PICTURE_SIZE_EXCEEDED(ALLOWED_FILE_SIZE.PROFILE_IMAGE_SIZE),
+            AppErrorCodes.VALIDATION_ERROR
+          )
+        }
+      }
       if (
         (!req.body.resume || typeof req.body.resume !== "string") &&
         (!files?.resume || !(files.resume?.[0].buffer instanceof Buffer))
@@ -130,6 +148,15 @@ export default class ApplicationController {
           ERROR_MESSAGES.RESUME_REQUIRED,
           AppErrorCodes.VALIDATION_ERROR
         );
+      }
+
+      if (files?.resume && files.resume?.[0].buffer instanceof Buffer) {
+        if (files?.resume?.[0]?.size > ALLOWED_FILE_SIZE.RESUME_SIZE) {
+          throw new AppError(
+            ERROR_MESSAGES.RESUME_SIZE_EXCEEDED(ALLOWED_FILE_SIZE.RESUME_SIZE),
+            AppErrorCodes.VALIDATION_ERROR
+          )
+        }
       }
       await this._createApplicationUseCase.execute({
         ...req.body,
