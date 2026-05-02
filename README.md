@@ -168,16 +168,16 @@ The project uses separate environment configurations for **development** and **p
 
 ### 🌱 Development (.env)
 
-# Frontend
+#### Frontend
 FRONTEND_BASE_URL=Comma-separated list of allowed frontend origins (CORS configuration)
 
-# Server
+#### Server
 PORT=Backend server port (e.g. 3000)
 
-# Database
+#### Database
 MONGO_URI=MongoDB connection string (local or Atlas)
 
-# Redis
+#### Redis
 REDIS_HOST=Redis server host address
 REDIS_PASSWORD=Redis authentication password
 REDIS_PORT=Redis server port
@@ -185,34 +185,34 @@ REDIS_USERNAME=Redis username
 REDIS_URL=Full Redis connection URL (redis://user:pass@host:port) (for BullMQ)
 REDIS_QUEUE_NAME=BullMQ queue name for background job processing (development)
 
-# Email (SMTP)
+#### Email (SMTP)
 SMTP_PASSWORD=SMTP app password used for sending emails
 SMTP_EMAIL=Email address used for SMTP service
 SMTP_HOST=SMTP server host (e.g. smtp.gmail.com)
 SMTP_PORT=SMTP port (e.g. 465 for SSL)
 
-# Authentication
+#### Authentication
 ACCESS_TOKEN_SECRET=Secret key used to sign JWT access tokens
 REFRESH_TOKEN_SECRET=Secret key used to sign JWT refresh tokens
 
-# Cloud Storage
+#### Cloud Storage
 CLOUDINARY_CLOUD_NAME=Cloudinary cloud name
 CLOUDINARY_API_KEY=Cloudinary API key
 CLOUDINARY_API_SECRET=Cloudinary API secret
 
-# Google OAuth
+#### Google OAuth
 GOOGLE_CLIENT_ID=Google OAuth client ID
 GOOGLE_CLIENT_SECRET=Google OAuth client secret
 REDIRECT_URI=OAuth callback URL after Google login
 
-# Security
+#### Security
 SALT_ROUNDS=Number of bcrypt hashing rounds for password encryption
 
-# Payments
+#### Payments
 RAZORPAY_KEY_ID=Razorpay public API key
 RAZORPAY_KEY_SECRET=Razorpay secret API key
 
-# Token Configuration
+#### Token Configuration
 ACCESS_TOKEN_COOKIE_MAX_AGE=Access token cookie expiry time in milliseconds
 REFRESH_TOKEN_COOKIE_MAX_AGE=Refresh token cookie expiry time in milliseconds
 ACCESS_TOKEN_EXPIRY=Access token validity duration in milliseconds
@@ -220,16 +220,16 @@ REFRESH_TOKEN_EXPIRY=Refresh token validity duration in milliseconds
 
 ### 🌱 Production (.env.prod)
 
-# Frontend
+#### Frontend
 FRONTEND_BASE_URL=Comma-separated list of allowed production frontend domains (CORS configuration)
 
-# Server
+#### Server
 PORT=Backend server port (e.g. 3000)
 
-# Database
+#### Database
 MONGO_URI=MongoDB Atlas production connection string
 
-# Redis
+#### Redis
 REDIS_HOST=Redis server host address
 REDIS_PASSWORD=Redis authentication password
 REDIS_PORT=Redis port number
@@ -237,35 +237,35 @@ REDIS_USERNAME=Redis username
 REDIS_URL=Full Redis connection URL (redis://user:pass@host:port) (for BullMQ)
 REDIS_QUEUE_NAME=BullMQ queue name for production background jobs
 
-# Email (SMTP)
+#### Email (SMTP)
 SMTP_PASSWORD=SMTP app password used for sending emails
 SMTP_EMAIL=Email address used for SMTP service
 SMTP_HOST=SMTP server host (e.g. smtp.gmail.com)
 SMTP_PORT=SMTP port (e.g. 465 for SSL)
 
-# Authentication
+#### Authentication
 ACCESS_TOKEN_SECRET=Secret key used to sign JWT access tokens
 REFRESH_TOKEN_SECRET=Secret key used to sign JWT refresh tokens
 
 
-# Cloud Storage
+#### Cloud Storage
 CLOUDINARY_CLOUD_NAME=Cloudinary cloud name
 CLOUDINARY_API_KEY=Cloudinary API key
 CLOUDINARY_API_SECRET=Cloudinary API secret
 
-# Google OAuth
+#### Google OAuth
 GOOGLE_CLIENT_ID=Google OAuth client ID
 GOOGLE_CLIENT_SECRET=Google OAuth client secret
 REDIRECT_URI=OAuth callback URL for production login flow
 
-# Security
+#### Security
 SALT_ROUNDS=Number of bcrypt hashing rounds for password encryption
 
-# Payments
+#### Payments
 RAZORPAY_KEY_ID=Razorpay public API key
 RAZORPAY_KEY_SECRET=Razorpay secret API key
 
-# Token Configuration
+#### Token Configuration
 ACCESS_TOKEN_COOKIE_MAX_AGE=Access token cookie expiry time in milliseconds
 REFRESH_TOKEN_COOKIE_MAX_AGE=Refresh token cookie expiry time in milliseconds
 ACCESS_TOKEN_EXPIRY=Access token validity duration in milliseconds
