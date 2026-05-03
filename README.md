@@ -238,6 +238,27 @@ Backend is currently deployed on:
 - MongoDB (Atlas or self-hosted)
 - Redis (required for BullMQ job queues)
 
+### Docker Deployment
+
+Build Docker image:
+
+
+docker build -t calmconnect-backend .
+
+
+Run container:
+
+development:
+
+docker run -p 3000:3000 --env-file .env calmconnect-backend
+
+production:
+
+docker run -p 3000:3000 --env-file .env.prod calmconnect-backend
+
+> Ensure environment variables are configured correctly before deployment.
+
+
 ## 🔗 API Reference
 
 Frontend Repository: https://github.com/gokulrl-developer/calmconnect-frontend.git
