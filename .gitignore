@@ -11,7 +11,9 @@ pnpm-lock.yaml
 # ─────────────────────────────
 .env
 .env.*        # any env variants like .env.development, .env.production
-!.env.example # keep an example template if you want to share structure
+!.env.example 
+!.env.production.example 
+!.env.development.example 
 
 # ─────────────────────────────
 # Build / Output
