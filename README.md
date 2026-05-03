@@ -249,8 +249,11 @@ docker build -t calmconnect-backend .
 Run container:
 
 development:
+
 docker run -p 3000:3000 --env-file .env calmconnect-backend
+
 production:
+
 docker run -p 3000:3000 --env-file .env.prod calmconnect-backend
 
 > Ensure environment variables are configured correctly before deployment.
