@@ -112,7 +112,7 @@ export default class PsychRepository
     limit = 10,
   } = query;
 
-  const match:PsychListQueryByUser = { isVerified: true };
+  const match:PsychListQueryByUser = { isVerified: true,isBlocked:false };
 
   if (gender) match.gender = gender;
   if (specialization) match.specializations = specialization;
